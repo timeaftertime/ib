@@ -12,5 +12,4 @@ public final class AudioConf {
 	public static AudioPlayer SHOOT = new AudioPlayer(InfinityBattle.class.getResourceAsStream("/audio/shoot.mp3"));
 	public static AudioPlayer ENDLESS_BG = new AudioPlayer(InfinityBattle.class.getResourceAsStream("/audio/bg.mp3"));
 
-
 }

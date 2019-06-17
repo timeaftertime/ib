@@ -18,12 +18,13 @@ import javax.swing.SwingUtilities;
 
 import com.alibaba.fastjson.JSONObject;
 
-import cn.milai.ib.client.constant.HTTPServerURL;
-import cn.milai.ib.client.constant.ResponseCode;
 import cn.milai.ib.client.game.conf.FormSizeConf;
 import cn.milai.ib.client.util.RequestUtil;
 import cn.milai.ib.client.util.StringUtil;
 import cn.milai.ib.client.util.RequestUtil.Entry;
+import cn.milai.ib.constant.HTTPServerURL;
+import cn.milai.ib.constant.ParamName;
+import cn.milai.ib.constant.ResponseCode;
 
 public class LoginForm extends GameForm {
 
@@ -118,9 +119,9 @@ public class LoginForm extends GameForm {
 				result = RequestUtil.post(HTTPServerURL.LOGIN,
 						new Entry("username", jtfUsername.getText()),
 						new Entry("password", new String(jtfPassword.getPassword())));
-				switch (ResponseCode.parse(result.getIntValue("code"))) {
+				switch (ResponseCode.parse(result.getIntValue(ParamName.CODE))) {
 				case SUCCESS:
-					String token = result.getString("token");
+					String token = result.getString(ParamName.TOKEN);
 					this.dispose();
 					SwingUtilities.invokeLater(()->{
 						new OnlineForm(token);

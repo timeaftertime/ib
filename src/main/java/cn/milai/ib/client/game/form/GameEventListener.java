@@ -1,10 +1,10 @@
 package cn.milai.ib.client.game.form;
 
-import cn.milai.ib.client.game.GameObject;
+import cn.milai.ib.client.game.obj.GameEntity;
 
 public interface GameEventListener {
 
-	void onGameObjectDead(GameObject obj);
+	void onGameObjectDead(GameEntity obj);
 	
 	void onFormClosed();
 	

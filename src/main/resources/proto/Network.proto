@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package cn.yusei.ib.socket;
+package cn.milai.ib;
 
 message Message {
 	enum MessageType {

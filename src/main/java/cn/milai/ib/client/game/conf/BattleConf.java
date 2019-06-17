@@ -10,12 +10,12 @@ public final class BattleConf {
 
 	private BattleConf() {
 	}
-	
+
 	// 窗体设置
 	public static final String FORM_TITLE = "敌星弹雨";
 
 	// 游戏对象大小
-	public static final int PLAYER_WIDTH =SystemConf.prorate(30);
+	public static final int PLAYER_WIDTH = SystemConf.prorate(30);
 	public static final int PLAYER_HEIGHT = SystemConf.prorate(45);
 	public static final int NORMAL_BULLET_WIDTH = SystemConf.prorate(8);
 	public static final int NORMAL_BULLET_HEIGHT = SystemConf.prorate(25);
@@ -27,6 +27,12 @@ public final class BattleConf {
 	public static final int BOMB_HEIGHT = SystemConf.prorate(40);
 	public static final int WELCOME_PLAYER_WIDTH = SystemConf.prorate(60);
 	public static final int WELCOME_PLAYER_HEIGHT = SystemConf.prorate(40);
+	public static final int GAME_OVER_LABEL_WIDTH = SystemConf.prorate(560);
+	public static final int GAME_OVER_LABEL_HEIGHT = SystemConf.prorate(100);
+	public static final int RESTART_BUTTON_WIDTH = SystemConf.prorate(120);
+	public static final int RESTART_BUTTON_HEIGHT = SystemConf.prorate(30);
+	public static final int BACK_BUTTON_WIDTH = SystemConf.prorate(70);
+	public static final int BACK_BUTTON_HEIGHT = SystemConf.prorate(30);
 
 	// 最大子弹数
 	public static final int PLAYER_INIT_MAX_BULLENT = 3;
@@ -68,6 +74,14 @@ public final class BattleConf {
 
 	public static final long BOMB_LAST_MILLISEC = 500;
 
+	// 位置
+	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(30);
+	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(300);
+	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(100);
+	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(500);
+	public static final int BACK_BUTTON_POS_X = SystemConf.prorate(410);
+	public static final int BACK_BUTTON_POS_Y = SystemConf.prorate(500);
+
 	public static final Map<Integer, Command> keySettings = new HashMap<>();
 
 	static {
@@ -81,5 +95,5 @@ public final class BattleConf {
 		keySettings.put(KeyEvent.VK_D, Command.RIGHT);
 		keySettings.put(KeyEvent.VK_J, Command.SHOOT);
 	}
-	
+
 }

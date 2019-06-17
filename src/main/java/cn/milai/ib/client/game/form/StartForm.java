@@ -36,7 +36,10 @@ public class StartForm extends GameForm {
 		JLabel startEndlessBattle = new JLabel("无尽模式");
 		JLabel startOnline = new JLabel("联机模式");
 		
-		title.setFont(new Font("华文行楷", Font.BOLD, 35));
+		title.setFont(new Font("华文行楷", Font.BOLD, 55));
+		startStory.setFont(new Font("华文行楷", Font.BOLD, 30));
+		startEndlessBattle.setFont(new Font("华文行楷", Font.BOLD, 30));
+		startOnline.setFont(new Font("华文行楷", Font.BOLD, 30));
 		add(title);
 		add(startStory);
 		add(startEndlessBattle);

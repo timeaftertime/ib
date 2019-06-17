@@ -9,29 +9,34 @@ import javazoom.jl.player.Player;
 
 public class AudioPlayer {
 
-	private boolean closed = false;
-	
 	private byte[] bytes;
-	
+
 	public AudioPlayer(InputStream in) {
 		try {
 			bytes = new byte[in.available()];
 			in.read(bytes);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void play() {
+
+	public class AudioController {
+		private boolean closed = false;
+
+		public void close() {
+			closed = true;
+		}
+	}
+
+	public AudioController play() {
+		AudioController controller = new AudioController();
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					Player player = new Player(new ByteArrayInputStream(bytes));
-					while(!closed && !player.isComplete())
+					while (!controller.closed && !player.isComplete())
 						player.play(1);
-					player.close();
 				} catch (JavaLayerException e) {
 					e.printStackTrace();
 				}
@@ -39,10 +44,7 @@ public class AudioPlayer {
 		});
 		thread.setDaemon(true);
 		thread.start();
+		return controller;
 	}
-	
-	public void close() {
-		closed = true;
-	}
-	
+
 }

@@ -14,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import cn.milai.ib.client.constant.SocketServerURL;
 import cn.milai.ib.client.game.conf.FormSizeConf;
 import cn.milai.ib.client.socket.SocketClient;
+import cn.milai.ib.constant.SocketServerURL;
 
 public class OnlineForm extends GameForm {
 

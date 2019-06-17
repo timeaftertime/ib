@@ -1,7 +1,7 @@
 package cn.milai.ib.client.socket;
 
-import cn.milai.ib.client.socket.Network.Message;
-import cn.milai.ib.client.socket.Network.Message.MessageType;
+import cn.milai.ib.Network.Message;
+import cn.milai.ib.Network.Message.MessageType;
 import cn.milai.ib.client.util.RequestUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

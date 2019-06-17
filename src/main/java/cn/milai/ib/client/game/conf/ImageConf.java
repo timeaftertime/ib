@@ -19,6 +19,9 @@ public final class ImageConf {
 	public static final Image BOMB;
 	public static final Image WELCOME_PLAYER;
 	public static final Image START_BG;
+	public static final Image GAME_OVER;
+	public static final Image RESTART_BUTTON;
+	public static final Image BACK_BUTTON;
 	
 	static {
 		BATTLE_BG =tk.createImage(InfinityBattle.class.getResource("/img/battle_bg.jpg"));
@@ -32,6 +35,9 @@ public final class ImageConf {
 		BOMB = tk.createImage(InfinityBattle.class.getResource("/img/bomb.gif"));
 		WELCOME_PLAYER = tk.createImage(InfinityBattle.class.getResource("/img/welcome_player.gif"));
 		START_BG = tk.createImage(InfinityBattle.class.getResource("/img/start_bg.gif"));
+		GAME_OVER = tk.createImage(InfinityBattle.class.getResource("/img/game_over.gif"));
+		RESTART_BUTTON = tk.createImage(InfinityBattle.class.getResource("/img/restart_button.gif"));
+		BACK_BUTTON = tk.createImage(InfinityBattle.class.getResource("/img/back_button.gif"));
 	}
 	
 }
