@@ -1,19 +1,26 @@
 package cn.milai.ib.client.game.obj;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 
 import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.obj.property.HasLocation;
+import cn.milai.ib.client.game.obj.property.Paintable;
 
-public abstract class GameObject {
+public abstract class GameObject implements Paintable, HasLocation {
 
 	private Rectangle rect;
 	private GameForm container;
+	private Image img;
 
-	public GameObject(int x, int y, int width, int height, GameForm container) {
+	public GameObject(int x, int y, int width, int height, Image img, GameForm container) {
 		this.rect = new Rectangle(x, y, width, height);
+		this.img = img;
 		this.container = container;
 	}
 
+	@Override
 	public int getX() {
 		return (int) rect.getX();
 	}
@@ -22,6 +29,7 @@ public abstract class GameObject {
 		this.rect.setLocation(x, getY());
 	}
 
+	@Override
 	public int getY() {
 		return (int) rect.getY();
 	}
@@ -62,8 +70,37 @@ public abstract class GameObject {
 		return rect.contains(x, y);
 	}
 
+	@Override
+	public void paintWith(Graphics g) {
+		g.drawImage(getImage(), getX(), getY(), getWidth(), getHeight(), null);
+	}
+
+	public void setImage(Image img) {
+		this.img = img;
+	}
+
+	public Image getImage() {
+		return this.img;
+	}
+
 	public final GameForm getContainer() {
 		return container;
+	}
+
+	public void ensureInContainer() {
+		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentPane().getHeight(),
+				getContainer().getHeight());
+	}
+
+	public void ensureIn(int minX, int maxX, int minY, int maxY) {
+		if (getX() < minX)
+			setX(minX);
+		if (getY() < minY)
+			setY(minY);
+		if (getX() + getWidth() > maxX)
+			setX(maxX - getWidth());
+		if (getY() + getHeight() > maxY)
+			setY(maxY - getHeight());
 	}
 
 }

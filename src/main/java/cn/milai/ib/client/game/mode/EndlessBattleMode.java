@@ -10,14 +10,15 @@ import cn.milai.ib.client.game.conf.AudioConf;
 import cn.milai.ib.client.game.conf.BattleConf;
 import cn.milai.ib.client.game.conf.EndlessBattleModeConf;
 import cn.milai.ib.client.game.conf.ImageConf;
+import cn.milai.ib.client.game.conf.gameprops.SizeConf;
 import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.form.GameEventListener;
-import cn.milai.ib.client.game.form.StartForm;
 import cn.milai.ib.client.game.obj.GameEntity;
 import cn.milai.ib.client.game.obj.ImageButton;
 import cn.milai.ib.client.game.obj.plane.NormalEnemyPlayer;
 import cn.milai.ib.client.game.obj.plane.PlayerPlane;
 import cn.milai.ib.client.game.obj.plane.WelcomePlane;
+import cn.milai.ib.client.util.RandomUtil;
 
 public class EndlessBattleMode extends GameMode implements GameEventListener {
 
@@ -122,8 +123,8 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 		}
 
 		private void randomAddEnemy() {
-			if (rand.nextInt(BattleConf.MAX_ADD_ENEMY_CHANCE) > BattleConf.ADD_ENEMY_CHANCE) {
-				form.addGameObject(new NormalEnemyPlayer(rand.nextInt(form.getWidth()), 0, form, player));
+			if (RandomUtil.goalAtPossible(BattleConf.ADD_ENEMY_CHANCE, BattleConf.MAX_ADD_ENEMY_CHANCE)) {
+				form.addGameObject(new NormalEnemyPlayer(rand.nextInt(form.getWidth()), 0, player, form));
 				try {
 					Thread.sleep(addNormalEnemyInterval);
 				} catch (InterruptedException e) {
@@ -151,38 +152,25 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 		audioController.close();
 		showGameOverLabel();
 		showRestartButton();
-		showBackButton();
 	}
 
 	private void showGameOverLabel() {
 		ImageButton gameOverLabel = new ImageButton(BattleConf.GAME_OVER_LABEL_POS_X, BattleConf.GAME_OVER_LABEL_POS_Y,
-				BattleConf.GAME_OVER_LABEL_WIDTH, BattleConf.GAME_OVER_LABEL_HEIGHT, ImageConf.GAME_OVER, form);
+				SizeConf.GAME_OVER_LABEL_WIDTH, SizeConf.GAME_OVER_LABEL_HEIGHT, ImageConf.GAME_OVER, form);
 		form.addGameObject(gameOverLabel);
 	}
 
 	private void showRestartButton() {
 		ImageButton restart = new ImageButton(BattleConf.RESTART_BUTTON_POS_X, BattleConf.RESTART_BUTTON_POS_Y,
-				BattleConf.RESTART_BUTTON_WIDTH, BattleConf.RESTART_BUTTON_HEIGHT, ImageConf.RESTART_BUTTON, form);
+				SizeConf.RESTART_BUTTON_WIDTH, SizeConf.RESTART_BUTTON_HEIGHT, ImageConf.RESTART_BUTTON, form);
 		restart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				form.setVisible(false);
 				form.dispose();
 				new EndlessBattleMode().start();
 			}
 		});
 		form.addGameObject(restart);
-	}
-
-	private void showBackButton() {
-		ImageButton back = new ImageButton(BattleConf.BACK_BUTTON_POS_X, BattleConf.BACK_BUTTON_POS_Y,
-				BattleConf.BACK_BUTTON_WIDTH, BattleConf.BACK_BUTTON_HEIGHT, ImageConf.BACK_BUTTON, form);
-		back.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				form.dispose();
-				new StartForm();
-			}
-		});
-		form.addGameObject(back);
 	}
 }

@@ -1,5 +1,7 @@
 package cn.milai.ib.client.game.conf;
 
+import cn.milai.ib.client.game.conf.gameprops.SizeConf;
+
 public final class EndlessBattleModeConf {
 
 	private EndlessBattleModeConf() {
@@ -14,12 +16,12 @@ public final class EndlessBattleModeConf {
 	public static final int INIT_ADD_NORMAL_ENEMEY_WAIT_MILLISEC = 1000;
 	public static final long MIN_ADD_ENEMEY_WAIT_MILLISEC = 50;
 
-	// WelcomePlane
+	// WelcomePlane 时间
 	public static final long ADD_VERTICAL_WELCOME_PLANE_INTERVAL = 900;
 	public static final long ADD_LADDER_WELCOME_PLANE_INTERVAL = 1200;
 
 	// 位置
-	public static final int INIT_PLAYER_POS_X = FormSizeConf.BATTLE_WIDTH / 2 + BattleConf.PLAYER_WIDTH / 2;
-	public static final int INIT_PLAYER_POS_Y = FormSizeConf.BATTLE_HEIGHT - BattleConf.PLAYER_HEIGHT;
+	public static final int INIT_PLAYER_POS_X = FormSizeConf.BATTLE_WIDTH / 2 + SizeConf.PLAYER_WIDTH / 2;
+	public static final int INIT_PLAYER_POS_Y = FormSizeConf.BATTLE_HEIGHT - SizeConf.PLAYER_HEIGHT;
 
 }

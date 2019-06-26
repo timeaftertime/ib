@@ -25,20 +25,20 @@ public class BattleForm extends DoubleBufferForm {
 
 	private static final long serialVersionUID = 1L;
 
-	private Image bgImage = ImageConf.BATTLE_BG;
-	private List<GameObject> gameObjs = new ArrayList<>();
-	private PriorityBlockingQueue<Paintable> paintables = new PriorityBlockingQueue<Paintable>();
-	private List<Movable> movables = new ArrayList<Movable>();
-	private List<Alive> alives = new ArrayList<Alive>();
-	private List<CanCrash> canCrashs = new ArrayList<CanCrash>();
-	private List<CanCrashed> canCrasheds = new ArrayList<CanCrashed>();
-	private List<KeyboardListener> keyboardListeners = new ArrayList<KeyboardListener>();
-	private List<GameEventListener> gameEventListeners = new ArrayList<GameEventListener>();
+	private Image bgImage;
+	private List<GameObject> gameObjs;
+	private PriorityBlockingQueue<Paintable> paintables;
+	private List<Movable> movables;
+	private List<Alive> alives;
+	private List<CanCrash> canCrashs;
+	private List<CanCrashed> canCrasheds;
+	private List<KeyboardListener> keyboardListeners;
+	private List<GameEventListener> gameEventListeners;
 
 	private Thread refreshThread;
 
-	private boolean gameOver = false;
-	private boolean closed = false;
+	private boolean gameOver;
+	private boolean closed;
 
 	public void setGameOver() {
 		gameOver = true;
@@ -52,7 +52,7 @@ public class BattleForm extends DoubleBufferForm {
 		init();
 	}
 
-	private void init() {
+	public void init() {
 		this.setTitle(BattleConf.FORM_TITLE);
 		this.setSize(FormSizeConf.BATTLE_WIDTH, FormSizeConf.BATTLE_HEIGHT);
 		this.setLocationRelativeTo(null);
@@ -60,6 +60,18 @@ public class BattleForm extends DoubleBufferForm {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setResizable(false);
 
+		bgImage = ImageConf.BATTLE_BG;
+		gameObjs = new ArrayList<>();
+		paintables = new PriorityBlockingQueue<Paintable>();
+		movables = new ArrayList<Movable>();
+		alives = new ArrayList<Alive>();
+		canCrashs = new ArrayList<CanCrash>();
+		canCrasheds = new ArrayList<CanCrashed>();
+		keyboardListeners = new ArrayList<KeyboardListener>();
+		gameEventListeners = new ArrayList<GameEventListener>();
+		gameOver = false;
+		closed = false;
+		
 		// 窗口关闭监听
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -73,19 +85,7 @@ public class BattleForm extends DoubleBufferForm {
 		});
 
 		// 用于刷新的线程
-		refreshThread = new Thread(() -> {
-			while (!closed) {
-				moveGameObjects();
-				repaint();
-				checkAlive();
-				checkCrashed();
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		refreshThread = new RefreshThread();
 
 		// 按键监听器
 		this.addKeyListener(new KeyAdapter() {
@@ -116,6 +116,23 @@ public class BattleForm extends DoubleBufferForm {
 					continue;
 				if (((GameEntity) crash).isContactWith((GameEntity) crashed)) {
 					crash.onCrash(crashed);
+				}
+			}
+		}
+	}
+
+	private class RefreshThread extends Thread {
+		@Override
+		public void run() {
+			while (!closed) {
+				moveGameObjects();
+				repaint();
+				checkCrashed();
+				checkAlive();
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -157,7 +174,7 @@ public class BattleForm extends DoubleBufferForm {
 		Graphics g = image.getGraphics();
 		g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
 		PriorityBlockingQueue<Paintable> toPaint = new PriorityBlockingQueue<>(paintables);
-		while(!toPaint.isEmpty()) {
+		while (!toPaint.isEmpty()) {
 			toPaint.poll().paintWith(g);
 		}
 		return image;
@@ -183,7 +200,7 @@ public class BattleForm extends DoubleBufferForm {
 		if (obj instanceof CanCrashed)
 			addCanCrashed((CanCrashed) obj);
 	}
-	
+
 	/**
 	 * 从 GameObject、Paintable、Movable 列表移除对象
 	 * 
@@ -235,5 +252,11 @@ public class BattleForm extends DoubleBufferForm {
 				cnt++;
 		}
 		return cnt;
+	}
+
+	public void close() {
+		setVisible(false);
+		dispose();
+		closed = true;
 	}
 }

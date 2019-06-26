@@ -29,7 +29,7 @@ public class StartForm extends GameForm {
 	private void init() {
 		setSize(FormSizeConf.START_WIDTH, FormSizeConf.START_HEIGHT);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		JLabel title = new JLabel("敌星弹雨");
 		JLabel startStory = new JLabel("故事模式");
@@ -49,7 +49,7 @@ public class StartForm extends GameForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
-				new StoryMode().start();
+				new Thread(new StoryMode()).start();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -64,7 +64,7 @@ public class StartForm extends GameForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
-				new EndlessBattleMode().start();
+				new Thread(new EndlessBattleMode()).start();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -79,7 +79,7 @@ public class StartForm extends GameForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
-				new OnlineMode().start();
+				new Thread(new OnlineMode()).start();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

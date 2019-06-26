@@ -1,5 +1,6 @@
 package cn.milai.ib.client.game.form;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
@@ -17,12 +18,12 @@ public abstract class GameForm extends JFrame {
 	private static final Map<GameTip, MouseListener> tipListeners = new ConcurrentHashMap<>();
 
 	public GameForm() {
-		addMouseListener(new MouseListener() {
+		addMouseListener(new MouseAdapter() {
 
-			private GameTip getTarget(MouseEvent e) {
+			private MouseListener getTarget(MouseEvent e) {
 				for (GameTip tip : tipListeners.keySet()) {
 					if (tip.containPoint(e.getX(), e.getY())) {
-						return tip;
+						return tipListeners.remove(tip);
 					}
 				}
 				return null;
@@ -30,44 +31,11 @@ public abstract class GameForm extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				GameTip target = getTarget(e);
+				MouseListener target = getTarget(e);
 				if (target != null) {
-					tipListeners.get(target).mouseClicked(e);
+					target.mouseClicked(e);
 				}
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				GameTip target = getTarget(e);
-				if (target != null) {
-					tipListeners.get(target).mousePressed(e);
-				}
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				GameTip target = getTarget(e);
-				if (target != null) {
-					tipListeners.get(target).mouseReleased(e);
-				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				GameTip target = getTarget(e);
-				if (target != null) {
-					tipListeners.get(target).mouseEntered(e);
-				}
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				GameTip target = getTarget(e);
-				if (target != null) {
-					tipListeners.get(target).mouseExited(e);
-				}
-			}
-
 		});
 	}
 
@@ -79,7 +47,7 @@ public abstract class GameForm extends JFrame {
 
 	}
 
-	public void addMouseListener(GameTip gameTip, MouseListener listener) {
+	public void addOneTimeMouseListener(GameTip gameTip, MouseListener listener) {
 		tipListeners.put(gameTip, listener);
 	}
 

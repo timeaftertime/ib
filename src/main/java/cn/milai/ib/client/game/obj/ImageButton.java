@@ -12,7 +12,7 @@ public class ImageButton extends GameTip {
 	}
 
 	public void addMouseListener(MouseListener listener) {
-		getContainer().addMouseListener(this, listener);
+		getContainer().addOneTimeMouseListener(this, listener);
 	}
 
 }
