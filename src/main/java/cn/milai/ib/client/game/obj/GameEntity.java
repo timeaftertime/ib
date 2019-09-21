@@ -3,7 +3,7 @@ package cn.milai.ib.client.game.obj;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.property.Alive;
 import cn.milai.ib.client.game.obj.property.Explosible;
 
@@ -11,7 +11,7 @@ public abstract class GameEntity extends GameObject implements Alive {
 
 	private int life;
 
-	public GameEntity(int x, int y, int width, int height, int life, Image img, GameForm container) {
+	public GameEntity(int x, int y, int width, int height, int life, Image img, BattleForm container) {
 		super(x, y, width, height, img, container);
 		this.life = life;
 	}
@@ -57,4 +57,8 @@ public abstract class GameEntity extends GameObject implements Alive {
 		g.drawImage(getImage(), getX(), getY(), getWidth(), getHeight(), null);
 	}
 
+	@Override
+	public final BattleForm getContainer() {
+		return (BattleForm) super.getContainer();
+	}
 }

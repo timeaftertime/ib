@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>cn.milai.ib.client.game.obj.Bomb</OriginalElement>
+  <nodes>
+    <node x="961.5140824622531" y="455.0">cn.milai.ib.client.game.form.KeyboardListener</node>
+    <node x="1154.5295275590552" y="773.3208661417324">cn.milai.ib.client.game.obj.bullet.shooter.NormalBulletShooter</node>
+    <node x="928.5295275590552" y="773.3208661417324">cn.milai.ib.client.game.obj.bullet.shooter.DoubleEnemyBulletShooter</node>
+    <node x="902.2476771196284" y="617.0">cn.milai.ib.client.game.obj.plane.NormalEnemyPlayer</node>
+    <node x="173.2476771196284" y="81.0">cn.milai.ib.client.game.obj.property.Paintable</node>
+    <node x="479.5974157955865" y="334.0">cn.milai.ib.client.game.obj.property.CanCrash</node>
+    <node x="744.5295275590552" y="773.3208661417324">cn.milai.ib.client.game.obj.bullet.shooter.EnemyBulletShooter</node>
+    <node x="440.0" y="774.0">cn.milai.ib.client.game.form.StartForm</node>
+    <node x="304.0" y="774.0">cn.milai.ib.client.game.form.OnlineForm</node>
+    <node x="770.2476771196284" y="617.0">cn.milai.ib.client.game.obj.plane.MissileBoss</node>
+    <node x="601.5974157955866" y="334.0">cn.milai.ib.client.game.obj.property.HasDamage</node>
+    <node x="475.6226771196284" y="81.0">cn.milai.ib.client.game.obj.property.HasLocation</node>
+    <node x="111.84741579558653" y="455.0">cn.milai.ib.client.game.obj.helper.Helper</node>
+    <node x="169.71806039488968" y="536.0">cn.milai.ib.client.game.obj.helper.AccelerateHelper</node>
+    <node x="866.5295275590552" y="692.3208661417324">cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter</node>
+    <node x="174.0" y="774.0">cn.milai.ib.client.game.form.LoginForm</node>
+    <node x="470.3474157955865" y="455.0">cn.milai.ib.client.game.obj.bullet.Bullet</node>
+    <node x="852.0930603948897" y="243.0">cn.milai.ib.client.game.obj.property.HasCamp</node>
+    <node x="947.8450929152149" y="334.0">cn.milai.ib.client.game.obj.property.Shootable</node>
+    <node x="618.2476771196284" y="617.0">cn.milai.ib.client.game.obj.plane.WelcomePlane</node>
+    <node x="593.5295275590552" y="773.3208661417324">cn.milai.ib.client.game.obj.bullet.shooter.MissileShooter</node>
+    <node x="142.0000000000001" y="334.0">cn.milai.ib.client.game.obj.MovableGameEntity</node>
+    <node x="240.0" y="693.0">cn.milai.ib.client.game.form.GameForm</node>
+    <node x="581.7180603948897" y="536.0">cn.milai.ib.client.game.obj.bullet.NormalBullet</node>
+    <node x="21.5" y="855.0">cn.milai.ib.client.game.form.BattleForm</node>
+    <node x="11.5" y="243.0">cn.milai.ib.client.game.obj.GameTip</node>
+    <node x="846.5930603948897" y="162.0">cn.milai.ib.client.game.obj.property.Alive</node>
+    <node x="19.71806039488979" y="536.0">cn.milai.ib.client.game.obj.helper.OneLifeHelper</node>
+    <node x="335.7180603948897" y="536.0">cn.milai.ib.client.game.obj.bullet.EnemyBullet</node>
+    <node x="0.0" y="334.0">cn.milai.ib.client.game.obj.ImageButton</node>
+    <node x="45.247677119628406" y="81.0">cn.milai.ib.client.game.obj.bullet.BulletType</node>
+    <node x="774.5140824622531" y="536.0">cn.milai.ib.client.game.obj.plane.EnemyPlane</node>
+    <node x="834.5930603948897" y="81.0">cn.milai.ib.client.game.obj.property.HasScore</node>
+    <node x="613.6226771196284" y="81.0">cn.milai.ib.client.game.form.Command</node>
+    <node x="134.0000000000001" y="243.0">cn.milai.ib.client.game.obj.property.Movable</node>
+    <node x="362.47241579558647" y="334.0">cn.milai.ib.client.game.obj.Bomb</node>
+    <node x="862.5140824622531" y="455.0">cn.milai.ib.client.game.obj.plane.Plane</node>
+    <node x="811.8450929152149" y="334.0">cn.milai.ib.client.game.obj.property.CanCrashed</node>
+    <node x="921.6390824622531" y="536.0">cn.milai.ib.client.game.obj.plane.PlayerPlane</node>
+    <node x="0.0" y="774.0">cn.milai.ib.client.game.form.DoubleBufferForm</node>
+    <node x="165.2476771196284" y="0.0">java.lang.Comparable</node>
+    <node x="317.97241579558647" y="243.0">cn.milai.ib.client.game.obj.GameEntity</node>
+    <node x="256.47241579558647" y="162.0">cn.milai.ib.client.game.obj.GameObject</node>
+    <node x="1074.845092915215" y="334.0">cn.milai.ib.client.game.obj.property.Explosible</node>
+    <node x="474.7180603948897" y="536.0">cn.milai.ib.client.game.obj.bullet.Missile</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="cn.milai.ib.client.game.obj.bullet.Bullet" target="cn.milai.ib.client.game.obj.property.CanCrashed">
+      <point x="30.0" y="-15.5" />
+      <point x="540.3474157955866" y="435.0" />
+      <point x="840.8450929152149" y="435.0" />
+      <point x="-29.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.MissileBoss" target="cn.milai.ib.client.game.obj.plane.EnemyPlane">
+      <point x="0.0" y="-15.5" />
+      <point x="826.2476771196284" y="592.0" />
+      <point x="833.5140824622531" y="592.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.Paintable" target="java.lang.Comparable">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.DoubleBufferForm" target="cn.milai.ib.client.game.form.GameForm">
+      <point x="0.0" y="-15.5" />
+      <point x="77.0" y="744.0" />
+      <point x="253.875" y="744.0" />
+      <point x="-41.625" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.CanCrashed">
+      <point x="0.0" y="-15.5" />
+      <point x="902.0140824622531" y="435.0" />
+      <point x="898.8450929152149" y="435.0" />
+      <point x="29.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.shooter.DoubleEnemyBulletShooter" target="cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter">
+      <point x="0.0" y="-15.5" />
+      <point x="1031.5295275590552" y="753.3208661417324" />
+      <point x="944.6545275590552" y="753.3208661417324" />
+      <point x="15.625" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameTip" target="cn.milai.ib.client.game.obj.property.Paintable">
+      <point x="-24.75" y="-15.5" />
+      <point x="36.25" y="137.0" />
+      <point x="198.7476771196284" y="137.0" />
+      <point x="-25.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.WelcomePlane" target="cn.milai.ib.client.game.obj.plane.EnemyPlane">
+      <point x="0.0" y="-15.5" />
+      <point x="684.2476771196284" y="592.0" />
+      <point x="794.1807491289198" y="592.0" />
+      <point x="-39.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.Bullet" target="cn.milai.ib.client.game.obj.MovableGameEntity">
+      <point x="-30.0" y="-15.5" />
+      <point x="480.3474157955865" y="425.0" />
+      <point x="224.0000000000001" y="425.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.MovableGameEntity">
+      <point x="-33.85714285714289" y="-15.5" />
+      <point x="868.1569396051102" y="405.0" />
+      <point x="278.6666666666668" y="405.0" />
+      <point x="54.666666666666686" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.Explosible">
+      <point x="33.85714285714289" y="-15.5" />
+      <point x="935.871225319396" y="435.0" />
+      <point x="1127.845092915215" y="435.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameTip" target="cn.milai.ib.client.game.obj.GameObject">
+      <point x="24.75" y="-15.5" />
+      <point x="85.75" y="218.0" />
+      <point x="286.47241579558647" y="218.0" />
+      <point x="-30.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.CanCrashed" target="cn.milai.ib.client.game.obj.property.HasLocation">
+      <point x="29.0" y="-15.5" />
+      <point x="898.8450929152149" y="314.0" />
+      <point x="965.5930603948897" y="314.0" />
+      <point x="965.5930603948897" y="137.0" />
+      <point x="573.9560104529618" y="137.0" />
+      <point x="39.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.EnemyBullet" target="cn.milai.ib.client.game.obj.bullet.Bullet">
+      <point x="0.0" y="-15.5" />
+      <point x="395.2180603948897" y="511.0" />
+      <point x="483.68074912891984" y="511.0" />
+      <point x="-26.666666666666686" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.EnemyPlane" target="cn.milai.ib.client.game.obj.property.CanCrash">
+      <point x="-29.5" y="-15.5" />
+      <point x="804.0140824622531" y="511.0" />
+      <point x="755.0930603948897" y="511.0" />
+      <point x="755.0930603948897" y="415.0" />
+      <point x="543.3474157955866" y="415.0" />
+      <point x="12.75" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.CanCrash" target="cn.milai.ib.client.game.obj.property.HasLocation">
+      <point x="-25.5" y="-15.5" />
+      <point x="505.09741579558647" y="137.0" />
+      <point x="534.6226771196284" y="137.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.Shootable">
+      <point x="11.285714285714334" y="-15.5" />
+      <point x="913.2997967479675" y="415.0" />
+      <point x="1000.8450929152149" y="415.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.StartForm" target="cn.milai.ib.client.game.form.GameForm">
+      <point x="0.0" y="-15.5" />
+      <point x="492.5" y="744.0" />
+      <point x="337.125" y="744.0" />
+      <point x="41.625" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.helper.OneLifeHelper" target="cn.milai.ib.client.game.obj.helper.Helper">
+      <point x="0.0" y="-15.5" />
+      <point x="84.71806039488979" y="511.0" />
+      <point x="133.34741579558653" y="511.0" />
+      <point x="-21.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.helper.Helper" target="cn.milai.ib.client.game.obj.MovableGameEntity">
+      <point x="-21.5" y="-15.5" />
+      <point x="133.34741579558653" y="435.0" />
+      <point x="169.33333333333348" y="435.0" />
+      <point x="-54.66666666666666" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.LoginForm" target="cn.milai.ib.client.game.form.GameForm">
+      <point x="0.0" y="-15.5" />
+      <point x="229.0" y="754.0" />
+      <point x="281.625" y="754.0" />
+      <point x="-13.875" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameObject" target="cn.milai.ib.client.game.obj.property.Paintable">
+      <point x="-30.0" y="-15.5" />
+      <point x="286.47241579558647" y="137.0" />
+      <point x="249.7476771196284" y="137.0" />
+      <point x="25.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.HasCamp">
+      <point x="22.571428571428555" y="-15.5" />
+      <point x="924.5855110336818" y="425.0" />
+      <point x="1064.345092915215" y="425.0" />
+      <point x="1064.345092915215" y="304.0" />
+      <point x="937.926393728223" y="304.0" />
+      <point x="34.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.OnlineForm" target="cn.milai.ib.client.game.form.GameForm">
+      <point x="0.0" y="-15.5" />
+      <point x="362.0" y="754.0" />
+      <point x="309.375" y="754.0" />
+      <point x="13.875" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.shooter.NormalBulletShooter" target="cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter">
+      <point x="0.0" y="-15.5" />
+      <point x="1238.5295275590552" y="743.3208661417324" />
+      <point x="975.9045275590552" y="743.3208661417324" />
+      <point x="46.875" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.Bullet" target="cn.milai.ib.client.game.obj.property.HasDamage">
+      <point x="10.0" y="-15.5" />
+      <point x="520.3474157955866" y="425.0" />
+      <point x="631.0974157955866" y="425.0" />
+      <point x="-29.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameEntity" target="cn.milai.ib.client.game.obj.property.Alive">
+      <point x="28.5" y="-15.5" />
+      <point x="403.47241579558647" y="218.0" />
+      <point x="865.5930603948897" y="218.0" />
+      <point x="-19.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.shooter.EnemyBulletShooter" target="cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter">
+      <point x="0.0" y="-15.5" />
+      <point x="826.5295275590552" y="753.3208661417324" />
+      <point x="913.4045275590552" y="753.3208661417324" />
+      <point x="-15.625" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.ImageButton" target="cn.milai.ib.client.game.obj.GameTip">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.MovableGameEntity" target="cn.milai.ib.client.game.obj.GameEntity">
+      <point x="41.0" y="-15.5" />
+      <point x="265.0000000000001" y="314.0" />
+      <point x="346.47241579558647" y="314.0" />
+      <point x="-28.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.NormalEnemyPlayer" target="cn.milai.ib.client.game.obj.plane.EnemyPlane">
+      <point x="0.0" y="-15.5" />
+      <point x="984.7476771196284" y="592.0" />
+      <point x="872.8474157955866" y="592.0" />
+      <point x="39.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.Bullet" target="cn.milai.ib.client.game.obj.property.CanCrash">
+      <point x="-10.0" y="-15.5" />
+      <point x="500.3474157955865" y="415.0" />
+      <point x="517.8474157955866" y="415.0" />
+      <point x="-12.75" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.BattleForm" target="cn.milai.ib.client.game.form.DoubleBufferForm">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.CanCrash">
+      <point x="-22.571428571428555" y="-15.5" />
+      <point x="879.4426538908247" y="395.0" />
+      <point x="568.8474157955866" y="395.0" />
+      <point x="38.25" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.BulletType" target="java.lang.Comparable">
+      <point x="0.0" y="-15.5" />
+      <point x="99.2476771196284" y="56.0" />
+      <point x="184.9143437862951" y="56.0" />
+      <point x="-39.333333333333314" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.EnemyPlane" target="cn.milai.ib.client.game.obj.plane.Plane">
+      <point x="29.5" y="-15.5" />
+      <point x="863.0140824622531" y="511.0" />
+      <point x="882.2640824622531" y="511.0" />
+      <point x="-19.75" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.helper.AccelerateHelper" target="cn.milai.ib.client.game.obj.helper.Helper">
+      <point x="0.0" y="-15.5" />
+      <point x="242.71806039488968" y="511.0" />
+      <point x="176.34741579558653" y="511.0" />
+      <point x="21.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.Missile" target="cn.milai.ib.client.game.obj.bullet.Bullet">
+      <point x="0.0" y="-15.5" />
+      <point x="518.2180603948897" y="511.0" />
+      <point x="510.3474157955865" y="511.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameEntity" target="cn.milai.ib.client.game.obj.GameObject">
+      <point x="-28.5" y="-15.5" />
+      <point x="30.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.CanCrashed" target="cn.milai.ib.client.game.obj.property.HasCamp">
+      <point x="-29.0" y="-15.5" />
+      <point x="840.8450929152149" y="304.0" />
+      <point x="903.5930603948897" y="304.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.NormalBullet" target="cn.milai.ib.client.game.obj.bullet.Bullet">
+      <point x="0.0" y="-15.5" />
+      <point x="643.2180603948897" y="511.0" />
+      <point x="537.0140824622531" y="511.0" />
+      <point x="26.66666666666663" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.PlayerPlane" target="cn.milai.ib.client.game.form.KeyboardListener">
+      <point x="28.5" y="-15.5" />
+      <point x="1007.1390824622531" y="511.0" />
+      <point x="1035.514082462253" y="511.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.Bomb" target="cn.milai.ib.client.game.obj.GameEntity">
+      <point x="0.0" y="-15.5" />
+      <point x="28.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.CanCrash" target="cn.milai.ib.client.game.obj.property.HasCamp">
+      <point x="25.5" y="-15.5" />
+      <point x="556.0974157955866" y="294.0" />
+      <point x="869.2597270615563" y="294.0" />
+      <point x="-34.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.helper.Helper" target="cn.milai.ib.client.game.obj.property.CanCrash">
+      <point x="21.5" y="-15.5" />
+      <point x="176.34741579558653" y="435.0" />
+      <point x="492.3474157955865" y="435.0" />
+      <point x="-38.25" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.bullet.shooter.MissileShooter" target="cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter">
+      <point x="0.0" y="-15.5" />
+      <point x="659.0295275590552" y="743.3208661417324" />
+      <point x="882.1545275590552" y="743.3208661417324" />
+      <point x="-46.875" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.PlayerPlane" target="cn.milai.ib.client.game.obj.plane.Plane">
+      <point x="-28.5" y="-15.5" />
+      <point x="950.1390824622531" y="511.0" />
+      <point x="921.7640824622531" y="511.0" />
+      <point x="19.75" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.form.Command" target="java.lang.Comparable">
+      <point x="0.0" y="-15.5" />
+      <point x="667.6226771196284" y="56.0" />
+      <point x="263.5810104529617" y="56.0" />
+      <point x="39.333333333333314" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.GameObject" target="cn.milai.ib.client.game.obj.property.HasLocation">
+      <point x="30.0" y="-15.5" />
+      <point x="346.47241579558647" y="137.0" />
+      <point x="495.28934378629503" y="137.0" />
+      <point x="-39.33333333333337" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.plane.Plane" target="cn.milai.ib.client.game.obj.property.HasDamage">
+      <point x="-11.28571428571422" y="-15.5" />
+      <point x="890.7283681765389" y="385.0" />
+      <point x="690.0974157955866" y="385.0" />
+      <point x="29.5" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.Alive" target="cn.milai.ib.client.game.obj.property.HasScore">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.MovableGameEntity" target="cn.milai.ib.client.game.obj.property.Movable">
+      <point x="-41.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="cn.milai.ib.client.game.obj.property.HasCamp" target="cn.milai.ib.client.game.obj.property.Alive">
+      <point x="0.0" y="-15.5" />
+      <point x="19.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.47343895619757687" x="637.0" y="556.5" />
+  <SelectedNodes>
+    <node>cn.milai.ib.client.game.obj.bullet.shooter.NormalBulletShooter</node>
+    <node>cn.milai.ib.client.game.obj.bullet.shooter.DoubleEnemyBulletShooter</node>
+    <node>cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter</node>
+    <node>cn.milai.ib.client.game.obj.bullet.shooter.EnemyBulletShooter</node>
+    <node>cn.milai.ib.client.game.obj.bullet.shooter.MissileShooter</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

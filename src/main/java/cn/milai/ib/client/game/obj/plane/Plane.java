@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.MovableGameEntity;
 import cn.milai.ib.client.game.obj.bullet.Bullet;
 import cn.milai.ib.client.game.obj.bullet.BulletType;
@@ -30,7 +30,7 @@ public abstract class Plane extends MovableGameEntity
 	private Camp camp;
 
 	public Plane(int x, int y, int width, int height, int speedX, int speedY, int maxBulletNum, int life, Camp camp,
-			Image img, GameForm container) {
+			Image img, BattleForm container) {
 		super(x, y, width, height, speedX, speedY, life, img, container);
 		this.maxBulletNum = maxBulletNum;
 		this.camp = camp;

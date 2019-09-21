@@ -4,7 +4,7 @@ import cn.milai.ib.client.game.conf.ImageConf;
 import cn.milai.ib.client.game.conf.SystemConf;
 import cn.milai.ib.client.game.conf.gameprops.SizeConf;
 import cn.milai.ib.client.game.conf.gameprops.SpeedConf;
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.plane.Plane;
 import cn.milai.ib.client.game.obj.plane.PlayerPlane;
 
@@ -12,7 +12,7 @@ public class AccelerateHelper extends Helper {
 
 	private static final int INIT_LIFE = 1;
 
-	public AccelerateHelper(int x, int y, GameForm container) {
+	public AccelerateHelper(int x, int y, BattleForm container) {
 		super(x, y, SizeConf.ACCELERATE_HELPER_WIDTH, SizeConf.ACCELERATE_HELPER_HEIGHT,
 				SpeedConf.ACCELERATE_HELPER_SPEED_X, SpeedConf.ACCELERATE_HELPER_SPEED_Y, INIT_LIFE,
 				ImageConf.ACCELERATE_HELPER, container);

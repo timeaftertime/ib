@@ -2,7 +2,7 @@ package cn.milai.ib.client.game.obj.helper;
 
 import java.awt.Image;
 
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.MovableGameEntity;
 import cn.milai.ib.client.game.obj.plane.Plane;
 import cn.milai.ib.client.game.obj.property.CanCrash;
@@ -10,16 +10,15 @@ import cn.milai.ib.client.game.obj.property.CanCrashed;
 import cn.milai.ib.client.game.obj.property.HasDamage;
 
 /**
+ * 援助道具
  * 
  * @author milai
- * 
- *         援助道具
  *
  */
 public abstract class Helper extends MovableGameEntity implements CanCrash {
 
 	public Helper(int x, int y, int width, int height, int speedX, int speedY, int life, Image img,
-			GameForm container) {
+			BattleForm container) {
 		super(x, y, width, height, speedX, speedY, life, img, container);
 	}
 

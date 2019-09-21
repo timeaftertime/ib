@@ -28,32 +28,34 @@ import cn.milai.ib.constant.HTTPServerURL;
 import cn.milai.ib.constant.ParamName;
 import cn.milai.ib.constant.ResponseCode;
 
-public class LoginForm extends GameForm {
+public class ReigisterForm extends GameForm {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private static final int USERNAME_MAX_LEN = 12;
 	private static final int PASSWORD_MAX_LEN = 12;
 	private JTextField jtfUsername;
 	private JPasswordField jtfPassword;
 	private JButton submit;
-	private GameForm registerForm = new ReigisterForm(this);
+	private GameForm loginForm;
 
-	public LoginForm() {
+	public ReigisterForm(GameForm loginForm) {
 		init();
+		this.loginForm = loginForm;
 	}
 
 	private void init() {
-		setTitle("登录");
-		setSize(FormSizeConf.LOGIN_WIDTH, FormSizeConf.LOGIN_HEIGHT);
+		setTitle("注册");
+		setSize(FormSizeConf.REGISTER_WIDTH, FormSizeConf.REGISTER_HEIGHT);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		GridBagLayout layout = new GridBagLayout();
 
-		JLabel title = new JLabel("登录");
+		JLabel title = new JLabel("注册");
 		title.setFont(new Font("微软雅黑", Font.BOLD, 30));
 		JPanel usernamePane = new JPanel(new BorderLayout());
 		{
@@ -78,20 +80,19 @@ public class LoginForm extends GameForm {
 		}
 		JPanel buttonPane = new JPanel(new GridLayout(2, 1));
 		{
-			submit = new JButton("登  录");
+			submit = new JButton("注  册");
 			submit.addActionListener(this::login);
 			Font font = new Font("楷体", Font.BOLD, 15);
 			submit.setFont(font);
 			buttonPane.add(submit, BorderLayout.CENTER);
-			JLabel toRegister = new JLabel("<html><font color='black'><a href>注册</a></font></html>");
-			toRegister.addMouseListener(new MouseAdapter() {
+			JLabel toLogin = new JLabel("<html><font color='black'><a href>登录</a></font></html>");
+			toLogin.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					setVisible(false);
-					registerForm.setVisible(true);
+					toLogin();
 				}
 			});
-			buttonPane.add(toRegister, BorderLayout.SOUTH);
+			buttonPane.add(toLogin, BorderLayout.SOUTH);
 		}
 
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -111,8 +112,6 @@ public class LoginForm extends GameForm {
 		add(passwordPane);
 		add(buttonPane);
 		setLayout(layout);
-
-		setVisible(true);
 	}
 
 	private void login(ActionEvent e) {
@@ -120,12 +119,12 @@ public class LoginForm extends GameForm {
 			JOptionPane.showMessageDialog(this, "请检查用户名密码格式是否合法");
 			return;
 		}
-		submit.setText("登录中...");
+		submit.setText("注册中...");
 		submit.setEnabled(false);
 		SwingUtilities.invokeLater(() -> {
 			JSONObject result = null;
 			try {
-				result = RequestUtil.post(HTTPServerURL.LOGIN, new Entry("username", jtfUsername.getText()),
+				result = RequestUtil.post(HTTPServerURL.REGISTER, new Entry("username", jtfUsername.getText()),
 						new Entry("password", new String(jtfPassword.getPassword())));
 				if (!result.containsKey(ParamName.CODE)) {
 					JOptionPane.showMessageDialog(this, "服务器异常");
@@ -133,15 +132,11 @@ public class LoginForm extends GameForm {
 				}
 				switch (ResponseCode.parse(result.getIntValue(ParamName.CODE))) {
 				case SUCCESS:
-					String token = result.getString(ParamName.TOKEN);
-					this.dispose();
-					SwingUtilities.invokeLater(() -> {
-						new OnlineForm(token);
-					});
+					JOptionPane.showMessageDialog(this, "注册成功，请登录！");
+					toLogin();
 					break;
-				case USERNAME_NOT_EXISTS:
-				case PASSWORD_ERROR:
-					JOptionPane.showMessageDialog(this, "用户名或密码错误");
+				case USERNAME_ALREADY_EXISTS:
+					JOptionPane.showMessageDialog(this, "用户名已存在");
 					break;
 				default:
 					break;
@@ -151,7 +146,7 @@ public class LoginForm extends GameForm {
 				JOptionPane.showMessageDialog(this, "连接服务器失败，请检查网络");
 				return;
 			} finally {
-				submit.setText("登  录");
+				submit.setText("注  册");
 				submit.setEnabled(true);
 			}
 		});
@@ -165,5 +160,10 @@ public class LoginForm extends GameForm {
 		if (!StringUtil.lengthBetween(password, 0, PASSWORD_MAX_LEN))
 			return false;
 		return true;
+	}
+
+	private void toLogin() {
+		setVisible(false);
+		loginForm.setVisible(true);
 	}
 }

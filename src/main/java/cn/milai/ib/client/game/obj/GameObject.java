@@ -83,7 +83,7 @@ public abstract class GameObject implements Paintable, HasLocation {
 		return this.img;
 	}
 
-	public final GameForm getContainer() {
+	public GameForm getContainer() {
 		return container;
 	}
 

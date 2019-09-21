@@ -1,4 +1,4 @@
-package cn.milai.ib.client.game.form;
+package cn.milai.ib.client.game.form.listener;
 
 import cn.milai.ib.client.game.obj.GameEntity;
 

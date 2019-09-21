@@ -2,7 +2,7 @@ package cn.milai.ib.client.game.obj;
 
 import java.awt.Image;
 
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.property.Movable;
 
 public abstract class MovableGameEntity extends GameEntity implements Movable {
@@ -11,7 +11,7 @@ public abstract class MovableGameEntity extends GameEntity implements Movable {
 	private int speedY;
 
 	public MovableGameEntity(int x, int y, int width, int height, int speedX, int speedY, int life, Image img,
-			GameForm container) {
+			BattleForm container) {
 		super(x, y, width, height, life, img, container);
 		this.speedX = speedX;
 		this.speedY = speedY;

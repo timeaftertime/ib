@@ -7,19 +7,18 @@ import java.util.Stack;
 import cn.milai.ib.client.game.conf.AudioConf;
 import cn.milai.ib.client.game.conf.BattleConf;
 import cn.milai.ib.client.game.conf.ImageConf;
+import cn.milai.ib.client.game.conf.IntervalConf;
 import cn.milai.ib.client.game.conf.gameprops.LifeConf;
 import cn.milai.ib.client.game.conf.gameprops.SizeConf;
 import cn.milai.ib.client.game.conf.gameprops.SpeedConf;
-import cn.milai.ib.client.game.form.Command;
-import cn.milai.ib.client.game.form.GameForm;
-import cn.milai.ib.client.game.form.KeyboardListener;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.Bomb;
 import cn.milai.ib.client.game.obj.bullet.shooter.BulletShooter;
 import cn.milai.ib.client.game.obj.bullet.shooter.NormalBulletShooter;
 import cn.milai.ib.client.game.obj.property.Alive;
 import cn.milai.ib.client.game.obj.property.HasDamage;
 
-public class PlayerPlane extends Plane implements KeyboardListener {
+public class PlayerPlane extends Plane {
 
 	private String containerTitle;
 
@@ -27,12 +26,15 @@ public class PlayerPlane extends Plane implements KeyboardListener {
 	private boolean down = false;
 	private boolean left = false;
 	private boolean right = false;
+	private boolean isShooting = false;
 
 	// 额定速度
 	private int ratedSpeedX;
 	private int ratedSpeedY;
+	private long shootInterval = IntervalConf.NORMAL_BULLET_INTERVAL;
 
 	private int gameScore = 0;
+	private long lastShootFrame = -shootInterval;
 
 	private static final PropsStatus INIT_STATUS = new PropsStatus(SizeConf.PLAYER_WIDTH, SizeConf.PLAYER_HEIGHT,
 			SpeedConf.PLAYER_SPEED_X, SpeedConf.PLAYER_SPEED_Y, BattleConf.PLAYER_INIT_MAX_BULLENT,
@@ -40,7 +42,7 @@ public class PlayerPlane extends Plane implements KeyboardListener {
 
 	private Stack<PropsStatus> statusStack = new Stack<>();
 
-	public PlayerPlane(int x, int y, GameForm container) {
+	public PlayerPlane(int x, int y, BattleForm container) {
 		super(x, y, SizeConf.PLAYER_WIDTH, SizeConf.PLAYER_HEIGHT, 0, 0, BattleConf.PLAYER_INIT_MAX_BULLENT,
 				LifeConf.PLAYER_INIT_LIFE, Camp.PLAYER, ImageConf.PLAYER, container);
 		setBullet(new NormalBulletShooter(this));
@@ -57,63 +59,71 @@ public class PlayerPlane extends Plane implements KeyboardListener {
 		refreshContainerTitle();
 		setSpeedX(0);
 		setSpeedY(0);
-		if (up)
+		if (up) {
 			setSpeedY(getSpeedY() - ratedSpeedY);
-		if (down)
+		}
+		if (down) {
 			setSpeedY(getSpeedY() + ratedSpeedY);
-		if (left)
+		}
+		if (left) {
 			setSpeedX(getSpeedX() - ratedSpeedX);
-		if (right)
+		}
+		if (right) {
 			setSpeedX(getSpeedX() + ratedSpeedX);
+		}
+		if(isShooting) {
+			BattleForm container = (BattleForm) getContainer();
+			if(container.getCurrentFrameCnt() >= lastShootFrame + shootInterval) {
+				lastShootFrame = container.getCurrentFrameCnt();
+				AudioConf.SHOOT.play();
+				shoot();
+			}
+		}
 	}
 
 	@Override
 	protected void afterMove() {
 		ensureInContainer();
 	}
-
-	@Override
-	public void keyDown(Command e) {
-		switch (e) {
-		case UP:
-			up = true;
-			break;
-		case DOWN:
-			down = true;
-			break;
-		case LEFT:
-			left = true;
-			break;
-		case RIGHT:
-			right = true;
-			break;
-		case SHOOT:
-			AudioConf.SHOOT.play();
-			;
-			super.shoot();
-		default:
-			break;
-		}
+	
+	public void setUp() {
+		up = true;
 	}
-
-	@Override
-	public void keyUp(Command e) {
-		switch (e) {
-		case UP:
-			up = false;
-			break;
-		case DOWN:
-			down = false;
-			break;
-		case LEFT:
-			left = false;
-			break;
-		case RIGHT:
-			right = false;
-			break;
-		default:
-			break;
-		}
+	
+	public void clearUp() {
+		up = false;
+	}
+	
+	public void setDown() {
+		down = true;
+	}
+	
+	public void clearDown() {
+		down = false;
+	}
+	
+	public void setLeft() {
+		left = true;
+	}
+	
+	public void clearLeft() {
+		left = false;
+	}
+	
+	public void setRight() {
+		right = true;
+	}
+	
+	public void clearRight() {
+		right = false;
+	}
+	
+	public void setShooting() {
+		isShooting = true;
+	}
+	
+	public void clearShooting() {
+		isShooting = false;
 	}
 
 	@Override

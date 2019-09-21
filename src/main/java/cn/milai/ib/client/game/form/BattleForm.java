@@ -13,6 +13,9 @@ import java.util.concurrent.PriorityBlockingQueue;
 import cn.milai.ib.client.game.conf.BattleConf;
 import cn.milai.ib.client.game.conf.FormSizeConf;
 import cn.milai.ib.client.game.conf.ImageConf;
+import cn.milai.ib.client.game.form.listener.GameEventListener;
+import cn.milai.ib.client.game.form.listener.KeyboardListener;
+import cn.milai.ib.client.game.form.listener.RefreshListener;
 import cn.milai.ib.client.game.obj.GameEntity;
 import cn.milai.ib.client.game.obj.GameObject;
 import cn.milai.ib.client.game.obj.property.Alive;
@@ -21,19 +24,36 @@ import cn.milai.ib.client.game.obj.property.CanCrashed;
 import cn.milai.ib.client.game.obj.property.Movable;
 import cn.milai.ib.client.game.obj.property.Paintable;
 
+/**
+ * 战斗场景窗体类
+ * 
+ * @author milai
+ *
+ */
 public class BattleForm extends DoubleBufferForm {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 每帧的实际时间间隔
+	 */
+	private static final long MILLISEC_PER_FRAME = 50L;
 
+	/**
+	 * 从当前窗体启动到现在刷新的帧数
+	 */
+	private volatile long frameCnt = 0;
+	
 	private Image bgImage;
 	private List<GameObject> gameObjs;
-	private PriorityBlockingQueue<Paintable> paintables;
+	private List<Paintable> paintables;
 	private List<Movable> movables;
 	private List<Alive> alives;
 	private List<CanCrash> canCrashs;
 	private List<CanCrashed> canCrasheds;
 	private List<KeyboardListener> keyboardListeners;
 	private List<GameEventListener> gameEventListeners;
+	private List<RefreshListener> refreshListener;
 
 	private Thread refreshThread;
 
@@ -62,13 +82,14 @@ public class BattleForm extends DoubleBufferForm {
 
 		bgImage = ImageConf.BATTLE_BG;
 		gameObjs = new ArrayList<>();
-		paintables = new PriorityBlockingQueue<Paintable>();
+		paintables = new ArrayList<Paintable>();
 		movables = new ArrayList<Movable>();
 		alives = new ArrayList<Alive>();
 		canCrashs = new ArrayList<CanCrash>();
 		canCrasheds = new ArrayList<CanCrashed>();
 		keyboardListeners = new ArrayList<KeyboardListener>();
 		gameEventListeners = new ArrayList<GameEventListener>();
+		refreshListener = new ArrayList<RefreshListener>();
 		gameOver = false;
 		closed = false;
 		
@@ -129,11 +150,23 @@ public class BattleForm extends DoubleBufferForm {
 				repaint();
 				checkCrashed();
 				checkAlive();
+				afterRefresh();
 				try {
-					Thread.sleep(50);
+					Thread.sleep(MILLISEC_PER_FRAME);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+
+		private void afterRefresh() {
+			frameCnt++;
+			notifyRefresh();
+		}
+
+		private void notifyRefresh() {
+			for (RefreshListener listener : new ArrayList<>(refreshListener)) {
+				listener.afterRefresh(BattleForm.this);
 			}
 		}
 	}
@@ -153,7 +186,7 @@ public class BattleForm extends DoubleBufferForm {
 	}
 
 	/**
-	 * 检查有生命属性的游戏对象，调用死亡对象的 Ondead 方法并移除对象
+	 * 检查有生命属性的游戏对象，调用死亡对象的 OnDead 方法并移除对象
 	 */
 	private void checkAlive() {
 		for (Alive alive : new ArrayList<>(alives)) {
@@ -181,8 +214,11 @@ public class BattleForm extends DoubleBufferForm {
 	}
 
 	/**
-	 * 将 obj 加入游戏对象列表中，并根据是否实现了以下接口
-	 * <li>{@link Paintable } {@link Movable } {@link Alive }</li> 同时添加到对应队列
+	 * 将 obj 加入游戏对象列表中，并根据是否实现了以下接口 
+	 * <li> {@link Paintable } </li>
+	 * <li> {@link Movable } </li>
+	 * <li> {@link Alive } </li>
+	 *  同时添加到对应队列
 	 * 
 	 * @param obj
 	 */
@@ -202,7 +238,7 @@ public class BattleForm extends DoubleBufferForm {
 	}
 
 	/**
-	 * 从 GameObject、Paintable、Movable 列表移除对象
+	 * 从当前窗体中移除对象
 	 * 
 	 * @param gameObj
 	 */
@@ -258,5 +294,17 @@ public class BattleForm extends DoubleBufferForm {
 		setVisible(false);
 		dispose();
 		closed = true;
+	}
+	
+	public void addRefreshListener(RefreshListener listener) {
+		refreshListener.add(listener);
+	}
+	
+	public void removeRefreshListener(RefreshListener listener) {
+		refreshListener.remove(listener);
+	}
+	
+	public long getCurrentFrameCnt() {
+		return frameCnt;
 	}
 }

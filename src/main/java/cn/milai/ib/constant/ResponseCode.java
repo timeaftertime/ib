@@ -14,7 +14,9 @@ public enum ResponseCode {
 
 	PASSWORD_ERROR(3),
 	
-	USER_NOT_ONLINE(4);
+	USER_NOT_ONLINE(4),
+	
+	USERNAME_ALREADY_EXISTS(5);
 
 	private int code;
 

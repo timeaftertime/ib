@@ -37,7 +37,7 @@ public class OnlineForm extends GameForm {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
-		int lableNum = 15;
+		int lableNum = 0;
 		JLabel[] labels = new JLabel[lableNum];
 		for (int i = 0; i < lableNum; i++) {
 			labels[i] = new JLabel("用户" + i);

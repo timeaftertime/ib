@@ -1,7 +1,7 @@
 package cn.milai.ib.client.game.obj.property;
 
 /**
- * 可以在与其他对象发生碰撞时发生反应
+ * 一个表明本对象可以撞击 @see CanCrashed 对象的接口
  */
 public interface CanCrash extends HasCamp, HasLocation {
 

@@ -1,12 +1,13 @@
 package cn.milai.ib.client.game.obj.plane;
 
 import cn.milai.ib.client.game.conf.ImageConf;
+import cn.milai.ib.client.game.conf.IntervalConf;
 import cn.milai.ib.client.game.conf.StoryModeConf;
 import cn.milai.ib.client.game.conf.gameprops.LifeConf;
 import cn.milai.ib.client.game.conf.gameprops.ScoreConf;
 import cn.milai.ib.client.game.conf.gameprops.SizeConf;
 import cn.milai.ib.client.game.conf.gameprops.SpeedConf;
-import cn.milai.ib.client.game.form.GameForm;
+import cn.milai.ib.client.game.form.BattleForm;
 import cn.milai.ib.client.game.obj.Bomb;
 import cn.milai.ib.client.game.obj.bullet.BulletType;
 import cn.milai.ib.client.game.obj.bullet.shooter.DoubleEnemyBulletShooter;
@@ -17,12 +18,12 @@ import cn.milai.ib.client.util.RandomUtil;
 
 public class MissileBoss extends EnemyPlane {
 
-	private static final long PAREPAE_INTERVAL_MILLISECOND = 5000;
-	private long preShootTime;
+	private static final long PAREPAE_FRAMES = 100;
+	private long lastShootFrame;
 
 	private Status status;
 
-	public MissileBoss(int x, int y, Plane attackTarget, GameForm container) {
+	public MissileBoss(int x, int y, Plane attackTarget, BattleForm container) {
 		super(x, y, SizeConf.MISSILE_BOSS_WIDTH, SizeConf.MISSILE_BOSS_HEIGHT, 0, 0, Integer.MAX_VALUE,
 				LifeConf.MISSILE_BOSS_LIFE, attackTarget, ImageConf.MISSILE_BOSS, container);
 		setBullet(new DoubleEnemyBulletShooter(this));
@@ -38,10 +39,10 @@ public class MissileBoss extends EnemyPlane {
 	@Override
 	protected void beforeMove() {
 		status.beforeMove();
-		if (System.currentTimeMillis() - Math.max(
-				StoryModeConf.MISSILE_BOSS_SHOOT_INTERVAL_MILLISEC * (1.0 * getLife() / LifeConf.MISSILE_BOSS_LIFE),
-				StoryModeConf.MISSILE_BOSS_SHOOT_INTERVAL_MILLISEC_LIMIT) >= preShootTime) {
-			preShootTime = System.currentTimeMillis();
+		if (getContainer().getCurrentFrameCnt() >= lastShootFrame
+				+ Math.max(IntervalConf.INIT_MISSILE_BOSS_SHOOT_FRAMES * (1.0 * getLife() / LifeConf.MISSILE_BOSS_LIFE),
+						IntervalConf.MIN_MISSILE_BOSS_SHOOT_FRAMES)) {
+			lastShootFrame = getContainer().getCurrentFrameCnt();
 			shoot();
 		}
 	}
@@ -91,12 +92,12 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pareparing implements Status {
 
-		private long createTime;
+		private long createFrame;
 
 		public Pareparing() {
 			setSpeedX((RandomUtil.goalAtPossible(1, 2) ? 1 : (-1)) * SpeedConf.MISSILE_BOSS_SPEED_X);
 			setSpeedY(SpeedConf.MISSILE_BOSS_SPEED_Y);
-			createTime = System.currentTimeMillis();
+			createFrame = getContainer().getCurrentFrameCnt();
 		}
 
 		@Override
@@ -115,7 +116,7 @@ public class MissileBoss extends EnemyPlane {
 		@Override
 		public void afterMove() {
 			ensureIn(0, getContainer().getWidth(), StoryModeConf.MIN_MISSILE_BOSS_Y, StoryModeConf.MAX_MISSILE_BOSS_Y);
-			if (System.currentTimeMillis() - PAREPAE_INTERVAL_MILLISECOND >= createTime) {
+			if (getContainer().getCurrentFrameCnt() >= createFrame + PAREPAE_FRAMES) {
 				status = new Pursuing();
 			}
 		}

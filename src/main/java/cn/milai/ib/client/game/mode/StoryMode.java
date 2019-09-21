@@ -8,10 +8,12 @@ import cn.milai.ib.client.game.AudioPlayer.AudioController;
 import cn.milai.ib.client.game.conf.AudioConf;
 import cn.milai.ib.client.game.conf.BattleConf;
 import cn.milai.ib.client.game.conf.ImageConf;
+import cn.milai.ib.client.game.conf.IntervalConf;
 import cn.milai.ib.client.game.conf.StoryModeConf;
 import cn.milai.ib.client.game.conf.gameprops.SizeConf;
 import cn.milai.ib.client.game.form.BattleForm;
-import cn.milai.ib.client.game.form.GameEventListener;
+import cn.milai.ib.client.game.form.listener.GameEventListener;
+import cn.milai.ib.client.game.form.listener.PlayerController;
 import cn.milai.ib.client.game.obj.GameEntity;
 import cn.milai.ib.client.game.obj.ImageButton;
 import cn.milai.ib.client.game.obj.helper.AccelerateHelper;
@@ -21,6 +23,7 @@ import cn.milai.ib.client.game.obj.plane.NormalEnemyPlayer;
 import cn.milai.ib.client.game.obj.plane.PlayerPlane;
 import cn.milai.ib.client.game.obj.plane.WelcomePlane;
 import cn.milai.ib.client.util.RandomUtil;
+import cn.milai.ib.client.util.TimeUtil;
 
 public class StoryMode extends GameMode implements GameEventListener {
 
@@ -34,8 +37,8 @@ public class StoryMode extends GameMode implements GameEventListener {
 		form = new BattleForm();
 		player = new PlayerPlane(StoryModeConf.INIT_PLAYER_POS_X, StoryModeConf.INIT_PLAYER_POS_Y, form);
 		form.addGameObject(player);
-		form.addKeyboardListener(player);
 		form.addGameEventListener(this);
+		form.addKeyboardListener(new PlayerController(player));
 		audioPlayer = AudioConf.ENDLESS_BG;
 	}
 
@@ -43,18 +46,20 @@ public class StoryMode extends GameMode implements GameEventListener {
 		audioController = audioPlayer.play();
 		form.start();
 		processThread = new Thread(new GameControl());
+		processThread.setDaemon(true);
 		processThread.start();
 	}
 
 	private void addLadderWelcomePlayer(int row, int disOfX) throws InterruptedException {
-		if (row < 1)
+		if (row < 1) {
 			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
+		}
 		form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
-		Thread.sleep(StoryModeConf.ADD_LADDER_WELCOME_PLANE_INTERVAL);
+		TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
 		for (int i = 2; i <= row; i++) {
 			form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
 			form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
-			Thread.sleep(StoryModeConf.ADD_LADDER_WELCOME_PLANE_INTERVAL);
+			TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
 		}
 	}
 
@@ -66,17 +71,17 @@ public class StoryMode extends GameMode implements GameEventListener {
 				addLadderWelcomePlayer(5, 35);
 
 				// Stage 1
-				Thread.sleep(3000);
+				TimeUtil.wait(form, 60);
 				form.addGameObject(new AccelerateHelper(form.getWidth() / 2, 0, form));
-				Thread.sleep(500);
+				TimeUtil.wait(form, 8);
 				form.addGameObject(new OneLifeHelper(form.getWidth() / 6, 0, form));
 				form.addGameObject(new OneLifeHelper(form.getWidth() / 6 * 5, 0, form));
-				Thread.sleep(7000);
+				TimeUtil.wait(form, 116);
 				MissileBoss boss1 = new MissileBoss(300, -90, player, form);
 				form.addGameObject(boss1);
 				int preSocre = 20;
 				while (boss1.isAlive()) {
-					Thread.sleep(4000);
+					TimeUtil.wait(form, 66);
 					if (player.getGameScore() > preSocre) {
 						preSocre += 30;
 						form.addGameObject(new AccelerateHelper(
@@ -89,7 +94,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 					while (form.getGameObjectCnt(NormalEnemyPlayer.class) < 2) {
 						form.addGameObject(new NormalEnemyPlayer(RandomUtil.nextInt(form.getWidth()), 0, player, form));
 					}
-					Thread.sleep(4000);
+					TimeUtil.wait(form, 66);
 					form.addGameObject(new OneLifeHelper(
 							RandomUtil.nextInt(form.getWidth() - SizeConf.ONE_LIFE_HELPER_WIDTH), 0, form));
 				}
