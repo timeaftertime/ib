@@ -31,7 +31,7 @@ public class PlayerPlane extends Plane {
 	// 额定速度
 	private int ratedSpeedX;
 	private int ratedSpeedY;
-	private long shootInterval = IntervalConf.NORMAL_BULLET_INTERVAL;
+	private long shootInterval = IntervalConf.NORMAL_BULLET_FRAMES;
 
 	private int gameScore = 0;
 	private long lastShootFrame = -shootInterval;

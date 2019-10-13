@@ -36,7 +36,7 @@ public class AudioPlayer {
 				try {
 					Player player = new Player(new ByteArrayInputStream(bytes));
 					while (!controller.closed && !player.isComplete())
-						player.play(1);
+						player.play(16);
 				} catch (JavaLayerException e) {
 					e.printStackTrace();
 				}

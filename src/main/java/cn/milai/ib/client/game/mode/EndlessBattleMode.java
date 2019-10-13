@@ -33,7 +33,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	private static Random rand = new Random();
 	private AudioPlayer audioPlayer;
 	private AudioController audioController;
-	private long addNormalEnemyInterval = IntervalConf.INIT_ADD_NORMAL_ENEMEY_WAIT_FRAMES;
+	private long addNormalEnemyInterval = IntervalConf.INIT_ADD_NORMAL_ENEMEY_FRAMES;
 	private boolean closed = false;
 
 	public EndlessBattleMode() {
@@ -49,49 +49,16 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	public void run() {
 		audioController = audioPlayer.play();
 		form.start();
-		try {
-			addWelComePlayer();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		Thread gameController = new Thread(new GameControl());
+		Thread gameController = new Thread(new GameControl(), "EndlessBattleModeGameControl");
 		gameController.setDaemon(true);
 		gameController.start();
-	}
-
-	private void addWelComePlayer() throws InterruptedException {
-		addVerticalWelcomePlayer(5, 100);
-		addVerticalWelcomePlayer(5, 200);
-		addLadderWelcomePlayer(5, 35);
-		Thread.sleep(2000);
-	}
-
-	private void addVerticalWelcomePlayer(int row, int disFromCenter) {
-		if (row < 1)
-			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-		for (int i = 0; i < row; i++) {
-			form.addGameObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
-			form.addGameObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
-			TimeUtil.wait(form, IntervalConf.ADD_VERTICAL_WELCOME_PLANE_FRAMES);
-		}
-	}
-
-	private void addLadderWelcomePlayer(int row, int disOfX) {
-		if (row < 1)
-			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-		form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
-		TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
-		for (int i = 2; i <= row; i++) {
-			form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
-			form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
-			TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
-		}
 	}
 
 	private class GameControl implements Runnable {
 
 		@Override
 		public void run() {
+			addWelComePlayer();
 			// 消灭所有欢迎机则奖励分数
 			if (player.getGameScore() >= 29) {
 				player.gainScore(30);
@@ -101,6 +68,35 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 					randomAddEnemy();
 					checkLevelUp();
 				}
+			}
+		}
+
+		private void addWelComePlayer() {
+			addVerticalWelcomePlayer(5, 100);
+			addVerticalWelcomePlayer(5, 200);
+			addLadderWelcomePlayer(5, 35);
+			TimeUtil.wait(form, 42);
+		}
+
+		private void addVerticalWelcomePlayer(int row, int disFromCenter) {
+			if (row < 1)
+				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
+			for (int i = 0; i < row; i++) {
+				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
+				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
+				TimeUtil.wait(form, IntervalConf.ADD_VERTICAL_WELCOME_PLANE_FRAMES);
+			}
+		}
+
+		private void addLadderWelcomePlayer(int row, int disOfX) {
+			if (row < 1)
+				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
+			form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
+			TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
+			for (int i = 2; i <= row; i++) {
+				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
+				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
+				TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
 
@@ -121,8 +117,8 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 			player.setMaxBulletNum(playerBulletNum);
 
 			addNormalEnemyInterval = addNormalEnemyInterval * 2 / 3;
-			if (addNormalEnemyInterval < IntervalConf.MIN_ADD_ENEMEY_WAIT_FRAMES)
-				addNormalEnemyInterval = IntervalConf.MIN_ADD_ENEMEY_WAIT_FRAMES;
+			if (addNormalEnemyInterval < IntervalConf.MIN_ADD_ENEMEY_FRAMES)
+				addNormalEnemyInterval = IntervalConf.MIN_ADD_ENEMEY_FRAMES;
 
 			lastLevelUpTime = form.getCurrentFrameCnt();
 		}

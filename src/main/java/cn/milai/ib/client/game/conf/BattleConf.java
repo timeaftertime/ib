@@ -37,10 +37,10 @@ public final class BattleConf {
 	public static final long BOMB_LAST_MILLISEC = 500;
 
 	// 位置
-	public static final int GAME_OVER_LABEL_POS_X = SystemConf.sizeProrate(40);
-	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.sizeProrate(300);
-	public static final int RESTART_BUTTON_POS_X = SystemConf.sizeProrate(300);
-	public static final int RESTART_BUTTON_POS_Y = SystemConf.sizeProrate(480);
+	public static final int GAME_OVER_LABEL_POS_X = SystemConf.sizeProrate(48);
+	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.sizeProrate(360);
+	public static final int RESTART_BUTTON_POS_X = SystemConf.sizeProrate(360);
+	public static final int RESTART_BUTTON_POS_Y = SystemConf.sizeProrate(576);
 
 	public static final Map<Integer, Command> keySettings = new HashMap<>();
 

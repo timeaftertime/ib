@@ -78,7 +78,7 @@ public class NormalEnemyPlayer extends EnemyPlane {
 
 	private void randomShoot() {
 		if (RandomUtil.goalAtPossible(BattleConf.ENEMY_SHOOT_CHANCE, BattleConf.MAX_ENEMEY_SHOOT_CHANCE)) {
-			if (getContainer().getCurrentFrameCnt() >= lastShootFrame + IntervalConf.ENEMY_BULLET_INTERVAL) {
+			if (getContainer().getCurrentFrameCnt() >= lastShootFrame + IntervalConf.ENEMY_BULLET_FRAMES) {
 				lastShootFrame = getContainer().getCurrentFrameCnt();
 				shoot();
 			}
