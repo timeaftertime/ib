@@ -25,7 +25,7 @@ import cn.milai.ib.client.constant.ParamName;
 import cn.milai.ib.client.constant.ResponseCode;
 import cn.milai.ib.client.util.RequestUtil;
 import cn.milai.ib.client.util.RequestUtil.Entry;
-import cn.milai.ib.conf.FormSizeConf;
+import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.util.StringUtil;
 
 public class LoginForm extends GameForm {
@@ -34,8 +34,13 @@ public class LoginForm extends GameForm {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static final int WIDTH = SystemConf.prorate(600);
+	private static final int HEIGHT = SystemConf.prorate(420);
+
 	private static final int USERNAME_MAX_LEN = 12;
 	private static final int PASSWORD_MAX_LEN = 12;
+
 	private JTextField jtfUsername;
 	private JPasswordField jtfPassword;
 	private JButton submit;
@@ -47,7 +52,7 @@ public class LoginForm extends GameForm {
 
 	private void init() {
 		setTitle("登录");
-		setSize(FormSizeConf.LOGIN_WIDTH, FormSizeConf.LOGIN_HEIGHT);
+		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

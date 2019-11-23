@@ -2,16 +2,12 @@ package cn.milai.ib.mode;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import cn.milai.ib.AudioConf;
 import cn.milai.ib.AudioPlayer;
 import cn.milai.ib.AudioPlayer.AudioController;
 import cn.milai.ib.GameObject;
-import cn.milai.ib.conf.BattleConf;
-import cn.milai.ib.conf.EndlessBattleModeConf;
 import cn.milai.ib.conf.ImageConf;
-import cn.milai.ib.conf.IntervalConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.form.BattleForm;
@@ -27,13 +23,12 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 
 	private BattleForm form;
 	private PlayerPlane player;
-	private int maxEnemyNum = EndlessBattleModeConf.INIT_MAX_ENEMY_NUM;
-	private int preGameScore = EndlessBattleModeConf.INIT_LEVEL_UP_GAME_SCORE;
+	private int maxEnemyNum = INIT_MAX_ENEMY_NUM;
+	private int preGameScore = INIT_LEVEL_UP_GAME_SCORE;
 	private long lastLevelUpTime;
-	private static Random rand = new Random();
 	private AudioPlayer audioPlayer;
 	private AudioController audioController;
-	private long addNormalEnemyInterval = IntervalConf.INIT_ADD_NORMAL_ENEMEY_FRAMES;
+	private long addNormalEnemyInterval = INIT_ADD_NORMAL_ENEMEY_FRAMES;
 	private boolean closed = false;
 
 	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(48);
@@ -45,10 +40,36 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	public static final int RESTART_BUTTON_WIDTH = SystemConf.prorate(144);
 	public static final int RESTART_BUTTON_HEIGHT = SystemConf.prorate(36);
 
+	private static final int INIT_LEVEL_UP_GAME_SCORE = 30;
+	private static final int MAX_PLAYER_BULLET_NUM = 8;
+	private static final int INIT_MAX_ENEMY_NUM = 5;
+	private static final int LEVEL_UP_SCORE_INTERVAL = 10;
+
+	/**
+	 * 最短添加新敌机的时间间隔
+	 */
+	private static final long MIN_ADD_ENEMEY_FRAMES = 1;
+
+	/**
+	 * 初始添加新敌机的时间间隔
+	 */
+	private static final int INIT_ADD_NORMAL_ENEMEY_FRAMES = 20;
+
+	private static final long LEVEL_UP_FRAMES = 200;
+
+	private static final long ADD_LADDER_WELCOME_PLANE_FRAMES = 24;
+
+	private static final long ADD_VERTICAL_WELCOME_PLANE_FRAMES = 18;
+
+	/******************
+	 * ADD_ENEMY_CHANCE / MAX_ADD_ENEMY_CHANCE 即新增敌机的概率
+	 ******************/
+	private static final int ADD_ENEMY_CHANCE = 20;
+	private static final int MAX_ADD_ENEMY_CHANCE = 100;
+
 	public EndlessBattleMode() {
 		form = new BattleForm();
-		player = new PlayerPlane(EndlessBattleModeConf.INIT_PLAYER_POS_X, EndlessBattleModeConf.INIT_PLAYER_POS_Y,
-				form);
+		player = new PlayerPlane(form.getWidth() / 2, form.getHeight() / 3 * 2, form);
 		form.addGameObject(player);
 		form.addGameEventListener(this);
 		form.addKeyboardListener(new PlayerController(player));
@@ -93,7 +114,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 			for (int i = 0; i < row; i++) {
 				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
 				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
-				TimeUtil.wait(form, IntervalConf.ADD_VERTICAL_WELCOME_PLANE_FRAMES);
+				TimeUtil.wait(form, ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 			}
 		}
 
@@ -101,40 +122,40 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 			form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
-			TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
+			TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			for (int i = 2; i <= row; i++) {
 				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
 				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
-				TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
+				TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
 
 		private void checkLevelUp() {
-			if (player.getGameScore() >= preGameScore + EndlessBattleModeConf.LEVEL_UP_SCORE_INTERVAL)
+			if (player.getGameScore() >= preGameScore + LEVEL_UP_SCORE_INTERVAL)
 				levelUp();
-			if (form.currentFrame() - lastLevelUpTime > IntervalConf.LEVEL_UP_FRAMES)
+			if (form.currentFrame() - lastLevelUpTime > LEVEL_UP_FRAMES)
 				levelUp();
 		}
 
 		private void levelUp() {
 			maxEnemyNum++;
-			preGameScore += EndlessBattleModeConf.LEVEL_UP_SCORE_INTERVAL;
+			preGameScore += LEVEL_UP_SCORE_INTERVAL;
 
 			int playerBulletNum = player.getMaxBulletNum() + 1;
-			if (playerBulletNum > EndlessBattleModeConf.MAX_PLAYER_BULLET_NUM)
-				playerBulletNum = EndlessBattleModeConf.MAX_PLAYER_BULLET_NUM;
+			if (playerBulletNum > MAX_PLAYER_BULLET_NUM)
+				playerBulletNum = MAX_PLAYER_BULLET_NUM;
 			player.setMaxBulletNum(playerBulletNum);
 
 			addNormalEnemyInterval = addNormalEnemyInterval * 2 / 3;
-			if (addNormalEnemyInterval < IntervalConf.MIN_ADD_ENEMEY_FRAMES)
-				addNormalEnemyInterval = IntervalConf.MIN_ADD_ENEMEY_FRAMES;
+			if (addNormalEnemyInterval < MIN_ADD_ENEMEY_FRAMES)
+				addNormalEnemyInterval = MIN_ADD_ENEMEY_FRAMES;
 
 			lastLevelUpTime = form.currentFrame();
 		}
 
 		private void randomAddEnemy() {
-			if (RandomUtil.goalAtPossible(BattleConf.ADD_ENEMY_CHANCE, BattleConf.MAX_ADD_ENEMY_CHANCE)) {
-				form.addGameObject(new FollowPlane(rand.nextInt(form.getWidth()), 0, player, form));
+			if (RandomUtil.goalAtPossible(ADD_ENEMY_CHANCE, MAX_ADD_ENEMY_CHANCE)) {
+				form.addGameObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, player, form));
 				TimeUtil.wait(form, addNormalEnemyInterval);
 			}
 		}

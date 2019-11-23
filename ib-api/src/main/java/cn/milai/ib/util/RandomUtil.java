@@ -4,7 +4,20 @@ import java.util.Random;
 
 public final class RandomUtil {
 
-	private static final Random rand = new Random();
+	private static final ThreadLocal<Random> rands = new ThreadLocal<Random>();
+
+	public static Random getRandom() {
+		if (rands.get() != null) {
+			return rands.get();
+		}
+		synchronized (rands) {
+			Random random = rands.get();
+			if (random == null) {
+				random = new Random();
+			}
+			return random;
+		}
+	}
 
 	public static boolean goalAtPossible(int expected, int sum) {
 		if (expected < 0 || sum < 0) {
@@ -13,10 +26,10 @@ public final class RandomUtil {
 		if (expected > sum) {
 			throw new IllegalArgumentException("expected 必须小于等于 sum： expected=" + expected + " sum=" + sum);
 		}
-		return rand.nextInt(sum) < expected;
+		return getRandom().nextInt(sum) < expected;
 	}
 
 	public static final int nextInt(int limit) {
-		return rand.nextInt(limit);
+		return getRandom().nextInt(limit);
 	}
 }

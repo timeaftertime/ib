@@ -8,10 +8,7 @@ import cn.milai.ib.AudioPlayer;
 import cn.milai.ib.AudioPlayer.AudioController;
 import cn.milai.ib.GameObject;
 import cn.milai.ib.conf.ImageConf;
-import cn.milai.ib.conf.IntervalConf;
-import cn.milai.ib.conf.StoryModeConf;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.conf.gameprops.SizeConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.form.BattleForm;
 import cn.milai.ib.form.listener.PlayerController;
@@ -42,9 +39,11 @@ public class StoryMode extends GameMode implements GameEventListener {
 	public static final int RESTART_BUTTON_WIDTH = SystemConf.prorate(144);
 	public static final int RESTART_BUTTON_HEIGHT = SystemConf.prorate(36);
 
+	private static final long ADD_LADDER_WELCOME_PLANE_FRAMES = 24;
+
 	public StoryMode() {
 		form = new BattleForm();
-		player = new PlayerPlane(StoryModeConf.INIT_PLAYER_POS_X, StoryModeConf.INIT_PLAYER_POS_Y, form);
+		player = new PlayerPlane(form.getWidth() / 2, form.getHeight() / 3 * 2, form);
 		form.addGameObject(player);
 		form.addGameEventListener(this);
 		form.addKeyboardListener(new PlayerController(player));
@@ -64,11 +63,11 @@ public class StoryMode extends GameMode implements GameEventListener {
 			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 		}
 		form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
-		TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
+		TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 		for (int i = 2; i <= row; i++) {
 			form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
 			form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
-			TimeUtil.wait(form, IntervalConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
+			TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 		}
 	}
 
@@ -93,8 +92,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 					TimeUtil.wait(form, 66);
 					if (player.getGameScore() > preSocre) {
 						preSocre += 30;
-						form.addGameObject(new AccelerateHelper(
-								RandomUtil.nextInt(form.getWidth() - SizeConf.ACCELERATE_HELPER_WIDTH), 0, form));
+						form.addGameObject(new AccelerateHelper(RandomUtil.nextInt(form.getWidth() / 6 * 5), 0, form));
 					}
 					for (int i = 0; i < 10; i++) {
 						form.addGameObject(new WelcomePlane(form.getWidth() / 10 * i, 0, form));
@@ -104,8 +102,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 						form.addGameObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, player, form));
 					}
 					TimeUtil.wait(form, 66);
-					form.addGameObject(new OneLifeHelper(
-							RandomUtil.nextInt(form.getWidth() - SizeConf.ONE_LIFE_HELPER_WIDTH), 0, form));
+					form.addGameObject(new OneLifeHelper(RandomUtil.nextInt(form.getWidth() / 6 * 5), 0, form));
 				}
 
 			} catch (InterruptedException e) {

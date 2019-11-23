@@ -13,7 +13,7 @@ import cn.milai.ib.form.Command;
  *
  * @author milai
  */
-public class KeyMap {
+public class KeyConf {
 
 	private static final Map<Integer, Command> keySettings = new HashMap<>();
 

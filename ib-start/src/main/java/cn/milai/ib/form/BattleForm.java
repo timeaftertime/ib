@@ -12,7 +12,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import cn.milai.ib.GameObject;
 import cn.milai.ib.conf.ImageConf;
-import cn.milai.ib.conf.KeyMap;
+import cn.milai.ib.conf.KeyConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.GameEventListener;
@@ -118,7 +118,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				Command action = KeyMap.commandOf(e.getKeyCode());
+				Command action = KeyConf.commandOf(e.getKeyCode());
 				if (action == null) {
 					return;
 				}
@@ -129,7 +129,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				Command action = KeyMap.commandOf(e.getKeyCode());
+				Command action = KeyConf.commandOf(e.getKeyCode());
 				if (action == null) {
 					return;
 				}
