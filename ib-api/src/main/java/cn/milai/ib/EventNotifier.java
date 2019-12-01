@@ -2,6 +2,8 @@ package cn.milai.ib;
 
 import java.awt.event.MouseListener;
 
+import cn.milai.ib.obj.IBObject;
+
 /**
  * 事件传播者
  *
@@ -16,6 +18,6 @@ public interface EventNotifier {
 	 * @param gameObj
 	 * @param listener
 	 */
-	void notifyOnce(GameObject gameObj, MouseListener listener);
+	void notifyOnce(IBObject gameObj, MouseListener listener);
 
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import cn.milai.ib.GameObject;
 import cn.milai.ib.conf.ImageConf;
 import cn.milai.ib.conf.KeyConf;
 import cn.milai.ib.conf.SystemConf;
@@ -18,7 +17,8 @@ import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
 import cn.milai.ib.form.listener.KeyboardListener;
-import cn.milai.ib.obj.GameEntity;
+import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.obj.IBObject;
 import cn.milai.ib.property.Alive;
 import cn.milai.ib.property.CanCrash;
 import cn.milai.ib.property.CanCrashed;
@@ -51,7 +51,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 	private volatile long frame = 0;
 
 	private Image bgImage;
-	private List<GameObject> gameObjs;
+	private List<IBObject> gameObjs;
 	private List<Paintable> paintables;
 	private List<Movable> movables;
 	private List<Alive> alives;
@@ -146,7 +146,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 				if (crash.sameCamp(crashed)) {
 					continue;
 				}
-				if (((GameEntity) crash).isContactWith((GameEntity) crashed)) {
+				if (((IBCharacter) crash).isContactWith((IBCharacter) crashed)) {
 					crash.onCrash(crashed);
 				}
 			}
@@ -203,8 +203,8 @@ public class BattleForm extends DoubleBufferForm implements Container {
 		for (Alive alive : new ArrayList<>(alives)) {
 			if (!alive.isAlive()) {
 				alive.onDead();
-				GameEntity obj = (GameEntity) alive;
-				removeGameObject(obj);
+				IBCharacter obj = (IBCharacter) alive;
+				removeObject(obj);
 				for (GameEventListener listener : new ArrayList<>(gameEventListeners)) {
 					listener.onGameObjectDead(obj);
 				}
@@ -234,7 +234,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 	 * @param obj
 	 */
 	@Override
-	public void addGameObject(GameObject obj) {
+	public void addObject(IBObject obj) {
 		this.gameObjs.add(obj);
 		if (obj instanceof Paintable)
 			addPaintable((Paintable) obj);
@@ -255,7 +255,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
-	public void removeGameObject(GameObject gameObj) {
+	public void removeObject(IBObject gameObj) {
 		this.gameObjs.remove(gameObj);
 		this.paintables.remove(gameObj);
 		this.movables.remove(gameObj);
@@ -293,9 +293,9 @@ public class BattleForm extends DoubleBufferForm implements Container {
 	}
 
 	@Override
-	public int countOf(Class<? extends GameObject> type) {
+	public int countOf(Class<? extends IBObject> type) {
 		int cnt = 0;
-		for (GameObject o : new ArrayList<>(gameObjs)) {
+		for (IBObject o : new ArrayList<>(gameObjs)) {
 			if (type.isInstance(o))
 				cnt++;
 		}

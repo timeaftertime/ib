@@ -10,9 +10,17 @@ import cn.milai.ib.constant.BulletType;
 public interface Shootable {
 
 	/**
-	 * 发射指定类型的子弹
+	 * 发射指定类型的子弹，返回是否成功发射
 	 * @param type
 	 */
-	void shoot(BulletType type);
+	boolean shoot(BulletType type);
+
+	/**
+	 * 发射 MAIN 类型子弹，返回是否成功发射
+	 * @return
+	 */
+	default boolean shoot() {
+		return shoot(BulletType.MAIN);
+	}
 
 }

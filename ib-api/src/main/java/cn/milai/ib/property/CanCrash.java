@@ -3,7 +3,7 @@ package cn.milai.ib.property;
 /**
  * 一个表明本对象可以撞击 @see CanCrashed 对象的接口
  */
-public interface CanCrash extends HasCamp, HasLocation {
+public interface CanCrash extends HasCamp, Locable {
 
 	/**
 	 * 与 gameEntity 碰撞后调用 只有 sameCamp(gameEntity) 返回 false 才会调用这个方法

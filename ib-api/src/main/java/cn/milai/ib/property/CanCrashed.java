@@ -6,6 +6,6 @@ package cn.milai.ib.property;
  * @author milai
  *
  */
-public interface CanCrashed extends HasCamp, HasLocation {
+public interface CanCrashed extends HasCamp, Locable {
 
 }

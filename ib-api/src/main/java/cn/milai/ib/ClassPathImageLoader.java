@@ -1,6 +1,7 @@
 package cn.milai.ib;
 
 import java.awt.Image;
+import java.net.URL;
 
 import cn.milai.ib.util.StringUtil;
 
@@ -24,7 +25,11 @@ public class ClassPathImageLoader extends ImageLoader {
 			imgPath.append(STATUS_SPLIT).append(StringUtil.toSnake(status));
 		}
 		imgPath.append(IMAGE_EXT);
-		return loadImage(clazz.getResource(imgPath.toString()));
+		URL url = clazz.getResource(imgPath.toString());
+		if(url == null) {
+			throw new NullPointerException(String.format("资源 classpath:%s 不存在", imgPath.toString()));
+		}
+		return loadImage(url);
 	}
 
 	private String classToPath(Class<?> clazz) {

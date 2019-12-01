@@ -1,8 +1,8 @@
 package cn.milai.ib.container;
 
 import cn.milai.ib.EventNotifier;
-import cn.milai.ib.GameObject;
 import cn.milai.ib.container.listener.RefreshListener;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 游戏对象的容器
@@ -58,20 +58,20 @@ public interface Container extends EventNotifier {
 	 * 向容器中添加游戏对象
 	 * @param obj
 	 */
-	public void addGameObject(GameObject obj);
+	public void addObject(IBObject obj);
 
 	/**
 	 * 从容器中移除游戏对象
 	 * @param obj
 	 */
-	public void removeGameObject(GameObject obj);
+	public void removeObject(IBObject obj);
 
 	/**
 	 * 获得容器中属于指定类型及其子类的游戏对象个数
 	 * @param type
 	 * @return
 	 */
-	int countOf(Class<? extends GameObject> type);
+	int countOf(Class<? extends IBObject> type);
 	
 	/**
 	 * 获取当前累计的帧数

@@ -1,7 +1,7 @@
 package cn.milai.ib.form.listener;
 
 import cn.milai.ib.form.Command;
-import cn.milai.ib.obj.plane.PlayerPlane;
+import cn.milai.ib.obj.character.plane.PlayerPlane;
 
 /**
  * 玩家飞机控制器

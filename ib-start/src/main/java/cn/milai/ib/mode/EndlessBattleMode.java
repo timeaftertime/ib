@@ -6,16 +6,16 @@ import java.awt.event.MouseEvent;
 import cn.milai.ib.AudioConf;
 import cn.milai.ib.AudioPlayer;
 import cn.milai.ib.AudioPlayer.AudioController;
-import cn.milai.ib.GameObject;
-import cn.milai.ib.conf.ImageConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.form.BattleForm;
 import cn.milai.ib.form.listener.PlayerController;
-import cn.milai.ib.obj.ImageButton;
-import cn.milai.ib.obj.plane.FollowPlane;
-import cn.milai.ib.obj.plane.PlayerPlane;
-import cn.milai.ib.obj.plane.WelcomePlane;
+import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.obj.character.plane.FollowPlane;
+import cn.milai.ib.obj.character.plane.PlayerPlane;
+import cn.milai.ib.obj.character.plane.WelcomePlane;
+import cn.milai.ib.obj.component.GameOverLabel;
+import cn.milai.ib.obj.component.RestartButton;
 import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.TimeUtil;
 
@@ -35,10 +35,6 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(360);
 	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(360);
 	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
-	public static final int GAME_OVER_LABEL_WIDTH = SystemConf.prorate(672);
-	public static final int GAME_OVER_LABEL_HEIGHT = SystemConf.prorate(120);
-	public static final int RESTART_BUTTON_WIDTH = SystemConf.prorate(144);
-	public static final int RESTART_BUTTON_HEIGHT = SystemConf.prorate(36);
 
 	private static final int INIT_LEVEL_UP_GAME_SCORE = 30;
 	private static final int MAX_PLAYER_BULLET_NUM = 8;
@@ -61,16 +57,12 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 
 	private static final long ADD_VERTICAL_WELCOME_PLANE_FRAMES = 18;
 
-	/******************
-	 * ADD_ENEMY_CHANCE / MAX_ADD_ENEMY_CHANCE 即新增敌机的概率
-	 ******************/
-	private static final int ADD_ENEMY_CHANCE = 20;
-	private static final int MAX_ADD_ENEMY_CHANCE = 100;
+	private static final double ADD_ENEMY_CHANCE = 0.2;
 
 	public EndlessBattleMode() {
 		form = new BattleForm();
 		player = new PlayerPlane(form.getWidth() / 2, form.getHeight() / 3 * 2, form);
-		form.addGameObject(player);
+		form.addObject(player);
 		form.addGameEventListener(this);
 		form.addKeyboardListener(new PlayerController(player));
 		audioPlayer = AudioConf.ENDLESS_BG;
@@ -112,8 +104,8 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 			for (int i = 0; i < row; i++) {
-				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
-				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
+				form.addObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
+				form.addObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
 				TimeUtil.wait(form, ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -121,11 +113,11 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 		private void addLadderWelcomePlayer(int row, int disOfX) {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-			form.addGameObject(new WelcomePlane(form.getWidth() / 2, 0, form));
+			form.addObject(new WelcomePlane(form.getWidth() / 2, 0, form));
 			TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			for (int i = 2; i <= row; i++) {
-				form.addGameObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
-				form.addGameObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
+				form.addObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
+				form.addObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
 				TimeUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -154,15 +146,15 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 		}
 
 		private void randomAddEnemy() {
-			if (RandomUtil.goalAtPossible(ADD_ENEMY_CHANCE, MAX_ADD_ENEMY_CHANCE)) {
-				form.addGameObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, player, form));
+			if (RandomUtil.nextLess(ADD_ENEMY_CHANCE)) {
+				form.addObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, player, form));
 				TimeUtil.wait(form, addNormalEnemyInterval);
 			}
 		}
 	}
 
 	@Override
-	public void onGameObjectDead(GameObject obj) {
+	public void onGameObjectDead(IBObject obj) {
 		if (obj == player) {
 			gameOver();
 		}
@@ -182,15 +174,13 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	}
 
 	private void showGameOverLabel() {
-		ImageButton gameOverLabel = new ImageButton(GAME_OVER_LABEL_POS_X, GAME_OVER_LABEL_POS_Y, GAME_OVER_LABEL_WIDTH,
-				GAME_OVER_LABEL_HEIGHT, ImageConf.GAME_OVER, form);
-		form.addGameObject(gameOverLabel);
+		GameOverLabel gameOverLabel = new GameOverLabel(GAME_OVER_LABEL_POS_X, GAME_OVER_LABEL_POS_Y, form);
+		form.addObject(gameOverLabel);
 	}
 
 	private void showRestartButton() {
-		ImageButton restart = new ImageButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, RESTART_BUTTON_WIDTH,
-				RESTART_BUTTON_HEIGHT, ImageConf.RESTART, form);
-		restart.addMouseListener(new MouseAdapter() {
+		RestartButton restart = new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, form);
+		restart.addOnceMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				form.setVisible(false);
@@ -198,6 +188,6 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 				new EndlessBattleMode().start();
 			}
 		});
-		form.addGameObject(restart);
+		form.addObject(restart);
 	}
 }

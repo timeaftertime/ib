@@ -1,6 +1,14 @@
 package cn.milai.ib.constant;
 
 public enum BulletType {
-	MAIN, SIDE
+	
+	/**
+	 * 主武器
+	 */
+	MAIN,
+	/**
+	 * 副武器
+	 */
+	SIDE
 
 }

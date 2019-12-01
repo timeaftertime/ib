@@ -9,19 +9,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JFrame;
 
 import cn.milai.ib.EventNotifier;
-import cn.milai.ib.GameObject;
+import cn.milai.ib.obj.IBObject;
 
 public abstract class GameForm extends JFrame implements EventNotifier {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Map<GameObject, MouseListener> listeners = new ConcurrentHashMap<>();
+	private static final Map<IBObject, MouseListener> listeners = new ConcurrentHashMap<>();
 
 	public GameForm() {
 		addMouseListener(new MouseAdapter() {
 
 			private MouseListener getTarget(MouseEvent e) {
-				for (GameObject obj : listeners.keySet()) {
+				for (IBObject obj : listeners.keySet()) {
 					if (obj.containPoint(e.getX(), e.getY())) {
 						return listeners.remove(obj);
 					}
@@ -40,7 +40,7 @@ public abstract class GameForm extends JFrame implements EventNotifier {
 	}
 
 	@Override
-	public void notifyOnce(GameObject gameObj, MouseListener listener) {
+	public void notifyOnce(IBObject gameObj, MouseListener listener) {
 		listeners.put(gameObj, listener);
 	}
 

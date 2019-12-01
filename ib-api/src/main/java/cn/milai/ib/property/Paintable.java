@@ -6,7 +6,7 @@ public interface Paintable extends Comparable<Paintable> {
 
 	int NORMAL_LAYER = 0;
 	int BOMB_LAYER = 1;
-	int GAME_TIP_LAYER = 100;
+	int GAME_COMPONENT_LAYER = 100;
 
 	void paintWith(Graphics g);
 

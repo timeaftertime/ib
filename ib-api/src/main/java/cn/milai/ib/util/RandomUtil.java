@@ -6,7 +6,7 @@ public final class RandomUtil {
 
 	private static final ThreadLocal<Random> rands = new ThreadLocal<Random>();
 
-	public static Random getRandom() {
+	private static Random getRandom() {
 		if (rands.get() != null) {
 			return rands.get();
 		}
@@ -19,17 +19,22 @@ public final class RandomUtil {
 		}
 	}
 
-	public static boolean goalAtPossible(int expected, int sum) {
-		if (expected < 0 || sum < 0) {
-			throw new IllegalArgumentException("参数必须为正数：possibility=" + expected + " sum=" + sum);
-		}
-		if (expected > sum) {
-			throw new IllegalArgumentException("expected 必须小于等于 sum： expected=" + expected + " sum=" + sum);
-		}
-		return getRandom().nextInt(sum) < expected;
+	/**
+	 * 返回下一个随机浮点数 [0~1) 是否小于 limit
+	 * 
+	 * @param limit
+	 * @return
+	 */
+	public static boolean nextLess(double limit) {
+		return getRandom().nextDouble() < limit;
 	}
 
-	public static final int nextInt(int limit) {
+	/**
+	 * 返回下一个 [0~limit) 的随机整数
+	 * @return
+	 */
+	public static int nextInt(int limit) {
 		return getRandom().nextInt(limit);
 	}
+
 }
