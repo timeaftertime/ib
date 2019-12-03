@@ -2,7 +2,7 @@ package cn.milai.ib.obj.character.helper;
 
 import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.character.MovableGameEntity;
+import cn.milai.ib.obj.character.MovableIBCharacter;
 import cn.milai.ib.obj.character.plane.Plane;
 import cn.milai.ib.property.CanCrash;
 import cn.milai.ib.property.CanCrashed;
@@ -14,7 +14,7 @@ import cn.milai.ib.property.HasDamage;
  * @author milai
  *
  */
-public abstract class Helper extends MovableGameEntity implements CanCrash {
+public abstract class Helper extends MovableIBCharacter implements CanCrash {
 
 	public Helper(int x, int y, Container container) {
 		super(x, y, container);

@@ -1,9 +1,10 @@
-package cn.milai.ib.obj;
+package cn.milai.ib.obj.component;
 
 import java.awt.Image;
 import java.awt.event.MouseListener;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.IBObject;
 import cn.milai.ib.property.Paintable;
 
 /**

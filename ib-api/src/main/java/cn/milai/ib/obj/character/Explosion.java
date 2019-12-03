@@ -1,7 +1,6 @@
 package cn.milai.ib.obj.character;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBCharacter;
 import cn.milai.ib.property.HasDamage;
 
 /**

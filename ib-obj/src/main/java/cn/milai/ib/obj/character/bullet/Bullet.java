@@ -1,7 +1,7 @@
 package cn.milai.ib.obj.character.bullet;
 
 import cn.milai.ib.constant.Camp;
-import cn.milai.ib.obj.character.MovableGameEntity;
+import cn.milai.ib.obj.character.MovableIBCharacter;
 import cn.milai.ib.obj.character.plane.Plane;
 import cn.milai.ib.property.Alive;
 import cn.milai.ib.property.CanCrash;
@@ -13,7 +13,7 @@ import cn.milai.ib.property.HasDamage;
  *
  * @author milai
  */
-public abstract class Bullet extends MovableGameEntity implements CanCrash, CanCrashed, HasDamage {
+public abstract class Bullet extends MovableIBCharacter implements CanCrash, CanCrashed, HasDamage {
 
 	private static final String P_POWER = "power";
 

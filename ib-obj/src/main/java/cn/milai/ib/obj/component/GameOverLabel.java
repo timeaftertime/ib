@@ -3,7 +3,6 @@ package cn.milai.ib.obj.component;
 import java.awt.Image;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBComponent;
 import cn.milai.ib.util.ImageUtil;
 
 /**

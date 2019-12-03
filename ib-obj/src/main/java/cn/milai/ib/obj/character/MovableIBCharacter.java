@@ -1,7 +1,6 @@
 package cn.milai.ib.obj.character;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBCharacter;
 import cn.milai.ib.property.Movable;
 
 /**
@@ -9,7 +8,7 @@ import cn.milai.ib.property.Movable;
  *
  * @author milai
  */
-public abstract class MovableGameEntity extends IBCharacter implements Movable {
+public abstract class MovableIBCharacter extends IBCharacter implements Movable {
 
 	private static final String P_SPEED_X = "speedX";
 	private static final String P_SPEED_Y = "speedY";
@@ -17,7 +16,7 @@ public abstract class MovableGameEntity extends IBCharacter implements Movable {
 	private int speedX;
 	private int speedY;
 
-	public MovableGameEntity(int x, int y, Container container) {
+	public MovableIBCharacter(int x, int y, Container container) {
 		super(x, y, container);
 		this.speedX = getInitSpeedX();
 		this.speedY = getInitSpeedY();

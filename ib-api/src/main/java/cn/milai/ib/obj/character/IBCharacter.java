@@ -1,4 +1,4 @@
-package cn.milai.ib.obj;
+package cn.milai.ib.obj.character;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,8 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.character.Explosion;
-import cn.milai.ib.obj.character.ExplosionCreator;
+import cn.milai.ib.obj.IBObject;
 import cn.milai.ib.property.Alive;
 import cn.milai.ib.property.Explosible;
 

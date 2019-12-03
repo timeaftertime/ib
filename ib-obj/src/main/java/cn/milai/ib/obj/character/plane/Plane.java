@@ -11,7 +11,7 @@ import cn.milai.ib.constant.BulletType;
 import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.character.ExplosionCreator;
-import cn.milai.ib.obj.character.MovableGameEntity;
+import cn.milai.ib.obj.character.MovableIBCharacter;
 import cn.milai.ib.obj.character.bullet.Bullet;
 import cn.milai.ib.obj.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.obj.character.explosion.creator.DefaultExplosionCreator;
@@ -27,7 +27,7 @@ import cn.milai.ib.property.Shootable;
  *
  * @author milai
  */
-public abstract class Plane extends MovableGameEntity
+public abstract class Plane extends MovableIBCharacter
 		implements Shootable, HasCamp, CanCrash, CanCrashed, Explosible, HasDamage {
 
 	private static final String P_MAX_BULLET_NUM = "maxBulletNum";
