@@ -154,7 +154,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	}
 
 	@Override
-	public void onGameObjectDead(IBObject obj) {
+	public void onObjectRemoved(IBObject obj) {
 		if (obj == player) {
 			gameOver();
 		}

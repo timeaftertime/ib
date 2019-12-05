@@ -13,7 +13,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 import cn.milai.ib.conf.ImageConf;
 import cn.milai.ib.conf.KeyConf;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
 import cn.milai.ib.form.listener.KeyboardListener;
@@ -31,7 +30,7 @@ import cn.milai.ib.property.Paintable;
  * @author milai
  *
  */
-public class BattleForm extends DoubleBufferForm implements Container {
+public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -182,9 +181,16 @@ public class BattleForm extends DoubleBufferForm implements Container {
 		}
 	}
 
+	@Override
 	public void start() {
+		// TODO 确保只能启动一次
 		refreshThread.start();
 		this.setVisible(true);
+	}
+	
+	@Override
+	public void reset() {
+		init();
 	}
 
 	/**
@@ -206,7 +212,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 				IBCharacter obj = (IBCharacter) alive;
 				removeObject(obj);
 				for (GameEventListener listener : new ArrayList<>(gameEventListeners)) {
-					listener.onGameObjectDead(obj);
+					listener.onObjectRemoved(obj);
 				}
 			}
 		}
@@ -288,6 +294,7 @@ public class BattleForm extends DoubleBufferForm implements Container {
 		this.keyboardListeners.add(listener);
 	}
 
+	@Override
 	public void addGameEventListener(GameEventListener listener) {
 		this.gameEventListeners.add(listener);
 	}

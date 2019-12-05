@@ -9,6 +9,7 @@ import cn.milai.ib.AudioPlayer.AudioController;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.form.BattleForm;
+import cn.milai.ib.form.FormContainer;
 import cn.milai.ib.form.listener.PlayerController;
 import cn.milai.ib.obj.IBObject;
 import cn.milai.ib.obj.character.helper.AccelerateHelper;
@@ -24,7 +25,7 @@ import cn.milai.ib.util.TimeUtil;
 
 public class StoryMode extends GameMode implements GameEventListener {
 
-	private BattleForm form;
+	private FormContainer form;
 	private PlayerPlane player;
 	private AudioPlayer audioPlayer;
 	private AudioController audioController;
@@ -108,7 +109,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 	}
 
 	@Override
-	public void onGameObjectDead(IBObject obj) {
+	public void onObjectRemoved(IBObject obj) {
 		if (obj == player) {
 			gameOver();
 		}
@@ -121,7 +122,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 	}
 
 	private void gameOver() {
-		form.setGameOver();
+		//		form.setGameOver();
 		audioController.close();
 		showGameOverLabel();
 		showRestartButton();
@@ -137,7 +138,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 		restart.addOnceMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				form.dispose();
+				form.close();
 				new StoryMode().start();
 			}
 		});

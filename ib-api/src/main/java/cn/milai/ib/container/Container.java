@@ -1,6 +1,7 @@
 package cn.milai.ib.container;
 
 import cn.milai.ib.EventNotifier;
+import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
 import cn.milai.ib.obj.IBObject;
 
@@ -12,7 +13,7 @@ import cn.milai.ib.obj.IBObject;
  * @author milai
  */
 public interface Container extends EventNotifier {
-
+	
 	/**
 	 * 
 	 * @return
@@ -39,6 +40,7 @@ public interface Container extends EventNotifier {
 	
 	/**
 	 * 获取（去掉上边框后）实际游戏界面高度
+	 * 
 	 * @return
 	 */
 	int getContentHeight();
@@ -56,18 +58,21 @@ public interface Container extends EventNotifier {
 
 	/**
 	 * 向容器中添加游戏对象
+	 * 
 	 * @param obj
 	 */
 	public void addObject(IBObject obj);
 
 	/**
 	 * 从容器中移除游戏对象
+	 * 
 	 * @param obj
 	 */
 	public void removeObject(IBObject obj);
 
 	/**
 	 * 获得容器中属于指定类型及其子类的游戏对象个数
+	 * 
 	 * @param type
 	 * @return
 	 */
@@ -75,19 +80,30 @@ public interface Container extends EventNotifier {
 	
 	/**
 	 * 获取当前累计的帧数
+	 * 
 	 * @return
 	 */
 	 long currentFrame();
 	 
 	 /**
 	  * 添加帧刷新事件的 listener
+	  * 
 	  * @param listener
 	  */
 	 void addRefreshListener(RefreshListener listener);
 	 
 	 /**
 	  * 移除帧刷新事件的 listener
+	  * 
 	  * @param listener
 	  */
 	 void removeRefreshListener(RefreshListener listener);
+	 
+	 /**
+	  * 添加游戏事件监听器
+	  * 
+	  * @param listener
+	  */
+	 void addGameEventListener(GameEventListener listener);
+	 
 }

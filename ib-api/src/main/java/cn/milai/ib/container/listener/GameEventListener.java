@@ -10,13 +10,14 @@ import cn.milai.ib.obj.IBObject;
 public interface GameEventListener {
 
 	/**
-	 * 游戏对象死亡时被调用
-	 * @param obj
+	 * 游戏对象被移除时被调用
+	 * 
+	 * @param obj 被移除的对象
 	 */
-	void onGameObjectDead(IBObject obj);
+	void onObjectRemoved(IBObject obj);
 	
 	/**
-	 * 游戏窗口被关闭前调用
+	 * 容器被关闭前调用
 	 */
 	void onFormClosed();
 	
