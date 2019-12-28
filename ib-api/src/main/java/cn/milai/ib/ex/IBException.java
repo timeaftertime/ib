@@ -15,11 +15,14 @@ public class IBException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public IBException() {
-
 	}
 
 	public IBException(String message) {
 		super(message);
+	}
+
+	public IBException(String msg, Throwable e) {
+		super(msg, e);
 	}
 
 }

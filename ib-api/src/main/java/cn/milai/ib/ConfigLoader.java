@@ -18,7 +18,7 @@ import cn.milai.ib.util.StringUtil;
  */
 public abstract class ConfigLoader {
 
-	private static final String PREFIX = "/conf/";
+	private static final String PREFIX = "/confs/";
 	private static final String SUFFIX = ".conf";
 
 	public static final Map<Class<?>, Properties> props = Maps.newHashMap();
