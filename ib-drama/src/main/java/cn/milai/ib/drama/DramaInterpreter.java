@@ -5,6 +5,9 @@ import java.io.IOException;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.drama.act.Act;
 import cn.milai.ib.drama.act.ActFactory;
+import cn.milai.ib.drama.runtime.DramaSpace;
+import cn.milai.ib.drama.runtime.Frame;
+import cn.milai.ib.drama.util.ByteReader;
 
 /**
  * 剧情解释器
@@ -16,10 +19,12 @@ public class DramaInterpreter implements Runnable {
 	private volatile boolean interrupted;
 	private Container container;
 	private DramaSpace dramaSpace;
+	private ByteReader reader;
 
 	public DramaInterpreter(String dramaCode, Container container) {
 		interrupted = false;
 		dramaSpace = new DramaSpace(dramaCode);
+		reader = new ByteReader();
 		this.container = container;
 	}
 
@@ -39,41 +44,25 @@ public class DramaInterpreter implements Runnable {
 	public void run() {
 		try {
 			while (!dramaSpace.isFinished() && !interrupted) {
-				beforeAction();
-				nextAct();
-				afterAction();
+				Frame frame = dramaSpace.currentFrame();
+				Clip clip = frame.getClip();
+				reader.reset(clip.getBytes(), dramaSpace.getPC());
+				// 临时结束帧执行的方案，类似 return 命令
+				if (!reader.hasMore()) {
+					dramaSpace.popCurrentFrame();
+					continue;
+				}
+				frame.synchronizeDramaSpacePC();
+				Act act = ActFactory.create(reader.readUint8());
+				act.initiailze(reader);
+				frame.setPC(reader.getPC());
+				act.execute(frame, container);
 			}
 		} catch (IOException e) {
 			// 执行剧本时，剧本已经在内存中，不太可能发生 IO 异常
 			// 所以这里简单忽略
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * 读取并执行下一个动作
-	 * @param dramaSpace
-	 * @param container
-	 * @throws IOException 
-	 */
-	private void nextAct() throws IOException {
-		Frame currentFrame = dramaSpace.currentFrame();
-		Clip clip = currentFrame.getClip();
-		Act act = ActFactory.create(clip.readUint8());
-		act.execute(currentFrame, container);
-	}
-
-	private void beforeAction() throws IOException {
-		// 读取下一个动作前，设置当前帧将被读取的动作指令是 PC 所指位置
-		dramaSpace.currentFrame().getClip().setPos(dramaSpace.getPC());
-	}
-
-	private void afterAction() {
-		if (dramaSpace.isFinished()) {
-			return;
-		}
-		// 调用了新的 Clip 或执行跳转指令后，需要设置 PC 为当前帧的 PC
-		dramaSpace.setPC(dramaSpace.currentFrame().nextPC());
 	}
 
 }

@@ -1,4 +1,4 @@
-package cn.milai.ib.drama;
+package cn.milai.ib.drama.runtime;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  * @author milai
  */
 public class DramaSpace {
-	
+
 	/**
 	 * 剧情帧的栈
 	 */
@@ -23,7 +23,7 @@ public class DramaSpace {
 	public DramaSpace(String dramaCode) {
 		callClip(dramaCode, null);
 	}
-	
+
 	/**
 	 * 下一个要被执行指令位置
 	 * @return
@@ -46,6 +46,10 @@ public class DramaSpace {
 	 */
 	public void callClip(String clipCode, Map<String, String> params) {
 		stack.pushFrame(new Frame(clipCode, params, this));
+	}
+
+	public Frame popCurrentFrame() {
+		return stack.popFrame();
 	}
 
 	/**

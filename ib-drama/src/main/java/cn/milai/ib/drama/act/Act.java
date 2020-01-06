@@ -2,8 +2,8 @@ package cn.milai.ib.drama.act;
 
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.drama.Frame;
-import cn.milai.ib.drama.ByteReader;
+import cn.milai.ib.drama.runtime.Frame;
+import cn.milai.ib.drama.util.ByteReader;
 
 /**
  * 剧情里的一个动作

@@ -1,6 +1,9 @@
-package cn.milai.ib.drama;
+package cn.milai.ib.drama.runtime;
 
 import java.util.Map;
+
+import cn.milai.ib.drama.Clip;
+import cn.milai.ib.drama.ClipFactory;
 
 /**
  * 剧本帧
@@ -14,23 +17,12 @@ public class Frame {
 	 */
 	private DramaSpace dramaSpace;
 
+	private int pc;
+
 	/**
 	 * 对应的 Clip
 	 */
 	private Clip clip;
-
-	/**
-	 * 程序计数器
-	 */
-	private int pc;
-
-	/**
-	 * 将要被执行的指令的偏移量
-	 * @return
-	 */
-	public int nextPC() {
-		return pc;
-	}
 
 	/**
 	 * 创建一个代表指定 clip 的帧
@@ -39,7 +31,6 @@ public class Frame {
 	 */
 	public Frame(String clipCode, Map<String, String> params, DramaSpace dramSpace) {
 		this.clip = ClipFactory.newClip(clipCode, params);
-		this.pc = 0;
 		this.dramaSpace = dramSpace;
 	}
 
@@ -53,6 +44,29 @@ public class Frame {
 	 */
 	public DramaSpace getSpace() {
 		return dramaSpace;
+	}
+
+	/**
+	 * 设置当前帧将要执行的指令的位置
+	 * @param pc
+	 */
+	public void setPC(int pc) {
+		this.pc = pc;
+	}
+
+	/**
+	 * 获取当前帧将要执行的指令的位置
+	 * @return
+	 */
+	public int getPC() {
+		return pc;
+	}
+
+	/**
+	 * 将当前帧的 PC 同步所属到 DramaSpace
+	 */
+	public void synchronizeDramaSpacePC() {
+		dramaSpace.setPC(pc);
 	}
 
 }

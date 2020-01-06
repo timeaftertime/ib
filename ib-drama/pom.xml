@@ -7,24 +7,12 @@
 		<artifactId>ib</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>ib-api</artifactId>
+	<artifactId>ib-drama</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javazoom</groupId>
-			<artifactId>jlayer</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>cn.milai</groupId>
+			<artifactId>ib-api</artifactId>
 		</dependency>
 	</dependencies>
 </project>

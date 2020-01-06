@@ -11,6 +11,7 @@
 		<module>ib-api</module>
 		<module>ib-obj</module>
 		<module>ib-start</module>
+		<module>ib-drama</module>
 	</modules>
 
 	<properties>
@@ -43,6 +44,21 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>ib-api</artifactId>
+				<version>${ib.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>ib-obj</artifactId>
+				<version>${ib.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>ib-drama</artifactId>
+				<version>${ib.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.squareup.okhttp3</groupId>
 				<artifactId>okhttp</artifactId>

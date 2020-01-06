@@ -13,7 +13,6 @@
 		<dependency>
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-api</artifactId>
-			<version>${ib.version}</version>
 		</dependency>
 	</dependencies>
 

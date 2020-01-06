@@ -41,12 +41,14 @@
 		<dependency>
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-api</artifactId>
-			<version>${ib.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-obj</artifactId>
-			<version>${ib.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.milai</groupId>
+			<artifactId>ib-drama</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>

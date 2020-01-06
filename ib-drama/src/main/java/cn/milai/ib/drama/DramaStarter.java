@@ -3,11 +3,11 @@ package cn.milai.ib.drama;
 import cn.milai.ib.container.Container;
 
 /**
- * 剧情类
+ * 剧情启动类
  * 2019.12.08
  * @author milai
  */
-public class Drama {
+public class DramaStarter {
 
 	private boolean started = false;
 	private DramaInterpreter interpreter;
@@ -16,7 +16,7 @@ public class Drama {
 	 * 加载并创建指定剧本
 	 * @param dramaCode 剧本名
 	 */
-	public Drama(String dramaCode, Container container) {
+	public DramaStarter(String dramaCode, Container container) {
 		interpreter = new DramaInterpreter(dramaCode, container);
 	}
 

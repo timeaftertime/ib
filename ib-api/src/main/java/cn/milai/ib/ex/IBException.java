@@ -25,4 +25,8 @@ public class IBException extends RuntimeException {
 		super(msg, e);
 	}
 
+	public IBException(Throwable e) {
+		super(e);
+	}
+
 }

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.drama.ByteReader;
-import cn.milai.ib.drama.Frame;
+import cn.milai.ib.drama.runtime.Frame;
+import cn.milai.ib.drama.util.ByteReader;
 import cn.milai.ib.util.TimeUtil;
 
 /**
@@ -20,7 +20,7 @@ public class SleepAct extends AbstractAct {
 	/**
 	 * 应该休眠的帧数
 	 */
-	private long sleepFrame;
+	private int sleepFrameIndex;
 
 	@Override
 	public ActType getCode() {
@@ -29,12 +29,13 @@ public class SleepAct extends AbstractAct {
 
 	@Override
 	protected void action(Frame frame, Container container) throws Exception {
+		long sleepFrame = frame.getClip().getLongConst(sleepFrameIndex);
 		TimeUtil.wait(container, sleepFrame);
 	}
 
 	@Override
 	protected void readOperands(ByteReader reader) throws IOException {
-		sleepFrame = reader.readInt64();
+		sleepFrameIndex = reader.readUint16();
 	}
 
 }
