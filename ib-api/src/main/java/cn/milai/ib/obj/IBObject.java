@@ -24,8 +24,18 @@ public abstract class IBObject implements Paintable, Locable {
 	private Container container;
 	private ImageLoader imageLoader = ImageLoader.getContextImageLoader();
 
+	/**
+	 * 创建一个中心位置在 (x, y) 且以 Container 为容易的游戏对象 
+	 * @param x
+	 * @param y
+	 * @param container
+	 */
 	public IBObject(int x, int y, Container container) {
-		this.rect = new Rectangle(x, y, proratedIntProp(P_WIDTH), proratedIntProp(P_HEIGHT));
+		int width = proratedIntProp(P_WIDTH);
+		int height = proratedIntProp(P_HEIGHT);
+		x = x - width / 2;
+		y = y - height / 2;
+		this.rect = new Rectangle(x, y, width, height);
 		this.container = container;
 	}
 
@@ -151,8 +161,7 @@ public abstract class IBObject implements Paintable, Locable {
 	}
 
 	public void ensureInContainer() {
-		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentHeight(),
-				getContainer().getHeight());
+		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentHeight(), getContainer().getHeight());
 	}
 
 	protected void ensureIn(int minX, int maxX, int minY, int maxY) {

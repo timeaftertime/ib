@@ -46,7 +46,7 @@ public class DramaInterpreter implements Runnable {
 			while (!dramaSpace.isFinished() && !interrupted) {
 				Frame frame = dramaSpace.currentFrame();
 				Clip clip = frame.getClip();
-				reader.reset(clip.getBytes(), dramaSpace.getPC());
+				reader.reset(clip.getBytes(), frame.getPC());
 				// 临时结束帧执行的方案，类似 return 命令
 				if (!reader.hasMore()) {
 					dramaSpace.popCurrentFrame();
