@@ -1,8 +1,10 @@
 package cn.milai.ib.drama.act;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
+import cn.milai.ib.ImageLoader;
 import cn.milai.ib.component.IBComponent;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
@@ -29,6 +31,11 @@ public class DialogAct extends AbstractAct {
 	private int yRateIndex;
 
 	/**
+	 * 说话者全类名的序号，utf8 常量
+	 */
+	private int speakerClassIndex;
+
+	/**
 	 * 需要显示的对话文本的序号
 	 */
 	private int textIndex;
@@ -44,19 +51,35 @@ public class DialogAct extends AbstractAct {
 		String dialogClass = clip.getUTF8Const(characteClassIndex);
 		int x = (int) (clip.getFloatConst(xRateIndex) * container.getWidth());
 		int y = (int) (clip.getFloatConst(yRateIndex) * container.getContentHeight());
+		Image speaker = resolveSpeaker(clip);
 		String text = clip.getUTF8Const(textIndex);
-		container.addObject(createInstance(dialogClass, x, y, text, container));
+		container.addObject(createInstance(dialogClass, x, y, speaker, text, container));
 		// 等待一帧以暂停后续的剧情
 		TimeUtil.wait(container, 1L);
 	}
 
-	private IBComponent createInstance(String dialogClass, int x, int y, String text, Container container) throws Exception {
-		return getIISCConstructot(dialogClass).newInstance(x, y, text, container);
+	private Image resolveSpeaker(Clip clip) throws ClassNotFoundException {
+		if (speakerClassIndex == 0) {
+			return null;
+		}
+		return ImageLoader.getContextImageLoader().loadImage(Class.forName(clip.getUTF8Const(speakerClassIndex)));
 	}
 
+	private IBComponent createInstance(String dialogClass, int x, int y, Image speaker, String text, Container container) throws Exception {
+		return getIIISCConstructot(dialogClass).newInstance(x, y, speaker, text, container);
+	}
+
+	/**
+	 * 获取 dialogClass 对应类型的 int，int，Image，String，Container 参数的构造方法
+	 * @param dialogClass
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
-	private Constructor<IBComponent> getIISCConstructot(String dialogClass) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
-		return (Constructor<IBComponent>) Class.forName(dialogClass).getConstructor(int.class, int.class, String.class, Container.class);
+	private Constructor<IBComponent> getIIISCConstructot(String dialogClass) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
+		return (Constructor<IBComponent>) Class.forName(dialogClass).getConstructor(int.class, int.class, Image.class, String.class, Container.class);
 	}
 
 	@Override
@@ -64,6 +87,7 @@ public class DialogAct extends AbstractAct {
 		characteClassIndex = reader.readUint16();
 		xRateIndex = reader.readUint16();
 		yRateIndex = reader.readUint16();
+		speakerClassIndex = reader.readUint16();
 		textIndex = reader.readUint16();
 	}
 

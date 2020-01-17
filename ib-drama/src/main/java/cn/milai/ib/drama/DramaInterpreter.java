@@ -20,6 +20,7 @@ public class DramaInterpreter implements Runnable {
 	private Container container;
 	private DramaSpace dramaSpace;
 	private ByteReader reader;
+	private Thread dramaThread;
 
 	public DramaInterpreter(String dramaCode, Container container) {
 		interrupted = false;
@@ -35,6 +36,7 @@ public class DramaInterpreter implements Runnable {
 	 */
 	public void interrunpt() {
 		this.interrupted = true;
+		dramaThread.interrupt();
 	}
 
 	/**
@@ -42,6 +44,7 @@ public class DramaInterpreter implements Runnable {
 	 */
 	@Override
 	public void run() {
+		dramaThread = Thread.currentThread();
 		try {
 			while (!dramaSpace.isFinished() && !interrupted) {
 				Frame frame = dramaSpace.currentFrame();

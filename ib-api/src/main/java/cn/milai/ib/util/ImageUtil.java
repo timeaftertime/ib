@@ -2,6 +2,7 @@ package cn.milai.ib.util;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 /**
@@ -26,5 +27,16 @@ public abstract class ImageUtil {
 	 */
 	public static final Image loadImage(URL url) {
 		return TK.createImage(url);
+	}
+
+	/**
+	 * 返回 image 的复制
+	 * @param image
+	 * @return
+	 */
+	public static BufferedImage copy(BufferedImage image) {
+		BufferedImage img = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+		img.setData(image.getData());
+		return img;
 	}
 }

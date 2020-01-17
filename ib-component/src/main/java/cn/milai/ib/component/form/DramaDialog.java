@@ -14,6 +14,7 @@ import cn.milai.ib.interaction.form.IBFormComponent;
 import cn.milai.ib.interaction.form.listener.Command;
 import cn.milai.ib.interaction.form.listener.KeyShield;
 import cn.milai.ib.interaction.form.listener.KeyboardListener;
+import cn.milai.ib.util.ImageUtil;
 
 public class DramaDialog extends IBFormComponent {
 
@@ -22,6 +23,8 @@ public class DramaDialog extends IBFormComponent {
 	private static final String HOR_MARGIN = "horMargin";
 	private static final String VER_MARGIN = "verMargin";
 	private static final String TEXT_COLOR = "textColor";
+	private static final String KEY_WAIT_WIDTH = "waitWidth";
+	private static final String KEY_WAIT_HEIGHT = "waitHeight";
 
 	private final KeyboardListener nextPageListener = new KeyShield(new KeyboardListener() {
 		@Override
@@ -32,18 +35,22 @@ public class DramaDialog extends IBFormComponent {
 		@Override
 		public boolean keyDown(Command e) {
 			if (e == Command.SHOOT) {
-				nextImage();
+				pageDown();
 			}
 			return false;
 		}
 	});
 
-	private Image img;
+	private BufferedImage textImage;
+	private Image waitNextPage = ImageUtil.loadImage(DramaDialog.class.getResource("/img/component/wait_next_page.gif"));
+
 	private int textSize;
 	private String textFont;
 	private int horMargin;
 	private int verMargin;
 	private Color color;
+	private int waitWidth;
+	private int waitHeight;
 
 	private String text;
 	private int readIndex;
@@ -51,11 +58,7 @@ public class DramaDialog extends IBFormComponent {
 
 	private Image speaker;
 
-	public DramaDialog(int x, int y, String text, Container container) {
-		this(x, y, text, container, null);
-	}
-
-	public DramaDialog(int x, int y, String text, Container container, Image speaker) {
+	public DramaDialog(int x, int y, Image speaker, String text, Container container) throws ClassNotFoundException {
 		super(x, y, container);
 		textSize = proratedIntProp(TEXT_SIZE);
 		textFont = prop(TEXT_FONT);
@@ -63,22 +66,25 @@ public class DramaDialog extends IBFormComponent {
 		horMargin = proratedIntProp(HOR_MARGIN);
 		verMargin = proratedIntProp(VER_MARGIN);
 		color = parseColor(intProp(TEXT_COLOR));
+		waitWidth = proratedIntProp(KEY_WAIT_WIDTH);
+		waitHeight = proratedIntProp(KEY_WAIT_HEIGHT);
 		this.text = text;
 		readIndex = 0;
 		this.speaker = speaker;
+		pageDown();
 
 		getContainer().setPin(true);
 		getContainer().addKeyboardListener(nextPageListener);
 	}
 
-	private Color parseColor(int color) {
+	private static Color parseColor(int color) {
 		return new Color((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF);
 	}
 
 	/**
-	 * 设置当前 img 为下一页对话的图片或在对话显示结束时从容器中移除
+	 * 设置当前显示的文本为下一页
 	 */
-	private final void nextImage() {
+	private void pageDown() {
 		if (readIndex >= text.length()) {
 			FormContainer container = getContainer();
 			container.removeKeyboardListener(nextPageListener);
@@ -86,9 +92,17 @@ public class DramaDialog extends IBFormComponent {
 			container.setPin(false);
 			return;
 		}
-		img = createTransaparentImage();
+		textImage = createNextTextImage();
+	}
+
+	/**
+	 * 创建下一张只包含文字的图片
+	 */
+	private BufferedImage createNextTextImage() {
+		BufferedImage img = createTransaparentImage();
 		Graphics g = initNewGraphics(img);
 		render(g);
+		return img;
 	}
 
 	/**
@@ -118,16 +132,11 @@ public class DramaDialog extends IBFormComponent {
 	 * @param g
 	 */
 	private void render(Graphics g) {
-		// 说话者头像
-		if (speaker != null) {
-			g.drawRect(0, 0, 60, 60);
-			g.drawImage(speaker, 0, 0, 50, 50, null);
-		}
 		// 边框
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 		// 文字
 		int bottom = verMargin;
-		while (readIndex < text.length() && bottom + horMargin < getHeight()) {
+		while (readIndex < text.length() && (bottom + g.getFont().getSize() < getHeight() - horMargin)) {
 			String nextLine = nextLine(g.getFont().getSize());
 			g.drawString(nextLine, horMargin, bottom);
 			bottom += g.getFont().getSize();
@@ -163,8 +172,16 @@ public class DramaDialog extends IBFormComponent {
 
 	@Override
 	public Image getImage() {
-		if (img == null) {
-			nextImage();
+		BufferedImage img = ImageUtil.copy(textImage);
+		Graphics2D g = img.createGraphics();
+		// 说话者头像
+		if (speaker != null) {
+			g.drawRect(0, 0, 60, 60);
+			g.drawImage(speaker, 0, 0, 60, 60, null);
+		}
+		// 表示还有下一页的箭头
+		if (readIndex < text.length()) {
+			g.drawImage(waitNextPage, getWidth() - waitWidth, getHeight() - waitHeight, waitWidth, waitHeight, null);
 		}
 		return img;
 	}
