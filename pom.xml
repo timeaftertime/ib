@@ -9,9 +9,11 @@
 
 	<modules>
 		<module>ib-api</module>
-		<module>ib-obj</module>
+		<module>ib-character</module>
+		<module>ib-component</module>
 		<module>ib-start</module>
 		<module>ib-drama</module>
+		<module>ib-interaction</module>
 	</modules>
 
 	<properties>
@@ -51,7 +53,17 @@
 			</dependency>
 			<dependency>
 				<groupId>cn.milai</groupId>
-				<artifactId>ib-obj</artifactId>
+				<artifactId>ib-interaction</artifactId>
+				<version>${ib.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>ib-character</artifactId>
+				<version>${ib.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>ib-component</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>

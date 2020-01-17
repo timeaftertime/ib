@@ -13,7 +13,7 @@ public abstract class DoubleBufferForm extends GameForm {
 	}
 	
 	/**
-	 * 
+	 * 获取当前对象需要显示的 Image
 	 * @return 需要被刷新到界面上的 Image 
 	 */
 	protected abstract Image getBufferedImage();

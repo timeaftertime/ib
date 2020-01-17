@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import javax.swing.AbstractListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -18,7 +19,7 @@ import cn.milai.ib.client.constant.SocketServerURL;
 import cn.milai.ib.client.socket.SocketClient;
 import cn.milai.ib.conf.SystemConf;
 
-public class OnlineForm extends GameForm {
+public class OnlineForm extends JFrame {
 
 	/**
 	 * 

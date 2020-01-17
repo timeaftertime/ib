@@ -1,11 +1,15 @@
 package cn.milai.ib.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.RefreshListener;
 
 public class TimeUtil {
 
 	private static final int DEFAULT_TIME_OUT = 10000;
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private static class CountDownInterrupter implements RefreshListener {
 
@@ -42,5 +46,13 @@ public class TimeUtil {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * 获取以 yyyy-MM-dd HH:mm:ss 格式表示的当前日期时间字符串
+	 * @return
+	 */
+	public static String datetime() {
+		return format.format(new Date());
 	}
 }

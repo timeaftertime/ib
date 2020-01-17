@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,7 +29,7 @@ import cn.milai.ib.client.util.RequestUtil.Entry;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.util.StringUtil;
 
-public class ReigisterForm extends GameForm {
+public class ReigisterForm extends JFrame {
 
 	/**
 	 * 
@@ -43,9 +44,9 @@ public class ReigisterForm extends GameForm {
 	private JTextField jtfUsername;
 	private JPasswordField jtfPassword;
 	private JButton submit;
-	private GameForm loginForm;
+	private JFrame loginForm;
 
-	public ReigisterForm(GameForm loginForm) {
+	public ReigisterForm(JFrame loginForm) {
 		init();
 		this.loginForm = loginForm;
 	}
@@ -134,15 +135,15 @@ public class ReigisterForm extends GameForm {
 					return;
 				}
 				switch (ResponseCode.parse(result.getIntValue(ParamName.CODE))) {
-				case SUCCESS:
-					JOptionPane.showMessageDialog(this, "注册成功，请登录！");
-					toLogin();
-					break;
-				case USERNAME_ALREADY_EXISTS:
-					JOptionPane.showMessageDialog(this, "用户名已存在");
-					break;
-				default:
-					break;
+					case SUCCESS :
+						JOptionPane.showMessageDialog(this, "注册成功，请登录！");
+						toLogin();
+						break;
+					case USERNAME_ALREADY_EXISTS :
+						JOptionPane.showMessageDialog(this, "用户名已存在");
+						break;
+					default :
+						break;
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();

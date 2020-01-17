@@ -4,12 +4,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cn.milai.ib.util.TimeUtil;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class AudioPlayer {
 
 	private byte[] bytes;
+
+	private static final String THREAD_NAME = "AudioPlayer#started at ";
 
 	public AudioPlayer(InputStream in) {
 		try {
@@ -41,7 +44,7 @@ public class AudioPlayer {
 					e.printStackTrace();
 				}
 			}
-		});
+		}, THREAD_NAME + TimeUtil.datetime());
 		thread.setDaemon(true);
 		thread.start();
 		return controller;

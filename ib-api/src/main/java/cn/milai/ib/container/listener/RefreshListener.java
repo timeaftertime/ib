@@ -1,5 +1,6 @@
 package cn.milai.ib.container.listener;
 
+import cn.milai.ib.annotation.Order;
 import cn.milai.ib.container.Container;
 
 /**
@@ -7,6 +8,7 @@ import cn.milai.ib.container.Container;
  * @author milai
  *
  */
+@Order
 public interface RefreshListener {
 
 	/**

@@ -5,21 +5,22 @@ import java.awt.event.MouseEvent;
 
 import cn.milai.ib.AudioConf;
 import cn.milai.ib.AudioPlayer;
+import cn.milai.ib.IBObject;
 import cn.milai.ib.AudioPlayer.AudioController;
+import cn.milai.ib.character.plane.FollowPlane;
+import cn.milai.ib.character.plane.PlayerPlane;
+import cn.milai.ib.character.plane.WelcomePlane;
+import cn.milai.ib.component.form.GameOverLabel;
+import cn.milai.ib.component.form.RestartButton;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.form.BattleForm;
-import cn.milai.ib.form.listener.PlayerController;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.character.plane.FollowPlane;
-import cn.milai.ib.obj.character.plane.PlayerPlane;
-import cn.milai.ib.obj.character.plane.WelcomePlane;
-import cn.milai.ib.obj.component.GameOverLabel;
-import cn.milai.ib.obj.component.RestartButton;
+import cn.milai.ib.interaction.form.listener.FormCloseListener;
+import cn.milai.ib.interaction.form.listener.PlayerController;
 import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.TimeUtil;
 
-public class EndlessBattleMode extends GameMode implements GameEventListener {
+public class EndlessBattleMode extends GameMode implements GameEventListener, FormCloseListener {
 
 	private BattleForm form;
 	private PlayerPlane player;
@@ -30,10 +31,11 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	private AudioController audioController;
 	private long addNormalEnemyInterval = INIT_ADD_NORMAL_ENEMEY_FRAMES;
 	private boolean closed = false;
+	private static String formTitle;
 
-	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(48);
-	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(360);
-	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(360);
+	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(400);
+	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
+	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(390);
 	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
 
 	private static final int INIT_LEVEL_UP_GAME_SCORE = 30;
@@ -55,17 +57,20 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 
 	private static final long ADD_LADDER_WELCOME_PLANE_FRAMES = 24;
 
-	private static final long ADD_VERTICAL_WELCOME_PLANE_FRAMES = 18;
+	private static final long ADD_VERTICAL_WELCOME_PLANE_FRAMES = 16;
 
 	private static final double ADD_ENEMY_CHANCE = 0.2;
 
 	public EndlessBattleMode() {
 		form = new BattleForm();
-		player = new PlayerPlane(form.getWidth() / 2, form.getHeight() / 3 * 2, form);
+		formTitle = form.getTitle();
+		player = new PlayerPlane(form.getWidth() / 2, (int) (form.getHeight() * 0.93), form);
 		form.addObject(player);
 		form.addGameEventListener(this);
+		form.addFormCloseListener(this);
 		form.addKeyboardListener(new PlayerController(player));
 		audioPlayer = AudioConf.ENDLESS_BG;
+		refreshFormTitle();
 	}
 
 	public void run() {
@@ -86,7 +91,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 				player.gainScore(30);
 			}
 			while (!closed) {
-				if (form.countOf(FollowPlane.class) < maxEnemyNum) {
+				if (form.getAll(FollowPlane.class).size() < maxEnemyNum) {
 					randomAddEnemy();
 					checkLevelUp();
 				}
@@ -147,7 +152,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 
 		private void randomAddEnemy() {
 			if (RandomUtil.nextLess(ADD_ENEMY_CHANCE)) {
-				form.addObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, player, form));
+				form.addObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, form));
 				TimeUtil.wait(form, addNormalEnemyInterval);
 			}
 		}
@@ -157,6 +162,8 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	public void onObjectRemoved(IBObject obj) {
 		if (obj == player) {
 			gameOver();
+		} else {
+			refreshFormTitle();
 		}
 	}
 
@@ -167,7 +174,6 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 	}
 
 	private void gameOver() {
-		form.setGameOver();
 		audioController.close();
 		showGameOverLabel();
 		showRestartButton();
@@ -180,7 +186,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 
 	private void showRestartButton() {
 		RestartButton restart = new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, form);
-		restart.addOnceMouseListener(new MouseAdapter() {
+		form.notifyOnce(restart, new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				form.setVisible(false);
@@ -189,5 +195,9 @@ public class EndlessBattleMode extends GameMode implements GameEventListener {
 			}
 		});
 		form.addObject(restart);
+	}
+
+	private void refreshFormTitle() {
+		form.setTitle(formTitle + "         得分：" + player.getGameScore() + "      生命：" + player.getLife());
 	}
 }

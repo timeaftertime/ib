@@ -8,6 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-start</artifactId>
+	<description>游戏启动</description>
 
 	<build>
 		<plugins>
@@ -44,7 +45,15 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>
-			<artifactId>ib-obj</artifactId>
+			<artifactId>ib-interaction</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.milai</groupId>
+			<artifactId>ib-character</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.milai</groupId>
+			<artifactId>ib-component</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>

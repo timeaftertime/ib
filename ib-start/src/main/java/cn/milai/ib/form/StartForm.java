@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import cn.milai.ib.conf.SystemConf;
@@ -14,7 +15,7 @@ import cn.milai.ib.mode.EndlessBattleMode;
 import cn.milai.ib.mode.OnlineMode;
 import cn.milai.ib.mode.StoryMode;
 
-public class StartForm extends GameForm {
+public class StartForm extends JFrame {
 
 	/**
 	 * 
@@ -26,7 +27,6 @@ public class StartForm extends GameForm {
 
 	public StartForm() {
 		init();
-
 	}
 
 	private void init() {

@@ -2,27 +2,31 @@ package cn.milai.ib.form;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
 
+import com.google.common.collect.Lists;
+
+import cn.milai.ib.IBObject;
+import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.conf.ImageConf;
-import cn.milai.ib.conf.KeyConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
-import cn.milai.ib.form.listener.KeyboardListener;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.character.IBCharacter;
+import cn.milai.ib.interaction.form.FormContainer;
+import cn.milai.ib.interaction.form.listener.Command;
+import cn.milai.ib.interaction.form.listener.FormCloseListener;
+import cn.milai.ib.interaction.form.listener.KeyboardListener;
 import cn.milai.ib.property.Alive;
 import cn.milai.ib.property.CanCrash;
 import cn.milai.ib.property.CanCrashed;
 import cn.milai.ib.property.Movable;
 import cn.milai.ib.property.Paintable;
+import cn.milai.ib.util.OrderUtil;
+import cn.milai.ib.util.TimeUtil;
 
 /**
  * 战斗场景窗体类
@@ -58,20 +62,30 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	private List<CanCrashed> canCrasheds;
 	private List<KeyboardListener> keyboardListeners;
 	private List<GameEventListener> gameEventListeners;
-	private List<RefreshListener> refreshListener;
+	private List<RefreshListener> refreshListeners;
+	private List<FormCloseListener> formCloseListeners;
 
 	private Thread refreshThread;
 
-	private boolean gameOver;
-	private boolean closed;
+	/**
+	 * 窗口是否被关闭
+	 */
+	private volatile boolean closed;
 
-	public void setGameOver() {
-		gameOver = true;
-	}
+	/**
+	 * 是否被暂停
+	 */
+	private volatile boolean paused;
 
-	public boolean isGameOver() {
-		return gameOver;
-	}
+	/**
+	 * 游戏对象是否被固定住
+	 */
+	private volatile boolean pin;
+
+	/**
+	 * 是否调用过 start 方法
+	 */
+	private boolean started;
 
 	public BattleForm() {
 		init();
@@ -86,27 +100,30 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		this.setResizable(false);
 
 		bgImage = ImageConf.BATTLE_BG;
-		gameObjs = new ArrayList<>();
-		paintables = new ArrayList<Paintable>();
-		movables = new ArrayList<Movable>();
-		alives = new ArrayList<Alive>();
-		canCrashs = new ArrayList<CanCrash>();
-		canCrasheds = new ArrayList<CanCrashed>();
-		keyboardListeners = new ArrayList<KeyboardListener>();
-		gameEventListeners = new ArrayList<GameEventListener>();
-		refreshListener = new ArrayList<RefreshListener>();
-		gameOver = false;
+		gameObjs = Lists.newArrayList();
+		paintables = Lists.newArrayList();
+		movables = Lists.newArrayList();
+		alives = Lists.newArrayList();
+		canCrashs = Lists.newArrayList();
+		canCrasheds = Lists.newArrayList();
+		keyboardListeners = Lists.newArrayList();
+		gameEventListeners = Lists.newArrayList();
+		refreshListeners = Lists.newArrayList();
+		formCloseListeners = Lists.newArrayList();
 		closed = false;
+		paused = false;
+		started = false;
+		pin = false;
 
 		// 窗口关闭监听
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
-				for (GameEventListener listener : new ArrayList<>(gameEventListeners)) {
+				for (FormCloseListener listener : new ArrayList<>(formCloseListeners)) {
 					listener.onFormClosed();
 				}
-				closed = true;
+				close();
 			}
 		});
 
@@ -114,32 +131,10 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		refreshThread = new RefreshThread();
 
 		// 按键监听器
-		this.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				Command action = KeyConf.commandOf(e.getKeyCode());
-				if (action == null) {
-					return;
-				}
-				for (KeyboardListener listener : keyboardListeners) {
-					listener.keyDown(action);
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				Command action = KeyConf.commandOf(e.getKeyCode());
-				if (action == null) {
-					return;
-				}
-				for (KeyboardListener listener : keyboardListeners) {
-					listener.keyUp(action);
-				}
-			}
-		});
+		this.addKeyListener(new KeyEventDispatcher());
 	}
 
-	private void checkCrashed() {
+	private void checkCrash() {
 		for (CanCrash crash : new ArrayList<>(canCrashs)) {
 			for (CanCrashed crashed : new ArrayList<>(canCrasheds)) {
 				if (crash.sameCamp(crashed)) {
@@ -152,42 +147,104 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		}
 	}
 
+	/**
+	 * 界面刷新和游戏进度线程
+	 * 2020.01.12
+	 * @author milai
+	 */
 	private class RefreshThread extends Thread {
+
+		private static final String THREAD_NAME_PREFIX = "Refresh#started at ";
+
+		public RefreshThread() {
+			setName(THREAD_NAME_PREFIX + TimeUtil.datetime());
+		}
+
 		@Override
 		public void run() {
 			while (!closed) {
-				moveGameObjects();
+				checkPaused();
+
+				if (!pin) {
+					moveCharacters();
+					checkCrash();
+					checkAlive();
+					frame++;
+					notifyRefresh();
+				}
 				repaint();
-				checkCrashed();
-				checkAlive();
-				afterRefresh();
+
 				try {
 					Thread.sleep(MILLISEC_PER_FRAME);
+				} catch (InterruptedException e) {}
+			}
+		}
+
+		private void checkPaused() {
+			if (paused) {
+				try {
+					while (!Thread.interrupted()) {
+						Thread.sleep(MILLISEC_PER_FRAME);
+					}
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					// 依然走 finally 逻辑
+				} finally {
+					paused = false;
 				}
 			}
 		}
 
-		private void afterRefresh() {
-			frame++;
-			notifyRefresh();
-		}
-
 		private void notifyRefresh() {
-			for (RefreshListener listener : new ArrayList<>(refreshListener)) {
+			for (RefreshListener listener : new ArrayList<>(refreshListeners)) {
 				listener.afterRefresh(BattleForm.this);
 			}
 		}
 	}
 
+	/**
+	 * 键盘事件分发器
+	 * 2020.01.12
+	 * @author milai
+	 */
+	private class KeyEventDispatcher implements KeyboardListener {
+
+		@Override
+		public boolean keyDown(Command e) {
+			for (KeyboardListener listener : keyboardListeners) {
+				if (listener.keyDown(e)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public boolean keyUp(Command e) {
+			for (KeyboardListener listener : keyboardListeners) {
+				if (listener.keyUp(e)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+	}
+
 	@Override
 	public void start() {
-		// TODO 确保只能启动一次
-		refreshThread.start();
+		if (started) {
+			return;
+		}
+		synchronized (this) {
+			if (started) {
+				return;
+			}
+			started = true;
+		}
 		this.setVisible(true);
+		refreshThread.start();
 	}
-	
+
 	@Override
 	public void reset() {
 		init();
@@ -196,7 +253,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	/**
 	 * 让所有能移动的游戏对象移动
 	 */
-	private void moveGameObjects() {
+	private void moveCharacters() {
 		for (Movable m : new ArrayList<>(movables)) {
 			m.move();
 		}
@@ -223,20 +280,19 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		Image image = createImage(this.getWidth(), this.getHeight());
 		Graphics g = image.getGraphics();
 		g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
-		PriorityBlockingQueue<Paintable> toPaint = new PriorityBlockingQueue<>(paintables);
-		while (!toPaint.isEmpty()) {
-			toPaint.poll().paintWith(g);
+		ArrayList<Paintable> toPaint = Lists.newArrayList(paintables);
+		Collections.sort(toPaint);
+		for (Paintable p : toPaint) {
+			p.paintWith(g);
 		}
 		return image;
 	}
 
 	/**
-	 * 将 obj 加入游戏对象列表中，并根据是否实现了以下接口 
-	 * <li> {@link Paintable } </li>
-	 * <li> {@link Movable } </li>
-	 * <li> {@link Alive } </li>
-	 *  同时添加到对应队列
-	 * 
+	 * 将游戏对象加入游戏对象列表中，并根据是否实现了对应接口，同时添加到对应队列
+	 * @see Paintable
+	 * @see Movable
+	 * @see Alive
 	 * @param obj
 	 */
 	@Override
@@ -256,7 +312,6 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 	/**
 	 * 从当前窗体中移除对象
-	 * 
 	 * @param gameObj
 	 */
 	@SuppressWarnings("unlikely-arg-type")
@@ -290,8 +345,15 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		this.alives.add(alive);
 	}
 
+	@Override
 	public void addKeyboardListener(KeyboardListener listener) {
 		this.keyboardListeners.add(listener);
+		OrderUtil.sort(this.keyboardListeners);
+	}
+
+	@Override
+	public void removeKeyboardListener(KeyboardListener listener) {
+		this.keyboardListeners.remove(listener);
 	}
 
 	@Override
@@ -299,30 +361,32 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		this.gameEventListeners.add(listener);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public int countOf(Class<? extends IBObject> type) {
-		int cnt = 0;
+	public <T> List<T> getAll(Class<T> type) {
+		List<T> objs = Lists.newArrayList();
 		for (IBObject o : new ArrayList<>(gameObjs)) {
 			if (type.isInstance(o))
-				cnt++;
+				objs.add((T) o);
 		}
-		return cnt;
+		return objs;
 	}
 
 	public void close() {
 		setVisible(false);
 		dispose();
 		closed = true;
+		refreshThread.interrupt();
 	}
 
 	@Override
 	public void addRefreshListener(RefreshListener listener) {
-		refreshListener.add(listener);
+		refreshListeners.add(listener);
 	}
 
 	@Override
 	public void removeRefreshListener(RefreshListener listener) {
-		refreshListener.remove(listener);
+		refreshListeners.remove(listener);
 	}
 
 	@Override
@@ -334,4 +398,25 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	public int getContentHeight() {
 		return getContentPane().getHeight();
 	}
+
+	@Override
+	public void pauseOrResume() {
+		if (paused) {
+			refreshThread.interrupt();
+			// paused 的重置由 refreshThread 实现，以确保其退出 pause 状态才重置 paused
+		} else {
+			paused = true;
+		}
+	}
+
+	@Override
+	public void addFormCloseListener(FormCloseListener listener) {
+		formCloseListeners.add(listener);
+	}
+
+	@Override
+	public void setPin(boolean pin) {
+		this.pin = pin;
+	}
+
 }

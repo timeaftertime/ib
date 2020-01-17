@@ -16,11 +16,16 @@ public enum ActType {
 	 * 休眠
 	 */
 	SLEEP(0x2, "sleep"),
+	
+	/**
+	 * 显示对话框
+	 */
+	DIALOG(0x3, "dialog"),
 
 	/**
 	 * 调用剧本片段
 	 */
-	CALL(0x3, "call"),;
+	CALL(0x4, "call"),;
 
 	/**
 	 * 唯一标识，全局唯一

@@ -11,12 +11,16 @@ public class DramaStarter {
 
 	private boolean started = false;
 	private DramaInterpreter interpreter;
+	private String dramaCode;
+
+	private static final String THREAD_PREFIX = "Drama#";
 
 	/**
 	 * 加载并创建指定剧本
 	 * @param dramaCode 剧本名
 	 */
 	public DramaStarter(String dramaCode, Container container) {
+		this.dramaCode = dramaCode;
 		interpreter = new DramaInterpreter(dramaCode, container);
 	}
 
@@ -28,7 +32,7 @@ public class DramaStarter {
 			throw new IllegalStateException("一个剧本实例只能启动一次");
 		}
 		started = true;
-		new Thread(interpreter).start();
+		new Thread(interpreter, THREAD_PREFIX + dramaCode).start();
 	}
 
 	/**

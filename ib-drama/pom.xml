@@ -8,6 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-drama</artifactId>
+	<description>剧本解释执行</description>
 
 	<dependencies>
 		<dependency>

@@ -22,6 +22,9 @@ public class ActFactory {
 			case SLEEP : {
 				return new SleepAct();
 			}
+			case DIALOG: {
+				return new DialogAct();
+			}
 			default : {
 				throw new ActNotExistsException(code);
 			}

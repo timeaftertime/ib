@@ -19,9 +19,9 @@ public class ActExecuteException extends ActException {
 	public ActExecuteException(Act act, Throwable e) {
 		super(String.format("执行 Act 时发生异常, act = %s", act.getCode()), e);
 	}
-
-	public ActExecuteException(int pc, Throwable e) {
-		super(String.format("执行 Act 时发生异常, pc = %d", pc), e);
+	
+	public ActExecuteException(Act act, String msg) {
+		super(String.format("执行 Act 时发生异常, act = %s, error = (%s)", act.getCode(), msg));
 	}
 
 }

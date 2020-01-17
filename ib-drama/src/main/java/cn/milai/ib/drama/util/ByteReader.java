@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import cn.milai.ib.drama.IBIOException;
+import cn.milai.ib.ex.IBIOException;
 
 /**
  * 字节码读取器

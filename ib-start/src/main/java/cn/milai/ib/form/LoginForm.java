@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,7 +29,7 @@ import cn.milai.ib.client.util.RequestUtil.Entry;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.util.StringUtil;
 
-public class LoginForm extends GameForm {
+public class LoginForm extends JFrame {
 
 	/**
 	 * 
@@ -44,7 +45,7 @@ public class LoginForm extends GameForm {
 	private JTextField jtfUsername;
 	private JPasswordField jtfPassword;
 	private JButton submit;
-	private GameForm registerForm = new ReigisterForm(this);
+	private JFrame registerForm = new ReigisterForm(this);
 
 	public LoginForm() {
 		init();
@@ -137,19 +138,19 @@ public class LoginForm extends GameForm {
 					return;
 				}
 				switch (ResponseCode.parse(result.getIntValue(ParamName.CODE))) {
-				case SUCCESS:
-					String token = result.getString(ParamName.TOKEN);
-					this.dispose();
-					SwingUtilities.invokeLater(() -> {
-						new OnlineForm(token);
-					});
-					break;
-				case USERNAME_NOT_EXISTS:
-				case PASSWORD_ERROR:
-					JOptionPane.showMessageDialog(this, "用户名或密码错误");
-					break;
-				default:
-					break;
+					case SUCCESS :
+						String token = result.getString(ParamName.TOKEN);
+						this.dispose();
+						SwingUtilities.invokeLater(() -> {
+							new OnlineForm(token);
+						});
+						break;
+					case USERNAME_NOT_EXISTS :
+					case PASSWORD_ERROR :
+						JOptionPane.showMessageDialog(this, "用户名或密码错误");
+						break;
+					default :
+						break;
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();

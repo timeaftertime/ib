@@ -1,6 +1,6 @@
 package cn.milai.ib.property;
 
-import cn.milai.ib.obj.character.ExplosionCreator;
+import cn.milai.ib.character.ExplosionCreator;
 
 /**
  * 可爆炸的

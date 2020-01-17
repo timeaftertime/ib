@@ -6,38 +6,45 @@ import java.awt.event.MouseEvent;
 import cn.milai.ib.AudioConf;
 import cn.milai.ib.AudioPlayer;
 import cn.milai.ib.AudioPlayer.AudioController;
+import cn.milai.ib.IBObject;
+import cn.milai.ib.character.plane.PlayerPlane;
+import cn.milai.ib.component.form.GameOverLabel;
+import cn.milai.ib.component.form.RestartButton;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.drama.DramaStarter;
 import cn.milai.ib.form.BattleForm;
-import cn.milai.ib.form.FormContainer;
-import cn.milai.ib.form.listener.PlayerController;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.character.plane.PlayerPlane;
-import cn.milai.ib.obj.component.GameOverLabel;
-import cn.milai.ib.obj.component.RestartButton;
+import cn.milai.ib.interaction.form.FormContainer;
+import cn.milai.ib.interaction.form.listener.FormCloseListener;
+import cn.milai.ib.interaction.form.listener.GameProcController;
+import cn.milai.ib.interaction.form.listener.PlayerController;
 
-public class StoryMode extends GameMode implements GameEventListener {
+public class StoryMode extends GameMode implements FormCloseListener, GameEventListener {
 
 	private FormContainer form;
 	private PlayerPlane player;
 	private AudioPlayer audioPlayer;
 	private AudioController audioController;
 	private DramaStarter drama;
+	private String formTitle;
 
-	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(48);
-	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(360);
-	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(360);
+	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(400);
+	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
+	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(390);
 	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
 
 	public StoryMode() {
 		form = new BattleForm();
-		drama = new DramaStarter("cn.milai.ib.welcome", form);
-		player = new PlayerPlane(form.getWidth() / 2, form.getHeight() / 3 * 2, form);
+		formTitle = form.getTitle();
+		drama = new DramaStarter("cn.milai.ib.Welcome", form);
+		player = new PlayerPlane(form.getWidth() / 2, (int) (form.getHeight() * 0.93), form);
 		form.addObject(player);
+		form.addFormCloseListener(this);
 		form.addGameEventListener(this);
 		form.addKeyboardListener(new PlayerController(player));
+		form.addKeyboardListener(new GameProcController(form));
 		audioPlayer = AudioConf.ENDLESS_BG;
+		refreshFormTitle();
 	}
 
 	public void run() {
@@ -50,6 +57,8 @@ public class StoryMode extends GameMode implements GameEventListener {
 	public void onObjectRemoved(IBObject obj) {
 		if (obj == player) {
 			gameOver();
+		} else {
+			refreshFormTitle();
 		}
 	}
 
@@ -60,7 +69,6 @@ public class StoryMode extends GameMode implements GameEventListener {
 	}
 
 	private void gameOver() {
-		//		form.setGameOver();
 		audioController.close();
 		showGameOverLabel();
 		showRestartButton();
@@ -73,7 +81,7 @@ public class StoryMode extends GameMode implements GameEventListener {
 
 	private void showRestartButton() {
 		RestartButton restart = new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, form);
-		restart.addOnceMouseListener(new MouseAdapter() {
+		form.notifyOnce(restart, new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				form.close();
@@ -81,6 +89,10 @@ public class StoryMode extends GameMode implements GameEventListener {
 			}
 		});
 		form.addObject(restart);
+	}
+
+	private void refreshFormTitle() {
+		form.setTitle(formTitle + "         得分：" + player.getGameScore() + "      生命：" + player.getLife());
 	}
 
 }

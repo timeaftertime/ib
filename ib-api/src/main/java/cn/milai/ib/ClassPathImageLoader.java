@@ -26,18 +26,14 @@ public class ClassPathImageLoader extends ImageLoader {
 		}
 		imgPath.append(IMAGE_EXT);
 		URL url = clazz.getResource(imgPath.toString());
-		if(url == null) {
+		if (url == null) {
 			throw new NullPointerException(String.format("资源 classpath:%s 不存在", imgPath.toString()));
 		}
 		return loadImage(url);
 	}
 
 	private String classToPath(Class<?> clazz) {
-		String[] splits = clazz.getName().split("\\.");
-		for (int i = 0; i < splits.length; i++) {
-			splits[i] = StringUtil.toSnake(splits[i]);
-		}
-		return String.join("/", splits);
+		return clazz.getName().replace('.', '/');
 	}
 
 }

@@ -8,14 +8,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JFrame;
 
-import cn.milai.ib.EventNotifier;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.IBObject;
+import cn.milai.ib.interaction.form.FormContainer;
+import cn.milai.ib.interaction.form.IBFormComponent;
 
-public abstract class GameForm extends JFrame implements EventNotifier {
+public abstract class GameForm extends JFrame implements FormContainer {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Map<IBObject, MouseListener> listeners = new ConcurrentHashMap<>();
+	private static final Map<IBFormComponent, MouseListener> listeners = new ConcurrentHashMap<>();
 
 	public GameForm() {
 		addMouseListener(new MouseAdapter() {
@@ -40,8 +41,8 @@ public abstract class GameForm extends JFrame implements EventNotifier {
 	}
 
 	@Override
-	public void notifyOnce(IBObject gameObj, MouseListener listener) {
-		listeners.put(gameObj, listener);
+	public void notifyOnce(IBFormComponent component, MouseListener listener) {
+		listeners.put(component, listener);
 	}
 
 }

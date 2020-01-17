@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import cn.milai.ib.drama.IBIOException;
 import cn.milai.ib.drama.ex.DramaFileFormatException;
 import cn.milai.ib.drama.util.ByteUtils;
+import cn.milai.ib.ex.IBIOException;
 
 /**
  * 剧本元数据，对应 .drama 文件

@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cn.milai.ib.drama.IBIOException;
+import cn.milai.ib.ex.IBIOException;
 
 /**
  * 字节相关工具类
