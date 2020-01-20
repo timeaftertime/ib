@@ -5,6 +5,7 @@ import java.io.IOException;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.drama.act.Act;
 import cn.milai.ib.drama.act.ActFactory;
+import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.DramaSpace;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;

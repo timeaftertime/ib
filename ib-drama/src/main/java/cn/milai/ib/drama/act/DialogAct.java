@@ -8,7 +8,7 @@ import cn.milai.ib.ImageLoader;
 import cn.milai.ib.component.IBComponent;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.drama.Clip;
+import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;
 import cn.milai.ib.util.TimeUtil;

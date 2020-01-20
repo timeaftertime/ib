@@ -6,8 +6,8 @@ import java.lang.reflect.Constructor;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.drama.Clip;
 import cn.milai.ib.drama.act.ex.IllegalOperandsException;
+import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;
 

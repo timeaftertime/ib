@@ -1,4 +1,4 @@
-package cn.milai.ib.drama;
+package cn.milai.ib.drama.clip;
 
 /**
  * 剧情片段，可在不同剧情中复用的片段

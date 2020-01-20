@@ -1,0 +1,12 @@
+﻿dialog cn.milai.ib.component.form.DramaDialog 0.5 0.75 cn.milai.ib.character.plane.PlayerPlane 敌星弹雨支持剧本对话啦！\n\n    这是一段可以包含中文、 English 和常用标点符号的剧情对话。\n    如果这段话的内容比较长，那么会在必要时被自动换行。如果内容超过一页可以显示的长度，将被自动分为多页显示，每次玩家按指定键会显示下一页。\n    对话框期间玩家和敌机不能移动。\n\n……\n\n……\n\n……\n\n……\n\n  左上角会显示说话人头像，右下角应该显示继续按钮。
+####注释
+new cn.milai.ib.character.plane.WelcomePlane 0.4 0
+# 这是注释
+new cn.milai.ib.character.plane.WelcomePlane 0.5 -0.2
+	#这也是注释
+# 还是注释////////////////////\\\\\\\\\\\\\\\\\\\\\\\\##new 
+sleep 10
+new cn.milai.ib.character.plane.FollowPlane 0.2 0
+new cn.milai.ib.character.plane.FollowPlane 0.8 0
+sleep 20
+new cn.milai.ib.character.plane.MissileBoss 0.5 -0.1

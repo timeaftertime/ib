@@ -1,12 +1,10 @@
-package cn.milai.ib.drama;
+package cn.milai.ib.drama.clip;
 
-import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.drama.ex.ClipReadException;
 import cn.milai.ib.drama.statics.DramaMetadata;
 import cn.milai.ib.drama.util.ByteUtils;
 
@@ -15,28 +13,15 @@ import cn.milai.ib.drama.util.ByteUtils;
  * 2019.12.24
  * @author milai
  */
-public abstract class AbstractClip implements Clip {
+public class DefaultClip implements Clip {
 
 	protected DramaMetadata drama;
 	protected final Map<String, String> PARAMS;
 
-	public AbstractClip(String clipCode) {
-		URL clipURL = null;
-		try {
-			clipURL = getClipURL(clipCode);
-			drama = new DramaMetadata(ByteUtils.toBytes(clipURL.openStream()));
-		} catch (IOException e) {
-			throw new ClipReadException(clipURL.toString());
-		}
+	public DefaultClip(InputStream in) {
+		drama = new DramaMetadata(ByteUtils.toBytes(in));
 		PARAMS = Maps.newHashMap();
 	}
-
-	/**
-	 * 返回剧本资源的 URL
-	 * @param clipCode 
-	 * @return
-	 */
-	protected abstract URL getClipURL(String clipCode);
 
 	@Override
 	public void setVariable(String key, String value) {

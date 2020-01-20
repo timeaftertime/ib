@@ -2,8 +2,8 @@ package cn.milai.ib.drama.runtime;
 
 import java.util.Map;
 
-import cn.milai.ib.drama.Clip;
-import cn.milai.ib.drama.ClipFactory;
+import cn.milai.ib.drama.clip.Clip;
+import cn.milai.ib.drama.clip.ClipFactory;
 
 /**
  * 剧本帧

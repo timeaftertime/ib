@@ -1,4 +1,4 @@
-package cn.milai.ib.drama;
+package cn.milai.ib.drama.clip;
 
 import java.util.Map;
 
@@ -11,6 +11,16 @@ import cn.milai.ib.drama.ex.ClipParamInvalidExcecption;
  */
 public class ClipFactory {
 
+	private static ClipResolver resolver = new ClassPathClipResolver();
+
+	/**
+	 * 设置使用的剧本解析器
+	 * @param resolver
+	 */
+	public static void setClipResolver(ClipResolver resolver) {
+		ClipFactory.resolver = resolver;
+	}
+
 	/**
 	 * 加载指定的剧本片段
 	 * @param clipCode
@@ -18,7 +28,7 @@ public class ClipFactory {
 	 * @return
 	 */
 	public static Clip newClip(String clipCode, Map<String, String> params) {
-		Clip clip = new ClassPathClip(clipCode);
+		Clip clip = new DefaultClip(resolver.openStream(clipCode));
 		copyParams(clip, params);
 		return clip;
 	}
