@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
 
-import cn.milai.ib.AudioConf;
 import cn.milai.ib.character.Player;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.bullet.shooter.UpBulletShooter;
@@ -80,7 +79,6 @@ public class PlayerPlane extends Plane implements Player {
 		}
 		if (shooting) {
 			if (shoot()) {
-				AudioConf.SHOOT.play();
 			}
 		}
 	}

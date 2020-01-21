@@ -16,9 +16,9 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<appendAssemblyId>false</appendAssemblyId>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
+					<finalName>infinity-battle</finalName>
+					<descriptor>src/main/assembly/assembly.xml</descriptor>
+					<outputDirectory>output/</outputDirectory>
 					<archive>
 						<manifest>
 							<mainClass>cn.milai.ib.InfinityBattle</mainClass>
@@ -27,10 +27,10 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
+						<id>assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>assembly</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>

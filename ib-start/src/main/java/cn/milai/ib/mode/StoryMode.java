@@ -3,13 +3,14 @@ package cn.milai.ib.mode;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import cn.milai.ib.AudioConf;
 import cn.milai.ib.AudioPlayer;
 import cn.milai.ib.AudioPlayer.AudioController;
 import cn.milai.ib.IBObject;
+import cn.milai.ib.character.Explosion;
 import cn.milai.ib.character.plane.PlayerPlane;
 import cn.milai.ib.component.form.GameOverLabel;
 import cn.milai.ib.component.form.RestartButton;
+import cn.milai.ib.conf.AudioConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.drama.DramaStarter;
@@ -51,6 +52,13 @@ public class StoryMode extends GameMode implements FormCloseListener, GameEventL
 		audioController = audioPlayer.play();
 		form.start();
 		drama.start();
+	}
+
+	@Override
+	public void onObjectAdded(IBObject obj) {
+		if (obj instanceof Explosion) {
+			AudioConf.BOMB.play();
+		}
 	}
 
 	@Override

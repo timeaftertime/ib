@@ -1,6 +1,5 @@
 package cn.milai.ib.character.explosion;
 
-import cn.milai.ib.AudioConf;
 import cn.milai.ib.character.Explosion;
 import cn.milai.ib.container.Container;
 
@@ -15,7 +14,6 @@ public class DefaultExplosion extends Explosion {
 
 	public DefaultExplosion(int x, int y, Container container) {
 		super(x, y, container);
-		AudioConf.BOMB.play();
 	}
 
 }

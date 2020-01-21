@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+
+	<id>assembly</id>
+	<formats>
+		<format>tar.gz</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.directory}/classes</directory>
+			<includes>
+				<include>audio/</include>
+				<include>dramas/</include>
+				<include>img/</include>
+				<include>*.conf</include>
+				<include>startup.*</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}/</directory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<outputDirectory>/lib</outputDirectory>
+		</fileSet>
+	</fileSets>
+
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+
+</assembly>

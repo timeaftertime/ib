@@ -308,6 +308,9 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 			addCrash((CanCrash) obj);
 		if (obj instanceof CanCrashed)
 			addCanCrashed((CanCrashed) obj);
+		for (GameEventListener listener : gameEventListeners) {
+			listener.onObjectAdded(obj);
+		}
 	}
 
 	/**
