@@ -8,4 +8,4 @@ mshta vbscript:createobject("wscript.shell").run("%~nx0 h",0)(window.close)&&exi
 :: 进入当前文件所在目录
 cd /d %~dp0
 :: 后台启动
-start /b java -classpath lib/* cn.milai.ib.InfinityBattle
+start /b java -classpath .;lib/* cn.milai.ib.InfinityBattle
