@@ -28,5 +28,9 @@ public class IBException extends RuntimeException {
 	public IBException(Throwable e) {
 		super(e);
 	}
+	
+	public IBException(String format, Object...args) {
+		this(String.format(format, args));
+	}
 
 }

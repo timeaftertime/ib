@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import cn.milai.ib.drama.statics.DramaMetadata;
-import cn.milai.ib.drama.util.ByteUtils;
+import cn.milai.ib.util.ByteUtil;
 
 /**
  * Clip 的抽象基类
@@ -19,7 +19,7 @@ public class DefaultClip implements Clip {
 	protected final Map<String, String> PARAMS;
 
 	public DefaultClip(InputStream in) {
-		drama = new DramaMetadata(ByteUtils.toBytes(in));
+		drama = new DramaMetadata(ByteUtil.toBytes(in));
 		PARAMS = Maps.newHashMap();
 	}
 

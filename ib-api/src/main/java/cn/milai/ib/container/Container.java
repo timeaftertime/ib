@@ -66,7 +66,7 @@ public interface Container {
 	<T> List<T> getAll(Class<T> type);
 
 	/**
-	 * 获取当前累计的帧数
+	 * 获取当前累计的帧数，获取失败则返回 -1
 	 * 
 	 * @return
 	 */

@@ -19,7 +19,7 @@ public interface FormContainer extends LifecycleContainer {
 	 * @param listener
 	 */
 	void addKeyboardListener(KeyboardListener listener);
-	
+
 	/**
 	 * 移除键盘监听器
 	 * 
@@ -49,5 +49,16 @@ public interface FormContainer extends LifecycleContainer {
 	 * 设置容器标题
 	 */
 	void setTitle(String title);
+	
+	/**
+	 * 播放音频
+	 */
+	void playAudio(Audio audio);
+	
+	/**
+	 * 停止一个音频的播放
+	 * @param code
+	 */
+	void stopAudio(String code);
 
 }

@@ -1,43 +1,23 @@
 package cn.milai.ib.mode;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import cn.milai.ib.AudioPlayer;
-import cn.milai.ib.AudioPlayer.AudioController;
-import cn.milai.ib.IBObject;
-import cn.milai.ib.character.Explosion;
 import cn.milai.ib.character.plane.FollowPlane;
-import cn.milai.ib.character.plane.PlayerPlane;
 import cn.milai.ib.character.plane.WelcomePlane;
-import cn.milai.ib.component.form.GameOverLabel;
-import cn.milai.ib.component.form.RestartButton;
 import cn.milai.ib.conf.AudioConf;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.listener.GameEventListener;
-import cn.milai.ib.form.BattleForm;
-import cn.milai.ib.interaction.form.listener.FormCloseListener;
-import cn.milai.ib.interaction.form.listener.PlayerController;
 import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.TimeUtil;
 
-public class EndlessBattleMode extends GameMode implements GameEventListener, FormCloseListener {
+/**
+ * 无尽模式
+ * @author milai
+ */
+public class EndlessBattleMode extends GameMode {
 
-	private BattleForm form;
-	private PlayerPlane player;
 	private int maxEnemyNum = INIT_MAX_ENEMY_NUM;
 	private int preGameScore = INIT_LEVEL_UP_GAME_SCORE;
 	private long lastLevelUpTime;
-	private AudioPlayer audioPlayer;
-	private AudioController audioController;
 	private long addNormalEnemyInterval = INIT_ADD_NORMAL_ENEMEY_FRAMES;
 	private boolean closed = false;
-	private static String formTitle;
-
-	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(400);
-	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
-	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(390);
-	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
 
 	private static final int INIT_LEVEL_UP_GAME_SCORE = 30;
 	private static final int MAX_PLAYER_BULLET_NUM = 8;
@@ -62,21 +42,8 @@ public class EndlessBattleMode extends GameMode implements GameEventListener, Fo
 
 	private static final double ADD_ENEMY_CHANCE = 0.2;
 
-	public EndlessBattleMode() {
-		form = new BattleForm();
-		formTitle = form.getTitle();
-		player = new PlayerPlane(form.getWidth() / 2, (int) (form.getHeight() * 0.93), form);
-		form.addObject(player);
-		form.addGameEventListener(this);
-		form.addFormCloseListener(this);
-		form.addKeyboardListener(new PlayerController(player));
-		audioPlayer = AudioConf.ENDLESS_BG;
-		refreshFormTitle();
-	}
-
+	@Override
 	public void run() {
-		audioController = audioPlayer.play();
-		form.start();
 		Thread gameController = new Thread(new GameControl(), "EndlessBattleModeGameControl");
 		gameController.setDaemon(true);
 		gameController.start();
@@ -86,6 +53,7 @@ public class EndlessBattleMode extends GameMode implements GameEventListener, Fo
 
 		@Override
 		public void run() {
+			form.playAudio(AudioConf.BGM.newAudio());
 			addWelComePlayer();
 			// 消灭所有欢迎机则奖励分数
 			if (player.getGameScore() >= 29) {
@@ -160,52 +128,14 @@ public class EndlessBattleMode extends GameMode implements GameEventListener, Fo
 	}
 
 	@Override
-	public void onObjectAdded(IBObject obj) {
-		if (obj instanceof Explosion) {
-			AudioConf.BOMB.play();
-		}
-	}
-
-	@Override
-	public void onObjectRemoved(IBObject obj) {
-		if (obj == player) {
-			gameOver();
-		} else {
-			refreshFormTitle();
-		}
+	protected void gameOver() {
+		super.gameOver();
+		form.stopAudio(AudioConf.BGM_CODE);
 	}
 
 	@Override
 	public void onFormClosed() {
-		audioController.close();
 		closed = true;
 	}
 
-	private void gameOver() {
-		audioController.close();
-		showGameOverLabel();
-		showRestartButton();
-	}
-
-	private void showGameOverLabel() {
-		GameOverLabel gameOverLabel = new GameOverLabel(GAME_OVER_LABEL_POS_X, GAME_OVER_LABEL_POS_Y, form);
-		form.addObject(gameOverLabel);
-	}
-
-	private void showRestartButton() {
-		RestartButton restart = new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, form);
-		form.notifyOnce(restart, new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				form.setVisible(false);
-				form.dispose();
-				new EndlessBattleMode().start();
-			}
-		});
-		form.addObject(restart);
-	}
-
-	private void refreshFormTitle() {
-		form.setTitle(formTitle + "         得分：" + player.getGameScore() + "      生命：" + player.getLife());
-	}
 }

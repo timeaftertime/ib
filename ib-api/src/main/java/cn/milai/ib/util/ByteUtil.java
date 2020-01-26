@@ -1,5 +1,6 @@
-package cn.milai.ib.drama.util;
+package cn.milai.ib.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +12,9 @@ import cn.milai.ib.ex.IBIOException;
  * 2020.01.05
  * @author milai
  */
-public abstract class ByteUtils {
+public abstract class ByteUtil {
 
-	private ByteUtils() {
+	private ByteUtil() {
 
 	}
 
@@ -29,5 +30,9 @@ public abstract class ByteUtils {
 		} catch (IOException e) {
 			throw new IBIOException(e);
 		}
+	}
+
+	public static InputStream toInputStream(byte[] data) {
+		return new ByteArrayInputStream(data);
 	}
 }

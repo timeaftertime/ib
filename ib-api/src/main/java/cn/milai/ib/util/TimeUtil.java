@@ -6,10 +6,14 @@ import java.util.Date;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.RefreshListener;
 
+/**
+ * 时间相关工具类
+ * @author milai
+ */
 public class TimeUtil {
 
-	private static final int DEFAULT_TIME_OUT = 10000;
 	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final long SLEEP_MILLISEC = 5000;
 
 	private static class CountDownInterrupter implements RefreshListener {
 
@@ -24,7 +28,7 @@ public class TimeUtil {
 		@Override
 		public void afterRefresh(Container container) {
 			frame--;
-			if (frame <= 0) {
+			if (container.currentFrame() < 0 || frame <= 0) {
 				container.removeRefreshListener(this);
 				thread.interrupt();
 			}
@@ -33,15 +37,14 @@ public class TimeUtil {
 
 	/**
 	 * 使当前线程 Thread 到窗体经过指定帧数
-	 * 
 	 * @param container 等待的窗体对象
 	 * @param frame 等待的帧数
 	 */
 	public static void wait(Container container, long frame) {
 		container.addRefreshListener(new CountDownInterrupter(frame, Thread.currentThread()));
-		while (!Thread.interrupted()) {
+		while (!Thread.interrupted() && container.currentFrame() >= 0) {
 			try {
-				Thread.sleep(DEFAULT_TIME_OUT);
+				Thread.sleep(SLEEP_MILLISEC);
 			} catch (InterruptedException e) {
 				break;
 			}

@@ -7,8 +7,12 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.IBCharacter;
@@ -16,6 +20,7 @@ import cn.milai.ib.conf.ImageConf;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
+import cn.milai.ib.interaction.form.Audio;
 import cn.milai.ib.interaction.form.FormContainer;
 import cn.milai.ib.interaction.form.listener.Command;
 import cn.milai.ib.interaction.form.listener.FormCloseListener;
@@ -65,7 +70,10 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	private List<RefreshListener> refreshListeners;
 	private List<FormCloseListener> formCloseListeners;
 
+	private Map<String, Audio> audios;
+
 	private Thread refreshThread;
+	private Thread audioThread;
 
 	/**
 	 * 窗口是否被关闭
@@ -110,6 +118,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		gameEventListeners = Lists.newArrayList();
 		refreshListeners = Lists.newArrayList();
 		formCloseListeners = Lists.newArrayList();
+		audios = Maps.newConcurrentMap();
 		closed = false;
 		paused = false;
 		started = false;
@@ -127,8 +136,8 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 			}
 		});
 
-		// 用于刷新的线程
 		refreshThread = new RefreshThread();
+		audioThread = new AudioPlayThread();
 
 		// 按键监听器
 		this.addKeyListener(new KeyEventDispatcher());
@@ -162,7 +171,12 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 		@Override
 		public void run() {
-			while (!closed) {
+			while (true) {
+				if (closed) {
+					frame = -1;
+					notifyRefresh();
+					break;
+				}
 				checkPaused();
 
 				if (!pin) {
@@ -197,6 +211,48 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		private void notifyRefresh() {
 			for (RefreshListener listener : new ArrayList<>(refreshListeners)) {
 				listener.afterRefresh(BattleForm.this);
+			}
+		}
+	}
+
+	/**
+	 * 音频线程
+	 * 2020.01.25
+	 * @author milai
+	 */
+	private class AudioPlayThread extends Thread {
+		private static final int THREAD_POOL_SIZE = 2;
+		private static final String THREAD_NAME_PREFIX = "AudioPlayThread#started at ";
+		// 已经被某个线程服务的音频
+		private List<String> fetched = Lists.newArrayList();
+		private ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);;
+
+		public AudioPlayThread() {
+			setName(THREAD_NAME_PREFIX + TimeUtil.datetime());
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				if (closed) {
+					pool.shutdown();
+					return;
+				}
+				for (String code : audios.keySet()) {
+					Audio audio = audios.get(code);
+					// 判断 contains 和 add 操作都在 Audio 主线程，不需要同步
+					if (!fetched.contains(audio.getCode())) {
+						fetched.add(audio.getCode());
+						pool.execute(() -> {
+							audio.play();
+							if (audio.isComplete()) {
+								audios.remove(code, audio);
+							}
+							fetched.remove(audio.getCode());
+						});
+					}
+				}
+				TimeUtil.wait(BattleForm.this, 1L);
 			}
 		}
 	}
@@ -243,6 +299,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		}
 		this.setVisible(true);
 		refreshThread.start();
+		audioThread.start();
 	}
 
 	@Override
@@ -420,6 +477,19 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	@Override
 	public void setPin(boolean pin) {
 		this.pin = pin;
+	}
+
+	@Override
+	public void playAudio(Audio audio) {
+		if (audio == null) {
+			return;
+		}
+		audios.put(audio.getCode(), audio);
+	}
+
+	@Override
+	public void stopAudio(String code) {
+		audios.remove(code);
 	}
 
 }

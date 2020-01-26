@@ -5,8 +5,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import cn.milai.ib.drama.ex.DramaFileFormatException;
-import cn.milai.ib.drama.util.ByteUtils;
 import cn.milai.ib.ex.IBIOException;
+import cn.milai.ib.util.ByteUtil;
 
 /**
  * 剧本元数据，对应 .drama 文件
@@ -67,7 +67,7 @@ public class DramaMetadata {
 	}
 
 	private void readClipBytes(DataInputStream reader) throws IOException {
-		clipBytes = ByteUtils.toBytes(reader);
+		clipBytes = ByteUtil.toBytes(reader);
 	}
 
 	/**
@@ -113,4 +113,13 @@ public class DramaMetadata {
 	public String getUTF8Const(int index) {
 		return pool.getUTF8(index).getValue();
 	}
+
+	public int getMajorVersion() {
+		return majorVersion;
+	}
+
+	public int getMinorVersion() {
+		return minorVersion;
+	}
+	
 }
