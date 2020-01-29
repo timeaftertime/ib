@@ -1,2 +1,9 @@
-/target/
-/output/
+target/
+output/
+
+.classpath
+.project
+.settings/
+.factorypath
+
+.idea/
