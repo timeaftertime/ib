@@ -1,8 +1,15 @@
 package cn.milai.ib.drama.clip;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+
+import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.drama.ex.ClipParamInvalidExcecption;
+import cn.milai.ib.util.FileUtil;
+import cn.milai.ib.util.HttpUtil;
 
 /**
  * 产生 Clip 的工厂类
@@ -11,14 +18,14 @@ import cn.milai.ib.drama.ex.ClipParamInvalidExcecption;
  */
 public class ClipFactory {
 
-	private static ClipResolver resolver = new ClassPathClipResolver();
+	private static List<ClipDecorator> decorators = Lists.newArrayList();
 
 	/**
-	 * 设置使用的剧本解析器
-	 * @param resolver
+	 * 注册一个剧本数据装饰器
+	 * @param decorator
 	 */
-	public static void setClipResolver(ClipResolver resolver) {
-		ClipFactory.resolver = resolver;
+	public static void registerClipDecorator(ClipDecorator decorator) {
+		decorators.add(decorator);
 	}
 
 	/**
@@ -28,9 +35,22 @@ public class ClipFactory {
 	 * @return
 	 */
 	public static Clip newClip(String clipCode, Map<String, String> params) {
-		Clip clip = new DefaultClip(resolver.openStream(clipCode));
+		Clip clip = new DefaultClip(resolveClip(clipCode));
 		copyParams(clip, params);
 		return clip;
+	}
+
+	private static byte[] resolveClip(String clipCode) {
+		String path = PathConf.drama(clipCode);
+		File file = new File(path);
+		if (!file.exists()) {
+			FileUtil.save(path, HttpUtil.getFile(PathConf.dramaRepo(clipCode)));
+		}
+		byte[] data = FileUtil.read(file);
+		for (ClipDecorator decorator : decorators) {
+			data = decorator.decorate(data);
+		}
+		return data;
 	}
 
 	/**
@@ -39,8 +59,7 @@ public class ClipFactory {
 	 * @param params 需要复制的参数 map ，若为 null 表示不需要复制
 	 * @return
 	 */
-	private static final void copyParams(Clip clip,
-			Map<String, String> params) {
+	private static final void copyParams(Clip clip, Map<String, String> params) {
 		if (params == null) {
 			return;
 		}

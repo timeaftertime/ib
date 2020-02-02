@@ -10,6 +10,7 @@ import cn.milai.ib.constant.BulletType;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.property.HasDamage;
 import cn.milai.ib.property.Locable;
+import cn.milai.ib.util.ImageLoader;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -37,7 +38,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private Status status;
 
-	private final Image DANGER_IMG = getImageLoader().loadImage(MissileBoss.class, "danger");
+	private final Image DANGER_IMG = ImageLoader.loadImage(MissileBoss.class, "danger");
 
 	public MissileBoss(int x, int y, Container container) {
 		super(x, y, container);

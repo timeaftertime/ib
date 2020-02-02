@@ -1,11 +1,15 @@
 package cn.milai.ib.util;
 
-import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.ex.LoadConfigException;
+import cn.milai.ib.conf.PathConf;
+import cn.milai.ib.ex.ConfigNotFoundException;
 
 /**
  * 游戏对象配置信息加载器
@@ -14,10 +18,10 @@ import cn.milai.ib.ex.LoadConfigException;
  */
 public abstract class ConfigLoader {
 
-	private static final String PREFIX = "/conf/";
-	private static final String SUFFIX = ".conf";
-
-	public static final Map<Class<?>, Map<String, String>> props = Maps.newHashMap();
+	/**
+	 * class.getName() -> Map
+	 */
+	public static final Map<String, Map<String, String>> props = Maps.newHashMap();
 
 	/**
 	 * 获取指定 Class 的配置信息
@@ -26,30 +30,31 @@ public abstract class ConfigLoader {
 	 * @return
 	 */
 	public static final Map<String, String> getProp(Class<?> clazz) {
-		if (props.containsKey(clazz)) {
-			return props.get(clazz);
+		String key = clazz.getName();
+		if (props.containsKey(key)) {
+			return props.get(key);
 		}
 		synchronized (props) {
-			Map<String, String> prop = props.get(clazz);
+			Map<String, String> prop = props.get(key);
 			if (prop == null) {
 				prop = PropertiesUtil.load(getConfigURL(clazz));
-				props.put(clazz, prop);
+				props.put(key, prop);
 			}
 			return prop;
 		}
 	}
 
-	private static final URL getConfigURL(Class<?> clazz) {
-		String path = PREFIX + classToPath(clazz) + SUFFIX;
-		URL url = clazz.getResource(path);
-		if (url == null) {
-			throw new LoadConfigException(path);
+	private static final InputStream getConfigURL(Class<?> clazz) {
+		String path = PathConf.conf(clazz);
+		File file = new File(path);
+		if (!file.exists()) {
+			FileUtil.save(path, HttpUtil.getFile(PathConf.confRepo(clazz)));
 		}
-		return url;
-	}
-
-	private static String classToPath(Class<?> clazz) {
-		return clazz.getName().replace('.', '/');
+		try {
+			return new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			throw new ConfigNotFoundException(clazz.getName(), e);
+		}
 	}
 
 }

@@ -11,7 +11,7 @@ public class InfinityBattle {
 	}
 
 	private static void init() {
-		ClipFactory.setClipResolver(new ClassPathIBDClipResolver());
+		ClipFactory.registerClipDecorator(new CompileClipDecorator());
 	}
 
 }

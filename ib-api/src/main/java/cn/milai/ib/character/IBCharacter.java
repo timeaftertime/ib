@@ -9,6 +9,7 @@ import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.property.Alive;
 import cn.milai.ib.property.Explosible;
+import cn.milai.ib.util.ImageLoader;
 
 /**
  * 参与到游戏中的游戏角色
@@ -67,7 +68,7 @@ public abstract class IBCharacter extends IBObject implements Alive {
 
 	@Override
 	public Image getImage() {
-		return img == null ? (img = getImageLoader().loadImage(this.getClass(), getStatus())) : img;
+		return img == null ? (img = ImageLoader.loadImage(this.getClass(), getStatus())) : img;
 	}
 
 	@Override
@@ -83,12 +84,12 @@ public abstract class IBCharacter extends IBObject implements Alive {
 		if (this instanceof Explosible) {
 			try {
 				ExplosionCreator explosionCreator = ((Explosible) this).getExplosionCreator()
-						.getConstructor(Explosible.class).newInstance(this);
+					.getConstructor(Explosible.class).newInstance(this);
 				for (Explosion explosion : explosionCreator.createExplosions()) {
 					getContainer().addObject(explosion);
 				}
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 			}
 

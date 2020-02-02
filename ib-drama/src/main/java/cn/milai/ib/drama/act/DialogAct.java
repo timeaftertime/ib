@@ -4,13 +4,13 @@ import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import cn.milai.ib.ImageLoader;
 import cn.milai.ib.component.IBComponent;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;
+import cn.milai.ib.util.ImageLoader;
 import cn.milai.ib.util.TimeUtil;
 
 public class DialogAct extends AbstractAct {
@@ -62,7 +62,7 @@ public class DialogAct extends AbstractAct {
 		if (speakerClassIndex == 0) {
 			return null;
 		}
-		return ImageLoader.getContextImageLoader().loadImage(Class.forName(clip.getUTF8Const(speakerClassIndex)));
+		return ImageLoader.loadImage(Class.forName(clip.getUTF8Const(speakerClassIndex)));
 	}
 
 	private IBComponent createInstance(String dialogClass, int x, int y, Image speaker, String text, Container container) throws Exception {

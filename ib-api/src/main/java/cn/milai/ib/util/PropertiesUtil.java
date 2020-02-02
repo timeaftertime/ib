@@ -1,6 +1,7 @@
 package cn.milai.ib.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -9,6 +10,8 @@ import java.util.Properties;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
+
+import cn.milai.ib.ex.IBIOException;
 
 /**
  * Properties 相关工具类
@@ -20,18 +23,17 @@ public class PropertiesUtil {
 	private static final Charset CHARSET = Charsets.UTF_8;
 
 	/**
-	 * 以 UTF-8 编码加载并返回 url 指向的配置文件
-	 * 若加载失败，返回空 Map
-	 * @param url
+	 * 以 UTF-8 编码加载并返回 in 指向的配置文件
+	 * @param in
 	 * @return
-	 * @throws IOException
 	 */
-	public static HashMap<String,String> load(URL url) {
+	public static HashMap<String, String> load(InputStream in) {
 		Properties prop = new Properties();
 		try {
-			prop.load(new InputStreamReader(url.openStream(), CHARSET));
+			prop.load(new InputStreamReader(in, CHARSET));
 		} catch (IOException e) {
-			// 加载失败则返回空 Map
+			e.printStackTrace();
+			//异常时返回空 Map
 		}
 		HashMap<String, String> map = Maps.newHashMap();
 		for (String key : prop.stringPropertyNames()) {
@@ -41,15 +43,18 @@ public class PropertiesUtil {
 	}
 
 	/**
-	 * 以 UTF-8 编码加载并返回 url 指向的配置文件，并返回指定 key 对应 value 值
-	 * 若加载失败或对应的 key 不存在，返回 null
+	 * 以 UTF-8 编码加载并返回 url 指向的配置文件
+	 * 若加载失败，返回空 Map
 	 * @param url
-	 * @param key
 	 * @return
-	 * @throws IOException
+	 * @throws IBIOException
 	 */
-	public static String get(URL url, String key) {
-		return load(url).get(key);
+	public static HashMap<String, String> load(URL url) {
+		try {
+			return load(url.openStream());
+		} catch (IOException e) {
+			throw new IBIOException(e);
+		}
 	}
 
 }

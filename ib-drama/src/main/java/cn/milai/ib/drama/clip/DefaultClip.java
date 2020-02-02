@@ -1,12 +1,10 @@
 package cn.milai.ib.drama.clip;
 
-import java.io.InputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
 import cn.milai.ib.drama.statics.DramaMetadata;
-import cn.milai.ib.util.ByteUtil;
 
 /**
  * Clip 的抽象基类
@@ -18,8 +16,8 @@ public class DefaultClip implements Clip {
 	protected DramaMetadata drama;
 	protected final Map<String, String> PARAMS;
 
-	public DefaultClip(InputStream in) {
-		drama = new DramaMetadata(ByteUtil.toBytes(in));
+	public DefaultClip(byte[] data) {
+		drama = new DramaMetadata(data);
 		PARAMS = Maps.newHashMap();
 	}
 

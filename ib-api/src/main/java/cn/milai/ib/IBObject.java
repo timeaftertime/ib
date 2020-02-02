@@ -21,7 +21,6 @@ public abstract class IBObject implements Paintable, Locable {
 
 	private Rectangle rect;
 	private Container container;
-	private ImageLoader imageLoader = ImageLoader.getContextImageLoader();
 
 	/**
 	 * 创建一个中心位置在 (x, y) 且以 Container 为容器的游戏对象 
@@ -151,20 +150,13 @@ public abstract class IBObject implements Paintable, Locable {
 		return null;
 	}
 
-	public ImageLoader getImageLoader() {
-		return imageLoader;
-	}
-
-	public void setImageLoader(ImageLoader imageLoader) {
-		this.imageLoader = imageLoader;
-	}
-
 	public Container getContainer() {
 		return container;
 	}
 
 	public void ensureInContainer() {
-		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentHeight(), getContainer().getHeight());
+		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentHeight(),
+			getContainer().getHeight());
 	}
 
 	protected void ensureIn(int minX, int maxX, int minY, int maxY) {

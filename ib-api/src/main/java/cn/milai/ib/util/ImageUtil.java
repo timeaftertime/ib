@@ -3,7 +3,11 @@ package cn.milai.ib.util;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import cn.milai.ib.ex.IBIOException;
 
 /**
  * 图片相关工具类
@@ -27,6 +31,14 @@ public abstract class ImageUtil {
 	 */
 	public static final Image loadImage(URL url) {
 		return TK.createImage(url);
+	}
+
+	public static final Image loadImage(File file) {
+		try {
+			return loadImage(file.toURI().toURL());
+		} catch (MalformedURLException e) {
+			throw new IBIOException(e);
+		}
 	}
 
 	/**

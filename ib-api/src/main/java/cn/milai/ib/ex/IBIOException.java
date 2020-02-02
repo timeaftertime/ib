@@ -20,4 +20,8 @@ public class IBIOException extends IBException {
 		super(msg);
 	}
 
+	public IBIOException(String msg, Throwable e) {
+		super(msg, e);
+	}
+
 }

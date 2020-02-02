@@ -16,21 +16,6 @@ import cn.milai.ib.util.StringUtil;
  */
 public class SystemConf {
 
-	/** 
-	 * 整个游戏的尺寸比例，所有对象的大小、速度应乘以该常量
-	 */
-	private static final String KEY_SIZE_RATIO = "ib.size";
-
-	/** 
-	 * 整个游戏的速度比例，帧间隔时间应乘以该常量
-	 */
-	private static final String KET_SPEED_RATIO = "ib.speed";
-
-	/**
-	 * 系统配置文件在 classpath 下的路径
-	 */
-	private static final String CONF_FILE = "/ib.conf";
-
 	/**
 	 * 可以通过命令行参数或配置文件指定的系统级参数
 	 */
@@ -43,15 +28,17 @@ public class SystemConf {
 	}
 
 	private static void initSysProps() {
-		SYS_PROPS.put(KEY_SIZE_RATIO, "1.0");
-		SYS_PROPS.put(KET_SPEED_RATIO, "1.0");
+		SYS_PROPS.put(SysProps.KEY_SIZE_RATIO, "1.0");
+		SYS_PROPS.put(SysProps.KET_SPEED_RATIO, "1.0");
+		SYS_PROPS.put(SysProps.KEY_REPO_ADDRESS, "http://localhost:80");
+		SYS_PROPS.put(SysProps.KEY_RESOURCE_DIR, SystemConf.class.getResource("/").getPath());
 	}
 
 	/**
 	 * 加载 classpath 下的系统配置文件
 	 */
 	private static void loadConfFile() {
-		HashMap<String, String> props = PropertiesUtil.load(SystemConf.class.getResource(CONF_FILE));
+		HashMap<String, String> props = PropertiesUtil.load(SystemConf.class.getResource(SysProps.CONF_FILE));
 		for (String key : props.keySet()) {
 			// 只替换预定义的配置
 			if (SYS_PROPS.containsKey(key)) {
@@ -79,7 +66,7 @@ public class SystemConf {
 	 * @return
 	 */
 	public static int prorate(double value) {
-		return (int) (value * getDouble(KEY_SIZE_RATIO));
+		return (int) (value * getDouble(SysProps.KEY_SIZE_RATIO));
 	}
 
 	/**
@@ -88,7 +75,15 @@ public class SystemConf {
 	 * @return
 	 */
 	public static int frameProrate(long interval) {
-		return (int) (interval / getDouble(KET_SPEED_RATIO));
+		return (int) (interval / getDouble(SysProps.KET_SPEED_RATIO));
+	}
+
+	/**
+	 * 获取 repo 的 url
+	 * @return
+	 */
+	public static String repoURL() {
+		return getStr(SysProps.KEY_REPO_ADDRESS);
 	}
 
 	/**
