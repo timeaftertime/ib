@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.milai.ib.util.JSONUtil;
 import okhttp3.FormBody;
 import okhttp3.FormBody.Builder;
 import okhttp3.OkHttpClient;

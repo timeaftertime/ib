@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import cn.milai.ib.ex.IBIOException;
-import cn.milai.ib.util.ByteUtil;
+import cn.milai.ib.util.IOUtil;
 
 /**
  * 字节码读取器
@@ -29,7 +29,7 @@ public class ByteReader {
 	}
 
 	public ByteReader(InputStream in) {
-		this(ByteUtil.toBytes(in));
+		this(IOUtil.toBytes(in));
 	}
 
 	/**

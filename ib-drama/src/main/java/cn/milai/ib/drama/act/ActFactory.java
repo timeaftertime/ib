@@ -22,10 +22,16 @@ public class ActFactory {
 			case SLEEP : {
 				return new SleepAct();
 			}
-			case DIALOG: {
+			case DIALOG : {
 				return new DialogAct();
 			}
-			default : {
+			case BGM : {
+				return new BGMAct();
+			}
+			case BGI : {
+				return new BGIAct();
+			}
+			default: {
 				throw new ActNotExistsException(code);
 			}
 		}

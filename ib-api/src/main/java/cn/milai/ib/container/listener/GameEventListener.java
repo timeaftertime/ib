@@ -1,7 +1,7 @@
 package cn.milai.ib.container.listener;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.annotation.Order;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 游戏事件监听器

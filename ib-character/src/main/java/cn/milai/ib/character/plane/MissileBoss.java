@@ -2,15 +2,14 @@ package cn.milai.ib.character.plane;
 
 import java.awt.Image;
 
-import cn.milai.ib.character.Player;
 import cn.milai.ib.character.bullet.shooter.DoubleDownBulletShooter;
 import cn.milai.ib.character.bullet.shooter.MissileShooter;
 import cn.milai.ib.character.explosion.DefaultExplosion;
 import cn.milai.ib.constant.BulletType;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.property.HasDamage;
-import cn.milai.ib.property.Locable;
-import cn.milai.ib.util.ImageLoader;
+import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.obj.Player;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -38,12 +37,12 @@ public class MissileBoss extends EnemyPlane {
 
 	private Status status;
 
-	private final Image DANGER_IMG = ImageLoader.loadImage(MissileBoss.class, "danger");
+	private final Image DANGER_IMG = ImageLoader.load(MissileBoss.class, "danger");
 
 	public MissileBoss(int x, int y, Container container) {
 		super(x, y, container);
-		setBulletShooter(new DoubleDownBulletShooter(this), BulletType.MAIN);
-		setBulletShooter(new MissileShooter(this), BulletType.SIDE);
+		setBulletShooter(new DoubleDownBulletShooter(), BulletType.MAIN);
+		setBulletShooter(new MissileShooter(), BulletType.SIDE);
 		status = new Comming();
 	}
 
@@ -64,11 +63,11 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	@Override
-	public void damagedBy(HasDamage attacker) {
-		super.damagedBy(attacker);
-		if (isAlive() && (attacker instanceof Locable)) {
-			Locable location = (Locable) attacker;
-			getContainer().addObject(new DefaultExplosion((int) location.getCenterX(), (int) location.getCenterY(), getContainer()));
+	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
+		super.loseLife(character, life);
+		if (isAlive()) {
+			getContainer().addObject(
+				new DefaultExplosion((int) character.getCenterX(), (int) character.getCenterY(), getContainer()));
 		}
 		if (getImage() != DANGER_IMG && getLife() <= DANGER_LIFE) {
 			setImage(DANGER_IMG);
@@ -80,7 +79,7 @@ public class MissileBoss extends EnemyPlane {
 		if (type == BulletType.MAIN) {
 			return super.canShoot(type);
 		}
-		return getBulletShooterClass(type) != null;
+		return getBulletShooter(type) != null;
 	}
 
 	private interface Status {

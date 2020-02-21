@@ -3,17 +3,23 @@ package cn.milai.ib.drama.act;
 import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 
-import cn.milai.ib.component.IBComponent;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.drama.DramaStringLoader;
 import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;
-import cn.milai.ib.util.ImageLoader;
+import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.obj.IBComponent;
 import cn.milai.ib.util.TimeUtil;
 
 public class DialogAct extends AbstractAct {
+
+	private static final Class<?>[] IIISC = new Class[] {
+		Integer.class, Integer.class, Image.class, String.class, Container.class
+	};
 
 	/**
 	 * 需要生成对话框的全类名， utf8 常量
@@ -52,7 +58,7 @@ public class DialogAct extends AbstractAct {
 		int x = (int) (clip.getFloatConst(xRateIndex) * container.getWidth());
 		int y = (int) (clip.getFloatConst(yRateIndex) * container.getContentHeight());
 		Image speaker = resolveSpeaker(clip);
-		String text = clip.getUTF8Const(textIndex);
+		String text = DramaStringLoader.get(clip.getCode(), clip.getUTF8Const(textIndex));
 		container.addObject(createInstance(dialogClass, x, y, speaker, text, container));
 		// 等待一帧以暂停后续的剧情
 		TimeUtil.wait(container, 1L);
@@ -62,10 +68,11 @@ public class DialogAct extends AbstractAct {
 		if (speakerClassIndex == 0) {
 			return null;
 		}
-		return ImageLoader.loadImage(Class.forName(clip.getUTF8Const(speakerClassIndex)));
+		return ImageLoader.load(Class.forName(clip.getUTF8Const(speakerClassIndex)));
 	}
 
-	private IBComponent createInstance(String dialogClass, int x, int y, Image speaker, String text, Container container) throws Exception {
+	private IBComponent createInstance(String dialogClass, int x, int y, Image speaker, String text,
+		Container container) throws Exception {
 		return getIIISCConstructot(dialogClass).newInstance(x, y, speaker, text, container);
 	}
 
@@ -78,8 +85,27 @@ public class DialogAct extends AbstractAct {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	private Constructor<IBComponent> getIIISCConstructot(String dialogClass) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
-		return (Constructor<IBComponent>) Class.forName(dialogClass).getConstructor(int.class, int.class, Image.class, String.class, Container.class);
+	private Constructor<IBComponent> getIIISCConstructot(String dialogClass) throws NoSuchMethodException,
+		SecurityException, ClassNotFoundException {
+		Class<?> clazz = Class.forName(dialogClass);
+		for (Constructor<?> c : clazz.getConstructors()) {
+			if (isIIISC(c.getGenericParameterTypes())) {
+				return (Constructor<IBComponent>) c;
+			}
+		}
+		throw new NoSuchMethodException();
+	}
+
+	private static boolean isIIISC(Type[] parameters) {
+		if (IIISC.length != parameters.length) {
+			return false;
+		}
+		for (int i = 0; i < IIISC.length; i++) {
+			if (IIISC[i].isAssignableFrom(parameters[i].getClass())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

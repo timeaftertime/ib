@@ -1,7 +1,7 @@
 package cn.milai.ib.character.helper;
 
-import cn.milai.ib.character.Player;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.Player;
 
 public class OneLifeHelper extends Helper {
 
@@ -13,7 +13,7 @@ public class OneLifeHelper extends Helper {
 
 	@Override
 	public void makeFunction(Player plane) {
-		plane.gainLife(GAIN_LIFE);
+		plane.gainLife(this, GAIN_LIFE);
 	}
 
 }

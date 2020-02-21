@@ -8,22 +8,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JFrame;
 
-import cn.milai.ib.IBObject;
-import cn.milai.ib.interaction.form.FormContainer;
-import cn.milai.ib.interaction.form.IBFormComponent;
+import cn.milai.ib.component.form.FormContainer;
+import cn.milai.ib.component.form.FormComponent;
+import cn.milai.ib.obj.IBObject;
 
 public abstract class GameForm extends JFrame implements FormContainer {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Map<IBFormComponent, MouseListener> listeners = new ConcurrentHashMap<>();
+	private static final Map<FormComponent, MouseListener> listeners = new ConcurrentHashMap<>();
 
 	public GameForm() {
 		addMouseListener(new MouseAdapter() {
 
 			private MouseListener getTarget(MouseEvent e) {
 				for (IBObject obj : listeners.keySet()) {
-					if (obj.containPoint(e.getX(), e.getY())) {
+					if (obj.containsPoint(e.getX(), e.getY())) {
 						return listeners.remove(obj);
 					}
 				}
@@ -41,7 +41,7 @@ public abstract class GameForm extends JFrame implements FormContainer {
 	}
 
 	@Override
-	public void notifyOnce(IBFormComponent component, MouseListener listener) {
+	public void notifyOnce(FormComponent component, MouseListener listener) {
 		listeners.put(component, listener);
 	}
 

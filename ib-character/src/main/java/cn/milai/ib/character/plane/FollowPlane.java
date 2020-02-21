@@ -6,7 +6,6 @@ import cn.milai.ib.util.RandomUtil;
 
 /**
  * 随机跟随攻击目标的敌机
- *
  * @author milai
  */
 public class FollowPlane extends EnemyPlane {
@@ -21,7 +20,7 @@ public class FollowPlane extends EnemyPlane {
 
 	public FollowPlane(int x, int y, Container container) {
 		super(x, y, container);
-		setBulletShooter(new DownBulletShooter(this));
+		setBulletShooter(new DownBulletShooter());
 		followChance = doubleProp(FOLLOW_CHANCE);
 		shootChance = doubleProp(SHOOT_CHANCE);
 	}
@@ -33,7 +32,6 @@ public class FollowPlane extends EnemyPlane {
 
 	@Override
 	protected void beforeMove() {
-
 	}
 
 	@Override

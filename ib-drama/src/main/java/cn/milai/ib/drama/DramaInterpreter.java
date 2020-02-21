@@ -15,7 +15,7 @@ import cn.milai.ib.drama.util.ByteReader;
  * 2019.12.08
  * @author milai
  */
-public class DramaInterpreter implements Runnable {
+public class DramaInterpreter {
 
 	private volatile boolean interrupted;
 	private Container container;
@@ -28,6 +28,10 @@ public class DramaInterpreter implements Runnable {
 		dramaSpace = new DramaSpace(dramaCode);
 		reader = new ByteReader();
 		this.container = container;
+	}
+
+	public String getDramaName() {
+		return dramaSpace.getDramaName();
 	}
 
 	/**
@@ -43,7 +47,6 @@ public class DramaInterpreter implements Runnable {
 	/**
 	 * 剧本的执行
 	 */
-	@Override
 	public void run() {
 		dramaThread = Thread.currentThread();
 		try {

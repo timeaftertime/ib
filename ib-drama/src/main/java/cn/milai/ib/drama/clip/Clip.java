@@ -9,6 +9,17 @@ package cn.milai.ib.drama.clip;
 public interface Clip {
 
 	/**
+	 * 获取剧本唯一标识
+	 * @return
+	 */
+	String getCode();
+
+	/**
+	 * 获取剧本可读名字
+	 */
+	String getName();
+
+	/**
 	 * 设置一个参数值
 	 * @param key
 	 * @param value

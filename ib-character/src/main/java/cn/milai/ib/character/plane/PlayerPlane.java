@@ -1,33 +1,21 @@
 package cn.milai.ib.character.plane;
 
 import java.awt.Image;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
 
-import cn.milai.ib.character.Player;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.bullet.shooter.UpBulletShooter;
 import cn.milai.ib.character.explosion.DefaultExplosion;
 import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.property.Alive;
-import cn.milai.ib.property.HasDamage;
+import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.obj.Player;
 
 /**
  * 玩家飞机
  * @author milai
  */
-public class PlayerPlane extends Plane implements Player {
-
-	private int gameScore = 0;
-
-	/******************
-	 * 配置 key
-	 ******************/
-	private static final String P_RATED_SPEED_X = "ratedSpeedX";
-	private static final String P_RATED_SPEED_Y = "ratedSpeedY";
-	private static final String P_MAX_RATED_SPEED_X = "maxRatedSpeedX";
-	private static final String P_MAX_RATED_SPEED_Y = "maxRatedSpeedY";
+public class PlayerPlane extends AbstractPlane implements Player {
 
 	private boolean up = false;
 	private boolean down = false;
@@ -50,7 +38,8 @@ public class PlayerPlane extends Plane implements Player {
 		super(x, y, Camp.PLAYER, container);
 		initProps();
 		// 在构造方法最后以确保所有变量已经初始化
-		INIT_STATUS = new Status(getWidth(), getHeight(), getRatedSpeedX(), getRatedSpeedY(), getMaxBulletNum(), getBulletShooterClass(), getImage());
+		INIT_STATUS = new Status(getWidth(), getHeight(), getRatedSpeedX(), getRatedSpeedY(), getMaxBulletNum(),
+			getBulletShooter(), getImage());
 	}
 
 	private void initProps() {
@@ -58,7 +47,7 @@ public class PlayerPlane extends Plane implements Player {
 		ratedSpeedY = proratedIntProp(P_RATED_SPEED_Y);
 		maxRatedSpeedX = proratedIntProp(P_MAX_RATED_SPEED_X);
 		maxRatedSpeedY = proratedIntProp(P_MAX_RATED_SPEED_Y);
-		setBulletShooter(new UpBulletShooter(this));
+		setBulletShooter(new UpBulletShooter());
 	}
 
 	@Override
@@ -139,31 +128,13 @@ public class PlayerPlane extends Plane implements Player {
 	}
 
 	@Override
-	public synchronized void onKill(Alive alive) {
-		gainScore(alive.getScore());
-	}
-
-	@Override
 	public int getDamage() {
 		return 1;
 	}
 
 	@Override
-	public int getScore() {
-		throw new UnsupportedOperationException("不允许获取 PlayerPlane 的分数");
-	}
-
-	public int getGameScore() {
-		return this.gameScore;
-	}
-
-	public void gainScore(int score) {
-		gameScore += score;
-	}
-
-	@Override
-	public void damagedBy(HasDamage attacker) {
-		super.damagedBy(attacker);
+	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
+		super.loseLife(character, life);
 		rollBackStatus();
 		// 如果没有死亡，显示受伤效果
 		if (isAlive()) {
@@ -173,7 +144,7 @@ public class PlayerPlane extends Plane implements Player {
 
 	/**
 	 * 如果状态栈位空，保存当前状态到状态栈中，否则根据 {@code mustCreateNew} 决定是否复制当前状态并压入栈
-	 * @param mustCreateNew 栈不为空时是否需要复制当前状态并压入栈
+	 * @param mustCreateNew
 	 */
 	public synchronized void pushStatus(boolean mustCreateNew) {
 		if (mustCreateNew || statusStack.isEmpty()) {
@@ -203,12 +174,7 @@ public class PlayerPlane extends Plane implements Player {
 		setRatedSpeedX(status.ratedSpeedX);
 		setRatedSpeedY(status.ratedSpeedY);
 		setMaxBulletNum(status.maxBulletNum);
-		try {
-			setBulletShooter(status.shooterClass.getConstructor(Plane.class).newInstance(this));
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
-			throw new RuntimeException("重置 [" + status.shooterClass.getName() + "] BulletFactory 失败", e);
-		}
+		setBulletShooter(status.shooter);
 		setImage(status.img);
 	}
 
@@ -246,17 +212,17 @@ public class PlayerPlane extends Plane implements Player {
 		private int ratedSpeedX;
 		private int ratedSpeedY;
 		private int maxBulletNum;
-		private Class<? extends BulletShooter> shooterClass;
+		private BulletShooter shooter;
 		private Image img;
 
-		public Status(	int width, int height, int ratedSpeedX, int ratedSpeedY, int maxBulletNum, Class<? extends BulletShooter> shooterClass,
-						Image img) {
+		Status(int width, int height, int ratedSpeedX, int ratedSpeedY, int maxBulletNum, BulletShooter shooter,
+			Image img) {
 			this.width = width;
 			this.height = height;
 			this.ratedSpeedX = ratedSpeedX;
 			this.ratedSpeedY = ratedSpeedY;
 			this.maxBulletNum = maxBulletNum;
-			this.shooterClass = shooterClass;
+			this.shooter = shooter;
 			this.img = img;
 		}
 

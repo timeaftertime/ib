@@ -1,9 +1,9 @@
 package cn.milai.ib.character.helper;
 
-import cn.milai.ib.character.Player;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.util.ImageLoader;
+import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.obj.Player;
 
 public class AccelerateHelper extends Helper {
 
@@ -22,7 +22,7 @@ public class AccelerateHelper extends Helper {
 		player.pushStatus(false);
 		player.setRatedSpeedX(player.getRatedSpeedX() + SystemConf.frameProrate(5));
 		player.setRatedSpeedY(player.getRatedSpeedY() + SystemConf.frameProrate(5));
-		player.setImage(ImageLoader.loadImage(Player.class, ACC_STATUS));
+		player.setImage(ImageLoader.load(Player.class, ACC_STATUS));
 	}
 
 }

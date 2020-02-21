@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import cn.milai.ib.drama.ex.DramaFileFormatException;
 import cn.milai.ib.ex.IBIOException;
-import cn.milai.ib.util.ByteUtil;
+import cn.milai.ib.util.IOUtil;
 
 /**
  * 剧本元数据，对应 .drama 文件
@@ -31,6 +31,16 @@ public class DramaMetadata {
 	private int minorVersion;
 
 	/**
+	 * 剧本唯一标识 常量池序号
+	 */
+	private int dramaCodeIndex;
+
+	/**
+	 * 剧本可读名 常量池序号
+	 */
+	private int dramaNameIndex;
+
+	/**
 	 * 常量池
 	 */
 	private ConstantPool pool;
@@ -42,6 +52,7 @@ public class DramaMetadata {
 		try {
 			readMagicNumber(reader);
 			readVerions(reader);
+			readDramaCodeAndName(reader);
 			readConstantPool(reader);
 			readClipBytes(reader);
 		} catch (NumberFormatException e) {
@@ -62,12 +73,17 @@ public class DramaMetadata {
 		minorVersion = reader.readUnsignedShort();
 	}
 
+	private void readDramaCodeAndName(DataInputStream reader) throws IOException {
+		dramaCodeIndex = reader.readUnsignedShort();
+		dramaNameIndex = reader.readUnsignedShort();
+	}
+
 	private void readConstantPool(DataInputStream reader) throws IOException {
 		this.pool = new ConstantPool(reader);
 	}
 
 	private void readClipBytes(DataInputStream reader) throws IOException {
-		clipBytes = ByteUtil.toBytes(reader);
+		clipBytes = IOUtil.toBytes(reader);
 	}
 
 	/**
@@ -121,5 +137,21 @@ public class DramaMetadata {
 	public int getMinorVersion() {
 		return minorVersion;
 	}
-	
+
+	/**
+	 * 获取剧本对应的 Code
+	 * @return
+	 */
+	public String getCode() {
+		return pool.getUTF8(dramaCodeIndex).getValue();
+	}
+
+	/**
+	 * 获取剧本对应的 Name
+	 * @return
+	 */
+	public String getName() {
+		return pool.getUTF8(dramaNameIndex).getValue();
+	}
+
 }

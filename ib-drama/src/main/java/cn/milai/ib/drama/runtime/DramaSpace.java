@@ -2,6 +2,8 @@ package cn.milai.ib.drama.runtime;
 
 import java.util.Map;
 
+import cn.milai.ib.drama.clip.Clip;
+
 /**
  * 剧本空间，存储一次剧本执行过程中需要的数据
  * 类似 JVM 的线程空间
@@ -15,13 +17,24 @@ public class DramaSpace {
 	 */
 	private DramaStack stack = new DramaStack();
 
+	private String dramaName;
+
 	/**
 	 * 程序计数器
 	 */
 	private int pc;
 
 	public DramaSpace(String dramaCode) {
-		callClip(dramaCode, null);
+		Clip clip = callClip(dramaCode, null).getClip();
+		dramaName = clip.getName();
+	}
+
+	/**
+	 * 获取剧本名字
+	 * @return
+	 */
+	public String getDramaName() {
+		return dramaName;
 	}
 
 	/**
@@ -44,8 +57,8 @@ public class DramaSpace {
 	 * 调用剧本片段
 	 * @param clipCode {@code Clip } 接口实现类的全类名
 	 */
-	public void callClip(String clipCode, Map<String, String> params) {
-		stack.pushFrame(new Frame(clipCode, params, this));
+	public Frame callClip(String clipCode, Map<String, String> params) {
+		return stack.pushFrame(new Frame(clipCode, params, this));
 	}
 
 	public Frame popCurrentFrame() {

@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,28 +13,28 @@ import java.util.concurrent.Executors;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.IBObject;
-import cn.milai.ib.character.IBCharacter;
-import cn.milai.ib.conf.ImageConf;
+import cn.milai.ib.character.explosion.Explosion;
+import cn.milai.ib.character.property.CanCrash;
+import cn.milai.ib.character.property.CanCrashed;
+import cn.milai.ib.character.property.Explosible;
+import cn.milai.ib.character.property.Movable;
+import cn.milai.ib.component.form.FormContainer;
+import cn.milai.ib.component.form.listener.Command;
+import cn.milai.ib.component.form.listener.FormCloseListener;
+import cn.milai.ib.component.form.listener.KeyboardListener;
 import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.constant.Camp;
+import cn.milai.ib.container.Audio;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
-import cn.milai.ib.interaction.form.Audio;
-import cn.milai.ib.interaction.form.FormContainer;
-import cn.milai.ib.interaction.form.listener.Command;
-import cn.milai.ib.interaction.form.listener.FormCloseListener;
-import cn.milai.ib.interaction.form.listener.KeyboardListener;
-import cn.milai.ib.property.Alive;
-import cn.milai.ib.property.CanCrash;
-import cn.milai.ib.property.CanCrashed;
-import cn.milai.ib.property.Movable;
-import cn.milai.ib.property.Paintable;
+import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.obj.Paintable;
 import cn.milai.ib.util.OrderUtil;
 import cn.milai.ib.util.TimeUtil;
 
 /**
  * 战斗场景窗体类
- * 
  * @author milai
  *
  */
@@ -59,10 +58,9 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	private volatile long frame = 0;
 
 	private Image bgImage;
-	private List<IBObject> gameObjs;
-	private List<Paintable> paintables;
+	private List<IBObject> objs;
+	private List<IBCharacter> characters;
 	private List<Movable> movables;
-	private List<Alive> alives;
 	private List<CanCrash> canCrashs;
 	private List<CanCrashed> canCrasheds;
 	private List<KeyboardListener> keyboardListeners;
@@ -107,11 +105,9 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setResizable(false);
 
-		bgImage = ImageConf.BATTLE_BG;
-		gameObjs = Lists.newArrayList();
-		paintables = Lists.newArrayList();
+		objs = Lists.newArrayList();
+		characters = Lists.newArrayList();
 		movables = Lists.newArrayList();
-		alives = Lists.newArrayList();
 		canCrashs = Lists.newArrayList();
 		canCrasheds = Lists.newArrayList();
 		keyboardListeners = Lists.newArrayList();
@@ -129,7 +125,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
-				for (FormCloseListener listener : new ArrayList<>(formCloseListeners)) {
+				for (FormCloseListener listener : Lists.newArrayList(formCloseListeners)) {
 					listener.onFormClosed();
 				}
 				close();
@@ -144,12 +140,15 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	}
 
 	private void checkCrash() {
-		for (CanCrash crash : new ArrayList<>(canCrashs)) {
-			for (CanCrashed crashed : new ArrayList<>(canCrasheds)) {
-				if (crash.sameCamp(crashed)) {
+		for (CanCrash crash : Lists.newArrayList(canCrashs)) {
+			for (CanCrashed crashed : Lists.newArrayList(canCrasheds)) {
+				if (crash == crashed) {
 					continue;
 				}
-				if (((IBCharacter) crash).isContactWith((IBCharacter) crashed)) {
+				if (Camp.sameCamp(crash.getCamp(), crashed.getCamp())) {
+					continue;
+				}
+				if (crash.intersects(crashed)) {
 					crash.onCrash(crashed);
 				}
 			}
@@ -163,7 +162,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	 */
 	private class RefreshThread extends Thread {
 
-		private static final String THREAD_NAME_PREFIX = "Refresh#started at ";
+		private static final String THREAD_NAME_PREFIX = "Refresh  ";
 
 		public RefreshThread() {
 			setName(THREAD_NAME_PREFIX + TimeUtil.datetime());
@@ -190,7 +189,8 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 				try {
 					Thread.sleep(MILLISEC_PER_FRAME);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				}
 			}
 		}
 
@@ -209,7 +209,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 		}
 
 		private void notifyRefresh() {
-			for (RefreshListener listener : new ArrayList<>(refreshListeners)) {
+			for (RefreshListener listener : Lists.newArrayList(refreshListeners)) {
 				listener.afterRefresh(BattleForm.this);
 			}
 		}
@@ -311,24 +311,34 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	 * 让所有能移动的游戏对象移动
 	 */
 	private void moveCharacters() {
-		for (Movable m : new ArrayList<>(movables)) {
+		for (Movable m : Lists.newArrayList(movables)) {
 			m.move();
 		}
 	}
 
 	/**
-	 * 检查有生命属性的游戏对象，调用死亡对象的 OnDead 方法并移除对象
+	 * 处理有生命属性的游戏对象
 	 */
 	private void checkAlive() {
-		for (Alive alive : new ArrayList<>(alives)) {
-			if (!alive.isAlive()) {
-				alive.onDead();
-				IBCharacter obj = (IBCharacter) alive;
-				removeObject(obj);
-				for (GameEventListener listener : new ArrayList<>(gameEventListeners)) {
-					listener.onObjectRemoved(obj);
+		for (IBCharacter character : Lists.newArrayList(characters)) {
+			if (!character.isAlive()) {
+				character.onDead();
+				showExplosions(character);
+				removeObject(character);
+				for (GameEventListener listener : Lists.newArrayList(gameEventListeners)) {
+					listener.onObjectRemoved(character);
 				}
 			}
+		}
+	}
+
+	private void showExplosions(IBObject obj) {
+		if (!(obj instanceof Explosible)) {
+			return;
+		}
+		Explosible explosible = (Explosible) obj;
+		for (Explosion explosion : explosible.getExplosionCreator().createExplosions(explosible)) {
+			addObject(explosion);
 		}
 	}
 
@@ -336,8 +346,10 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	protected Image getBufferedImage() {
 		Image image = createImage(this.getWidth(), this.getHeight());
 		Graphics g = image.getGraphics();
-		g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
-		ArrayList<Paintable> toPaint = Lists.newArrayList(paintables);
+		if (bgImage != null) {
+			g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
+		}
+		List<Paintable> toPaint = Lists.newArrayList(objs);
 		Collections.sort(toPaint);
 		for (Paintable p : toPaint) {
 			p.paintWith(g);
@@ -354,17 +366,10 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	 */
 	@Override
 	public void addObject(IBObject obj) {
-		this.gameObjs.add(obj);
-		if (obj instanceof Paintable)
-			addPaintable((Paintable) obj);
-		if (obj instanceof Movable)
-			addMovable((Movable) obj);
-		if (obj instanceof Alive)
-			addAlive((Alive) obj);
-		if (obj instanceof CanCrash)
-			addCrash((CanCrash) obj);
-		if (obj instanceof CanCrashed)
-			addCanCrashed((CanCrashed) obj);
+		this.objs.add(obj);
+		if (obj instanceof IBCharacter) {
+			addCharacter((IBCharacter) obj);
+		}
 		for (GameEventListener listener : gameEventListeners) {
 			listener.onObjectAdded(obj);
 		}
@@ -372,37 +377,37 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 	/**
 	 * 从当前窗体中移除对象
-	 * @param gameObj
+	 * @param ibObj
 	 */
-	@SuppressWarnings("unlikely-arg-type")
 	@Override
-	public void removeObject(IBObject gameObj) {
-		this.gameObjs.remove(gameObj);
-		this.paintables.remove(gameObj);
-		this.movables.remove(gameObj);
-		this.alives.remove(gameObj);
-		this.canCrashs.remove(gameObj);
-		this.canCrasheds.remove(gameObj);
+	public void removeObject(IBObject ibObj) {
+		this.objs.remove(ibObj);
+		this.movables.remove(ibObj);
+		this.characters.remove(ibObj);
+		this.canCrashs.remove(ibObj);
+		this.canCrasheds.remove(ibObj);
 	}
 
-	private void addCanCrashed(CanCrashed obj) {
-		this.canCrasheds.add(obj);
+	private void addCharacter(IBCharacter character) {
+		this.characters.add(character);
+		if (character instanceof Movable)
+			addMovable((Movable) character);
+		if (character instanceof CanCrash)
+			addCrash((CanCrash) character);
+		if (character instanceof CanCrashed)
+			addCanCrashed((CanCrashed) character);
+	}
+
+	private void addCanCrashed(CanCrashed canChrashed) {
+		this.canCrasheds.add(canChrashed);
 	}
 
 	private void addCrash(CanCrash crashable) {
 		this.canCrashs.add(crashable);
 	}
 
-	private void addPaintable(Paintable paintable) {
-		this.paintables.add(paintable);
-	}
-
 	private void addMovable(Movable movable) {
 		this.movables.add(movable);
-	}
-
-	private void addAlive(Alive alive) {
-		this.alives.add(alive);
 	}
 
 	@Override
@@ -424,12 +429,12 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> getAll(Class<T> type) {
-		List<T> objs = Lists.newArrayList();
-		for (IBObject o : new ArrayList<>(gameObjs)) {
+		List<T> allOfType = Lists.newArrayList();
+		for (IBObject o : Lists.newArrayList(objs)) {
 			if (type.isInstance(o))
-				objs.add((T) o);
+				allOfType.add((T) o);
 		}
-		return objs;
+		return allOfType;
 	}
 
 	public void close() {
@@ -490,6 +495,11 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	@Override
 	public void stopAudio(String code) {
 		audios.remove(code);
+	}
+
+	@Override
+	public void setBackgroud(Image img) {
+		this.bgImage = img;
 	}
 
 }

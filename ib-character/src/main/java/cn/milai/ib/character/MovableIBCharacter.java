@@ -1,15 +1,13 @@
 package cn.milai.ib.character;
 
-import cn.milai.ib.character.IBCharacter;
+import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.property.Movable;
 
 /**
  * 可移动的游戏对象
- *
  * @author milai
  */
-public abstract class MovableIBCharacter extends IBCharacter implements Movable {
+public abstract class MovableIBCharacter extends AbstractIBCharacter implements Movable {
 
 	private static final String P_SPEED_X = "speedX";
 	private static final String P_SPEED_Y = "speedY";

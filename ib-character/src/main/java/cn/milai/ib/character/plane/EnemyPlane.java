@@ -2,16 +2,13 @@ package cn.milai.ib.character.plane;
 
 import java.util.List;
 
-import cn.milai.ib.character.Player;
+import cn.milai.ib.character.property.HasScore;
 import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.property.Alive;
-import cn.milai.ib.property.CanCrash;
+import cn.milai.ib.obj.Player;
 import cn.milai.ib.util.RandomUtil;
 
-public abstract class EnemyPlane extends Plane implements CanCrash {
-
-	private static final String P_SCORE = "score";
+public abstract class EnemyPlane extends AbstractPlane implements HasScore {
 
 	private int score;
 	private Player attackTarget;
@@ -36,11 +33,6 @@ public abstract class EnemyPlane extends Plane implements CanCrash {
 
 	public Player getAttackTarget() {
 		return attackTarget;
-	}
-
-	@Override
-	public void onKill(Alive alive) {
-		// HasDamage 的这个方法一般用于玩家飞机得分，敌机中不做反应，因为敌机不需要得分
 	}
 
 	@Override

@@ -22,6 +22,16 @@ public class DefaultClip implements Clip {
 	}
 
 	@Override
+	public String getCode() {
+		return drama.getCode();
+	}
+
+	@Override
+	public String getName() {
+		return drama.getName();
+	}
+
+	@Override
 	public void setVariable(String key, String value) {
 		PARAMS.put(key, value);
 	}

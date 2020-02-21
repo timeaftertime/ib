@@ -44,6 +44,7 @@ public class EndlessBattleMode extends GameMode {
 
 	@Override
 	public void run() {
+		addPlayer();
 		Thread gameController = new Thread(new GameControl(), "EndlessBattleModeGameControl");
 		gameController.setDaemon(true);
 		gameController.start();
@@ -53,11 +54,11 @@ public class EndlessBattleMode extends GameMode {
 
 		@Override
 		public void run() {
-			form.playAudio(AudioConf.BGM.newAudio());
+			form.playAudio(AudioConf.newBGMAudio());
 			addWelComePlayer();
 			// 消灭所有欢迎机则奖励分数
-			if (player.getGameScore() >= 29) {
-				player.gainScore(30);
+			if (getPlayerSocre() >= 29) {
+				addPlayerScore(30);
 			}
 			while (!closed) {
 				if (form.getAll(FollowPlane.class).size() < maxEnemyNum) {
@@ -97,7 +98,7 @@ public class EndlessBattleMode extends GameMode {
 		}
 
 		private void checkLevelUp() {
-			if (player.getGameScore() >= preGameScore + LEVEL_UP_SCORE_INTERVAL)
+			if (getPlayerSocre() >= preGameScore + LEVEL_UP_SCORE_INTERVAL)
 				levelUp();
 			if (form.currentFrame() - lastLevelUpTime > LEVEL_UP_FRAMES)
 				levelUp();

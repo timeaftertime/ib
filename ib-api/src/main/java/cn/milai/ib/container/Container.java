@@ -1,10 +1,11 @@
 package cn.milai.ib.container;
 
+import java.awt.Image;
 import java.util.List;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.GameEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 游戏对象的容器
@@ -92,5 +93,22 @@ public interface Container {
 	 * @param listener
 	 */
 	void addGameEventListener(GameEventListener listener);
+
+	/**
+	 * 播放音频
+	 */
+	void playAudio(Audio audio);
+
+	/**
+	 * 停止一个音频的播放
+	 * @param code
+	 */
+	void stopAudio(String code);
+
+	/**
+	 * 设置背景图片
+	 * @param img
+	 */
+	void setBackgroud(Image img);
 
 }

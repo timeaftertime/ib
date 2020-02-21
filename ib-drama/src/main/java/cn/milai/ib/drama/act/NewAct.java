@@ -3,13 +3,13 @@ package cn.milai.ib.drama.act;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.constant.ActType;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.drama.act.ex.IllegalOperandsException;
 import cn.milai.ib.drama.clip.Clip;
 import cn.milai.ib.drama.runtime.Frame;
 import cn.milai.ib.drama.util.ByteReader;
+import cn.milai.ib.obj.IBCharacter;
 
 /**
  * 添加对象的动作
@@ -53,11 +53,13 @@ public class NewAct extends AbstractAct {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	private Constructor<? extends IBCharacter> iicConstructor(String characteClass) throws NoSuchMethodException, ClassNotFoundException {
+	private Constructor<? extends IBCharacter> iicConstructor(String characteClass) throws NoSuchMethodException,
+		ClassNotFoundException {
 		Class<?> clazz = Class.forName(characteClass);
 		if (!IBCharacter.class.isAssignableFrom(clazz)) {
 			throw new IllegalOperandsException(this,
-					String.format("New 指令的参数必须为 %s 子类的全类名, characterClass = %s", IBCharacter.class.getName(), clazz.getName()));
+				String.format("New 指令的参数必须为 %s 子类的全类名, characterClass = %s", IBCharacter.class.getName(), clazz
+					.getName()));
 		}
 		return (Constructor<? extends IBCharacter>) clazz.getConstructor(int.class, int.class, Container.class);
 	}

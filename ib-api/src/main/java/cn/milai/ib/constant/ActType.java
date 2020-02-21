@@ -16,16 +16,22 @@ public enum ActType {
 	 * 休眠
 	 */
 	SLEEP(0x2, "sleep"),
-	
+
 	/**
 	 * 显示对话框
 	 */
 	DIALOG(0x3, "dialog"),
 
 	/**
-	 * 调用剧本片段
+	 * 设置当前 BGM
 	 */
-	CALL(0x4, "call"),;
+	BGM(0x4, "bgm"),
+
+	/**
+	 * 设置背景图片
+	 */
+	BGI(0x5, "bgi"),
+	;
 
 	/**
 	 * 唯一标识，全局唯一

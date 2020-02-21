@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.Lists;
 
 import cn.milai.ib.conf.PathConf;
@@ -17,6 +20,8 @@ import cn.milai.ib.util.HttpUtil;
  * @author milai
  */
 public class ClipFactory {
+
+	private static final Logger log = LoggerFactory.getLogger(ClipFactory.class);
 
 	private static List<ClipDecorator> decorators = Lists.newArrayList();
 
@@ -41,9 +46,10 @@ public class ClipFactory {
 	}
 
 	private static byte[] resolveClip(String clipCode) {
-		String path = PathConf.drama(clipCode);
+		String path = PathConf.dramaPath(clipCode);
 		File file = new File(path);
 		if (!file.exists()) {
+			log.info("剧本文件 {} 不存在，尝试从远程服务器获取……", path);
 			FileUtil.save(path, HttpUtil.getFile(PathConf.dramaRepo(clipCode)));
 		}
 		byte[] data = FileUtil.read(file);

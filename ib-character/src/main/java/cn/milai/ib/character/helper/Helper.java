@@ -1,16 +1,14 @@
 package cn.milai.ib.character.helper;
 
 import cn.milai.ib.character.MovableIBCharacter;
-import cn.milai.ib.character.Player;
+import cn.milai.ib.character.property.CanCrash;
+import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.property.CanCrash;
-import cn.milai.ib.property.CanCrashed;
-import cn.milai.ib.property.HasDamage;
+import cn.milai.ib.obj.Player;
 
 /**
  * 援助道具
- * 
  * @author milai
  *
  */
@@ -32,11 +30,6 @@ public abstract class Helper extends MovableIBCharacter implements CanCrash {
 	public abstract void makeFunction(Player plane);
 
 	@Override
-	public int getScore() {
-		return 0;
-	}
-
-	@Override
 	protected void afterMove() {
 		removeIfOutOfOwner();
 	}
@@ -44,11 +37,6 @@ public abstract class Helper extends MovableIBCharacter implements CanCrash {
 	private void removeIfOutOfOwner() {
 		if (getY() > getContainer().getHeight())
 			getContainer().removeObject(this);
-	}
-
-	@Override
-	public void damagedBy(HasDamage attacker) {
-		throw new IllegalStateException("Helper 不接受攻击");
 	}
 
 	@Override
