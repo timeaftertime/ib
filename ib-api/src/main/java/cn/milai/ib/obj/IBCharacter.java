@@ -1,7 +1,5 @@
 package cn.milai.ib.obj;
 
-import cn.milai.ib.constant.Camp;
-
 /**
  * 参与到游戏中的游戏角色
  * @author milai

@@ -3,8 +3,8 @@ package cn.milai.ib.character.plane;
 import java.util.List;
 
 import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.Camp;
 import cn.milai.ib.obj.Player;
 import cn.milai.ib.util.RandomUtil;
 

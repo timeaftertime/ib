@@ -2,9 +2,9 @@ package cn.milai.ib.character;
 
 import java.awt.Graphics;
 
-import cn.milai.ib.AbstractIBObject;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.AbstractIBObject;
 import cn.milai.ib.obj.IBCharacter;
 
 /**

@@ -1,13 +1,14 @@
 package cn.milai.ib.component.form.listener;
 
-import cn.milai.ib.annotation.Order;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 /**
  * 用于屏蔽被包装监听器以外所有键盘监听器的类
  * 2020.01.16
  * @author milai
  */
-@Order(Order.MAX_ORDER)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class KeyShield implements KeyboardListener {
 
 	private KeyboardListener listener;

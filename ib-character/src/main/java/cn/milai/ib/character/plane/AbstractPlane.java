@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.bullet.Bullet;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
@@ -14,9 +15,8 @@ import cn.milai.ib.character.explosion.creator.DefaultExplosionCreator;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
 import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.HasDamage;
-import cn.milai.ib.constant.BulletType;
-import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.Camp;
 
 /**
  * 战机抽象基类
@@ -30,7 +30,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 
 	private ExplosionCreator explosionCreator;
 
-	private Map<BulletType, BulletShooter> bulletShooters = new ConcurrentHashMap<>();
+	private Map<WeaponType, BulletShooter> bulletShooters = new ConcurrentHashMap<>();
 	private List<Bullet> bullets = new ArrayList<>();
 
 	private Camp camp;
@@ -54,18 +54,18 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 	}
 
 	@Override
-	public void setBulletShooter(BulletShooter shooter, BulletType type) {
+	public void setBulletShooter(BulletShooter shooter, WeaponType type) {
 		this.bulletShooters.put(type, shooter);
 	}
 
 	@Override
-	public BulletShooter getBulletShooter(BulletType type) {
+	public BulletShooter getBulletShooter(WeaponType type) {
 		return this.bulletShooters.get(type);
 	}
 
 	@Override
 	public BulletShooter getBulletShooter() {
-		return getBulletShooter(BulletType.MAIN);
+		return getBulletShooter(WeaponType.MAIN);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 	}
 
 	@Override
-	public boolean shoot(BulletType type) {
+	public boolean shoot(WeaponType type) {
 		if (!canShoot(type)) {
 			return false;
 		}
@@ -100,7 +100,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 		return true;
 	}
 
-	protected boolean canShoot(BulletType type) {
+	protected boolean canShoot(WeaponType type) {
 		return isAlive()
 			&& (bulletShooters.get(type) != null)
 			&& (bullets.size() < maxBulletNum)

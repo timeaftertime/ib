@@ -2,10 +2,10 @@ package cn.milai.ib.character.plane;
 
 import java.awt.Image;
 
+import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.bullet.shooter.DoubleDownBulletShooter;
 import cn.milai.ib.character.bullet.shooter.MissileShooter;
 import cn.milai.ib.character.explosion.DefaultExplosion;
-import cn.milai.ib.constant.BulletType;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.obj.IBCharacter;
@@ -41,8 +41,8 @@ public class MissileBoss extends EnemyPlane {
 
 	public MissileBoss(int x, int y, Container container) {
 		super(x, y, container);
-		setBulletShooter(new DoubleDownBulletShooter(), BulletType.MAIN);
-		setBulletShooter(new MissileShooter(), BulletType.SIDE);
+		setBulletShooter(new DoubleDownBulletShooter(), WeaponType.MAIN);
+		setBulletShooter(new MissileShooter(), WeaponType.SIDE);
 		status = new Comming();
 	}
 
@@ -75,8 +75,8 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	@Override
-	protected boolean canShoot(BulletType type) {
-		if (type == BulletType.MAIN) {
+	protected boolean canShoot(WeaponType type) {
+		if (type == WeaponType.MAIN) {
 			return super.canShoot(type);
 		}
 		return getBulletShooter(type) != null;
@@ -174,7 +174,7 @@ public class MissileBoss extends EnemyPlane {
 		public void afterMove() {
 			Player target = getAttackTarget();
 			if (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getWidth()) {
-				shoot(BulletType.SIDE);
+				shoot(WeaponType.SIDE);
 				status = new Pareparing();
 			}
 		}

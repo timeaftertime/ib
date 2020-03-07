@@ -3,7 +3,7 @@ package cn.milai.ib.character.bullet;
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.Shootable;
-import cn.milai.ib.constant.Camp;
+import cn.milai.ib.obj.Camp;
 import cn.milai.ib.obj.Paintable;
 
 /**

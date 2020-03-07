@@ -60,4 +60,14 @@ public abstract class ImageLoader {
 		return loadImageFile(file);
 	}
 
+	/**
+	 * 加载指定剧本的指定图片
+	 * @param dramaCode
+	 * @param resource
+	 * @return
+	 */
+	public static Image load(String dramaCode, String resource) {
+		return ImageUtil.loadImage(DramaResLoader.load(dramaCode, resource));
+	}
+
 }

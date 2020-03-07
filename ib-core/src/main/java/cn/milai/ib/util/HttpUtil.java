@@ -2,6 +2,7 @@ package cn.milai.ib.util;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,7 @@ public class HttpUtil {
 			}
 			return IOUtil.toBytes(response.body().byteStream());
 		} catch (IOException e) {
-			log.error("获取远程文件失败：url = {}, error = {}", url, e);
+			log.error("获取远程文件失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
 			throw new IBIOException(e);
 		}
 	}

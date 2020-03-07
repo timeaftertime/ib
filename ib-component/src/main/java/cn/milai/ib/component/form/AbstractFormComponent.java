@@ -2,7 +2,7 @@ package cn.milai.ib.component.form;
 
 import java.awt.Image;
 
-import cn.milai.ib.AbstractIBObject;
+import cn.milai.ib.obj.AbstractIBObject;
 
 /**
  * IBFormComponent 的抽象基类

@@ -1,11 +1,11 @@
 package cn.milai.ib.character.plane;
 
+import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.Explosible;
 import cn.milai.ib.character.property.Shootable;
-import cn.milai.ib.constant.BulletType;
 
 /**
  * 飞机类型角色
@@ -47,14 +47,14 @@ public interface Plane extends Shootable, CanCrash, CanCrashed, Explosible {
 	 * @param shooter
 	 * @param type
 	 */
-	void setBulletShooter(BulletShooter shooter, BulletType type);
+	void setBulletShooter(BulletShooter shooter, WeaponType type);
 
 	/**
 	 * 设置主武器的发射器为 shooter
 	 * @param shooter
 	 */
 	default void setBulletShooter(BulletShooter shooter) {
-		setBulletShooter(shooter, BulletType.MAIN);
+		setBulletShooter(shooter, WeaponType.MAIN);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public interface Plane extends Shootable, CanCrash, CanCrashed, Explosible {
 	 * @param type
 	 * @return
 	 */
-	BulletShooter getBulletShooter(BulletType type);
+	BulletShooter getBulletShooter(WeaponType type);
 
 	/**
 	 * 获取当前飞机主武器的发射器

@@ -39,10 +39,10 @@ public abstract class ConfigLoader {
 	 * @return
 	 */
 	public static final Map<String, String> load(Class<?> clazz) {
-		return PROPS.computeIfAbsent(clazz.getName(), c -> PropertiesUtil.load(getConfigURL(clazz)));
+		return PROPS.computeIfAbsent(clazz.getName(), c -> PropertiesUtil.load(getConfigStream(clazz)));
 	}
 
-	private static final InputStream getConfigURL(Class<?> clazz) {
+	private static final InputStream getConfigStream(Class<?> clazz) {
 		String path = PathConf.confPath(clazz);
 		File file = new File(path);
 		if (!file.exists()) {

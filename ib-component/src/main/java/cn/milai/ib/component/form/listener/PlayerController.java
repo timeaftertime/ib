@@ -1,6 +1,7 @@
 package cn.milai.ib.component.form.listener;
 
-import cn.milai.ib.annotation.Order;
+import org.springframework.core.annotation.Order;
+
 import cn.milai.ib.obj.Player;
 
 /**
@@ -19,19 +20,19 @@ public class PlayerController implements KeyboardListener {
 	@Override
 	public boolean keyDown(Command e) {
 		switch (e) {
-			case UP:
+			case UP :
 				player.setUp();
 				break;
-			case DOWN:
+			case DOWN :
 				player.setDown();
 				break;
-			case LEFT:
+			case LEFT :
 				player.setLeft();
 				break;
-			case RIGHT:
+			case RIGHT :
 				player.setRight();
 				break;
-			case SHOOT:
+			case SHOOT :
 				player.setShooting();
 				break;
 			default:
@@ -43,19 +44,19 @@ public class PlayerController implements KeyboardListener {
 	@Override
 	public boolean keyUp(Command e) {
 		switch (e) {
-			case UP:
+			case UP :
 				player.clearUp();
 				break;
-			case DOWN:
+			case DOWN :
 				player.clearDown();
 				break;
-			case LEFT:
+			case LEFT :
 				player.clearLeft();
 				break;
-			case RIGHT:
+			case RIGHT :
 				player.clearRight();
 				break;
-			case SHOOT:
+			case SHOOT :
 				player.clearShooting();
 			default:
 				return false;

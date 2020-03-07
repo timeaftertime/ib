@@ -1,6 +1,7 @@
 package cn.milai.ib.component.form.listener;
 
-import cn.milai.ib.annotation.Order;
+import org.springframework.core.annotation.Order;
+
 import cn.milai.ib.component.form.FormContainer;
 
 /**

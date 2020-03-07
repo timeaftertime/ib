@@ -30,7 +30,6 @@ public abstract class IOUtil {
 	private static final Logger log = LoggerFactory.getLogger(IOUtil.class);
 
 	private IOUtil() {
-
 	}
 
 	public static byte[] toBytes(InputStream in) {
@@ -99,5 +98,31 @@ public abstract class IOUtil {
 			log.error("打开输入流失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
 			throw new IBIOException(e);
 		}
+	}
+
+	/**
+	 * 以 UTF-8 读取输入流所有数据，并转换为以 \n 表示换行的整个字符串
+	 * @param in
+	 * @return
+	 */
+	public static String toString(InputStream in) {
+		StringBuilder sb = new StringBuilder();
+		for (String s : toList(in)) {
+			sb.append(s).append('\n');
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 以 UTF-8 读取输入流所有数据，并将所有满足条件 p 的行转换为以 \n 表示换行的整个字符串
+	 * @param in
+	 * @return
+	 */
+	public static String toStringFilter(InputStream in, Predicate<String> p) {
+		StringBuilder sb = new StringBuilder();
+		for (String s : toListFilter(in, p)) {
+			sb.append(s).append('\n');
+		}
+		return sb.toString();
 	}
 }

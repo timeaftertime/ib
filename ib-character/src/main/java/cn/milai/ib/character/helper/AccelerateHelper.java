@@ -20,9 +20,9 @@ public class AccelerateHelper extends Helper {
 		}
 		Player player = (Player) plane;
 		player.pushStatus(false);
-		player.setRatedSpeedX(player.getRatedSpeedX() + SystemConf.frameProrate(5));
-		player.setRatedSpeedY(player.getRatedSpeedY() + SystemConf.frameProrate(5));
-		player.setImage(ImageLoader.load(Player.class, ACC_STATUS));
+		player.setRatedSpeedX(player.getRatedSpeedX() + SystemConf.frameProrate(2));
+		player.setRatedSpeedY(player.getRatedSpeedY() + SystemConf.frameProrate(2));
+		player.setImage(ImageLoader.load(plane.getClass(), ACC_STATUS));
 	}
 
 }

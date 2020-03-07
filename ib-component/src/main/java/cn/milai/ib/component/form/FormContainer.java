@@ -2,7 +2,6 @@ package cn.milai.ib.component.form;
 
 import java.awt.event.MouseListener;
 
-import cn.milai.ib.component.form.listener.FormCloseListener;
 import cn.milai.ib.component.form.listener.KeyboardListener;
 import cn.milai.ib.container.LifecycleContainer;
 
@@ -26,11 +25,6 @@ public interface FormContainer extends LifecycleContainer {
 	 * @param listener
 	 */
 	void removeKeyboardListener(KeyboardListener listener);
-
-	/**
-	 * 添加窗口关闭事件监听器
-	 */
-	void addFormCloseListener(FormCloseListener listener);
 
 	/**
 	 * 将下一个与 component 关联的鼠标事件通知 listener

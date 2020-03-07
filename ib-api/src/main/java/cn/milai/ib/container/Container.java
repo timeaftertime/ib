@@ -3,7 +3,7 @@ package cn.milai.ib.container;
 import java.awt.Image;
 import java.util.List;
 
-import cn.milai.ib.container.listener.GameEventListener;
+import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.container.listener.RefreshListener;
 import cn.milai.ib.obj.IBObject;
 
@@ -92,7 +92,7 @@ public interface Container {
 	 * 
 	 * @param listener
 	 */
-	void addGameEventListener(GameEventListener listener);
+	void addGameEventListener(ContainerEventListener listener);
 
 	/**
 	 * 播放音频

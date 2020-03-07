@@ -9,54 +9,10 @@
 	<artifactId>ib-start</artifactId>
 	<description>游戏启动</description>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<appendAssemblyId>false</appendAssemblyId>
-					<finalName>infinity-battle</finalName>
-					<descriptor>src/main/assembly/assembly.xml</descriptor>
-					<outputDirectory>output/</outputDirectory>
-					<archive>
-						<manifest>
-							<mainClass>cn.milai.ib.InfinityBattle</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<id>assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>cn.milai</groupId>
-			<artifactId>ib-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-character</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-component</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-drama</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-compiler</artifactId>
+			<artifactId>ib-container</artifactId>
 		</dependency>
 	</dependencies>
 

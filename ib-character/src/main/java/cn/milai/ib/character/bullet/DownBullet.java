@@ -1,7 +1,7 @@
 package cn.milai.ib.character.bullet;
 
 import cn.milai.ib.character.property.Shootable;
-import cn.milai.ib.constant.Camp;
+import cn.milai.ib.obj.Camp;
 
 /**
  * 竖直向下的子弹

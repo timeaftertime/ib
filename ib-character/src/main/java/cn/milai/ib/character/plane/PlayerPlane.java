@@ -6,8 +6,8 @@ import java.util.Stack;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.bullet.shooter.UpBulletShooter;
 import cn.milai.ib.character.explosion.DefaultExplosion;
-import cn.milai.ib.constant.Camp;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.obj.Camp;
 import cn.milai.ib.obj.IBCharacter;
 import cn.milai.ib.obj.Player;
 

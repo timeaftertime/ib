@@ -11,6 +11,32 @@ public final class StringUtil {
 	}
 
 	/**
+	 * 获取字符串的切片
+	 * 包含下标为 start 的字符，不包含下标为 end 的字符
+	 * 若 start < 0 表示下标 str.length() + start
+	 * 若 end < 0  表示下标 str.length() + end
+	 * 若 start > end 表示反顺序取 substring
+	 * @param str
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static String slice(String str, int start, int end) {
+		if (start < 0) {
+			start = str.length() + start;
+		}
+		if (end < 0) {
+			end = str.length() + end;
+		}
+		int grad = start < end ? 1 : -1;
+		StringBuilder sb = new StringBuilder();
+		for (int i = start; i != end; i += grad) {
+			sb.append(str.charAt(i));
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * 判断 str 不为 null 且的长度是否在 low 和 hig 之间（左开右闭）
 	 * @param str
 	 * @param low
