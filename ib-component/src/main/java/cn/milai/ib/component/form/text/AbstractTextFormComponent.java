@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import cn.milai.ib.component.form.AbstractFormComponent;
-import cn.milai.ib.component.form.FormContainer;
+import cn.milai.ib.container.form.FormContainer;
 
 /**
  * TextFormComtainer 抽象实现

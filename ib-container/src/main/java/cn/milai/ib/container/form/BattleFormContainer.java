@@ -20,11 +20,10 @@ import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.Explosible;
 import cn.milai.ib.character.property.Movable;
-import cn.milai.ib.component.form.FormContainer;
-import cn.milai.ib.component.form.listener.Command;
-import cn.milai.ib.component.form.listener.KeyboardListener;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
+import cn.milai.ib.container.form.listener.Command;
+import cn.milai.ib.container.form.listener.KeyboardListener;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.container.listener.ContainerLifecycleListener;
 import cn.milai.ib.container.listener.RefreshListener;
@@ -35,10 +34,10 @@ import cn.milai.ib.obj.Paintable;
 import cn.milai.ib.util.TimeUtil;
 
 /**
- * 战斗场景窗体类
+ * 战斗场景窗体容器
  * @author milai
  */
-public class BattleForm extends DoubleBufferForm implements FormContainer {
+public class BattleFormContainer extends DoubleBufferFormContainer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,7 +91,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 	 */
 	private boolean started;
 
-	public BattleForm() {
+	public BattleFormContainer() {
 		init();
 	}
 
@@ -210,7 +209,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 
 		private void notifyRefresh() {
 			for (RefreshListener listener : Lists.newArrayList(refreshListeners)) {
-				listener.afterRefresh(BattleForm.this);
+				listener.afterRefresh(BattleFormContainer.this);
 			}
 		}
 	}
@@ -252,7 +251,7 @@ public class BattleForm extends DoubleBufferForm implements FormContainer {
 						});
 					}
 				}
-				TimeUtil.wait(BattleForm.this, 1L);
+				TimeUtil.wait(BattleFormContainer.this, 1L);
 			}
 		}
 	}

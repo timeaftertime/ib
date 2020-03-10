@@ -6,8 +6,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import cn.milai.ib.component.form.FormContainer;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.container.form.FormContainer;
 import cn.milai.ib.container.listener.RefreshListener;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;

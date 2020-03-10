@@ -14,10 +14,6 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-character</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-component</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

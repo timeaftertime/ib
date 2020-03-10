@@ -1,9 +1,9 @@
-package cn.milai.ib.component.form;
+package cn.milai.ib.container.form;
 
 import java.awt.event.MouseListener;
 
-import cn.milai.ib.component.form.listener.KeyboardListener;
 import cn.milai.ib.container.LifecycleContainer;
+import cn.milai.ib.container.form.listener.KeyboardListener;
 
 /**
  * 窗口容器

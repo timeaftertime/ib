@@ -1,5 +1,7 @@
 package cn.milai.ib.component.form;
 
+import cn.milai.ib.container.form.FormContainer;
+
 /**
  * GameOver 字样的图片标签
  * 2019.11.30

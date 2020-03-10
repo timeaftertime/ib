@@ -8,14 +8,14 @@ import cn.milai.ib.character.bullet.Bullet;
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.plane.PlayerPlane;
 import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.component.form.FormContainer;
 import cn.milai.ib.component.form.GameOverLabel;
 import cn.milai.ib.component.form.RestartButton;
-import cn.milai.ib.component.form.listener.GameProcController;
-import cn.milai.ib.component.form.listener.PlayerController;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.form.BattleForm;
+import cn.milai.ib.container.form.BattleFormContainer;
+import cn.milai.ib.container.form.FormContainer;
+import cn.milai.ib.container.form.listener.GameProcController;
+import cn.milai.ib.container.form.listener.PlayerController;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.container.listener.ContainerLifecycleListener;
 import cn.milai.ib.ex.IBException;
@@ -42,7 +42,7 @@ public abstract class AbstractGameMode extends Thread implements GameMode, Conta
 
 	@Override
 	public final void init() {
-		form = new BattleForm();
+		form = new BattleFormContainer();
 		player = new PlayerPlane(form.getWidth() / 2, (int) (form.getHeight() * 0.93), form);
 		initGameMode();
 	}

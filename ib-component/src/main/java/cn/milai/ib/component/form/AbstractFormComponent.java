@@ -2,6 +2,8 @@ package cn.milai.ib.component.form;
 
 import java.awt.Image;
 
+import cn.milai.ib.container.form.FormComponent;
+import cn.milai.ib.container.form.FormContainer;
 import cn.milai.ib.obj.AbstractIBObject;
 
 /**

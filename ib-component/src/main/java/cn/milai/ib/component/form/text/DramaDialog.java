@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.component.form.FormContainer;
 import cn.milai.ib.component.form.WaitNextPageTip;
-import cn.milai.ib.component.form.listener.Command;
-import cn.milai.ib.component.form.listener.KeyShield;
-import cn.milai.ib.component.form.listener.KeyboardListener;
+import cn.milai.ib.container.form.FormContainer;
+import cn.milai.ib.container.form.listener.Command;
+import cn.milai.ib.container.form.listener.KeyShield;
+import cn.milai.ib.container.form.listener.KeyboardListener;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;

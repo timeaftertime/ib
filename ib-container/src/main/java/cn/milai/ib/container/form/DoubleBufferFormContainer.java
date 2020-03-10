@@ -3,7 +3,11 @@ package cn.milai.ib.container.form;
 import java.awt.Graphics;
 import java.awt.Image;
 
-public abstract class DoubleBufferForm extends GameForm {
+/**
+ * 使用双缓存刷新的窗口容器
+ * @author milai
+ */
+public abstract class DoubleBufferFormContainer extends AbstactFormContainer {
 
 	private static final long serialVersionUID = 1L;
 

@@ -3,7 +3,7 @@ package cn.milai.ib.component.form.text;
 import java.awt.Color;
 import java.awt.Font;
 
-import cn.milai.ib.component.form.FormComponent;
+import cn.milai.ib.container.form.FormComponent;
 
 /**
  * 与文本相关的窗口组件

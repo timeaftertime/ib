@@ -7,4 +7,8 @@ package cn.milai.ib.obj;
  */
 public interface IBComponent extends IBObject {
 
+	@Override
+	default int getPaintLayer() {
+		return Paintable.GAME_COMPONENT_LAYER;
+	}
 }

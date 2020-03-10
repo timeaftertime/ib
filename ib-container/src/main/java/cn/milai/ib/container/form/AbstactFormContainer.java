@@ -8,17 +8,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JFrame;
 
-import cn.milai.ib.component.form.FormContainer;
-import cn.milai.ib.component.form.FormComponent;
 import cn.milai.ib.obj.IBObject;
 
-public abstract class GameForm extends JFrame implements FormContainer {
+/**
+ * FormContainer 抽象基类
+ * @author milai
+ */
+public abstract class AbstactFormContainer extends JFrame implements FormContainer {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Map<FormComponent, MouseListener> listeners = new ConcurrentHashMap<>();
 
-	public GameForm() {
+	public AbstactFormContainer() {
 		addMouseListener(new MouseAdapter() {
 
 			private MouseListener getTarget(MouseEvent e) {
