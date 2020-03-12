@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.bullet.shooter.UpBulletShooter;
-import cn.milai.ib.character.explosion.DefaultExplosion;
+import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.Camp;
 import cn.milai.ib.obj.IBCharacter;
@@ -138,7 +138,9 @@ public class PlayerPlane extends AbstractPlane implements Player {
 		rollBackStatus();
 		// 如果没有死亡，显示受伤效果
 		if (isAlive()) {
-			getContainer().addObject(new DefaultExplosion((int) getCenterX(), (int) getCenterY(), getContainer()));
+			for (Explosion explosion : getExplosionCreator().createExplosions(this)) {
+				getContainer().addObject(explosion);
+			}
 		}
 	}
 

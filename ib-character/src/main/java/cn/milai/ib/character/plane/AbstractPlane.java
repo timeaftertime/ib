@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.MovableIBCharacter;
+import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.bullet.Bullet;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.explosion.creator.DefaultExplosionCreator;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
-import cn.milai.ib.character.property.CanCrashed;
+import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.HasDamage;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.Camp;
@@ -128,7 +128,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 	}
 
 	@Override
-	public void onCrash(CanCrashed crashed) {
+	public void onCrash(CanCrash crashed) {
 		crashed.loseLife(this, getDamage());
 	}
 

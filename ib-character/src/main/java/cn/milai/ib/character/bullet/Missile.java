@@ -1,5 +1,6 @@
 package cn.milai.ib.character.bullet;
 
+import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Shootable;
 import cn.milai.ib.obj.Camp;
 
@@ -16,6 +17,12 @@ public class Missile extends AbstractBullet {
 	@Override
 	public Camp getCamp() {
 		return Camp.ENEMY_BULLET;
+	}
+
+	@Override
+	public void onCrash(CanCrash crashed) {
+		super.onCrash(crashed);
+		toDead();
 	}
 
 }

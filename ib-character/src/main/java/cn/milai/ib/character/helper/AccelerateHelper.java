@@ -5,7 +5,7 @@ import cn.milai.ib.container.Container;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.obj.Player;
 
-public class AccelerateHelper extends Helper {
+public class AccelerateHelper extends AbstractHelper {
 
 	private static final String ACC_STATUS = "accelerate";
 

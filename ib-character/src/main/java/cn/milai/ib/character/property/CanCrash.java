@@ -3,14 +3,14 @@ package cn.milai.ib.character.property;
 import cn.milai.ib.obj.IBCharacter;
 
 /**
- * 一个表明本游戏角色可以撞击 @see CanCrashed 对象的接口
+ * 需要进行碰撞检测的游戏角色
  */
 public interface CanCrash extends IBCharacter {
 
 	/**
-	 * 与 CanCrashed 碰撞后，若 !sameCamp(canCrashed) 则调用
+	 * 与另一个游戏角色碰撞时调用
 	 * @param crashed
 	 */
-	void onCrash(CanCrashed crashed);
+	void onCrash(CanCrash crashed);
 
 }

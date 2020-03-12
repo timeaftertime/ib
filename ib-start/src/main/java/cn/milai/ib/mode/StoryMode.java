@@ -24,7 +24,7 @@ import cn.milai.ib.util.TimeUtil;
 @Component
 public class StoryMode extends AbstractGameMode {
 
-	private static final int SHOW_DRAMA_NAME_FRAMES = 80;
+	private static final int SHOW_DRAMA_NAME_FRAMES = 70;
 	private static final String STAGE_CONF_FILE = "/ib-stages.conf";
 	private static final String THREAD_NAME_PREFIX = "Story#";
 

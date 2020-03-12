@@ -9,9 +9,6 @@ import cn.milai.ib.container.Container;
  */
 public abstract class MovableIBCharacter extends AbstractIBCharacter implements Movable {
 
-	private static final String P_SPEED_X = "speedX";
-	private static final String P_SPEED_Y = "speedY";
-
 	private int speedX;
 	private int speedY;
 
@@ -29,18 +26,22 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 		return proratedIntProp(P_SPEED_Y);
 	}
 
+	@Override
 	public int getSpeedX() {
 		return speedX;
 	}
 
+	@Override
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
 	}
 
+	@Override
 	public int getSpeedY() {
 		return speedY;
 	}
 
+	@Override
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}

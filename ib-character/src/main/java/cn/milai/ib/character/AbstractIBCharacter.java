@@ -2,13 +2,12 @@ package cn.milai.ib.character;
 
 import java.awt.Graphics;
 
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.AbstractIBObject;
 import cn.milai.ib.obj.IBCharacter;
 
 /**
- * 参与到游戏中的游戏角色的抽象实现
+ * IBCharacter 的抽象实现
  * @author milai
  */
 public abstract class AbstractIBCharacter extends AbstractIBObject implements IBCharacter {
@@ -19,7 +18,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 
 	public AbstractIBCharacter(int x, int y, Container container) {
 		super(x, y, container);
-		this.life = SystemConf.getInt(getClass(), P_LIFE);
+		this.life = intProp(P_LIFE);
 	}
 
 	@Override

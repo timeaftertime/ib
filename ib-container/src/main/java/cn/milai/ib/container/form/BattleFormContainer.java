@@ -17,9 +17,9 @@ import com.google.common.collect.Maps;
 
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.Explosible;
 import cn.milai.ib.character.property.Movable;
+import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
 import cn.milai.ib.container.form.listener.Command;
@@ -61,7 +61,6 @@ public class BattleFormContainer extends DoubleBufferFormContainer {
 	private List<IBCharacter> characters;
 	private List<Movable> movables;
 	private List<CanCrash> canCrashs;
-	private List<CanCrashed> canCrasheds;
 	private List<KeyboardListener> keyboardListeners;
 	private List<ContainerEventListener> gameEventListeners;
 	private List<RefreshListener> refreshListeners;
@@ -108,7 +107,6 @@ public class BattleFormContainer extends DoubleBufferFormContainer {
 		characters = Lists.newArrayList();
 		movables = Lists.newArrayList();
 		canCrashs = Lists.newArrayList();
-		canCrasheds = Lists.newArrayList();
 		keyboardListeners = Lists.newArrayList();
 		gameEventListeners = Lists.newArrayList();
 		refreshListeners = Lists.newArrayList();
@@ -139,19 +137,33 @@ public class BattleFormContainer extends DoubleBufferFormContainer {
 	}
 
 	private void checkCrash() {
-		for (CanCrash crash : Lists.newArrayList(canCrashs)) {
-			for (CanCrashed crashed : Lists.newArrayList(canCrasheds)) {
-				if (crash == crashed) {
-					continue;
-				}
-				if (Camp.sameCamp(crash.getCamp(), crashed.getCamp())) {
-					continue;
-				}
-				if (crash.intersects(crashed)) {
-					crash.onCrash(crashed);
+		List<CanCrash> canCrashs = Lists.newArrayList(this.canCrashs);
+		for (int i = 1; i < canCrashs.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				CanCrash canCrash1 = canCrashs.get(i);
+				CanCrash canCrash2 = canCrashs.get(j);
+				if (isCrashed(canCrash1, canCrash2)) {
+					canCrash1.onCrash(canCrash2);
+					canCrash2.onCrash(canCrash1);
 				}
 			}
 		}
+	}
+
+	/**
+	 * 两个可碰撞对象是否产生碰撞
+	 * @param canCrash1
+	 * @param canCrash2
+	 * @return
+	 */
+	private boolean isCrashed(CanCrash canCrash1, CanCrash canCrash2) {
+		if (Camp.sameCamp(canCrash1.getCamp(), canCrash2.getCamp())) {
+			return false;
+		}
+		if (canCrash1 instanceof Rotatable) {
+			return canCrash1.intersects(canCrash2);
+		}
+		return canCrash2.intersects(canCrash1);
 	}
 
 	/**
@@ -384,21 +396,16 @@ public class BattleFormContainer extends DoubleBufferFormContainer {
 		this.movables.remove(ibObj);
 		this.characters.remove(ibObj);
 		this.canCrashs.remove(ibObj);
-		this.canCrasheds.remove(ibObj);
 	}
 
 	private void addCharacter(IBCharacter character) {
 		this.characters.add(character);
-		if (character instanceof Movable)
+		if (character instanceof Movable) {
 			addMovable((Movable) character);
-		if (character instanceof CanCrash)
+		}
+		if (character instanceof CanCrash) {
 			addCrash((CanCrash) character);
-		if (character instanceof CanCrashed)
-			addCanCrashed((CanCrashed) character);
-	}
-
-	private void addCanCrashed(CanCrashed canChrashed) {
-		this.canCrasheds.add(canChrashed);
+		}
 	}
 
 	private void addCrash(CanCrash crashable) {

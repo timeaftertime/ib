@@ -1,7 +1,7 @@
 package cn.milai.ib.character.bullet.shooter;
 
 import cn.milai.ib.character.bullet.Bullet;
-import cn.milai.ib.character.bullet.UpBullet;
+import cn.milai.ib.character.bullet.NormalPlayerBullet;
 import cn.milai.ib.character.property.Shootable;
 
 /**
@@ -13,7 +13,7 @@ public class UpBulletShooter implements BulletShooter {
 
 	@Override
 	public Bullet[] shootBullets(Shootable owner) {
-		return new Bullet[] { new UpBullet((int) owner.getCenterX(), (int) owner.getCenterY(), owner) };
+		return new Bullet[] { new NormalPlayerBullet((int) owner.getCenterX(), (int) owner.getCenterY(), owner) };
 	}
 
 }

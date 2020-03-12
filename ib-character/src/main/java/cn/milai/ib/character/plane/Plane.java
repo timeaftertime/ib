@@ -3,7 +3,6 @@ package cn.milai.ib.character.plane;
 import cn.milai.ib.character.WeaponType;
 import cn.milai.ib.character.bullet.shooter.BulletShooter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.Explosible;
 import cn.milai.ib.character.property.Shootable;
 
@@ -12,7 +11,7 @@ import cn.milai.ib.character.property.Shootable;
  * @author milai
  * @date 2020.02.20
  */
-public interface Plane extends Shootable, CanCrash, CanCrashed, Explosible {
+public interface Plane extends Shootable, CanCrash, Explosible {
 
 	/**
 	 * 属性 可同时存在于所在容器的子弹最大数量 的 key

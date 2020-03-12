@@ -1,8 +1,8 @@
 package cn.milai.ib.character.bullet;
 
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.property.CanCrashed;
 import cn.milai.ib.character.property.HasDamage;
+import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.character.property.Shootable;
 
 /**
@@ -10,7 +10,7 @@ import cn.milai.ib.character.property.Shootable;
  * @author milai
  * @date 2020.02.20
  */
-public interface Bullet extends CanCrash, CanCrashed, HasDamage {
+public interface Bullet extends CanCrash, HasDamage, Rotatable {
 
 	/**
 	 * 属性 power（子弹伤害值） 的 key

@@ -8,9 +8,9 @@ import cn.milai.ib.obj.Camp;
  * 2019.11.21
  * @author milai
  */
-public class UpBullet extends AbstractBullet {
+public class NormalPlayerBullet extends AbstractBullet {
 
-	public UpBullet(int x, int y, Shootable owner) {
+	public NormalPlayerBullet(int x, int y, Shootable owner) {
 		super(x, y, owner);
 	}
 

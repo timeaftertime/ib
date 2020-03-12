@@ -1,7 +1,7 @@
 package cn.milai.ib.character.bullet;
 
-import cn.milai.ib.character.MovableIBCharacter;
-import cn.milai.ib.character.property.CanCrashed;
+import cn.milai.ib.character.RotatableIBCharacter;
+import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Shootable;
 import cn.milai.ib.obj.Camp;
 import cn.milai.ib.obj.Paintable;
@@ -10,7 +10,7 @@ import cn.milai.ib.obj.Paintable;
  * 子弹类游戏对象的抽象基类
  * @author milai
  */
-public abstract class AbstractBullet extends MovableIBCharacter implements Bullet {
+public abstract class AbstractBullet extends RotatableIBCharacter implements Bullet {
 
 	private Shootable owner;
 	private int power;
@@ -55,7 +55,7 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	}
 
 	@Override
-	public void onCrash(CanCrashed crashed) {
+	public void onCrash(CanCrash crashed) {
 		crashed.loseLife(this, getDamage());
 	}
 

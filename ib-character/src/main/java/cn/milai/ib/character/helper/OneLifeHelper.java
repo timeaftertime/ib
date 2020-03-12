@@ -3,7 +3,7 @@ package cn.milai.ib.character.helper;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.Player;
 
-public class OneLifeHelper extends Helper {
+public class OneLifeHelper extends AbstractHelper {
 
 	private static final int GAIN_LIFE = 1;
 

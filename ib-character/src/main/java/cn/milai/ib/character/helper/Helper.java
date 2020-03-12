@@ -1,25 +1,24 @@
 package cn.milai.ib.character.helper;
 
-import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.property.CanCrashed;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.Camp;
+import cn.milai.ib.obj.IBCharacter;
 import cn.milai.ib.obj.Player;
 
 /**
- * 援助道具
+ * 协助道具
  * @author milai
- *
+ * @date 2020.03.10
  */
-public abstract class Helper extends MovableIBCharacter implements CanCrash {
+public interface Helper extends IBCharacter, CanCrash {
 
-	public Helper(int x, int y, Container container) {
-		super(x, y, container);
+	@Override
+	default Camp getCamp() {
+		return Camp.HELPER;
 	}
 
 	@Override
-	public void onCrash(CanCrashed crashed) {
+	default void onCrash(CanCrash crashed) {
 		if (!(crashed instanceof Player)) {
 			return;
 		}
@@ -27,21 +26,9 @@ public abstract class Helper extends MovableIBCharacter implements CanCrash {
 		makeFunction((Player) crashed);
 	}
 
-	public abstract void makeFunction(Player plane);
-
-	@Override
-	protected void afterMove() {
-		removeIfOutOfOwner();
-	}
-
-	private void removeIfOutOfOwner() {
-		if (getY() > getContainer().getHeight())
-			getContainer().removeObject(this);
-	}
-
-	@Override
-	public Camp getCamp() {
-		return Camp.HELPER;
-	}
-
+	/**
+	 * 对 Player 产生效果，在 Player 获得当前道具是调用
+	 * @param player
+	 */
+	void makeFunction(Player player);
 }
