@@ -96,7 +96,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 			bullets.add(bullet);
 			getContainer().addObject(bullet);
 		}
-		lastShootFrame = getContainer().currentFrame();
+		lastShootFrame = getContainer().getFrame();
 		return true;
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane,
 		return isAlive()
 			&& (bulletShooters.get(type) != null)
 			&& (bullets.size() < maxBulletNum)
-			&& (getContainer().currentFrame() >= lastShootFrame + shootInterval);
+			&& (getContainer().getFrame() >= lastShootFrame + shootInterval);
 	}
 
 	@Override

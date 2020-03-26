@@ -7,8 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.form.FormContainer;
-import cn.milai.ib.container.listener.RefreshListener;
+import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -17,7 +16,7 @@ import cn.milai.ib.util.ImageUtil;
  * @author milai
  * @date 2020.02.21
  */
-public class LinesFullScreenPassComponent extends AbstractTextFormComponent implements RefreshListener {
+public class LinesFullScreenPassComponent extends AbstractTextFormComponent implements ContainerEventListener {
 
 	private Image img;
 	private long frameCount;
@@ -37,31 +36,23 @@ public class LinesFullScreenPassComponent extends AbstractTextFormComponent impl
 	 * @param container
 	 */
 	public LinesFullScreenPassComponent(long durationFrames, List<String> lines, int lineInterval,
-		FormContainer container) {
+		Container container) {
 		super(0, 0, container);
 		this.durationFrames = durationFrames;
 		frameCount = 0;
-		appearEndFrame = durationFrames / 3;
-		disapearStartFrame = durationFrames / 3 * 2;
-		delta = 1.0 / (durationFrames / 3);
+		appearEndFrame = Long.max(1, durationFrames / 3);
+		disapearStartFrame = durationFrames - appearEndFrame;
+		delta = 1.0 / appearEndFrame;
 		transparency = 0;
 		this.lines = lines;
 		this.lineInterval = lineInterval;
-		container.addRefreshListener(this);
+		container.addEventListener(this);
 	}
 
 	@Override
 	public Image getImage() {
-		if (frameCount >= durationFrames) {
-			getContainer().removeObject(this);
-		}
 		if (frameCount >= appearEndFrame && frameCount < disapearStartFrame) {
 			return img;
-		}
-		if (frameCount < appearEndFrame) {
-			increaseTransparency();
-		} else {
-			decreaseTransparency();
 		}
 		return img = createImage();
 	}
@@ -111,5 +102,15 @@ public class LinesFullScreenPassComponent extends AbstractTextFormComponent impl
 	@Override
 	public void afterRefresh(Container container) {
 		frameCount++;
+		if (frameCount >= durationFrames) {
+			getContainer().removeEventListener(this);
+			getContainer().removeObject(this);
+			return;
+		}
+		if (frameCount < appearEndFrame) {
+			increaseTransparency();
+		} else if (frameCount >= disapearStartFrame) {
+			decreaseTransparency();
+		}
 	}
 }

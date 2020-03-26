@@ -1,11 +1,13 @@
 package cn.milai.ib.obj;
 
+import cn.milai.ib.container.listener.Command;
+
 /**
  * 玩家角色
  * 2020.01.15
  * @author milai
  */
-public interface Player extends IBCharacter {
+public interface Player extends IBCharacter, Controllable {
 
 	/**
 	 * 属性 [初始额定 X 速度] 的 key
@@ -26,6 +28,64 @@ public interface Player extends IBCharacter {
 	 * 属性 [最大额定 Y 速度] 的 key
 	 */
 	String P_MAX_RATED_SPEED_Y = "maxRatedSpeedY";
+
+	@Override
+	default boolean onReceive(Command command) {
+		switch (command) {
+			case UP : {
+				setUp();
+				return false;
+			}
+			case DOWN : {
+				setDown();
+				return false;
+			}
+			case LEFT : {
+				setLeft();
+				return false;
+			}
+			case RIGHT : {
+				setRight();
+				return false;
+			}
+			case A : {
+				setShooting();
+				return false;
+			}
+			default: {
+				return true;
+			}
+		}
+	}
+
+	@Override
+	default boolean onCancel(Command command) {
+		switch (command) {
+			case UP : {
+				clearUp();
+				return false;
+			}
+			case DOWN : {
+				clearDown();
+				return false;
+			}
+			case LEFT : {
+				clearLeft();
+				return false;
+			}
+			case RIGHT : {
+				clearRight();
+				return false;
+			}
+			case A : {
+				clearShooting();
+				return false;
+			}
+			default: {
+				return true;
+			}
+		}
+	}
 
 	/**
 	 * 设置向上移动的状态

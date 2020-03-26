@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import cn.milai.ib.component.form.AbstractFormComponent;
-import cn.milai.ib.container.form.FormContainer;
+import cn.milai.ib.container.Container;
 
 /**
  * TextFormComtainer 抽象实现
@@ -16,7 +16,7 @@ public abstract class AbstractTextFormComponent extends AbstractFormComponent im
 	private Font font;
 	private Color color;
 
-	public AbstractTextFormComponent(int x, int y, FormContainer container) {
+	public AbstractTextFormComponent(int x, int y, Container container) {
 		super(x, y, container);
 		int textSize = proratedIntProp(P_TEXT_SIZE);
 		font = new Font(prop(P_TEXT_FONT), Font.BOLD, textSize);

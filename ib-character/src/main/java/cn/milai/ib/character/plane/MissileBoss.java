@@ -26,7 +26,7 @@ public class MissileBoss extends EnemyPlane {
 	/**
 	 * 进入“危险”状态的最大生命值
 	 */
-	private final int DANGER_LIFE = getLife() / 3;
+	private final int DANGER_LIFE = getLife() / 4;
 
 	/**
 	 * 初始生命值
@@ -122,7 +122,7 @@ public class MissileBoss extends EnemyPlane {
 		 */
 		private final long PREPARE_INTERVAL = longProp("prepareInterval");
 
-		private final long CREATE_FRAME = getContainer().currentFrame();
+		private final long CREATE_FRAME = getContainer().getFrame();
 
 		public Pareparing() {
 			setSpeedX((RandomUtil.nextLess(0.5) ? 1 : (-1)) * getInitSpeedX());
@@ -144,7 +144,7 @@ public class MissileBoss extends EnemyPlane {
 		@Override
 		public void afterMove() {
 			ensureIn(0, getContainer().getWidth(), PREPARE_MIN_Y, PREPARE_MAX_Y);
-			if (getContainer().currentFrame() >= CREATE_FRAME + PREPARE_INTERVAL) {
+			if (getContainer().getFrame() >= CREATE_FRAME + PREPARE_INTERVAL) {
 				status = new Pursuing();
 			}
 		}
@@ -162,6 +162,9 @@ public class MissileBoss extends EnemyPlane {
 
 		@Override
 		public void beforeMove() {
+			if (getAttackTarget() == null) {
+				return;
+			}
 			if (getCenterX() > getAttackTarget().getCenterX()) {
 				setSpeedX(-Math.abs(getSpeedX()));
 			}

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.ib.ex.DramaStringNotFoundException;
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.util.IOUtil;
 
@@ -45,10 +46,14 @@ public class DramaStringLoader {
 	}
 
 	public static String get(String dramaCode, String stringCode) {
-		return STRINGS
+		String value = STRINGS
 			.computeIfAbsent(dramaCode, c -> Maps.newHashMap())
 			.computeIfAbsent(language, lang -> loadStrings(dramaCode, lang))
 			.get(stringCode);
+		if(value == null) {
+			throw new DramaStringNotFoundException(dramaCode, stringCode);
+		}
+		return value;
 	}
 
 	private static String getResourceName(String lang) {

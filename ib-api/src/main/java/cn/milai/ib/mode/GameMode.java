@@ -18,7 +18,9 @@ public interface GameMode {
 	 * 由于所有 GameMode 都会在启动时实例化，所有 GameMode 的
 	 * 构造方法应该尽量简单，而把初始操作放在 init 中
 	 */
-	void init();
+	default void init() {
+
+	}
 
 	/**
 	 * 开始运行，该方法应立即返回

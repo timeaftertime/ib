@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.ex.IBIOException;
 
 /**
@@ -26,6 +27,8 @@ public abstract class ImageUtil {
 	}
 
 	private static final Toolkit TK = Toolkit.getDefaultToolkit();
+	private static final int DEFAULT_WIDTH = SystemConf.prorate(50);
+	private static final int DEFAULT_HEIGHT = SystemConf.prorate(50);
 
 	/**
 	 * 加载 url 指定的图片
@@ -102,6 +105,18 @@ public abstract class ImageUtil {
 		Graphics2D g2d = img.createGraphics();
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transaparency));
 		return g2d;
+	}
+
+	/**
+	 * 获取 img 的 jpg 格式
+	 * @param img
+	 * @return
+	 */
+	public static Image getJPGImage(Image img) {
+		BufferedImage image = newImage(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		Graphics g = image.getGraphics();
+		g.drawImage(img, 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, null);
+		return img;
 	}
 
 }

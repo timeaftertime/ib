@@ -16,17 +16,17 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 
 	public AbstractExplosion(int x, int y, Container container) {
 		super(x, y, container);
-		this.endFrame = getContainer().currentFrame() + LAST_FRAMES;
+		this.endFrame = getContainer().getFrame() + LAST_FRAMES;
 	}
 
 	@Override
 	public boolean isAlive() {
-		return getContainer().currentFrame() <= endFrame;
+		return getContainer().getFrame() <= endFrame;
 	}
 
 	@Override
 	public void toDead() {
-		endFrame = getContainer().currentFrame();
+		endFrame = getContainer().getFrame();
 	}
 
 }

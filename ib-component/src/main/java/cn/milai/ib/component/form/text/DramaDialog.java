@@ -4,13 +4,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Map;
+
+import org.springframework.core.annotation.Order;
+
+import com.google.common.collect.Maps;
 
 import cn.milai.ib.component.form.WaitNextPageTip;
+import cn.milai.ib.container.Container;
 import cn.milai.ib.container.form.FormContainer;
-import cn.milai.ib.container.form.listener.Command;
-import cn.milai.ib.container.form.listener.KeyShield;
-import cn.milai.ib.container.form.listener.KeyboardListener;
+import cn.milai.ib.container.listener.Command;
 import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.obj.Controllable;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -18,31 +23,21 @@ import cn.milai.ib.util.ImageUtil;
  * 显示剧情文字的对话框
  * @author milai
  */
-public class DramaDialog extends AbstractTextFormComponent {
+@Order(-100)
+public class DramaDialog extends AbstractTextFormComponent implements Controllable {
 
 	private static final String SAMPLE_STR = "字";
 
-	private static final String P_HOR_MARGIN = "horMargin";
-	private static final String P_VER_MARGIN = "verMargin";
-	private static final String P_KEY_WAIT_WIDTH = "waitWidth";
-	private static final String P_KEY_WAIT_HEIGHT = "waitHeight";
-	private static final String P_SPEAKER_WIDTH = "speakerWidth";
-	private static final String P_SPEAKER_HEIGHT = "speakerHeight";
+	public static final String P_HOR_MARGIN = "horMargin";
+	public static final String P_VER_MARGIN = "verMargin";
+	public static final String P_KEY_WAIT_WIDTH = "waitWidth";
+	public static final String P_KEY_WAIT_HEIGHT = "waitHeight";
+	public static final String P_SPEAKER_WIDTH = "speakerWidth";
+	public static final String P_SPEAKER_HEIGHT = "speakerHeight";
 
-	private final KeyboardListener nextPageListener = new KeyShield(new KeyboardListener() {
-		@Override
-		public boolean keyUp(Command e) {
-			return false;
-		}
-
-		@Override
-		public boolean keyDown(Command e) {
-			if (e == Command.SHOOT) {
-				pageDown();
-			}
-			return false;
-		}
-	});
+	public static final String PARAM_TEXT = "text";
+	public static final String PARAM_SPEAKER_IMG = "speakerImg";
+	public static final String PARAM_SPEAKER_NAME = "speakerName";
 
 	private BufferedImage textImage;
 	private static Image waitNextPage = ImageLoader.load(WaitNextPageTip.class);
@@ -55,11 +50,16 @@ public class DramaDialog extends AbstractTextFormComponent {
 	private String text;
 	private int readIndex;
 
-	private Image speaker;
+	private Image speakerImg;
+	private String speakerName;
 	private int speakerWidth;
 	private int speakerHeight;
 
-	public DramaDialog(int x, int y, Image speaker, String text, FormContainer container) {
+	public DramaDialog(int x, int y, Image speaker, String text, Container container) {
+		this(x, y, container, asParams(text, speaker, null));
+	}
+
+	public DramaDialog(int x, int y, Container container, Map<String, Object> params) {
 		super(x, y, container);
 
 		horMargin = proratedIntProp(P_HOR_MARGIN);
@@ -68,13 +68,21 @@ public class DramaDialog extends AbstractTextFormComponent {
 		waitHeight = proratedIntProp(P_KEY_WAIT_HEIGHT);
 		speakerWidth = proratedIntProp(P_SPEAKER_WIDTH);
 		speakerHeight = proratedIntProp(P_SPEAKER_HEIGHT);
-		this.text = text;
+		this.text = (String) params.get(PARAM_TEXT);
 		readIndex = 0;
-		this.speaker = speaker;
+		this.speakerImg = (Image) params.get(PARAM_SPEAKER_IMG);
+		this.speakerName = (String) params.get(PARAM_SPEAKER_NAME);
 		pageDown();
 
-		getContainer().setPin(true);
-		getContainer().addKeyboardListener(nextPageListener);
+		getContainer().setPined(true);
+	}
+
+	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
+		Map<String, Object> m = Maps.newHashMap();
+		m.put(PARAM_TEXT, text == null ? "" : text);
+		m.put(PARAM_SPEAKER_IMG, speakerImg);
+		m.put(PARAM_SPEAKER_NAME, speakerName == null ? "" : speakerName);
+		return m;
 	}
 
 	/**
@@ -83,9 +91,8 @@ public class DramaDialog extends AbstractTextFormComponent {
 	private void pageDown() {
 		if (readIndex >= text.length()) {
 			FormContainer container = getContainer();
-			container.removeKeyboardListener(nextPageListener);
 			container.removeObject(this);
-			container.setPin(false);
+			container.setPined(false);
 			return;
 		}
 		textImage = createNextTextImage();
@@ -120,7 +127,11 @@ public class DramaDialog extends AbstractTextFormComponent {
 	private void render(Graphics g) {
 		// 边框
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-		// 文字 
+		// 说话者名字
+		if (speakerName != null) {
+			g.drawString(speakerName, horMargin + speakerWidth, speakerHeight / 2);
+		}
+		// 说话内容
 		int textHeight = ImageTextUtil.getTextHeight(g);
 		int nowBottom = verMargin + textHeight + speakerHeight;
 		// 至少绘制一行
@@ -158,15 +169,32 @@ public class DramaDialog extends AbstractTextFormComponent {
 		BufferedImage img = ImageUtil.copy(textImage);
 		Graphics2D g = img.createGraphics();
 		// 说话者头像
-		if (speaker != null) {
+		if (speakerImg != null) {
 			g.drawRect(0, 0, speakerWidth, speakerHeight);
-			g.drawImage(speaker, 0, 0, speakerWidth, speakerHeight, null);
+			g.drawImage(speakerImg, 0, 0, speakerWidth, speakerHeight, null);
 		}
 		// 表示还有下一页的箭头
 		if (readIndex < text.length()) {
 			g.drawImage(waitNextPage, getWidth() - waitWidth, getHeight() - waitHeight, waitWidth, waitHeight, null);
 		}
 		return img;
+	}
+
+	@Override
+	public boolean onReceive(Command command) {
+		if (command == Command.A) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onCancel(Command command) {
+		if (command == Command.A) {
+			pageDown();
+			return false;
+		}
+		return true;
 	}
 
 }

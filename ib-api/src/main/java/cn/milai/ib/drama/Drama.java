@@ -27,8 +27,8 @@ public interface Drama {
 
 	/**
 	 * 在指定容器中运行剧本
-	 * 该方法应尽可能快速地响应 Thread.interrupt()
-	 * 响应时应立即中断剧本执行并返回，同时保持 Thread.isInterrpted() == true
+	 * 该方法应该尽快响应 Thread.interrup()
+	 * 返回时若保留线程中断状态，将退出当前线程
 	 * @param container
 	 */
 	void run(Container container);

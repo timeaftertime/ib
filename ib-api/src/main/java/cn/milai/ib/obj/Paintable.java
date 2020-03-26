@@ -26,7 +26,7 @@ public interface Paintable extends Comparable<Paintable> {
 
 	@Override
 	default int compareTo(Paintable o) {
-		return getPaintLayer();
+		return getPaintLayer() - o.getPaintLayer();
 	}
 
 	/**
@@ -34,7 +34,7 @@ public interface Paintable extends Comparable<Paintable> {
 	 * @return
 	 */
 	Image getImage();
-	
+
 	/**
 	 * 设置当前对象对应的图像
 	 * @param img

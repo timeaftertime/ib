@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.List;
 
 import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.container.listener.RefreshListener;
+import cn.milai.ib.ex.IBContainerException;
 import cn.milai.ib.obj.IBObject;
 
 /**
@@ -13,18 +13,6 @@ import cn.milai.ib.obj.IBObject;
  * @author milai
  */
 public interface Container {
-
-	/**
-	 * 获取 X 坐标
-	 * @return
-	 */
-	int getX();
-
-	/**
-	 * 获取 Y 坐标
-	 * @return
-	 */
-	int getY();
 
 	/**
 	 * 获取宽度
@@ -46,69 +34,81 @@ public interface Container {
 
 	/**
 	 * 向容器中添加游戏对象
-	 * 
+	 * 若操作失败将抛出 IBContainerException
 	 * @param obj
 	 */
-	public void addObject(IBObject obj);
+	public void addObject(IBObject obj) throws IBContainerException;
 
 	/**
 	 * 从容器中移除游戏对象
-	 * 
+	 * 若操作失败将抛出 IBContainerException
 	 * @param obj
+	 * @throws IBContainerException
 	 */
-	public void removeObject(IBObject obj);
+	public void removeObject(IBObject obj) throws IBContainerException;
 
 	/**
 	 * 获得容器中属于指定类型及其子类的游戏对象列表
-	 * 
+	 * 若获取失败将抛出 IBContainerException
 	 * @param type
 	 * @return
+	 * @throws IBContainerException
 	 */
-	<T> List<T> getAll(Class<T> type);
+	<T> List<T> getAll(Class<T> type) throws IBContainerException;
 
 	/**
 	 * 获取当前累计的帧数，获取失败则返回 -1
 	 * 
 	 * @return
 	 */
-	long currentFrame();
-
-	/**
-	 * 添加帧刷新事件的 listener
-	 * 
-	 * @param listener
-	 */
-	void addRefreshListener(RefreshListener listener);
-
-	/**
-	 * 移除帧刷新事件的 listener
-	 * 
-	 * @param listener
-	 */
-	void removeRefreshListener(RefreshListener listener);
+	long getFrame();
 
 	/**
 	 * 添加游戏事件监听器
-	 * 
 	 * @param listener
 	 */
-	void addGameEventListener(ContainerEventListener listener);
+	void addEventListener(ContainerEventListener listener);
+
+	/**
+	 * 移除游戏事件监听器
+	 * @param listener
+	 */
+	void removeEventListener(ContainerEventListener listener);
 
 	/**
 	 * 播放音频
+	 * 若操作失败将抛出 IBContainerException
+	 * @param audio
+	 * @throws IBContainerException
 	 */
-	void playAudio(Audio audio);
+	void playAudio(Audio audio) throws IBContainerException;
 
 	/**
 	 * 停止一个音频的播放
 	 * @param code
+	 * @throws IBContainerException
 	 */
-	void stopAudio(String code);
+	void stopAudio(String code) throws IBContainerException;
 
 	/**
 	 * 设置背景图片
+	 * 若操作失败将抛出 IBContainerException
 	 * @param img
+	 * @throws IBContainerException
 	 */
-	void setBackgroud(Image img);
+	void setBackgroud(Image img) throws IBContainerException;
 
+	/**
+	 * 获取纪元
+	 * @return
+	 */
+	int getEpoch();
+
+	/**
+	 * 重置容器
+	 * 移除所有游戏对象和监听器，帧数不会清零
+	 * {@link ContainerEventListener#afterEpochChanged(Container)} 将被调用
+	 * {@link ContainerEventListener#onObjectRemoved(IBObject)} 不会被调用
+	 */
+	void reset();
 }

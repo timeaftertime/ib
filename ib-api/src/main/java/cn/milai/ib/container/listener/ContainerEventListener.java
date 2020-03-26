@@ -1,5 +1,6 @@
 package cn.milai.ib.container.listener;
 
+import cn.milai.ib.container.Container;
 import cn.milai.ib.obj.IBObject;
 
 /**
@@ -9,15 +10,35 @@ import cn.milai.ib.obj.IBObject;
 public interface ContainerEventListener {
 
 	/**
-	 * 游戏对象被加入时调用
-	 * @param obj
+	 * 在容器纪元改变时调用
+	 * @param container
 	 */
-	void onObjectAdded(IBObject obj);
+	default void afterEpochChanged(Container container) {
+
+	}
 
 	/**
-	 * 游戏对象被移除时被调用
+	 * 容器完成一次刷新时调用
+	 * @param container
+	 */
+	default void afterRefresh(Container container) {
+
+	}
+
+	/**
+	 * 游戏对象被加入后调用
+	 * @param obj
+	 */
+	default void onObjectAdded(IBObject obj) {
+
+	}
+
+	/**
+	 * 游戏对象被移除后被调用
 	 * @param obj 被移除的对象
 	 */
-	void onObjectRemoved(IBObject obj);
+	default void onObjectRemoved(IBObject obj) {
+
+	}
 
 }

@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.loader.ImageLoader;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * 所有游戏对象的抽象基类
@@ -38,13 +37,21 @@ public abstract class AbstractIBObject implements IBObject {
 	}
 
 	/**
+	 * 获取需要使用的配置文件对应的 Class 对象
+	 * @return
+	 */
+	protected Class<?> getConfigClass() {
+		return getClass();
+	}
+
+	/**
 	 * 获取对象的按比例参数缩放的 int 类型配置信息
 	 * 
 	 * @param prop
 	 * @return
 	 */
 	protected int proratedIntProp(String key) {
-		return SystemConf.prorate(SystemConf.getInt(getClass(), key));
+		return SystemConf.prorate(SystemConf.getInt(getConfigClass(), key));
 	}
 
 	/**
@@ -53,7 +60,7 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	protected int intProp(String key) {
-		return SystemConf.getInt(getClass(), key);
+		return SystemConf.getInt(getConfigClass(), key);
 	}
 
 	/**
@@ -62,7 +69,7 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	protected long longProp(String key) {
-		return SystemConf.getLong(getClass(), key);
+		return SystemConf.getLong(getConfigClass(), key);
 	}
 
 	/**
@@ -72,11 +79,11 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	protected double doubleProp(String key) {
-		return SystemConf.getDouble(getClass(), key);
+		return SystemConf.getDouble(getConfigClass(), key);
 	}
 
 	protected String prop(String key) {
-		return SystemConf.getStr(getClass(), key);
+		return SystemConf.getStr(getConfigClass(), key);
 	}
 
 	@Override
@@ -183,7 +190,7 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	public Image getImage() {
-		return img == null ? (img = ImageLoader.load(this.getClass(), getStatus())) : img;
+		return img == null ? (img = ImageLoader.load(this.getConfigClass(), getStatus())) : img;
 	}
 
 	/**
