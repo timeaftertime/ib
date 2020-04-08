@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 import cn.milai.ib.conf.PathConf;
-import cn.milai.ib.ex.DramaResourceNotFoundException;
 import cn.milai.ib.ex.IBIOException;
+import cn.milai.ib.loader.ex.DramaResourceNotFoundException;
 import cn.milai.ib.util.FileUtil;
 import cn.milai.ib.util.HttpUtil;
 import cn.milai.ib.util.IOUtil;

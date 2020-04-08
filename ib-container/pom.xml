@@ -14,6 +14,14 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-character</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javazoom</groupId>
+			<artifactId>jlayer</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

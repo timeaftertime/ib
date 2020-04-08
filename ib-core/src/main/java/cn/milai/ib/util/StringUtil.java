@@ -1,5 +1,9 @@
 package cn.milai.ib.util;
 
+import java.util.List;
+
+import org.apache.commons.compress.utils.Lists;
+
 public final class StringUtil {
 
 	/**
@@ -141,5 +145,18 @@ public final class StringUtil {
 			return Long.MAX_VALUE;
 		}
 		return str.startsWith("0x") ? Long.parseLong(str.substring(2), 16) : Long.parseLong(str);
+	}
+
+	/**
+	 * 将字符串以换行切割，返回切割后字符串的列表
+	 * @param str
+	 * @return
+	 */
+	public static final List<String> lines(String str) {
+		List<String> strs = Lists.newArrayList();
+		for (String line : str.split("\n")) {
+			strs.add(line);
+		}
+		return strs;
 	}
 }

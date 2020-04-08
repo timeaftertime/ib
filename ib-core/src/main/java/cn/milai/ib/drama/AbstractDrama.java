@@ -1,8 +1,7 @@
 package cn.milai.ib.drama;
 
-import java.awt.Image;
-
 import cn.milai.ib.container.Audio;
+import cn.milai.ib.container.Image;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.DramaStringLoader;
 import cn.milai.ib.loader.ImageLoader;
@@ -14,31 +13,18 @@ import cn.milai.ib.loader.ImageLoader;
  */
 public abstract class AbstractDrama implements Drama {
 
-	/**
-	 * 读取当前剧本的指定资源并转换为图片
-	 * @param resource
-	 * @return
-	 */
-	protected Image image(String resource) {
+	@Override
+	public Image image(String resource) {
 		return ImageLoader.load(getCode(), resource);
 	}
 
-	/**
-	 * 读取当前剧本的指定资源并转换为指定 code 的音频
-	 * @param audioCode
-	 * @param resource
-	 * @return
-	 */
-	protected Audio audio(String audioCode, String resource) {
+	@Override
+	public Audio audio(String audioCode, String resource) {
 		return AudioLoader.load(audioCode, getCode(), resource);
 	}
 
-	/**
-	 * 读取当前剧本的指定字符串
-	 * @param strCode
-	 * @return
-	 */
-	protected String str(String strCode) {
+	@Override
+	public String str(String strCode) {
 		return DramaStringLoader.get(getCode(), strCode);
 	}
 

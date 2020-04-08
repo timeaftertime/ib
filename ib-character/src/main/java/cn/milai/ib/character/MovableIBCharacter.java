@@ -9,21 +9,53 @@ import cn.milai.ib.container.Container;
  */
 public abstract class MovableIBCharacter extends AbstractIBCharacter implements Movable {
 
+	private int ratedSpeedX;
+	private int ratedSpeedY;
 	private int speedX;
 	private int speedY;
 
 	public MovableIBCharacter(int x, int y, Container container) {
 		super(x, y, container);
-		this.speedX = getInitSpeedX();
-		this.speedY = getInitSpeedY();
+		ratedSpeedX = initRatedSpeedX();
+		ratedSpeedY = initRatedSpeedY();
+		speedX = 0;
+		speedY = 0;
 	}
 
-	public int getInitSpeedX() {
-		return proratedIntProp(P_SPEED_X);
+	protected int initRatedSpeedX() {
+		return proratedIntProp(Movable.P_RATED_SPEED_X);
 	}
 
-	public int getInitSpeedY() {
-		return proratedIntProp(P_SPEED_Y);
+	protected int initRatedSpeedY() {
+		return proratedIntProp(Movable.P_RATED_SPEED_Y);
+	}
+
+	@Override
+	public int getRatedSpeedX() {
+		return ratedSpeedX;
+	}
+
+	@Override
+	public void setRatedSpeedX(int ratedSpeedX) {
+		this.ratedSpeedX = ratedSpeedX;
+	}
+
+	@Override
+	public int getRatedSpeedY() {
+		return ratedSpeedY;
+	}
+
+	@Override
+	public void setRatedSpeedY(int ratedSpeedY) {
+		this.ratedSpeedY = ratedSpeedY;
+	}
+
+	@Override
+	public final void move() {
+		beforeMove();
+		setX(getX() + getSpeedX());
+		setY(getY() + getSpeedY());
+		afterMove();
 	}
 
 	@Override
@@ -46,18 +78,17 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 		this.speedY = speedY;
 	}
 
-	@Override
-	public final void move() {
-		beforeMove();
-		setX(getX() + getSpeedX());
-		setY(getY() + getSpeedY());
-		afterMove();
-	}
-
+	/**
+	 * 实际移动坐标前调用
+	 */
 	protected void beforeMove() {
+
 	}
 
+	/**
+	 * 实际移动坐标后调用
+	 */
 	protected void afterMove() {
-	}
 
+	}
 }

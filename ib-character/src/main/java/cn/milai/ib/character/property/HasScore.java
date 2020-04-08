@@ -1,6 +1,6 @@
 package cn.milai.ib.character.property;
 
-import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.character.IBCharacter;
 
 /**
  * 携带了分数的游戏角色

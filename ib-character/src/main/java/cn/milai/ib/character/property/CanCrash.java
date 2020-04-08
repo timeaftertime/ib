@@ -1,6 +1,6 @@
 package cn.milai.ib.character.property;
 
-import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.character.IBCharacter;
 
 /**
  * 需要进行碰撞检测的游戏角色

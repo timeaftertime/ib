@@ -1,6 +1,8 @@
 package cn.milai.ib.drama;
 
+import cn.milai.ib.container.Audio;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.container.Image;
 
 /**
  * 剧本
@@ -32,5 +34,27 @@ public interface Drama {
 	 * @param container
 	 */
 	void run(Container container);
+
+	/**
+	 * 读取当前剧本的指定资源并转换为图片
+	 * @param resource
+	 * @return
+	 */
+	Image image(String resource);
+
+	/**
+	 * 读取当前剧本的指定资源并转换为指定 code 的音频
+	 * @param audioCode
+	 * @param resource
+	 * @return
+	 */
+	Audio audio(String audioCode, String resource);
+
+	/**
+	 * 读取当前剧本的指定字符串
+	 * @param strCode
+	 * @return
+	 */
+	String str(String strCode);
 
 }

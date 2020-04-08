@@ -1,6 +1,6 @@
 package cn.milai.ib.character.property;
 
-import cn.milai.ib.obj.IBCharacter;
+import cn.milai.ib.character.IBCharacter;
 
 /**
  * 有伤害值的游戏角色
@@ -10,7 +10,7 @@ import cn.milai.ib.obj.IBCharacter;
 public interface HasDamage extends IBCharacter {
 
 	/**
-	 * 获取当前对象
+	 * 获取当前对象伤害值
 	 * @return
 	 */
 	int getDamage();

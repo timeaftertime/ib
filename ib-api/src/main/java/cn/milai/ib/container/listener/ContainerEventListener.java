@@ -1,7 +1,7 @@
 package cn.milai.ib.container.listener;
 
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * 容器事件监听器

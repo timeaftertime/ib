@@ -1,7 +1,7 @@
 package cn.milai.ib.character.property;
 
+import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
-import cn.milai.ib.obj.IBCharacter;
 
 /**
  * 可爆炸的游戏角色

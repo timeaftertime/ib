@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.ex.PropNotFoundException;
 import cn.milai.ib.loader.ConfigLoader;
+import cn.milai.ib.loader.ex.PropNotFoundException;
 import cn.milai.ib.util.PropertiesUtil;
 import cn.milai.ib.util.StringUtil;
 
@@ -31,6 +31,7 @@ public class SystemConf {
 		SYS_PROPS.put(SysProps.SPEED_RATIO, "1.0");
 		SYS_PROPS.put(SysProps.REPO_ADDRESS, "http://localhost:80");
 		SYS_PROPS.put(SysProps.RESOURCE_PATH, SystemConf.class.getResource("/").getPath());
+		SYS_PROPS.put(SysProps.IMAGE_UPDATE_FRAME, "3");
 	}
 
 	/**
@@ -105,13 +106,22 @@ public class SystemConf {
 	}
 
 	/**
+	 * 获取系统配置 key 的 int 类型值
+	 * @param key
+	 * @return
+	 */
+	public static final int getInt(String key) {
+		return Integer.parseInt(getStr(key));
+	}
+
+	/**
 	 * 获取指定游戏对象 String 类型配置
 	 * 将去掉字符串前后的空字符
 	 * @param clazz
 	 * @param key
 	 * @return
 	 */
-	public static final String getStr(Class<?> clazz, String key) {
+	public static final String strProp(Class<?> clazz, String key) {
 		String value = ConfigLoader.load(clazz).get(key);
 		if (value == null) {
 			throw new PropNotFoundException(clazz, key);
@@ -125,8 +135,8 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final int getInt(Class<?> clazz, String key) {
-		return StringUtil.parseInt(getStr(clazz, key));
+	public static final int intProp(Class<?> clazz, String key) {
+		return StringUtil.parseInt(strProp(clazz, key));
 	}
 
 	/**
@@ -135,8 +145,8 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final long getLong(Class<?> clazz, String key) {
-		return Long.parseLong(getStr(clazz, key));
+	public static final long longProp(Class<?> clazz, String key) {
+		return Long.parseLong(strProp(clazz, key));
 	}
 
 	/**
@@ -145,8 +155,8 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final double getDouble(Class<?> clazz, String key) {
-		return Double.parseDouble(getStr(clazz, key));
+	public static final double doubleProp(Class<?> clazz, String key) {
+		return Double.parseDouble(strProp(clazz, key));
 	}
 
 }

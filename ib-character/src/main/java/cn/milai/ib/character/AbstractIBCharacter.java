@@ -1,10 +1,7 @@
 package cn.milai.ib.character;
 
-import java.awt.Graphics;
-
+import cn.milai.ib.AbstractIBObject;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.AbstractIBObject;
-import cn.milai.ib.obj.IBCharacter;
 
 /**
  * IBCharacter 的抽象实现
@@ -12,13 +9,24 @@ import cn.milai.ib.obj.IBCharacter;
  */
 public abstract class AbstractIBCharacter extends AbstractIBObject implements IBCharacter {
 
+	private double direction;
+
 	private int life;
 
 	private IBCharacter lastAttacker;
 
+	public AbstractIBCharacter(int x, int y, Container container, Class<? extends IBCharacter> configClass) {
+		super(x, y, container, configClass);
+		this.life = getInitLife();
+	}
+
+	@Override
+	public int getInitLife() {
+		return intProp(P_LIFE);
+	}
+
 	public AbstractIBCharacter(int x, int y, Container container) {
-		super(x, y, container);
-		this.life = intProp(P_LIFE);
+		this(x, y, container, null);
 	}
 
 	@Override
@@ -72,11 +80,23 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	}
 
 	@Override
-	public void paintWith(Graphics g) {
-		if (!isAlive()) {
-			return;
+	public double getDirection() {
+		return direction;
+	}
+
+	@Override
+	public void setDirection(double direction) {
+		if (direction > Math.PI * 2) {
+			direction -= Math.PI * 2 * (int) (direction / Math.PI / 2);
+		} else if (direction < -Math.PI * 2) {
+			direction += Math.PI * 2 * (int) (-direction / Math.PI / 2);
 		}
-		super.paintWith(g);
+		if (direction > Math.PI) {
+			direction -= 2 * Math.PI;
+		} else if (direction <= -Math.PI) {
+			direction += 2 * Math.PI;
+		}
+		this.direction = direction;
 	}
 
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Audio;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.container.listener.ContainerLifecycleListener;
 import cn.milai.ib.ex.IBContainerException;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * Container 的抽象基类
@@ -54,6 +54,7 @@ public abstract class AbstractLifecycleContainer extends AbstractContainer imple
 		pined = false;
 		// 确保重置后处于非暂停状态
 		refresher.cancelPause();
+		audioPlayer.reset();
 		resetLifecycleContainer();
 	}
 

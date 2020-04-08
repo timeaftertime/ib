@@ -14,18 +14,6 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-container</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javazoom</groupId>
-			<artifactId>jlayer</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

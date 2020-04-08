@@ -1,5 +1,6 @@
 package cn.milai.ib.character.helper;
 
+import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.container.Container;
 
@@ -11,6 +12,8 @@ public abstract class AbstractHelper extends MovableIBCharacter implements Helpe
 
 	public AbstractHelper(int x, int y, Container container) {
 		super(x, y, container);
+		setSpeedX(getRatedSpeedX());
+		setSpeedY(getRatedSpeedY());
 	}
 
 	@Override
@@ -18,6 +21,11 @@ public abstract class AbstractHelper extends MovableIBCharacter implements Helpe
 		if (getY() > getContainer().getHeight()) {
 			getContainer().removeObject(this);
 		}
+	}
+
+	@Override
+	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
+		return;
 	}
 
 }

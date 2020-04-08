@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.ex.IBContainerException;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * Container 的抽象基类
@@ -154,4 +154,5 @@ public abstract class AbstractContainer implements Container {
 	 * 重置容器，在 {@link #reset()} 方法被调用后调用
 	 */
 	protected abstract void resetContainer();
+
 }

@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.ex.DramaStringNotFoundException;
 import cn.milai.ib.ex.IBException;
+import cn.milai.ib.loader.ex.DramaStringNotFoundException;
 import cn.milai.ib.util.IOUtil;
 
 /**

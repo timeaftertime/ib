@@ -8,7 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.ib.IBCore;
-import cn.milai.ib.component.form.text.LinesFullScreenPassComponent;
+import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.LifecycleContainer;
@@ -55,9 +55,16 @@ public class StoryMode extends AbstractGameMode implements ContainerEventListene
 		try {
 			((LifecycleContainer) container).start();
 			for (int i = 0; i < dramaCodes.size() && !Thread.interrupted(); i++) {
+				container.reset();
+				container.addObject(new LinesFullScreenPass(
+					SHOW_DRAMA_NAME_FRAMES,
+					Arrays.asList("NOW LOADING……"),
+					SystemConf.prorate(10),
+					container));
 				Drama drama = resolveDrama(dramaCodes.get(i));
 				setName(THREAD_NAME_PREFIX + dramaCodes.get(i));
-				LinesFullScreenPassComponent stageInfo = new LinesFullScreenPassComponent(
+				container.reset();
+				LinesFullScreenPass stageInfo = new LinesFullScreenPass(
 					SHOW_DRAMA_NAME_FRAMES,
 					Arrays.asList("第 " + (i + 1) + " 关", drama.getName()),
 					SystemConf.prorate(10),
@@ -66,7 +73,6 @@ public class StoryMode extends AbstractGameMode implements ContainerEventListene
 				DramaResLoader.load(dramaCodes.get(i));
 				WaitUtil.waitRemove(stageInfo, 5);
 				drama.run(container);
-				//			form.reset();
 			}
 		} catch (IBContainerException e) {
 			// 容器关闭，结束游戏

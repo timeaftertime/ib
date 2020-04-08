@@ -1,9 +1,9 @@
 package cn.milai.ib.util;
 
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * 等待同步相关工具类
@@ -19,15 +19,17 @@ public class WaitUtil {
 	 * @param frame 等待的帧数
 	 */
 	public static void wait(Container container, long frame) {
-		new CountDownInterrupter(container, frame, Thread.currentThread());
-		waitInterruption(container, frame / 2);
+		waitInterruption(new CountDownInterrupter(container, frame, Thread.currentThread()), container, frame / 2);
 	}
 
-	private static void waitInterruption(Container container, long checkInterval) {
+	private static void waitInterruption(ContainerEventListener listener, Container container, long checkInterval) {
 		while (!Thread.interrupted() && !((LifecycleContainer) container).isClosed()) {
 			try {
 				Thread.sleep(checkInterval);
 			} catch (InterruptedException e) {
+				// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态
+				container.removeEventListener(listener);
+				Thread.interrupted();
 				return;
 			}
 		}
@@ -41,8 +43,7 @@ public class WaitUtil {
 	 * @param 检查中断的间隔帧数
 	 */
 	public static void waitRemove(IBObject obj, long checkFrame) {
-		new RemoveObjInterrupter(obj, Thread.currentThread());
-		waitInterruption(obj.getContainer(), checkFrame);
+		waitInterruption(new RemoveObjInterrupter(obj, Thread.currentThread()), obj.getContainer(), checkFrame);
 	}
 
 	private static class ThreadNotifier {

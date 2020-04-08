@@ -1,11 +1,10 @@
 package cn.milai.ib.container;
 
-import java.awt.Image;
 import java.util.List;
 
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.ex.IBContainerException;
-import cn.milai.ib.obj.IBObject;
 
 /**
  * 游戏对象的容器
@@ -31,6 +30,13 @@ public interface Container {
 	 * @return
 	 */
 	int getContentHeight();
+
+	/**
+	 * 重新设置容器的宽度和高度并保持中心位置不变
+	 * @param width
+	 * @param height
+	 */
+	void resize(int width, int height);
 
 	/**
 	 * 向容器中添加游戏对象

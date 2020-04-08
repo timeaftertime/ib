@@ -1,6 +1,6 @@
 package cn.milai.ib.container.form;
 
-import cn.milai.ib.obj.IBComponent;
+import cn.milai.ib.component.IBComponent;
 
 /**
  * 用于窗体容器交互的组件，如按钮、提示等

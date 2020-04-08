@@ -1,6 +1,6 @@
 package cn.milai.ib.loader;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
 
@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 import cn.milai.ib.conf.PathConf;
+import cn.milai.ib.container.Image;
+import cn.milai.ib.contaniner.BaseImage;
 import cn.milai.ib.util.FileUtil;
 import cn.milai.ib.util.IOUtil;
 import cn.milai.ib.util.ImageUtil;
@@ -27,10 +29,10 @@ public abstract class ImageLoader {
 	 * 已经加载的图片
 	 * fileName -> Image
 	 */
-	private static final Map<String, Image> IMAGES = Maps.newConcurrentMap();
+	private static final Map<String, BufferedImage[]> IMAGES = Maps.newConcurrentMap();
 
 	protected static Image loadImageFile(File file) {
-		return IMAGES.computeIfAbsent(file.toString(), f -> ImageUtil.loadImage(file));
+		return new BaseImage(IMAGES.computeIfAbsent(file.toString(), f -> ImageUtil.loadImage(file)));
 	}
 
 	/**
@@ -67,7 +69,7 @@ public abstract class ImageLoader {
 	 * @return
 	 */
 	public static Image load(String dramaCode, String resource) {
-		return ImageUtil.loadImage(DramaResLoader.load(dramaCode, resource));
+		return new BaseImage(ImageUtil.loadImage(DramaResLoader.load(dramaCode, resource)));
 	}
 
 }

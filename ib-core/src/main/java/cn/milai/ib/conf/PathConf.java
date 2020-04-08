@@ -5,8 +5,8 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.milai.ib.ex.ConfigNotFoundException;
-import cn.milai.ib.ex.ImageNotFoundException;
+import cn.milai.ib.loader.ex.ConfigNotFoundException;
+import cn.milai.ib.loader.ex.ImageNotFoundException;
 
 /**
  * 路径相关配置

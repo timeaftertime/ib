@@ -1,9 +1,9 @@
 package cn.milai.ib.container.form;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,12 +13,12 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import com.google.common.collect.Lists;
 
+import cn.milai.ib.IBObject;
+import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.CharacterAwareContainer;
+import cn.milai.ib.container.Image;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.ex.IBContainerException;
-import cn.milai.ib.obj.Controllable;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.Paintable;
 
 /**
  * FormContainer 抽象基类
@@ -109,6 +109,12 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 	}
 
 	@Override
+	public void resize(int width, int height) {
+		form.setSize(width, height);
+		form.setLocationRelativeTo(null);
+	}
+
+	@Override
 	public String getTitle() {
 		return form.getTitle();
 	}
@@ -133,15 +139,15 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 	 * @param g
 	 */
 	protected void paintContainer(Graphics g) {
-		Image image = form.createImage(this.getWidth(), this.getHeight());
+		BufferedImage image = (BufferedImage) form.createImage(getWidth(), getHeight());
 		Graphics buffer = image.getGraphics();
 		if (bgImage != null) {
-			buffer.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
+			buffer.drawImage(bgImage.next(), 0, 0, getWidth(), getHeight(), null);
 		}
-		List<? extends Paintable> toPaint = getAll(IBObject.class);
-		Collections.sort(toPaint);
-		for (Paintable p : toPaint) {
-			p.paintWith(buffer);
+		List<? extends IBObject> objs = getAll(IBObject.class);
+		Collections.sort(objs);
+		for (IBObject o : objs) {
+			o.paintWith(buffer);
 		}
 		buffer.dispose();
 		g.drawImage(image, 0, 0, null);

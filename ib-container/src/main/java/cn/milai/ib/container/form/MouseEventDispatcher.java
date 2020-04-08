@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 
 import com.google.common.collect.Lists;
 
+import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.listener.Command;
-import cn.milai.ib.obj.Controllable;
 
 /**
  * AbstactFormContainer 的鼠标点击事件分发器

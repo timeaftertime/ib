@@ -80,4 +80,13 @@ public class ContainerAudioPlayThread extends Thread {
 	void removeAudio(String code) {
 		audios.remove(code);
 	}
+
+	/**
+	 * 清楚所有待播放的音乐
+	 */
+	void reset() {
+		for (String code : audios.keySet()) {
+			audios.remove(code);
+		}
+	}
 }
