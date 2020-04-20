@@ -48,6 +48,29 @@ public abstract class IOUtil {
 		}
 	}
 
+	/**
+	 * 从输入流中读取字节，直到填满字节数组或读完输入流
+	 * 返回读取的字节数
+	 * @param in
+	 * @param data
+	 * @return
+	 */
+	public static int toBytes(InputStream in, byte[] data) {
+		int off = 0;
+		int read = -1;
+		int len = data.length;
+		try {
+			while (off < data.length && (read = in.read(data, off, len)) != -1) {
+				off += read;
+				len -= read;
+			}
+			return off;
+		} catch (IOException e) {
+			log.error("读取输入流失败", e);
+			throw new IBIOException(e);
+		}
+	}
+
 	public static InputStream toInputStream(byte[] data) {
 		return new ByteArrayInputStream(data);
 	}

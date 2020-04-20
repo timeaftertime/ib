@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import cn.milai.ib.character.Controllable;
 import cn.milai.ib.component.WaitNextPageTip;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.container.Image;
 import cn.milai.ib.container.LifecycleContainer;
 import cn.milai.ib.container.listener.Command;
 import cn.milai.ib.util.ImageTextUtil;
@@ -49,7 +50,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 	private int speakerWidth;
 	private int speakerHeight;
 
-	public DramaDialog(int x, int y, BufferedImage speaker, String text, Container container) {
+	public DramaDialog(int x, int y, Image speaker, String text, Container container) {
 		this(x, y, container, asParams(text, speaker, null));
 	}
 
@@ -62,7 +63,10 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		speakerHeight = proratedIntProp(P_SPEAKER_HEIGHT);
 		this.text = (String) params.get(PARAM_TEXT);
 		readIndex = 0;
-		this.speakerImg = (BufferedImage) params.get(PARAM_SPEAKER_IMG);
+		Image image = (Image) params.get(PARAM_SPEAKER_IMG);
+		if (image != null) {
+			this.speakerImg = image.first();
+		}
 		this.speakerName = (String) params.get(PARAM_SPEAKER_NAME);
 		waitNextPage = new WaitNextPageTip(0, 0, container);
 		pageDown();
@@ -70,7 +74,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		((LifecycleContainer) getContainer()).setPined(true);
 	}
 
-	public static Map<String, Object> asParams(String text, BufferedImage speakerImg, String speakerName) {
+	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
 		Map<String, Object> m = Maps.newHashMap();
 		m.put(PARAM_TEXT, text == null ? "" : text);
 		m.put(PARAM_SPEAKER_IMG, speakerImg);
