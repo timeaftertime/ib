@@ -2,8 +2,6 @@ package cn.milai.ib.container;
 
 import java.io.InputStream;
 
-import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.AudioCreator;
 import javazoom.jl.decoder.JavaLayerException;
 
 /**

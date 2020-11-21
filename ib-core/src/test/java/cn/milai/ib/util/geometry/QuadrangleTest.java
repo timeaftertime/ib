@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import cn.milai.ib.Point;
-import cn.milai.ib.util.geometry.Quadrangle;
 
 public class QuadrangleTest {
 

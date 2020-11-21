@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;

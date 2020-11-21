@@ -1,6 +1,5 @@
 package cn.milai.ib;
 
-import cn.milai.ib.Enemy;
 import cn.milai.ib.character.PlayerCharacter;
 
 /**
