@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai</groupId>
 	<artifactId>ib</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -16,7 +16,7 @@
 	</modules>
 
 	<properties>
-		<ib.version>1.0.0</ib.version>
+		<ib.version>1.0.1-SNAPSHOT</ib.version>
 		<spring.version>5.2.3.RELEASE</spring.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 	</properties>
@@ -42,6 +42,15 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<!-- 批量更新子模块版本号：mvn -N versions:update-child-modules   -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
