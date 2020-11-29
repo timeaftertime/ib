@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -16,9 +17,9 @@ import com.google.common.collect.Lists;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.CharacterAwareContainer;
+import cn.milai.ib.container.IBContainerException;
 import cn.milai.ib.container.Image;
 import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.ex.IBContainerException;
 
 /**
  * FormContainer 抽象基类
@@ -145,7 +146,7 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 			buffer.drawImage(bgImage.next(), 0, 0, getWidth(), getHeight(), null);
 		}
 		List<? extends IBObject> objs = getAll(IBObject.class);
-		Collections.sort(objs);
+		Collections.sort(objs, Comparator.comparingInt(IBObject::getZ));
 		for (IBObject o : objs) {
 			o.paintWith(buffer);
 		}

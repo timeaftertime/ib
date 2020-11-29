@@ -4,7 +4,6 @@ import java.util.List;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.ex.IBContainerException;
 
 /**
  * 游戏对象的容器

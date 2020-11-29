@@ -5,24 +5,20 @@ import java.awt.image.BufferedImage;
 
 import cn.milai.ib.container.Image;
 
-public interface Paintable extends Comparable<Paintable> {
+/**
+ * 可绘制的
+ * @author milai
+ */
+public interface Paintable {
 
-	int BULLET_LAYER = -1;
-	int GAME_CHARACTER_LAYER = 0;
-	int BOMB_LAYER = 1;
-	int GAME_COMPONENT_LAYER = 100;
+	int DEFAULT_Z = 0;
 
 	/**
-	 * 绘画层级，层数越高越显示在上层
+	 * 获取 Z 坐标(目前只用于显示)，值越大越显示在上层
 	 * @return
 	 */
-	default int getPaintLayer() {
-		return GAME_CHARACTER_LAYER;
-	}
-
-	@Override
-	default int compareTo(Paintable o) {
-		return getPaintLayer() - o.getPaintLayer();
+	default int getZ() {
+		return DEFAULT_Z;
 	}
 
 	/**

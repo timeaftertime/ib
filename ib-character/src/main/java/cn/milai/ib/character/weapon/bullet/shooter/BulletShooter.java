@@ -1,7 +1,7 @@
-package cn.milai.ib.character.weapn.bullet.shooter;
+package cn.milai.ib.character.weapon.bullet.shooter;
 
-import cn.milai.ib.character.weapn.bullet.Bullet;
 import cn.milai.ib.character.weapon.Weapon;
+import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.container.Container;
 
 /**

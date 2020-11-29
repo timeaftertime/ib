@@ -1,4 +1,6 @@
-package cn.milai.ib.ex;
+package cn.milai.ib.container;
+
+import cn.milai.ib.ex.IBException;
 
 /**
  * Container 相关异常

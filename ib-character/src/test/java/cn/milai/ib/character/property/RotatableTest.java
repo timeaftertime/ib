@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cn.milai.ib.Point;
 import cn.milai.ib.character.AbstractIBCharacter;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.geometry.Point;
 
 public class RotatableTest {
 

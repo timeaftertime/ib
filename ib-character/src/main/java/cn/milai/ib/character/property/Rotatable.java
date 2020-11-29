@@ -3,10 +3,10 @@ package cn.milai.ib.character.property;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import cn.milai.ib.Point;
 import cn.milai.ib.character.IBCharacter;
+import cn.milai.ib.geometry.Point;
+import cn.milai.ib.geometry.Rect;
 import cn.milai.ib.util.ImageUtil;
-import cn.milai.ib.util.geometry.Quadrangle;
 
 /**
  * 改变朝向时需要同时旋转图片和实体框的角色
@@ -17,7 +17,7 @@ public interface Rotatable extends IBCharacter {
 
 	@Override
 	default boolean containsPoint(int x, int y) {
-		return new Quadrangle(getRealBoundPoints()).containsPoint(x, y);
+		return new Rect(getRealBoundPoints()).containsPoint(x, y);
 	}
 
 	@Override

@@ -1,6 +1,4 @@
-package cn.milai.ib.util.geometry;
-
-import cn.milai.ib.Point;
+package cn.milai.ib.geometry;
 
 /**
 	 * 二位向量

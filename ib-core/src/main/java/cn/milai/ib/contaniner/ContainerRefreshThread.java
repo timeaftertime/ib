@@ -2,7 +2,7 @@ package cn.milai.ib.contaniner;
 
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.ex.IBContainerException;
+import cn.milai.ib.container.IBContainerException;
 
 /**
  * AbstractLifecycleContainer 容器的刷新线程

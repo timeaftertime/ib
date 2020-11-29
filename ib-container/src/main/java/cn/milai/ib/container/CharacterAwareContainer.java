@@ -14,7 +14,7 @@ import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.contaniner.AbstractLifecycleContainer;
-import cn.milai.ib.util.geometry.Quadrangle;
+import cn.milai.ib.geometry.Rect;
 
 /**
  * 实现 IBCharacter 属性相关逻辑 Container 抽象基类
@@ -116,8 +116,8 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 			return false;
 		}
 		if ((c1 instanceof Rotatable) || (c2 instanceof Rotatable)) {
-			return new Quadrangle(c1.getRealBoundPoints())
-				.intersects(new Quadrangle(c2.getRealBoundPoints()));
+			return new Rect(c1.getRealBoundPoints())
+				.intersects(new Rect(c2.getRealBoundPoints()));
 		}
 		return c1.getX() + c1.getWidth() >= c2.getX()
 			&& c1.getX() <= c2.getX() + c2.getWidth()

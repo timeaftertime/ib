@@ -1,24 +1,22 @@
-package cn.milai.ib.util.geometry;
-
-import cn.milai.ib.Point;
+package cn.milai.ib.geometry;
 
 /**
- * 四边形
+ * 可旋转的矩形
  * @author milai
  * @date 2020.03.12
  */
-public class Quadrangle {
+public class Rect {
 
 	private static final int SIZE = 4;
 
 	private Point[] points;
 
 	/**
-	 * 使用指定的点构造一个四边形
+	 * 使用指定的点构造一个矩形
 	 * @param points
 	 * @throws IllegalArgumentException points 的长度不等于 4
 	 */
-	public Quadrangle(Point[] points) throws IllegalArgumentException {
+	public Rect(Point[] points) throws IllegalArgumentException {
 		if (points.length != SIZE) {
 			throw new IllegalArgumentException("points 的长度必须为 4：" + points.length);
 		}
@@ -26,11 +24,11 @@ public class Quadrangle {
 	}
 
 	/**
-	 * 判断四条边是否与指定四边形的边有交点
+	 * 判断当前矩形是否与指定矩形有交点
 	 * @param q
 	 * @return
 	 */
-	public boolean intersects(Quadrangle q) {
+	public boolean intersects(Rect q) {
 		// 若包含四个顶点中任意一个，则一定有交点
 		for (Point p : points) {
 			if (q.containsPoint(p.getX(), p.getY())) {
@@ -64,7 +62,7 @@ public class Quadrangle {
 	}
 
 	/**
-	 * 是否包含指定点
+	 * 当前矩形范围是否包含指定点
 	 * @param x
 	 * @param y
 	 * @return

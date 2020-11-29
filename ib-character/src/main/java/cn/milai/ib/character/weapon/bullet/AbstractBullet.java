@@ -1,4 +1,4 @@
-package cn.milai.ib.character.weapn.bullet;
+package cn.milai.ib.character.weapon.bullet;
 
 import cn.milai.ib.Paintable;
 import cn.milai.ib.character.IBCharacter;
@@ -88,7 +88,7 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	}
 
 	@Override
-	public int getPaintLayer() {
-		return Paintable.BULLET_LAYER;
+	public int getZ() {
+		return Paintable.DEFAULT_Z - 1;
 	}
 }

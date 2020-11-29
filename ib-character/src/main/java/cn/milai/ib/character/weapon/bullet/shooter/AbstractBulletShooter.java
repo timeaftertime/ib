@@ -1,11 +1,11 @@
-package cn.milai.ib.character.weapn.bullet.shooter;
+package cn.milai.ib.character.weapon.bullet.shooter;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 import cn.milai.ib.character.IBCharacter;
-import cn.milai.ib.character.weapn.bullet.Bullet;
+import cn.milai.ib.character.weapon.bullet.Bullet;
 
 /**
  * BulletShooter 抽象实现

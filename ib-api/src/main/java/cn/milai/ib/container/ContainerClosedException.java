@@ -1,7 +1,5 @@
 package cn.milai.ib.container;
 
-import cn.milai.ib.ex.IBContainerException;
-
 /**
  * 容器已经关闭的异常
  * @author milai

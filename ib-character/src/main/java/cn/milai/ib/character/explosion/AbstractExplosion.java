@@ -1,5 +1,6 @@
 package cn.milai.ib.character.explosion;
 
+import cn.milai.ib.Paintable;
 import cn.milai.ib.character.AbstractIBCharacter;
 import cn.milai.ib.container.Container;
 
@@ -27,6 +28,11 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 	@Override
 	public void toDead() {
 		endFrame = getContainer().getFrame();
+	}
+
+	@Override
+	public int getZ() {
+		return Paintable.DEFAULT_Z + 1;
 	}
 
 }

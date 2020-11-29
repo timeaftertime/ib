@@ -5,31 +5,32 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cn.milai.ib.Point;
+import cn.milai.ib.geometry.Point;
+import cn.milai.ib.geometry.Rect;
 
 public class QuadrangleTest {
 
 	@Test
 	public void testIntersects() {
-		Quadrangle q1 = new Quadrangle(new Point[] {
+		Rect q1 = new Rect(new Point[] {
 			new Point(-4, 6),
 			new Point(5, 12),
 			new Point(9, 6),
 			new Point(0, 0),
 		});
-		Quadrangle q2 = new Quadrangle(new Point[] {
+		Rect q2 = new Rect(new Point[] {
 			new Point(3, 1),
 			new Point(6, 3),
 			new Point(9, -1),
 			new Point(6, -3),
 		});
-		Quadrangle q3 = new Quadrangle(new Point[] {
+		Rect q3 = new Rect(new Point[] {
 			new Point(8, 1),
 			new Point(8, 7),
 			new Point(12, 7),
 			new Point(12, 1),
 		});
-		Quadrangle q4 = new Quadrangle(new Point[] {
+		Rect q4 = new Rect(new Point[] {
 			new Point(-4, -4),
 			new Point(-4, 13),
 			new Point(13, 13),

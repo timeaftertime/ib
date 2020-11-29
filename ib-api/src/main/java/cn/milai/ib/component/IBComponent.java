@@ -11,7 +11,7 @@ import cn.milai.ib.Paintable;
 public interface IBComponent extends IBObject {
 
 	@Override
-	default int getPaintLayer() {
-		return Paintable.GAME_COMPONENT_LAYER;
+	default int getZ() {
+		return Paintable.DEFAULT_Z + 100;
 	}
 }

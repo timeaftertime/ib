@@ -3,13 +3,14 @@ package cn.milai.ib;
 import java.awt.Graphics;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.geometry.Point;
 
 /**
  * 所有游戏对象的接口
  * @author milai
  * @date 2020.02.20
  */
-public interface IBObject extends Paintable, Locable {
+public interface IBObject extends Paintable, Bounds {
 
 	/**
 	 * 属性 width 的 key

@@ -1,4 +1,4 @@
-package cn.milai.ib.character.weapn.bullet;
+package cn.milai.ib.character.weapon.bullet;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;

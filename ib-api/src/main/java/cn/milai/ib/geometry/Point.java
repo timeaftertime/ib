@@ -1,4 +1,4 @@
-package cn.milai.ib;
+package cn.milai.ib.geometry;
 
 /**
  * 点

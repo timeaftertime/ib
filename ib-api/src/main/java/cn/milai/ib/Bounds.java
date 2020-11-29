@@ -1,11 +1,11 @@
 package cn.milai.ib;
 
 /**
- * 可定位的
+ * 限制范围
  * 2019.11.29
  * @author milai
  */
-public interface Locable {
+public interface Bounds {
 
 	/**
 	 * 获取 X 坐标
