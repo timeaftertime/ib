@@ -13,12 +13,8 @@ import cn.milai.ib.loader.ImageLoader;
  * 所有游戏对象的抽象基类
  * @author milai
  */
-public abstract class AbstractIBObject implements IBObject {
+public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 
-	private int x;
-	private int y;
-	private int width;
-	private int height;
 	private Container container;
 	private Class<? extends IBObject> configClass;
 	private Image img;
@@ -40,10 +36,10 @@ public abstract class AbstractIBObject implements IBObject {
 		int height = getInitHeight();
 		x = x - width / 2;
 		y = y - height / 2;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
 	}
 
 	/**
@@ -51,7 +47,7 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	protected int getInitWidth() {
-		return proratedIntProp(P_WIDTH);
+		return intProp(P_WIDTH);
 	}
 
 	/**
@@ -59,7 +55,7 @@ public abstract class AbstractIBObject implements IBObject {
 	 * @return
 	 */
 	protected int getInitHeight() {
-		return proratedIntProp(P_HEIGHT);
+		return intProp(P_HEIGHT);
 	}
 
 	/**
@@ -70,15 +66,6 @@ public abstract class AbstractIBObject implements IBObject {
 	 */
 	public AbstractIBObject(int x, int y, Container container) {
 		this(x, y, container, null);
-	}
-
-	/**
-	 * 获取对象的按比例参数缩放的 int 类型配置信息
-	 * @param prop
-	 * @return
-	 */
-	protected int proratedIntProp(String key) {
-		return SystemConf.prorate(SystemConf.intProp(configClass, key));
 	}
 
 	/**
@@ -116,64 +103,18 @@ public abstract class AbstractIBObject implements IBObject {
 	}
 
 	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	@Override
-	public int getY() {
-		return this.y;
-	}
-
-	@Override
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	@Override
-	public int getHeight() {
-		return height;
-	}
-
-	@Override
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	@Override
-	public int getWidth() {
-		return this.width;
-	}
-
-	@Override
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	@Override
 	public double getCenterX() {
-		return x + width / 2.0;
+		return getX() + getWidth() / 2.0;
 	}
 
 	@Override
 	public double getCenterY() {
-		return y + height / 2.0;
+		return getY() + getHeight() / 2.0;
 	}
 
 	@Override
 	public Container getContainer() {
 		return container;
-	}
-
-	@Override
-	public void ensureInContainer() {
-		ensureIn(0, getContainer().getWidth(), getContainer().getHeight() - getContainer().getContentHeight(),
-			getContainer().getHeight());
 	}
 
 	protected void ensureIn(int minX, int maxX, int minY, int maxY) {

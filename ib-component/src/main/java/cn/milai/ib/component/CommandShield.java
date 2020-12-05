@@ -43,7 +43,7 @@ public class CommandShield extends AbstractIBObject implements Controllable {
 	}
 
 	@Override
-	protected int proratedIntProp(String key) {
+	protected int intProp(String key) {
 		return 0;
 	}
 

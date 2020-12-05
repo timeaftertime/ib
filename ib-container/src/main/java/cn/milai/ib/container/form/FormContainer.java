@@ -1,13 +1,15 @@
 package cn.milai.ib.container.form;
 
-import cn.milai.ib.container.LifecycleContainer;
+import javax.swing.JFrame;
+
+import cn.milai.ib.drama.DramaContainer;
 
 /**
- * 窗口容器
+ * 窗口剧本容器
  * 2019.12.06
  * @author milai
  */
-public interface FormContainer extends LifecycleContainer {
+public interface FormContainer extends DramaContainer {
 
 	/**
 	  获取容器标题
@@ -19,5 +21,11 @@ public interface FormContainer extends LifecycleContainer {
 	 * 设置容器标题
 	 */
 	void setTitle(String title);
+
+	/**
+	 * 获取容器对应的 Form
+	 * @return
+	 */
+	JFrame getForm();
 
 }

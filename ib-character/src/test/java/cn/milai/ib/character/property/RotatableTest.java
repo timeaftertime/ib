@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.geometry.Point;
 
 public class RotatableTest {
@@ -17,7 +17,7 @@ public class RotatableTest {
 		private int width;
 		private int height;
 
-		public RotatableStub(int x, int y, int width, int height, double direction, Container container) {
+		public RotatableStub(int x, int y, int width, int height, double direction, UIContainer container) {
 			super(x, y, container);
 			this.width = width;
 			this.height = height;
@@ -42,11 +42,6 @@ public class RotatableTest {
 		@Override
 		public double getCenterY() {
 			return super.getY() + height / 2.0;
-		}
-
-		@Override
-		protected int proratedIntProp(String key) {
-			return 0;
 		}
 
 		@Override

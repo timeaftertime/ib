@@ -57,11 +57,11 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	}
 
 	@Override
-	protected int proratedIntProp(String key) {
+	protected int intProp(String key) {
 		if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 			return 0;
 		}
-		return super.proratedIntProp(key);
+		return super.intProp(key);
 	}
 
 	@Override

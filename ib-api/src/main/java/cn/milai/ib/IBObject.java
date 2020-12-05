@@ -50,16 +50,23 @@ public interface IBObject extends Paintable, Bounds {
 	default void paintWith(Graphics g) {
 		g.drawImage(getNowImage(), getX(), getY(), getWidth(), getHeight(), null);
 	}
+	
+	/**
+	 * 中心 X 坐标
+	 * @return
+	 */
+	double getCenterX();
+
+	/**
+	 * 中心 Y 坐标
+	 * @return
+	 */
+	double getCenterY();
 
 	/**
 	 * 获取所属容器
 	 * @return
 	 */
 	Container getContainer();
-
-	/**
-	 * 确保当前游戏对象出于容器中，若不在，将其移动到容器之中
-	 */
-	void ensureInContainer();
 
 }

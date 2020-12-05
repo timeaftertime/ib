@@ -28,4 +28,31 @@ public abstract class AbstractDrama implements Drama {
 		return DramaStringLoader.get(getCode(), strCode);
 	}
 
+	@Override
+	public final void run(DramaContainer container) {
+		container.newSize(initWidth(), initHeight());
+		container.newUISize(initWidth(), initHeight());
+		doRun(container);
+		container.restoreSize();
+		container.restoreUISize();
+	}
+
+	/**
+	 * 设置好容器宽度和高度（实际的和显示的）后执行，执行完后将还原之前的宽度和高度
+	 * @param container
+	 */
+	protected abstract void doRun(DramaContainer container);
+
+	/**
+	 * 获取剧本执行时容器的初始宽度
+	 * @return
+	 */
+	protected abstract int initWidth();
+
+	/**
+	 * 获取剧本执行时容器的初始长度
+	 * @return
+	 */
+	protected abstract int initHeight();
+
 }

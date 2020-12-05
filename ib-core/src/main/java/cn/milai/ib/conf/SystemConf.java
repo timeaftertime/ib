@@ -27,7 +27,6 @@ public class SystemConf {
 	}
 
 	private static void initSysProps() {
-		SYS_PROPS.put(SysProps.SIZE_RATIO, "1.0");
 		SYS_PROPS.put(SysProps.SPEED_RATIO, "1.0");
 		SYS_PROPS.put(SysProps.REPO_ADDRESS, "http://localhost:80");
 		SYS_PROPS.put(SysProps.RESOURCE_PATH, SystemConf.class.getResource("/").getPath());
@@ -58,15 +57,6 @@ public class SystemConf {
 				SYS_PROPS.put(key, value);
 			}
 		}
-	}
-
-	/**
-	 * 按照比例缩放大小或速度大小
-	 * @param value
-	 * @return
-	 */
-	public static int prorate(double value) {
-		return (int) (value * getDouble(SysProps.SIZE_RATIO));
 	}
 
 	/**

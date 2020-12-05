@@ -8,11 +8,6 @@ package cn.milai.ib.conf;
 public interface SysProps {
 
 	/** 
-	 * 整个游戏的尺寸比例，所有对象的大小、速度应乘以该常量
-	 */
-	String SIZE_RATIO = "ib.size";
-
-	/** 
 	 * 整个游戏的速度比例，帧间隔时间应乘以该常量
 	 */
 	String SPEED_RATIO = "ib.speed";

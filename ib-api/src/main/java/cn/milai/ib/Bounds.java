@@ -55,16 +55,4 @@ public interface Bounds {
 	 */
 	void setHeight(int height);
 
-	/**
-	 * 中心 X 坐标
-	 * @return
-	 */
-	double getCenterX();
-
-	/**
-	 * 中心 Y 坐标
-	 * @return
-	 */
-	double getCenterY();
-
 }

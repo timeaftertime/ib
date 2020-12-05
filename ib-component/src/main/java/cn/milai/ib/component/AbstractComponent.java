@@ -3,6 +3,7 @@ package cn.milai.ib.component;
 import cn.milai.ib.AbstractIBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;
+import cn.milai.ib.container.UIContainer;
 
 /**
  * IBComponent 的抽象基类
@@ -24,6 +25,11 @@ public abstract class AbstractComponent extends AbstractIBObject implements IBCo
 	@Override
 	public void setImage(Image img) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public UIContainer getContainer() {
+		return (UIContainer) super.getContainer();
 	}
 
 }

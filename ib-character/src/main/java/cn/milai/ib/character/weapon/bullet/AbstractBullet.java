@@ -66,7 +66,7 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	 * @return
 	 */
 	protected int getSpeed() {
-		return proratedIntProp(P_SPEED);
+		return intProp(P_SPEED);
 	}
 
 	@Override

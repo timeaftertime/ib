@@ -3,6 +3,7 @@ package cn.milai.ib.character;
 import java.awt.Graphics;
 
 import cn.milai.ib.IBObject;
+import cn.milai.ib.container.UIContainer;
 
 /**
  * 参与到游戏中的游戏角色
@@ -97,5 +98,15 @@ public interface IBCharacter extends IBObject {
 	 * @return
 	 */
 	void setDirection(double radian);
+
+	/**
+	 * 获取所属 UI 容器
+	 */
+	UIContainer getContainer();
+
+	/**
+	 * 确保当前游戏角色出于容器中，若不在，将其移动到容器之中
+	 */
+	void ensureInContainer();
 
 }

@@ -18,7 +18,7 @@ public abstract class AbstractTextComponent extends AbstractComponent implements
 
 	public AbstractTextComponent(int x, int y, Container container) {
 		super(x, y, container);
-		int textSize = proratedIntProp(P_TEXT_SIZE);
+		int textSize = intProp(P_TEXT_SIZE);
 		font = new Font(prop(P_TEXT_FONT), Font.BOLD, textSize);
 		color = parseColor(intProp(P_TEXT_COLOR));
 	}

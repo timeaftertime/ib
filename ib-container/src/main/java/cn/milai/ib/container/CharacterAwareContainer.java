@@ -17,11 +17,14 @@ import cn.milai.ib.contaniner.AbstractLifecycleContainer;
 import cn.milai.ib.geometry.Rect;
 
 /**
- * 实现 IBCharacter 属性相关逻辑 Container 抽象基类
+ * 实现 {@link IBCharacter} 属性相关逻辑 {@link Container} 抽象基类
  * @author milai
  * @date 2020.03.25
  */
-public abstract class CharacterAwareContainer extends AbstractLifecycleContainer {
+public abstract class CharacterAwareContainer extends AbstractLifecycleContainer implements UIContainer {
+
+	private int width;
+	private int height;
 
 	private List<IBCharacter> characters;
 	private List<Movable> movables;
@@ -133,6 +136,22 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 		for (Explosion explosion : explosible.getExplosionCreator().createExplosions(explosible)) {
 			addObject(explosion);
 		}
+	}
+
+	@Override
+	public int getWidth() {
+		return width;
+	}
+
+	@Override
+	public int getHeight() {
+		return height;
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
 
 	/**

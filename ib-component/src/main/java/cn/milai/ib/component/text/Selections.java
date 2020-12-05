@@ -71,7 +71,7 @@ public class Selections extends AbstractTextComponent {
 	 * @return
 	 */
 	private int getPadding() {
-		return proratedIntProp(P_SELECTION_TEXT_PADDING);
+		return intProp(P_SELECTION_TEXT_PADDING);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class Selections extends AbstractTextComponent {
 	 * @return
 	 */
 	private int getMargin() {
-		return proratedIntProp(P_SELECTION_TEXT_MARGIN);
+		return intProp(P_SELECTION_TEXT_MARGIN);
 	}
 
 	/**
@@ -125,11 +125,11 @@ public class Selections extends AbstractTextComponent {
 			setY(topY + preSelections + getMargin());
 		}
 
-		protected int proratedIntProp(String key) {
+		protected int intProp(String key) {
 			if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 				return 0;
 			}
-			return super.proratedIntProp(key);
+			return super.intProp(key);
 		}
 
 		public BufferedImage getNowImage() {

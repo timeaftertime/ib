@@ -16,35 +16,36 @@ import com.google.common.collect.Lists;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.Controllable;
-import cn.milai.ib.container.CharacterAwareContainer;
+import cn.milai.ib.container.AbstractDramaContainer;
+import cn.milai.ib.container.Camera;
 import cn.milai.ib.container.IBContainerException;
 import cn.milai.ib.container.Image;
 import cn.milai.ib.container.listener.ContainerEventListener;
+import cn.milai.ib.contaniner.BaseCamera;
 
 /**
- * FormContainer 抽象基类
+ * {@link FormContainer} 抽象基类
  * @author milai
  */
-public abstract class AbstractFormContainer extends CharacterAwareContainer implements FormContainer {
+public abstract class AbstractFormContainer extends AbstractDramaContainer implements FormContainer {
 
 	private JFrame form;
 	private List<Controllable> controllables;
 	private Image bgImage;
+	private Camera camera;
 
 	@SuppressWarnings("serial")
 	public AbstractFormContainer() {
-		resetCharacterAwareContainer();
 		form = new JFrame() {
 			@Override
 			public final void paint(Graphics g) {
 				paintContainer(g);
 			}
 		};
-		initForm(form);
+		initForm();
 		form.setLocationRelativeTo(null);
 		form.setLayout(null);
 		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		form.setResizable(false);
 		form.addMouseListener(new MouseEventDispatcher(this));
 		form.addKeyListener(new KeyEventDispatcher(this));
 		form.addWindowListener(new WindowAdapter() {
@@ -53,11 +54,13 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 				close();
 			}
 		});
+		resetCharacterAwareContainer();
 	}
 
 	@Override
 	protected void resetCharacterAwareContainer() {
 		controllables = Lists.newArrayList();
+		camera = new BaseCamera();
 		addEventListener(new ContainerEventListener() {
 			@Override
 			public void onObjectAdded(IBObject obj) {
@@ -86,31 +89,28 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 		return controllables;
 	}
 
-	/**
-	 * 获取持有的窗口
-	 * @return
-	 */
+	@Override
 	public JFrame getForm() {
 		return form;
 	}
 
 	@Override
-	public int getWidth() {
+	public int getUIWidth() {
 		return form.getWidth();
 	}
 
 	@Override
-	public int getHeight() {
+	public int getUIHeight() {
 		return form.getHeight();
 	}
 
 	@Override
-	public int getContentHeight() {
+	public int getUICHeight() {
 		return form.getContentPane().getHeight();
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resizeUI(int width, int height) {
 		form.setSize(width, height);
 		form.setLocationRelativeTo(null);
 	}
@@ -135,15 +135,28 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 		form.repaint();
 	}
 
+	@Override
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+
+	@Override
+	public Camera getCamera() {
+		return camera;
+	}
+
 	/**
 	 * 绘制容器
 	 * @param g
 	 */
 	protected void paintContainer(Graphics g) {
-		BufferedImage image = (BufferedImage) form.createImage(getWidth(), getHeight());
+		JFrame form = getForm();
+		int width = getWidth();
+		int height = getHeight();
+		BufferedImage image = (BufferedImage) form.createImage(width, height);
 		Graphics buffer = image.getGraphics();
 		if (bgImage != null) {
-			buffer.drawImage(bgImage.next(), 0, 0, getWidth(), getHeight(), null);
+			buffer.drawImage(bgImage.next(), 0, 0, width, height, null);
 		}
 		List<? extends IBObject> objs = getAll(IBObject.class);
 		Collections.sort(objs, Comparator.comparingInt(IBObject::getZ));
@@ -151,7 +164,7 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 			o.paintWith(buffer);
 		}
 		buffer.dispose();
-		g.drawImage(image, 0, 0, null);
+		g.drawImage(camera.reflect(image), 0, 0, form.getWidth(), form.getHeight(), null);
 	}
 
 	@Override
@@ -166,8 +179,7 @@ public abstract class AbstractFormContainer extends CharacterAwareContainer impl
 	}
 
 	/**
-	 * 创建并设置好 form 后调用
-	 * @param form 创建的 form
+	 * 创建 form 后调用
 	 */
-	protected abstract void initForm(JFrame form);
+	protected abstract void initForm();
 }

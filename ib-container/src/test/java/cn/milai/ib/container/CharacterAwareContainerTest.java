@@ -15,7 +15,7 @@ public class CharacterAwareContainerTest {
 		private int width;
 		private int height;
 
-		public RotatableCharacterStub(int x, int y, int width, int height, double direction, Container container) {
+		public RotatableCharacterStub(int x, int y, int width, int height, double direction, UIContainer container) {
 			super(x, y, container);
 			this.width = width;
 			this.height = height;
@@ -40,11 +40,6 @@ public class CharacterAwareContainerTest {
 		@Override
 		public double getCenterY() {
 			return getY() + height / 2.0;
-		}
-
-		@Override
-		protected int proratedIntProp(String key) {
-			return 0;
 		}
 
 		@Override

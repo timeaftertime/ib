@@ -13,31 +13,6 @@ import cn.milai.ib.container.listener.ContainerEventListener;
 public interface Container {
 
 	/**
-	 * 获取宽度
-	 * @return
-	 */
-	int getWidth();
-
-	/**
-	 * 获取长度
-	 * @return
-	 */
-	int getHeight();
-
-	/**
-	 * 获取（去掉上边框后）实际游戏界面高度
-	 * @return
-	 */
-	int getContentHeight();
-
-	/**
-	 * 重新设置容器的宽度和高度并保持中心位置不变
-	 * @param width
-	 * @param height
-	 */
-	void resize(int width, int height);
-
-	/**
 	 * 向容器中添加游戏对象
 	 * 若操作失败将抛出 IBContainerException
 	 * @param obj

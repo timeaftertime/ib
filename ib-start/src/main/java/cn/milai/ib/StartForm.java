@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.mode.GameMode;
 
 /**
@@ -29,12 +28,12 @@ public class StartForm extends JFrame {
 	private static final String FONT_NAME = "华文行楷";
 
 	private static final String TITLE = "敌星弹雨";
-	private static final Font TITLE_FONT = new Font(FONT_NAME, Font.BOLD, 55);
+	private static final Font TITLE_FONT = new Font(FONT_NAME, Font.BOLD, 50);
 	private static final Font LABEL_FONT = new Font(FONT_NAME, Font.BOLD, 30);
 
-	private static final int WIDTH = SystemConf.prorate(500);
-	private static final int TITLE_HEIGHT = SystemConf.prorate(260);
-	private static final int PER_MODE_HEIGHT = SystemConf.prorate(200);
+	private static final int WIDTH = 350;
+	private static final int TITLE_HEIGHT = 182;
+	private static final int PER_MODE_HEIGHT = 140;
 
 	public StartForm() {
 		init();
@@ -44,6 +43,7 @@ public class StartForm extends JFrame {
 		List<GameMode> gameModes = IBCore.getBeansOrdered(GameMode.class);
 		setSize(WIDTH, TITLE_HEIGHT + PER_MODE_HEIGHT * gameModes.size());
 		setLocationRelativeTo(null);
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JLabel title = new JLabel(TITLE);

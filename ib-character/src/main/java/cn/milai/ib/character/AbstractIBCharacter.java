@@ -1,7 +1,7 @@
 package cn.milai.ib.character;
 
 import cn.milai.ib.AbstractIBObject;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 /**
  * IBCharacter 的抽象实现
@@ -15,7 +15,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 
 	private IBCharacter lastAttacker;
 
-	public AbstractIBCharacter(int x, int y, Container container, Class<? extends IBCharacter> configClass) {
+	public AbstractIBCharacter(int x, int y, UIContainer container, Class<? extends IBCharacter> configClass) {
 		super(x, y, container, configClass);
 		this.life = getInitLife();
 	}
@@ -25,7 +25,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 		return intProp(P_LIFE);
 	}
 
-	public AbstractIBCharacter(int x, int y, Container container) {
+	public AbstractIBCharacter(int x, int y, UIContainer container) {
 		this(x, y, container, null);
 	}
 
@@ -97,6 +97,17 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 			direction += 2 * Math.PI;
 		}
 		this.direction = direction;
+	}
+
+	@Override
+	public UIContainer getContainer() {
+		return (UIContainer) super.getContainer();
+	}
+
+	@Override
+	public void ensureInContainer() {
+		UIContainer c = getContainer();
+		ensureIn(0, c.getWidth(), c.getHeight() - c.getUICHeight(), c.getHeight());
 	}
 
 }
