@@ -52,7 +52,7 @@ public abstract class AbstractContainer implements Container {
 	}
 
 	@Override
-	public final void reset() {
+	public final void reset(){
 		synchronized (objs) {
 			objs.clear();
 		}

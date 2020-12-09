@@ -2,8 +2,6 @@ package cn.milai.ib.container;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.geometry.Point;
-
 /**
  * 照相机，用于实现实际容器与屏幕显示的映射
  * @author milai
@@ -13,17 +11,12 @@ public interface Camera {
 
 	/**
 	 * 获取 img 通过当前照相机映射后的结果
+	 * 该方法确保不会修改参数中的 {@link BufferedImage} 对象
+	 * 但不保证返回的是副本
 	 * @param img
 	 * @return
 	 */
 	BufferedImage reflect(BufferedImage img);
-
-	/**
-	 * 获取指定点在指定容器中对应的实际点
-	 * @param view
-	 * @return
-	 */
-	Point toReal(UIContainer c, Point view);
 
 	/**
 	 * 获取指定显示 x 在容器 c 中对应的实际 x 坐标

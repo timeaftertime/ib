@@ -104,7 +104,8 @@ public abstract class AbstractLifecycleContainer extends AbstractContainer imple
 	@Override
 	public final void addLifeCycleListener(ContainerLifecycleListener listener) {
 		if (closed) {
-			throw new ContainerClosedException();
+			listener.onContainerClosed();
+			return;
 		}
 		synchronized (lifecycleListeners) {
 			this.lifecycleListeners.add(listener);
@@ -112,8 +113,8 @@ public abstract class AbstractLifecycleContainer extends AbstractContainer imple
 	}
 
 	@Override
-	public final void addEventListener(ContainerEventListener listener) {
-		if (closed) {
+	public final void addEventListener(ContainerEventListener listener) throws ContainerClosedException {
+		if (isClosed()) {
 			throw new ContainerClosedException();
 		}
 		super.addEventListener(listener);

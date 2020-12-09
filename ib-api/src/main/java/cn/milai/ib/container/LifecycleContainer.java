@@ -38,8 +38,9 @@ public interface LifecycleContainer extends Container {
 	/**
 	 * 容器是否出于暂停状态
 	 * @return
+	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	boolean isPaused();
+	boolean isPaused() throws ContainerClosedException;
 
 	/**
 	 * 设置是否固定游戏角色，即是否暂停游戏角色的移动、碰撞检测、存活检测
@@ -50,9 +51,9 @@ public interface LifecycleContainer extends Container {
 
 	/**
 	 * 添加一个容器生命周期事件的监听者
+	 * 若调用时容器已经被关闭, {@link ContainerLifecycleListener#onContainerClosed()}将立刻被调用
 	 * @param listener
-	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	void addLifeCycleListener(ContainerLifecycleListener listener) throws ContainerClosedException;
+	void addLifeCycleListener(ContainerLifecycleListener listener);
 
 }

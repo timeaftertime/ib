@@ -107,7 +107,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	@Override
 	public void ensureInContainer() {
 		UIContainer c = getContainer();
-		ensureIn(0, c.getWidth(), c.getHeight() - c.getUICHeight(), c.getHeight());
+		ensureIn(0, c.getWidth(), 0, c.getHeight());
 	}
 
 }

@@ -46,14 +46,16 @@ public interface Container {
 	/**
 	 * 添加游戏事件监听器
 	 * @param listener
+	 * @throws IBContainerException
 	 */
-	void addEventListener(ContainerEventListener listener);
+	void addEventListener(ContainerEventListener listener) throws IBContainerException;
 
 	/**
 	 * 移除游戏事件监听器
 	 * @param listener
+	 * @throws IBContainerException
 	 */
-	void removeEventListener(ContainerEventListener listener);
+	void removeEventListener(ContainerEventListener listener) throws IBContainerException;
 
 	/**
 	 * 播放音频
@@ -89,6 +91,7 @@ public interface Container {
 	 * 移除所有游戏对象和监听器，帧数不会清零
 	 * {@link ContainerEventListener#afterEpochChanged(Container)} 将被调用
 	 * {@link ContainerEventListener#onObjectRemoved(IBObject)} 不会被调用
+	 * @throws IBContainerException
 	 */
-	void reset();
+	void reset() throws IBContainerException;
 }
