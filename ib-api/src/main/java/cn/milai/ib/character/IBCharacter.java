@@ -3,7 +3,7 @@ package cn.milai.ib.character;
 import java.awt.Graphics;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 参与到游戏中的游戏角色

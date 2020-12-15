@@ -2,7 +2,7 @@ package cn.milai.ib.character.explosion;
 
 import cn.milai.ib.Paintable;
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 爆炸的抽象基类

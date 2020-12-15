@@ -1,7 +1,7 @@
 package cn.milai.ib.character;
 
 import cn.milai.ib.AbstractIBObject;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * IBCharacter 的抽象实现

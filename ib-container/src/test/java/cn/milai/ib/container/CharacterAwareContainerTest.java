@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import cn.milai.ib.character.AbstractIBCharacter;
 import cn.milai.ib.character.property.Rotatable;
+import cn.milai.ib.container.ui.UIContainer;
 
 public class CharacterAwareContainerTest {
 

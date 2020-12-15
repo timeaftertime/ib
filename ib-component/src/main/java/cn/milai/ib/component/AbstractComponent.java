@@ -2,8 +2,8 @@ package cn.milai.ib.component;
 
 import cn.milai.ib.AbstractIBObject;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Image;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * IBComponent 的抽象基类

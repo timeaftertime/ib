@@ -2,7 +2,7 @@ package cn.milai.ib.component;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.Paintable;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 用于交互的组件

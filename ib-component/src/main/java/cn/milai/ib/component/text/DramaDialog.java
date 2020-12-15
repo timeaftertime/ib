@@ -9,12 +9,12 @@ import org.springframework.core.annotation.Order;
 
 import com.google.common.collect.Maps;
 
-import cn.milai.ib.character.Controllable;
 import cn.milai.ib.component.WaitNextPageTip;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Image;
-import cn.milai.ib.container.LifecycleContainer;
-import cn.milai.ib.container.listener.Command;
+import cn.milai.ib.container.control.CommandType;
+import cn.milai.ib.container.control.Controllable;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -150,7 +150,8 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		int widthLimit = Integer.max(
 			// 有待绘字符才调用该方法，所以这里直接 charAt() 不会有问题
 			ImageTextUtil.getTextWidth(SAMPLE_STR + text.charAt(readIndex), g),
-			getWidth() - 2 * horMargin);
+			getWidth() - 2 * horMargin
+		);
 		StringBuilder sb = new StringBuilder();
 		for (; readIndex < text.length(); readIndex++) {
 			char ch = text.charAt(readIndex);
@@ -172,27 +173,24 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		Graphics2D g = img.createGraphics();
 		// 表示还有下一页的箭头
 		if (readIndex < text.length()) {
-			g.drawImage(waitNextPage.getNowImage(),
+			g.drawImage(
+				waitNextPage.getNowImage(),
 				getWidth() - waitNextPage.getWidth(),
 				getHeight() - waitNextPage.getHeight(),
 				waitNextPage.getWidth(),
 				waitNextPage.getHeight(),
-				null);
+				null
+			);
 		}
 		return img;
 	}
 
 	@Override
-	public boolean onReceive(Command command) {
-		if (command == Command.A) {
+	public boolean exec(CommandType command) {
+		if (command == CommandType.A) {
 			return false;
 		}
-		return true;
-	}
-
-	@Override
-	public boolean onCancel(Command command) {
-		if (command == Command.A) {
+		if (command == CommandType.U_A) {
 			pageDown();
 			return false;
 		}

@@ -1,7 +1,8 @@
 package cn.milai.ib.drama;
 
-import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Image;
+import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.ui.Audio;
+import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.DramaStringLoader;
 import cn.milai.ib.loader.ImageLoader;

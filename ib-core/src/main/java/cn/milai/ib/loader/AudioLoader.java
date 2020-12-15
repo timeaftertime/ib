@@ -1,8 +1,8 @@
 package cn.milai.ib.loader;
 
 import cn.milai.ib.IBCore;
-import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.AudioCreator;
+import cn.milai.ib.container.ui.Audio;
+import cn.milai.ib.container.ui.AudioCreator;
 
 /**
  * 音频加载器

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Image;
+import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
 
 /**
@@ -29,7 +29,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @param configClass
 	 */
 	public AbstractIBObject(int x, int y, Container container, Class<? extends IBObject> configClass) {
-		// 最先设置 container 以边构造时使用
+		// 最先设置 container 以便构造时使用
 		this.container = container;
 		this.configClass = configClass == null ? getClass() : configClass;
 		int width = getInitWidth();

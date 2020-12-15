@@ -6,9 +6,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import cn.milai.ib.AbstractIBObject;
-import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.listener.Command;
+import cn.milai.ib.container.control.CommandType;
+import cn.milai.ib.container.control.Controllable;
 
 /**
  * 禁用暂停以外所有指令的命令接收器
@@ -33,12 +33,7 @@ public class CommandShield extends AbstractIBObject implements Controllable {
 	}
 
 	@Override
-	public boolean onReceive(Command command) {
-		return false;
-	}
-
-	@Override
-	public boolean onCancel(Command command) {
+	public boolean exec(CommandType command) {
 		return false;
 	}
 

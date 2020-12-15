@@ -33,7 +33,7 @@ public interface Camp {
 	 * @return
 	 */
 	public static boolean sameCamp(int c1, int c2) {
-		return c1 != 0 && c2 != 0 && c1 == c2;
+		return c1 != NO_CAMP && c2 != NO_CAMP && c1 == c2;
 	}
 
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 import cn.milai.ib.IBCore;
 import cn.milai.ib.component.text.LinesFullScreenPass;
+import cn.milai.ib.container.ContainerEventListener;
+import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.IBContainerException;
-import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.container.listener.ContainerLifecycleListener;
+import cn.milai.ib.container.lifecycle.ContainerLifecycleListener;
 import cn.milai.ib.drama.Drama;
-import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.drama.DramaResolver;
 import cn.milai.ib.loader.DramaResLoader;
 import cn.milai.ib.util.IOUtil;

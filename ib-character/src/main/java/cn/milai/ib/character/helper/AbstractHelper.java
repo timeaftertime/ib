@@ -2,7 +2,7 @@ package cn.milai.ib.character.helper;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.MovableIBCharacter;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * Helper 的抽象基类

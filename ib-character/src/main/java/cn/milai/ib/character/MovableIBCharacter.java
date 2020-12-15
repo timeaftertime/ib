@@ -1,7 +1,7 @@
 package cn.milai.ib.character;
 
 import cn.milai.ib.character.property.Movable;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 可移动的游戏对象

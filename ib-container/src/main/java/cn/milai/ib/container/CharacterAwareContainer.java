@@ -12,8 +12,12 @@ import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Explosible;
 import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.character.property.Rotatable;
-import cn.milai.ib.container.listener.ContainerEventListener;
-import cn.milai.ib.contaniner.AbstractLifecycleContainer;
+import cn.milai.ib.container.control.Command;
+import cn.milai.ib.container.control.CommandDispatcher;
+import cn.milai.ib.container.control.Controllable;
+import cn.milai.ib.container.control.ControllableContainer;
+import cn.milai.ib.container.lifecycle.AbstractLifecycleContainer;
+import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.geometry.Rect;
 
 /**
@@ -21,7 +25,10 @@ import cn.milai.ib.geometry.Rect;
  * @author milai
  * @date 2020.03.25
  */
-public abstract class CharacterAwareContainer extends AbstractLifecycleContainer implements UIContainer {
+public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
+	implements UIContainer, ControllableContainer {
+
+	private static final int MAX_COMMAND_PER_FRAME = 5;
 
 	private int width;
 	private int height;
@@ -29,6 +36,8 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	private List<IBCharacter> characters;
 	private List<Movable> movables;
 	private List<CanCrash> canCrashs;
+
+	private CommandDispatcher commandDispatcher;
 
 	public CharacterAwareContainer() {
 		init();
@@ -44,9 +53,13 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 		characters = Lists.newArrayList();
 		movables = Lists.newArrayList();
 		canCrashs = Lists.newArrayList();
+		commandDispatcher = new CommandDispatcher();
 		addEventListener(new ContainerEventListener() {
 			@Override
 			public void onObjectAdded(IBObject obj) {
+				if (obj instanceof Controllable) {
+					commandDispatcher.addControllable((Controllable) obj);
+				}
 				if (obj instanceof IBCharacter) {
 					characters.add((IBCharacter) obj);
 					if (obj instanceof Movable) {
@@ -63,12 +76,16 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 				characters.remove(obj);
 				movables.remove(obj);
 				canCrashs.remove(obj);
+				if (obj instanceof Controllable) {
+					commandDispatcher.removeControllable((Controllable) obj);
+				}
 			}
 		});
 	}
 
 	@Override
 	protected final void doRefresh() {
+		reponseCommands();
 		if (!isPined()) {
 			moveCharacters();
 			checkCrash();
@@ -105,6 +122,15 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	private void moveCharacters() {
 		for (Movable m : Lists.newArrayList(movables)) {
 			m.move();
+		}
+	}
+
+	/**
+	 * 响应指令
+	 */
+	private void reponseCommands() {
+		for (int i = 0; i < MAX_COMMAND_PER_FRAME; i++) {
+			commandDispatcher.dispathOne();
 		}
 	}
 
@@ -152,6 +178,14 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	public void resize(int width, int height) {
 		this.width = width;
 		this.height = height;
+	}
+
+	@Override
+	public void addCommand(Command c) {
+		if (isPaused()) {
+			return;
+		}
+		commandDispatcher.addCommand(c);
 	}
 
 	/**
