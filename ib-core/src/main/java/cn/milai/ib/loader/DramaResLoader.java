@@ -174,7 +174,7 @@ public class DramaResLoader {
 				}
 			}
 			if (!new File(basePath + "/" + CHECK_FILE).createNewFile()) {
-				log.warn("创建" + CHECK_FILE + "失败");
+				log.warn("创建" + CHECK_FILE + "失败，文件可能已经存在");
 			}
 		} catch (IOException e) {
 			log.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackFrames(e));

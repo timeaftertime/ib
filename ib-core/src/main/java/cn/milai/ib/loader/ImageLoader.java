@@ -72,8 +72,8 @@ public abstract class ImageLoader {
 		return buildImage(ImageUtil.loadImage(DramaResLoader.load(dramaCode, resource)));
 	}
 
-	private static Image buildImage(BufferedImage[] images) {
-		return IBCore.getBean(Image.class, (Object) (images));
+	private static Image buildImage(BufferedImage... images) {
+		return IBCore.getBean(Image.class, (Object) images);
 	}
 
 }
