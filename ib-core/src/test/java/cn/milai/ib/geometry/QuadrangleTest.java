@@ -1,4 +1,4 @@
-package cn.milai.ib.util.geometry;
+package cn.milai.ib.geometry;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
