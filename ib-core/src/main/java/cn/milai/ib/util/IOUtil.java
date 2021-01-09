@@ -27,7 +27,7 @@ import cn.milai.ib.ex.IBIOException;
  */
 public abstract class IOUtil {
 
-	private static final Logger log = LoggerFactory.getLogger(IOUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(IOUtil.class);
 
 	private IOUtil() {
 	}
@@ -43,7 +43,7 @@ public abstract class IOUtil {
 			in.close();
 			return out.toByteArray();
 		} catch (IOException e) {
-			log.error("读取输入流失败", e);
+			LOG.error("读取输入流失败", e);
 			throw new IBIOException(e);
 		}
 	}
@@ -66,7 +66,7 @@ public abstract class IOUtil {
 			}
 			return off;
 		} catch (IOException e) {
-			log.error("读取输入流失败", e);
+			LOG.error("读取输入流失败", e);
 			throw new IBIOException(e);
 		}
 	}
@@ -90,7 +90,7 @@ public abstract class IOUtil {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.error("读取输入流失败", e);
+			LOG.error("读取输入流失败", e);
 			throw new IBIOException(e);
 		}
 		return lines;
@@ -118,7 +118,7 @@ public abstract class IOUtil {
 		try {
 			return toListFilter(url.openStream(), p);
 		} catch (IOException e) {
-			log.error("打开输入流失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
+			LOG.error("打开输入流失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
 			throw new IBIOException(e);
 		}
 	}

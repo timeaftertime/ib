@@ -28,7 +28,7 @@ import cn.milai.ib.util.IOUtil;
  */
 public class DramaResLoader {
 
-	private static final Logger log = LoggerFactory.getLogger(DramaResLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DramaResLoader.class);
 
 	/**
 	 * 用于表示剧本对应资源是否已经存在于本地的文件名
@@ -119,10 +119,10 @@ public class DramaResLoader {
 		if (checkFile.exists()) {
 			return;
 		}
-		log.info("剧本 {} 的资源文件不存在，尝试从本地压缩文件获取……", dramaCode);
+		LOG.info("剧本 {} 的资源文件不存在，尝试从本地压缩文件获取……", dramaCode);
 		String zipFile = basePath + "/" + tarGzFileName(dramaCode);
 		if (!new File(zipFile).exists()) {
-			log.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
+			LOG.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
 			FileUtil.save(zipFile,
 				HttpUtil.getFile(PathConf.dramaResRepo(dramaCode)));
 		}
@@ -137,7 +137,7 @@ public class DramaResLoader {
 		File directory = new File(basePath);
 		if (!directory.isDirectory()) {
 			if (!directory.mkdirs()) {
-				log.error("创建剧本文件夹失败，path = {}", basePath);
+				LOG.error("创建剧本文件夹失败，path = {}", basePath);
 				throw new IBIOException(String.format("创建剧本资源文件夹失败，path = {}", basePath));
 			}
 		}
@@ -160,12 +160,12 @@ public class DramaResLoader {
 	 */
 	private static final void extract(String basePath, String fileName) {
 		File file = new File(basePath + "/" + fileName);
-		log.info("开始解压剧本资源文件, file = {}", file);
+		LOG.info("开始解压剧本资源文件, file = {}", file);
 		try (ZipFile zip = new ZipFile(file)) {
 			Enumeration<? extends ZipEntry> entries = zip.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
-				log.debug("正在解压剧本资源文件, file = {}, entry = {}", file, entry.getName());
+				LOG.debug("正在解压剧本资源文件, file = {}, entry = {}", file, entry.getName());
 				String pathname = basePath + "/" + entry.getName();
 				if (entry.isDirectory()) {
 					new File(pathname).mkdir();
@@ -174,13 +174,13 @@ public class DramaResLoader {
 				}
 			}
 			if (!new File(basePath + "/" + CHECK_FILE).createNewFile()) {
-				log.warn("创建" + CHECK_FILE + "失败，文件可能已经存在");
+				LOG.warn("创建" + CHECK_FILE + "失败，文件可能已经存在");
 			}
 		} catch (IOException e) {
-			log.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackFrames(e));
+			LOG.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackFrames(e));
 			throw new IBIOException(String.format("解压资源文件未知错误：file = {}", fileName));
 		}
 
-		log.info("解压剧本资源文件完成, file = {}", file);
+		LOG.info("解压剧本资源文件完成, file = {}", file);
 	}
 }

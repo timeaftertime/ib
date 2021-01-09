@@ -19,7 +19,7 @@ import cn.milai.ib.ex.IBIOException;
  */
 public class FileUtil {
 
-	private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
 	/**
 	 * 保存数据到 path 指向的文件
@@ -36,7 +36,7 @@ public class FileUtil {
 			fos.write(data);
 			fos.close();
 		} catch (IOException e) {
-			log.error("保存文件失败, file = {}, error = {}", path, ExceptionUtils.getStackFrames(e));
+			LOG.error("保存文件失败, file = {}, error = {}", path, ExceptionUtils.getStackFrames(e));
 			throw new IBIOException(e);
 		}
 	}
@@ -61,7 +61,7 @@ public class FileUtil {
 		try {
 			return IOUtil.toBytes(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			log.error("读取文件失败, file = {}, error = {}", file, ExceptionUtils.getStackFrames(e));
+			LOG.error("读取文件失败, file = {}, error = {}", file, ExceptionUtils.getStackFrames(e));
 			throw new IBIOException(e);
 		}
 	}

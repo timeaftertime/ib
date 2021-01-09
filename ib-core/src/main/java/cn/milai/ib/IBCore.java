@@ -6,13 +6,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.compress.utils.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+
+import com.google.common.collect.Lists;
 
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.util.IOUtil;
@@ -24,7 +25,7 @@ import cn.milai.ib.util.IOUtil;
  */
 public class IBCore {
 
-	private static final Logger log = LoggerFactory.getLogger(IBCore.class);
+	private static final Logger LOG = LoggerFactory.getLogger(IBCore.class);
 
 	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/ib.factories";
 
@@ -38,7 +39,7 @@ public class IBCore {
 				basePackages.addAll(IOUtil.toListFilter(urls.nextElement(), line -> !line.startsWith("#")));
 			}
 		} catch (IOException e) {
-			log.error("读取 factories 文件失败", e);
+			LOG.error("读取 factories 文件失败", e);
 			throw new IBException("读取 factories 文件失败", e);
 		}
 		ctx = new AnnotationConfigApplicationContext(basePackages.toArray(new String[0]));

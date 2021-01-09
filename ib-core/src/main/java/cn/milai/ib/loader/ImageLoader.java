@@ -23,7 +23,7 @@ import cn.milai.ib.util.ImageUtil;
  */
 public abstract class ImageLoader {
 
-	private static final Logger log = LoggerFactory.getLogger(ImageLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ImageLoader.class);
 
 	/**
 	 * 已经加载的图片
@@ -56,7 +56,7 @@ public abstract class ImageLoader {
 		String path = PathConf.imgPath(clazz, status);
 		File file = new File(path);
 		if (!file.exists()) {
-			log.info("图片文件 {} 不存在，尝试从 classpath 复制……", path);
+			LOG.info("图片文件 {} 不存在，尝试从 classpath 复制……", path);
 			FileUtil.save(path, IOUtil.toBytes(PathConf.imgStream(clazz, status)));
 		}
 		return loadImageFile(file);

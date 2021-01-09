@@ -19,7 +19,7 @@ import cn.milai.ib.util.IOUtil;
  */
 public class DramaStringLoader {
 
-	private static final Logger log = LoggerFactory.getLogger(DramaStringLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DramaStringLoader.class);
 
 	/**
 	 * 中文
@@ -66,7 +66,7 @@ public class DramaStringLoader {
 		for (int i = 0; i < lines.size(); i++) {
 			String[] splits = lines.get(i).split("=", 2);
 			if (splits.length < 2) {
-				log.error("剧本字符串文件定义错误：{}", lines.get(i));
+				LOG.error("剧本字符串文件定义错误：{}", lines.get(i));
 				throw new IBException("剧本字符串文件定义错误：" + lines.get(i));
 			}
 			// 多行字符串
@@ -90,7 +90,7 @@ public class DramaStringLoader {
 
 	private static void addString(Map<String, String> strings, String key, String value) {
 		if (strings.containsKey(key)) {
-			log.warn("重复定义过字符串 {} ，进行覆盖操作：pre = {}, now = {}", key, strings.get(key), value);
+			LOG.warn("重复定义过字符串 {} ，进行覆盖操作：pre = {}, now = {}", key, strings.get(key), value);
 		}
 		strings.put(key, value);
 	}

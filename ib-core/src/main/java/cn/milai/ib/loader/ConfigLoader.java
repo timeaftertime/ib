@@ -24,7 +24,7 @@ import cn.milai.ib.util.PropertiesUtil;
  */
 public abstract class ConfigLoader {
 
-	private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigLoader.class);
 
 	/**
 	 * 已经加载的配置
@@ -46,7 +46,7 @@ public abstract class ConfigLoader {
 		String path = PathConf.confPath(clazz);
 		File file = new File(path);
 		if (!file.exists()) {
-			log.info("配置文件 {} 不存在，尝试从 classpath 复制……", path);
+			LOG.info("配置文件 {} 不存在，尝试从 classpath 复制……", path);
 			FileUtil.save(path, IOUtil.toBytes(PathConf.confStream(clazz)));
 		}
 		try {

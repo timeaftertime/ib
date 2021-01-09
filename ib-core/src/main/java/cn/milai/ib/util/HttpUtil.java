@@ -18,7 +18,7 @@ import okhttp3.Response;
  */
 public class HttpUtil {
 
-	private static final Logger log = LoggerFactory.getLogger(HttpUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
 
 	/**
 	 * 获取文件字节数组
@@ -37,7 +37,7 @@ public class HttpUtil {
 			}
 			return IOUtil.toBytes(response.body().byteStream());
 		} catch (IOException e) {
-			log.error("获取远程文件失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
+			LOG.error("获取远程文件失败：url = {}, error = {}", url, ExceptionUtils.getStackTrace(e));
 			throw new IBIOException(e);
 		}
 	}

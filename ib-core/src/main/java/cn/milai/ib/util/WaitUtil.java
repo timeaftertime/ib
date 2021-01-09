@@ -16,7 +16,7 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
  */
 public class WaitUtil {
 
-	private static final Logger log = LoggerFactory.getLogger(WaitUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WaitUtil.class);
 
 	/**
 	 * 使当前线程等待容器经过指定帧数、被中断或容器被关闭
@@ -38,7 +38,7 @@ public class WaitUtil {
 					// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态
 					c.removeEventListener(listener);
 				} catch (IBContainerException e1) {
-					log.warn("容器已经关闭", e1);
+					LOG.warn("容器已经关闭", e1);
 				}
 				Thread.interrupted();
 				return;
