@@ -1,9 +1,5 @@
 package cn.milai.ib.character;
 
-import cn.milai.ib.character.BotCharacter;
-import cn.milai.ib.character.Bot;
-import cn.milai.ib.character.PlayerCharacter;
-
 /**
  * {@link BotCharacter} 的抽象实现
  * @author milai

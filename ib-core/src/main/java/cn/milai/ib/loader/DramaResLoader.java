@@ -123,8 +123,10 @@ public class DramaResLoader {
 		String zipFile = basePath + "/" + tarGzFileName(dramaCode);
 		if (!new File(zipFile).exists()) {
 			LOG.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
-			FileUtil.save(zipFile,
-				HttpUtil.getFile(PathConf.dramaResRepo(dramaCode)));
+			FileUtil.save(
+				zipFile,
+				HttpUtil.getFile(PathConf.dramaResRepo(dramaCode))
+			);
 		}
 		extract(basePath, tarGzFileName(dramaCode));
 	}
@@ -177,7 +179,7 @@ public class DramaResLoader {
 				LOG.warn("创建" + CHECK_FILE + "失败，文件可能已经存在");
 			}
 		} catch (IOException e) {
-			LOG.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackFrames(e));
+			LOG.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackTrace(e));
 			throw new IBIOException(String.format("解压资源文件未知错误：file = {}", fileName));
 		}
 

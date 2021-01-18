@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 import cn.milai.ib.conf.SysProps;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.ui.Image;
 
 /**
  * Image 默认实现

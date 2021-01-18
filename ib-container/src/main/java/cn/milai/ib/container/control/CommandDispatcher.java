@@ -12,10 +12,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
-import cn.milai.ib.container.control.Command;
-import cn.milai.ib.container.control.CommandType;
-import cn.milai.ib.container.control.Controllable;
-
 /**
  * 指令分发器
  * @author milai

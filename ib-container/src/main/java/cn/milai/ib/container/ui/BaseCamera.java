@@ -2,9 +2,6 @@ package cn.milai.ib.container.ui;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.container.ui.Camera;
-import cn.milai.ib.container.ui.UIContainer;
-
 /**
  * 直接返回原 {@link BufferedImage} 即显示容器全貌的 {@link Camera } 默认实现
  * @author milai

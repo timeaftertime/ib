@@ -1,54 +1,29 @@
 package cn.milai.ib;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
-
-import cn.milai.ib.ex.IBException;
-import cn.milai.ib.util.IOUtil;
 
 /**
  * Spring ApplicationContext 持有者
  * @author milai
  * @date 2020.02.20
  */
-public class IBCore {
-
-	private static final Logger LOG = LoggerFactory.getLogger(IBCore.class);
-
-	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/ib.factories";
+@Component
+public class IBCore implements ApplicationContextAware {
 
 	private static ApplicationContext ctx;
 
-	static {
-		List<String> basePackages = Lists.newArrayList();
-		try {
-			Enumeration<URL> urls = IBCore.class.getClassLoader().getResources(FACTORIES_RESOURCE_LOCATION);
-			while (urls.hasMoreElements()) {
-				basePackages.addAll(IOUtil.toListFilter(urls.nextElement(), line -> !line.startsWith("#")));
-			}
-		} catch (IOException e) {
-			LOG.error("读取 factories 文件失败", e);
-			throw new IBException("读取 factories 文件失败", e);
-		}
-		ctx = new AnnotationConfigApplicationContext(basePackages.toArray(new String[0]));
-	}
-
-	/**
-	 * 主动触发容器初始化
-	 */
-	public static void init() {
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		IBCore.ctx = applicationContext;
 	}
 
 	/**

@@ -3,8 +3,6 @@ package cn.milai.ib.container.ui;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.BaseBounds;
-import cn.milai.ib.container.ui.Camera;
-import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 用于等比例显示局部区域的 {@link Camera} 实现

@@ -1,6 +1,5 @@
 package cn.milai.ib.drama;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -22,7 +21,7 @@ public class ClassNameDramaResolver implements DramaResolver {
 		try {
 			return (Drama) Class.forName(dramaCode).newInstance();
 		} catch (Exception e) {
-			log.warn("解析剧本失败：resolver = {}, error = {}", getClass().getName(), ExceptionUtils.getStackTrace(e));
+			log.info("尝试解析剧本失败：resolver = {}, error = {}", getClass().getName(), e);
 			return null;
 		}
 	}

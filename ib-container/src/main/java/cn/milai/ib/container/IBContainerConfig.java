@@ -13,6 +13,10 @@ import cn.milai.ib.container.ui.BaseAudioCreator;
 import cn.milai.ib.container.ui.BaseImage;
 import cn.milai.ib.container.ui.Image;
 
+/**
+ * Spring Boot Starter 类
+ * @author milai
+ */
 @Configuration
 public class IBContainerConfig {
 
