@@ -37,20 +37,19 @@ public interface IBObject extends Paintable, Bounds {
 	 * @return 一个长度为 4 的 Point 数组，分别表示游戏对象左上、左下、右下、右上点的坐标
 	 */
 	default Point[] getRealBoundPoints() {
-		Point[] points = new Point[] {
+		return new Point[] {
 			new Point(getX(), getY()),
 			new Point(getX(), getY() + getHeight()),
 			new Point(getX() + getWidth(), getY() + getHeight()),
 			new Point(getX() + getWidth(), getY()),
 		};
-		return points;
 	}
 
 	@Override
 	default void paintWith(Graphics g) {
 		g.drawImage(getNowImage(), getX(), getY(), getWidth(), getHeight(), null);
 	}
-	
+
 	/**
 	 * 中心 X 坐标
 	 * @return

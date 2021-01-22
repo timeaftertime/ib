@@ -28,6 +28,9 @@ import cn.milai.ib.geometry.Rect;
 public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	implements UIContainer, ControllableContainer {
 
+	/**
+	 * 每一帧每个 fromId 能被响应的最大指令数
+	 */
 	private static final int MAX_COMMAND_PER_FRAME = 5;
 
 	private int width;
@@ -50,9 +53,9 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	}
 
 	private void init() {
-		characters = Lists.newArrayList();
-		movables = Lists.newArrayList();
-		canCrashs = Lists.newArrayList();
+		characters = Lists.newCopyOnWriteArrayList();
+		movables = Lists.newCopyOnWriteArrayList();
+		canCrashs = Lists.newCopyOnWriteArrayList();
 		commandDispatcher = new CommandDispatcher();
 		addEventListener(new ContainerEventListener() {
 			@Override
@@ -145,8 +148,7 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 			return false;
 		}
 		if ((c1 instanceof Rotatable) || (c2 instanceof Rotatable)) {
-			return new Rect(c1.getRealBoundPoints())
-				.intersects(new Rect(c2.getRealBoundPoints()));
+			return new Rect(c1.getRealBoundPoints()).intersects(new Rect(c2.getRealBoundPoints()));
 		}
 		return c1.getX() + c1.getWidth() >= c2.getX()
 			&& c1.getX() <= c2.getX() + c2.getWidth()
