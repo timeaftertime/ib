@@ -1,0 +1,17 @@
+*.java                  text
+*.conf                  text
+*.xml                   text
+*.factories             text
+*.txt                   text
+*.drama                 text
+*.properties            text
+*.yml                   text
+
+.gitignore              text
+.gitattributes          text
+LICENSE                 text
+README.md               text
+
+*.bat                   binary
+*.sh                    binary
+*.gif                   binary
