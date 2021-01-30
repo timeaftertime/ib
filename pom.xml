@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai</groupId>
 	<artifactId>ib</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -22,8 +22,8 @@
 	</modules>
 
 	<properties>
-		<ib.version>1.0.2</ib.version>
-		<beginning.version>0.0.1</beginning.version>
+		<ib.version>1.0.3-SNAPSHOT</ib.version>
+		<beginning.version>0.0.2-SNAPSHOT</beginning.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 	</properties>
 
