@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.io.InputStreams;
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.loader.ex.DramaStringNotFoundException;
-import cn.milai.ib.util.IOUtil;
 
 /**
  * 国际化剧本字符串加载器
@@ -50,7 +50,7 @@ public class DramaStringLoader {
 			.computeIfAbsent(dramaCode, c -> Maps.newHashMap())
 			.computeIfAbsent(language, lang -> loadStrings(dramaCode, lang))
 			.get(stringCode);
-		if(value == null) {
+		if (value == null) {
 			throw new DramaStringNotFoundException(dramaCode, stringCode);
 		}
 		return value;
@@ -62,7 +62,7 @@ public class DramaStringLoader {
 
 	private static Map<String, String> loadStrings(String dramaCode, String lang) {
 		Map<String, String> strings = Maps.newHashMap();
-		List<String> lines = IOUtil.toList(DramaResLoader.load(dramaCode, getResourceName(lang)));
+		List<String> lines = InputStreams.readLines(DramaResLoader.load(dramaCode, getResourceName(lang)));
 		for (int i = 0; i < lines.size(); i++) {
 			String[] splits = lines.get(i).split("=", 2);
 			if (splits.length < 2) {

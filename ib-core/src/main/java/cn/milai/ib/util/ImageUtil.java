@@ -20,6 +20,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 
+import cn.milai.common.io.InputStreams;
 import cn.milai.ib.ex.IBIOException;
 
 /**
@@ -29,8 +30,7 @@ import cn.milai.ib.ex.IBIOException;
  */
 public abstract class ImageUtil {
 
-	private ImageUtil() {
-	}
+	private ImageUtil() {}
 
 	/**
 	 * 加载 url 指定的图片
@@ -52,17 +52,17 @@ public abstract class ImageUtil {
 	 */
 	public static final BufferedImage[] loadImage(InputStream in) {
 		BufferedImage[] images;
-		byte[] bytes = IOUtil.toBytes(in);
+		byte[] bytes = InputStreams.toBytes(in);
 		try {
 			ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
-			reader.setInput(ImageIO.createImageInputStream(IOUtil.toInputStream(bytes)));
+			reader.setInput(ImageIO.createImageInputStream(InputStreams.toInputStream(bytes)));
 			if (reader.getNumImages(true) > 0) {
 				images = new BufferedImage[reader.getNumImages(true)];
 				for (int i = 0; i < reader.getNumImages(false); i++) {
 					images[i] = reader.read(i);
 				}
 			} else {
-				images = new BufferedImage[] { ImageIO.read(IOUtil.toInputStream(bytes)) };
+				images = new BufferedImage[] { ImageIO.read(InputStreams.toInputStream(bytes)) };
 			}
 		} catch (IOException e) {
 			throw new IBIOException(e);

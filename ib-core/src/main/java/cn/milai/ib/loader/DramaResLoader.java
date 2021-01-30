@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.http.Https;
+import cn.milai.common.io.Files;
+import cn.milai.common.io.InputStreams;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.ex.IBIOException;
 import cn.milai.ib.loader.ex.DramaResourceNotFoundException;
-import cn.milai.ib.util.FileUtil;
-import cn.milai.ib.util.HttpUtil;
-import cn.milai.ib.util.IOUtil;
 
 /**
  * 剧本相关资源加载器
@@ -53,7 +53,7 @@ public class DramaResLoader {
 		if (data == null) {
 			throw new DramaResourceNotFoundException(dramaCode, resource);
 		}
-		return IOUtil.toInputStream(data);
+		return InputStreams.toInputStream(data);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class DramaResLoader {
 	private static Map<String, byte[]> loadFilesFrom(String prefix, File now) {
 		Map<String, byte[]> resources = Maps.newConcurrentMap();
 		if (!now.isDirectory()) {
-			resources.put(prefix + "/" + now.getName(), FileUtil.read(now));
+			resources.put(prefix + "/" + now.getName(), Files.toBytes(now));
 			return resources;
 		}
 		for (File child : now.listFiles()) {
@@ -123,9 +123,9 @@ public class DramaResLoader {
 		String zipFile = basePath + "/" + tarGzFileName(dramaCode);
 		if (!new File(zipFile).exists()) {
 			LOG.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
-			FileUtil.save(
+			Files.saveRethrow(
 				zipFile,
-				HttpUtil.getFile(PathConf.dramaResRepo(dramaCode))
+				Https.getFile(PathConf.dramaResRepo(dramaCode))
 			);
 		}
 		extract(basePath, tarGzFileName(dramaCode));
@@ -172,7 +172,7 @@ public class DramaResLoader {
 				if (entry.isDirectory()) {
 					new File(pathname).mkdir();
 				} else {
-					FileUtil.save(pathname, IOUtil.toBytes(zip.getInputStream(entry)));
+					Files.saveRethrow(pathname, InputStreams.toBytes(zip.getInputStream(entry)));
 				}
 			}
 			if (!new File(basePath + "/" + CHECK_FILE).createNewFile()) {

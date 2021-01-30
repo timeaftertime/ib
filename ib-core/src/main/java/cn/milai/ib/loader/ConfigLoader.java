@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.io.Files;
+import cn.milai.common.io.InputStreams;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.ex.IBIOException;
-import cn.milai.ib.util.FileUtil;
-import cn.milai.ib.util.IOUtil;
 import cn.milai.ib.util.PropertiesUtil;
 
 /**
@@ -47,7 +47,7 @@ public abstract class ConfigLoader {
 		File file = new File(path);
 		if (!file.exists()) {
 			LOG.info("配置文件 {} 不存在，尝试从 classpath 复制……", path);
-			FileUtil.save(path, IOUtil.toBytes(PathConf.confStream(clazz)));
+			Files.saveRethrow(path, InputStreams.toBytes(PathConf.confStream(clazz)));
 		}
 		try {
 			return new FileInputStream(file);

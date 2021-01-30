@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai</groupId>
 	<artifactId>ib</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -16,7 +16,8 @@
 	</modules>
 
 	<properties>
-		<ib.version>1.0.1</ib.version>
+		<ib.version>1.0.2-SNAPSHOT</ib.version>
+		<beginning.version>0.0.1-SNAPSHOT</beginning.version>
 		<spring.version>5.2.3.RELEASE</spring.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 	</properties>
@@ -56,6 +57,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>cn.milai</groupId>
+				<artifactId>beginning-http</artifactId>
+				<version>${beginning.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>cn.milai</groupId>
 				<artifactId>ib-api</artifactId>
@@ -126,11 +132,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring.boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.5.13</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

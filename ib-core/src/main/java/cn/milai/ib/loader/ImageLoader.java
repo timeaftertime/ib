@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.io.Files;
+import cn.milai.common.io.InputStreams;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.container.ui.Image;
-import cn.milai.ib.util.FileUtil;
-import cn.milai.ib.util.IOUtil;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -57,7 +57,7 @@ public abstract class ImageLoader {
 		File file = new File(path);
 		if (!file.exists()) {
 			LOG.info("图片文件 {} 不存在，尝试从 classpath 复制……", path);
-			FileUtil.save(path, IOUtil.toBytes(PathConf.imgStream(clazz, status)));
+			Files.saveRethrow(path, InputStreams.toBytes(PathConf.imgStream(clazz, status)));
 		}
 		return loadImageFile(file);
 	}

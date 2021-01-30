@@ -4,12 +4,16 @@
 	<parent>
 		<groupId>cn.milai</groupId>
 		<artifactId>ib</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-core</artifactId>
 	<description>Infinity Battle 核心代码</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>cn.milai</groupId>
+			<artifactId>beginning-http</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-api</artifactId>
@@ -33,10 +37,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
