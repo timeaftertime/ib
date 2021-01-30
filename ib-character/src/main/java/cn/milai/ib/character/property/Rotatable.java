@@ -16,8 +16,8 @@ import cn.milai.ib.util.ImageUtil;
 public interface Rotatable extends IBCharacter {
 
 	@Override
-	default boolean containsPoint(int x, int y) {
-		return new Rect(getRealBoundPoints()).containsPoint(x, y);
+	default boolean containsPoint(double x, double y) {
+		return new Rect(getRealBoundPoints()).containsPoint(Math.round(x), Math.round(y));
 	}
 
 	@Override
@@ -37,6 +37,6 @@ public interface Rotatable extends IBCharacter {
 		if (!isAlive()) {
 			return;
 		}
-		ImageUtil.paint((Graphics2D) g, getNowImage(), getX(), getY(), getWidth(), getHeight(), getDirection());
+		ImageUtil.paint((Graphics2D) g, getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), getDirection());
 	}
 }

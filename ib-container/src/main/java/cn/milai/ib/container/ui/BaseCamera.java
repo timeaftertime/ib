@@ -15,12 +15,12 @@ public class BaseCamera implements Camera {
 	}
 
 	@Override
-	public int toRealX(UIContainer c, int x) {
-		return (int) (1.0 * c.getWidth() / c.getUIWidth() * x);
+	public double toRealX(UIContainer c, double x) {
+		return 1.0 * c.getWidth() / c.getUIWidth() * x;
 	}
 
 	@Override
-	public int toRealY(UIContainer c, int y) {
-		return (int) (1.0 * c.getHeight() / c.getUIHeight() * y);
+	public double toRealY(UIContainer c, double y) {
+		return 1.0 * c.getHeight() / c.getUIHeight() * y;
 	}
 }

@@ -24,7 +24,7 @@ public interface Camera {
 	 * @param x
 	 * @return
 	 */
-	int toRealX(UIContainer c, int x);
+	double toRealX(UIContainer c, double x);
 
 	/**
 	 * 获取指定显示 y 在容器 c 中对应的实际 y 坐标
@@ -32,5 +32,5 @@ public interface Camera {
 	 * @param y
 	 * @return
 	 */
-	int toRealY(UIContainer c, int y);
+	double toRealY(UIContainer c, double y);
 }

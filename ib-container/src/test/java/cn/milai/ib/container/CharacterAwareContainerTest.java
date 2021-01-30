@@ -13,8 +13,8 @@ public class CharacterAwareContainerTest {
 
 	private static class RotatableCharacterStub extends AbstractIBCharacter implements Rotatable {
 
-		private int width;
-		private int height;
+		private double width;
+		private double height;
 
 		public RotatableCharacterStub(int x, int y, int width, int height, double direction, UIContainer container) {
 			super(x, y, container);
@@ -24,27 +24,24 @@ public class CharacterAwareContainerTest {
 		}
 
 		@Override
-		public int getWidth() {
-			return width;
-		}
+		public double getW() { return width; }
 
 		@Override
-		public int getHeight() {
-			return height;
-		}
+		public double getH() { return height; }
 
 		@Override
-		public double getCenterX() {
-			return getX() + width / 2.0;
-		}
+		public double getCenterX() { return getIntX() + width / 2.0; }
 
 		@Override
-		public double getCenterY() {
-			return getY() + height / 2.0;
-		}
+		public double getCenterY() { return getIntY() + height / 2.0; }
 
 		@Override
 		protected int intProp(String key) {
+			return 1;
+		}
+		
+		@Override
+		protected double doubleProp(String key) {
 			return 1;
 		}
 	}

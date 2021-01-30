@@ -28,8 +28,6 @@ public abstract class AbstractComponent extends AbstractIBObject implements IBCo
 	}
 
 	@Override
-	public UIContainer getContainer() {
-		return (UIContainer) super.getContainer();
-	}
+	public UIContainer getContainer() { return (UIContainer) super.getContainer(); }
 
 }

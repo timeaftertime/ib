@@ -15,15 +15,13 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 
 	private long endFrame;
 
-	public AbstractExplosion(int x, int y, UIContainer container) {
+	public AbstractExplosion(double x, double y, UIContainer container) {
 		super(x, y, container);
 		this.endFrame = getContainer().getFrame() + LAST_FRAMES;
 	}
 
 	@Override
-	public boolean isAlive() {
-		return getContainer().getFrame() <= endFrame;
-	}
+	public boolean isAlive() { return getContainer().getFrame() <= endFrame; }
 
 	@Override
 	public void toDead() {
@@ -31,8 +29,6 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 	}
 
 	@Override
-	public int getZ() {
-		return Paintable.DEFAULT_Z + 1;
-	}
+	public int getZ() { return Paintable.DEFAULT_Z + 1; }
 
 }

@@ -22,7 +22,7 @@ public class MouseEventDispatcher extends MouseAdapter {
 		this.c = container;
 	}
 
-	private Controllable getTarget(int x, int y) {
+	private Controllable getTarget(double x, double y) {
 		for (Controllable controllable : Lists.newArrayList(c.getControllables())) {
 			if (controllable.containsPoint(x, y)) {
 				return controllable;

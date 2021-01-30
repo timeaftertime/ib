@@ -39,8 +39,8 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 		container.addEventListener(this);
 		pass = new PassCaculator(inFrame, keepFrame, outFrame);
 		img = ImageUtil.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
-		setWidth(img.getWidth());
-		setHeight(img.getHeight());
+		setW(img.getWidth());
+		setH(img.getHeight());
 	}
 
 	/**
@@ -57,11 +57,11 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	}
 
 	@Override
-	protected int intProp(String key) {
+	protected double doubleProp(String key) {
 		if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 			return 0;
 		}
-		return super.intProp(key);
+		return super.doubleProp(key);
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class Rect {
 	 * @param y
 	 * @return
 	 */
-	public boolean containsPoint(int x, int y) {
+	public boolean containsPoint(long x, long y) {
 		Point p = new Point(x, y);
 		Vector ap = new Vector(points[0], p);
 		Vector ab = new Vector(points[0], points[1]);

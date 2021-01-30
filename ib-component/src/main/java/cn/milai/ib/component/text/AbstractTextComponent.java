@@ -28,13 +28,9 @@ public abstract class AbstractTextComponent extends AbstractComponent implements
 	}
 
 	@Override
-	public Font getTextFont() {
-		return font;
-	}
+	public Font getTextFont() { return font; }
 
 	@Override
-	public Color getTextColor() {
-		return color;
-	}
+	public Color getTextColor() { return color; }
 
 }

@@ -99,7 +99,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 	 * 创建下一张只包含文字说话者头像的图片
 	 */
 	private BufferedImage createNextBaseImage() {
-		BufferedImage img = ImageUtil.newImage(getWidth(), getHeight());
+		BufferedImage img = ImageUtil.newImage(getIntW(), getIntH());
 		Graphics g = initNewGraphics(img);
 		render(g);
 		g.dispose();
@@ -123,7 +123,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 	 */
 	private void render(Graphics g) {
 		// 边框
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+		g.drawRect(0, 0, getIntW() - 1, getIntH() - 1);
 		// 说话者头像
 		if (speakerImg != null) {
 			g.drawRect(0, 0, speakerWidth, speakerHeight);
@@ -137,7 +137,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		int textHeight = ImageTextUtil.getTextHeight(g);
 		int nowBottom = verMargin + textHeight + speakerHeight;
 		// 至少绘制一行
-		int limitBottom = Integer.max(getHeight() - verMargin, nowBottom + textHeight);
+		int limitBottom = Integer.max(getIntH() - verMargin, nowBottom + textHeight);
 		while (readIndex < text.length() && (nowBottom + textHeight <= limitBottom)) {
 			String nextLine = nextLine(g);
 			g.drawString(nextLine, horMargin, nowBottom);
@@ -150,7 +150,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		int widthLimit = Integer.max(
 			// 有待绘字符才调用该方法，所以这里直接 charAt() 不会有问题
 			ImageTextUtil.getTextWidth(SAMPLE_STR + text.charAt(readIndex), g),
-			getWidth() - 2 * horMargin
+			getIntW() - 2 * horMargin
 		);
 		StringBuilder sb = new StringBuilder();
 		for (; readIndex < text.length(); readIndex++) {
@@ -175,10 +175,10 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		if (readIndex < text.length()) {
 			g.drawImage(
 				waitNextPage.getNowImage(),
-				getWidth() - waitNextPage.getWidth(),
-				getHeight() - waitNextPage.getHeight(),
-				waitNextPage.getWidth(),
-				waitNextPage.getHeight(),
+				getIntW() - waitNextPage.getIntW(),
+				getIntH() - waitNextPage.getIntH(),
+				waitNextPage.getIntW(),
+				waitNextPage.getIntH(),
 				null
 			);
 		}

@@ -28,14 +28,14 @@ public class BloodStrip extends LifeIndicator {
 
 	@Override
 	public BufferedImage createImage() {
-		int portraitSize = getHeight();
+		int portraitSize = getIntH();
 		int bloodY = portraitSize / 2;
-		BufferedImage image = ImageUtil.newImage(getWidth(), getHeight());
+		BufferedImage image = ImageUtil.newImage(getIntW(), getIntH());
 		Graphics2D g2d = image.createGraphics();
 		// 血条背景
 		g2d.setColor(BACK_COLOR);
 		g2d.setStroke(new BasicStroke(STRIP_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		g2d.drawLine(portraitSize, bloodY, getWidth(), bloodY);
+		g2d.drawLine(portraitSize, bloodY, getIntW(), bloodY);
 		// 生命值
 		int nowLife = getTarget().getLife();
 		int initLife = getInitLife();
@@ -46,8 +46,8 @@ public class BloodStrip extends LifeIndicator {
 		}
 		g2d.drawLine(portraitSize, bloodY,
 			Integer.min(
-				getWidth(),
-				portraitSize + (int) (1.0 * (getWidth() - portraitSize) * nowLife / initLife)),
+				getIntW(),
+				portraitSize + (int) (1.0 * (getIntW() - portraitSize) * nowLife / initLife)),
 			bloodY);
 		// 角色图片
 		g2d.setClip(new Ellipse2D.Double(0, 0, portraitSize, portraitSize));

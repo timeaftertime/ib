@@ -36,7 +36,6 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
-					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<!-- 资源文件拷贝插件 -->

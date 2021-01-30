@@ -28,8 +28,8 @@ public interface IBObject extends Paintable, Bounds {
 	 * @param y
 	 * @return
 	 */
-	default boolean containsPoint(int x, int y) {
-		return x >= getX() && x <= getX() + getWidth() && y >= getY() && y <= getY() + getHeight();
+	default boolean containsPoint(double x, double y) {
+		return x >= getX() && x <= getX() + getW() && y >= getY() && y <= getY() + getH();
 	}
 
 	/**
@@ -38,29 +38,17 @@ public interface IBObject extends Paintable, Bounds {
 	 */
 	default Point[] getRealBoundPoints() {
 		return new Point[] {
-			new Point(getX(), getY()),
-			new Point(getX(), getY() + getHeight()),
-			new Point(getX() + getWidth(), getY() + getHeight()),
-			new Point(getX() + getWidth(), getY()),
+			new Point(getIntX(), getIntY()),
+			new Point(getIntX(), getIntY() + getIntH()),
+			new Point(getIntX() + getIntW(), getIntY() + getIntH()),
+			new Point(getIntX() + getIntW(), getIntY()),
 		};
 	}
 
 	@Override
 	default void paintWith(Graphics g) {
-		g.drawImage(getNowImage(), getX(), getY(), getWidth(), getHeight(), null);
+		g.drawImage(getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), null);
 	}
-
-	/**
-	 * 中心 X 坐标
-	 * @return
-	 */
-	double getCenterX();
-
-	/**
-	 * 中心 Y 坐标
-	 * @return
-	 */
-	double getCenterY();
 
 	/**
 	 * 获取所属容器

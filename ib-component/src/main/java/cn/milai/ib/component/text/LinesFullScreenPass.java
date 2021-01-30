@@ -62,8 +62,8 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	}
 
 	private BufferedImage createImage() {
-		BufferedImage backgroud = ImageUtil.newImage(Color.BLACK, getWidth(), getHeight());
-		BufferedImage textLayer = ImageUtil.newImage(getWidth(), getHeight());
+		BufferedImage backgroud = ImageUtil.newImage(Color.BLACK, getIntW(), getIntH());
+		BufferedImage textLayer = ImageUtil.newImage(getIntW(), getIntH());
 		Graphics g = ImageUtil.createGraphics(textLayer,
 			1.0f * pass.getTransparency() / PassCaculator.MAX_TRANSPARENCY);
 		g.setFont(getTextFont());
@@ -73,7 +73,7 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 		int nowY = (getContainer().getHeight() / 2) - (totalHeight / 2);
 		for (String line : lines) {
 			int lineWidth = ImageTextUtil.getTextWidth(line, g);
-			g.drawString(line, (getWidth() / 2) - (lineWidth / 2), nowY);
+			g.drawString(line, (getIntW() / 2) - (lineWidth / 2), nowY);
 			nowY += lineHeight + lineInterval;
 		}
 		backgroud.getGraphics().drawImage(textLayer, 0, 0, null);
@@ -81,12 +81,12 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	}
 
 	@Override
-	public int getWidth() {
+	public int getIntW() {
 		return getContainer().getWidth();
 	}
 
 	@Override
-	public int getHeight() {
+	public int getIntH() {
 		return getContainer().getHeight();
 	}
 

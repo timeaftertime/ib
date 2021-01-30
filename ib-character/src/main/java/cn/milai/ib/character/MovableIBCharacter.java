@@ -9,12 +9,12 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public abstract class MovableIBCharacter extends AbstractIBCharacter implements Movable {
 
-	private int ratedSpeedX;
-	private int ratedSpeedY;
-	private int speedX;
-	private int speedY;
+	private double ratedSpeedX;
+	private double ratedSpeedY;
+	private double speedX;
+	private double speedY;
 
-	public MovableIBCharacter(int x, int y, UIContainer container) {
+	public MovableIBCharacter(double x, double y, UIContainer container) {
 		super(x, y, container);
 		ratedSpeedX = initRatedSpeedX();
 		ratedSpeedY = initRatedSpeedY();
@@ -22,33 +22,25 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 		speedY = 0;
 	}
 
-	protected int initRatedSpeedX() {
-		return intProp(Movable.P_RATED_SPEED_X);
+	protected double initRatedSpeedX() {
+		return doubleProp(Movable.P_RATED_SPEED_X);
 	}
 
-	protected int initRatedSpeedY() {
-		return intProp(Movable.P_RATED_SPEED_Y);
-	}
-
-	@Override
-	public int getRatedSpeedX() {
-		return ratedSpeedX;
+	protected double initRatedSpeedY() {
+		return doubleProp(Movable.P_RATED_SPEED_Y);
 	}
 
 	@Override
-	public void setRatedSpeedX(int ratedSpeedX) {
-		this.ratedSpeedX = ratedSpeedX;
-	}
+	public double getRatedSpeedX() { return ratedSpeedX; }
 
 	@Override
-	public int getRatedSpeedY() {
-		return ratedSpeedY;
-	}
+	public void setRatedSpeedX(double ratedSpeedX) { this.ratedSpeedX = ratedSpeedX; }
 
 	@Override
-	public void setRatedSpeedY(int ratedSpeedY) {
-		this.ratedSpeedY = ratedSpeedY;
-	}
+	public double getRatedSpeedY() { return ratedSpeedY; }
+
+	@Override
+	public void setRatedSpeedY(double ratedSpeedY) { this.ratedSpeedY = ratedSpeedY; }
 
 	@Override
 	public final void move() {
@@ -59,41 +51,27 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 	}
 
 	@Override
-	public int getSpeedX() {
-		return speedX;
-	}
+	public double getSpeedX() { return speedX; }
 
 	@Override
-	public void setSpeedX(int speedX) {
-		this.speedX = speedX;
-	}
+	public void setSpeedX(double speedX) { this.speedX = speedX; }
 
 	@Override
-	public int getSpeedY() {
-		return speedY;
-	}
+	public double getSpeedY() { return speedY; }
 
 	@Override
-	public void setSpeedY(int speedY) {
-		this.speedY = speedY;
-	}
+	public void setSpeedY(double speedY) { this.speedY = speedY; }
 
 	@Override
-	public UIContainer getContainer() {
-		return (UIContainer) super.getContainer();
-	}
+	public UIContainer getContainer() { return (UIContainer) super.getContainer(); }
 
 	/**
 	 * 实际移动坐标前调用
 	 */
-	protected void beforeMove() {
-
-	}
+	protected void beforeMove() {}
 
 	/**
 	 * 实际移动坐标后调用
 	 */
-	protected void afterMove() {
-
-	}
+	protected void afterMove() {}
 }

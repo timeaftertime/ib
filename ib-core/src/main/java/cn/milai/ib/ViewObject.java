@@ -41,7 +41,7 @@ public class ViewObject extends AbstractIBObject {
 	 * @param speed
 	 */
 	public void moveX(int speed) {
-		setX(speed + getX());
+		setX(speed + getIntX());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ViewObject extends AbstractIBObject {
 	 * @param speed
 	 */
 	public void moveY(int speed) {
-		setY(getY() + speed);
+		setY(getIntY() + speed);
 	}
 
 	/**
@@ -88,10 +88,10 @@ public class ViewObject extends AbstractIBObject {
 	@Override
 	public void paintWith(Graphics g) {
 		if (Math.abs(this.rotateRadian) < MIN_RADIAN) {
-			g.drawImage(getNowImage(), getX(), getY(), getWidth(), getHeight(), null);
+			g.drawImage(getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), null);
 			return;
 		}
-		ImageUtil.paint((Graphics2D) g, getNowImage(), getX(), getY(), getWidth(), getHeight(), rotateRadian);
+		ImageUtil.paint((Graphics2D) g, getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), rotateRadian);
 	}
 
 	@Override

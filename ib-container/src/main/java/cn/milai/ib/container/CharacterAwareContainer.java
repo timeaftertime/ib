@@ -150,10 +150,10 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 		if ((c1 instanceof Rotatable) || (c2 instanceof Rotatable)) {
 			return new Rect(c1.getRealBoundPoints()).intersects(new Rect(c2.getRealBoundPoints()));
 		}
-		return c1.getX() + c1.getWidth() >= c2.getX()
-			&& c1.getX() <= c2.getX() + c2.getWidth()
-			&& c1.getY() + c1.getHeight() >= c2.getY()
-			&& c1.getY() <= c2.getY() + c2.getHeight();
+		return c1.getIntX() + c1.getIntW() >= c2.getIntX()
+			&& c1.getIntX() <= c2.getIntX() + c2.getIntW()
+			&& c1.getIntY() + c1.getIntH() >= c2.getIntY()
+			&& c1.getIntY() <= c2.getIntY() + c2.getIntH();
 	}
 
 	private void showExplosions(IBObject obj) {

@@ -7,65 +7,70 @@ package cn.milai.ib;
  */
 public class BaseBounds implements Bounds {
 
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private double x;
+	private double y;
+	private double w;
+	private double h;
 
 	/**
-	 * 构造以 (0, 0) 为左上角，宽度和高度为 0 的 {@link Bounds }
+	 * 构造一个所有参数为 0 的 {@link BaseBounds}
 	 */
-	public BaseBounds() {
-		this(0, 0, 0, 0);
-	}
+	public BaseBounds() {}
 
 	/**
-	 * 构造以 (x, y) 为左上角，宽度和高度为指定值的 {@link Bounds }
+	 * 以指定 X坐标、Y坐标、宽度、高度构造一个 {@link BaseBounds}
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
 	 */
-	public BaseBounds(int x, int y, int width, int height) {
+	public BaseBounds(double x, double y, double w, double h) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.w = w;
+		this.h = h;
 	}
 
 	@Override
-	public int getX() {
-		return x;
-	}
+	public double getX() { return x; }
 
 	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
+	public int getIntX() { return (int) Math.round(getX()); }
 
 	@Override
-	public int getY() {
-		return this.y;
-	}
+	public void setX(double x) { this.x = x; }
 
 	@Override
-	public void setY(int y) {
-		this.y = y;
-	}
+	public double getY() { return y; }
 
 	@Override
-	public int getHeight() {
-		return height;
-	}
+	public int getIntY() { return (int) Math.round(getY()); }
 
 	@Override
-	public void setHeight(int height) {
-		this.height = height;
-	}
+	public void setY(double y) { this.y = y; }
 
 	@Override
-	public int getWidth() {
-		return this.width;
-	}
+	public double getW() { return w; }
 
 	@Override
-	public void setWidth(int width) {
-		this.width = width;
-	}
+	public int getIntW() { return (int) Math.round(getW()); }
+
+	@Override
+	public void setW(double w) { this.w = w; }
+
+	@Override
+	public double getH() { return h; }
+
+	@Override
+	public int getIntH() { return (int) Math.round(getH()); }
+
+	@Override
+	public void setH(double h) { this.h = h; }
+
+	@Override
+	public double getCenterX() { return getX() + getW() / 2; }
+
+	@Override
+	public double getCenterY() { return getY() + getH() / 2; }
+
 }

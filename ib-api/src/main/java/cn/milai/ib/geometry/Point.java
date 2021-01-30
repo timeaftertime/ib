@@ -7,21 +7,17 @@ package cn.milai.ib.geometry;
  */
 public class Point {
 
-	private int x;
-	private int y;
+	private long x;
+	private long y;
 
-	public Point(int x, int y) {
+	public Point(long x, long y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public int getX() {
-		return x;
-	}
+	public long getX() { return x; }
 
-	public int getY() {
-		return y;
-	}
+	public long getY() { return y; }
 
 	/**
 	 * 获取当前点绕点 p 旋转指定弧度后的点
@@ -43,9 +39,6 @@ public class Point {
 	public Point rotate(double x, double y, double radian) {
 		double x2 = x + (this.x - x) * Math.cos(radian) + (this.y - y) * -Math.sin(radian);
 		double y2 = y + (this.y - y) * Math.cos(radian) + (x - this.x) * -Math.sin(radian);
-		// 四舍五入
-		x2 = x2 > 0 ? x2 + 0.5 : x2 - 0.5;
-		y2 = y2 > 0 ? y2 + 0.5 : y2 - 0.5;
-		return new Point((int) x2, (int) y2);
+		return new Point(Math.round(x2), Math.round(y2));
 	}
 }

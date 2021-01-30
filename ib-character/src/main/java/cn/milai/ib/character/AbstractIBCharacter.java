@@ -15,24 +15,20 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 
 	private IBCharacter lastAttacker;
 
-	public AbstractIBCharacter(int x, int y, UIContainer container, Class<? extends IBCharacter> configClass) {
+	public AbstractIBCharacter(double x, double y, UIContainer container, Class<? extends IBCharacter> configClass) {
 		super(x, y, container, configClass);
 		this.life = getInitLife();
 	}
 
 	@Override
-	public int getInitLife() {
-		return intProp(P_LIFE);
-	}
+	public int getInitLife() { return intProp(P_LIFE); }
 
-	public AbstractIBCharacter(int x, int y, UIContainer container) {
+	public AbstractIBCharacter(double x, double y, UIContainer container) {
 		this(x, y, container, null);
 	}
 
 	@Override
-	public boolean isAlive() {
-		return life > 0;
-	}
+	public boolean isAlive() { return life > 0; }
 
 	@Override
 	public synchronized void toDead() {
@@ -70,19 +66,13 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	}
 
 	@Override
-	public IBCharacter getLastAttacker() {
-		return lastAttacker;
-	}
+	public IBCharacter getLastAttacker() { return lastAttacker; }
 
 	@Override
-	public int getLife() {
-		return life;
-	}
+	public int getLife() { return life; }
 
 	@Override
-	public double getDirection() {
-		return direction;
-	}
+	public double getDirection() { return direction; }
 
 	@Override
 	public void setDirection(double direction) {
@@ -100,9 +90,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	}
 
 	@Override
-	public UIContainer getContainer() {
-		return (UIContainer) super.getContainer();
-	}
+	public UIContainer getContainer() { return (UIContainer) super.getContainer(); }
 
 	@Override
 	public void ensureInContainer() {

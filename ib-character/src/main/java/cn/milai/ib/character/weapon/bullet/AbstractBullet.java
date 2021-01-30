@@ -15,18 +15,16 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 
 	private IBCharacter owner;
 
-	protected AbstractBullet(int centerX, int centerY, IBCharacter owner) {
+	protected AbstractBullet(double centerX, double centerY, IBCharacter owner) {
 		super(centerX, centerY, owner.getContainer());
 		this.owner = owner;
 		setDirection(owner.getDirection());
-		setSpeedX((int) (getSpeed() * Math.sin(owner.getDirection())));
-		setSpeedY((int) (-getSpeed() * Math.cos(owner.getDirection())));
+		setSpeedX(getSpeed() * Math.sin(owner.getDirection()));
+		setSpeedY(-getSpeed() * Math.cos(owner.getDirection()));
 	}
 
 	@Override
-	public IBCharacter getOwner() {
-		return owner;
-	}
+	public IBCharacter getOwner() { return owner; }
 
 	@Override
 	protected void afterMove() {
@@ -42,22 +40,22 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 		if (this.getY() > getContainer().getHeight()) {
 			return true;
 		}
-		if (this.getX() + getWidth() < 0) {
+		if (this.getX() + getW() < 0) {
 			return true;
 		}
-		if (this.getY() + this.getHeight() < 0) {
+		if (this.getY() + this.getH() < 0) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	protected int initRatedSpeedX() {
+	protected double initRatedSpeedX() {
 		return getSpeed();
 	}
 
 	@Override
-	protected int initRatedSpeedY() {
+	protected double initRatedSpeedY() {
 		return getSpeed();
 	}
 
@@ -65,14 +63,10 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	 * 获取子弹前进速度
 	 * @return
 	 */
-	protected int getSpeed() {
-		return intProp(P_SPEED);
-	}
+	protected double getSpeed() { return doubleProp(P_SPEED); }
 
 	@Override
-	public int getCamp() {
-		return owner.getCamp();
-	}
+	public int getCamp() { return owner.getCamp(); }
 
 	@Override
 	public void onCrash(CanCrash crashed) {
@@ -83,12 +77,8 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	}
 
 	@Override
-	public int getDamage() {
-		return intProp(P_POWER);
-	}
+	public int getDamage() { return intProp(P_POWER); }
 
 	@Override
-	public int getZ() {
-		return Paintable.DEFAULT_Z - 1;
-	}
+	public int getZ() { return Paintable.DEFAULT_Z - 1; }
 }

@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
 
 /**
- * 所有游戏对象的抽象基类
+ * 游戏对象的抽象基类
  * @author milai
  */
 public abstract class AbstractIBObject extends BaseBounds implements IBObject {
@@ -28,35 +28,31 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @param container
 	 * @param configClass
 	 */
-	public AbstractIBObject(int x, int y, Container container, Class<? extends IBObject> configClass) {
+	public AbstractIBObject(double x, double y, Container container, Class<? extends IBObject> configClass) {
 		// 最先设置 container 以便构造时使用
 		this.container = container;
 		this.configClass = configClass == null ? getClass() : configClass;
-		int width = getInitWidth();
-		int height = getInitHeight();
+		double width = getInitWidth();
+		double height = getInitHeight();
 		x = x - width / 2;
 		y = y - height / 2;
 		setX(x);
 		setY(y);
-		setWidth(width);
-		setHeight(height);
+		setW(width);
+		setH(height);
 	}
 
 	/**
 	 * 获取初始宽度
 	 * @return
 	 */
-	protected int getInitWidth() {
-		return intProp(P_WIDTH);
-	}
+	protected double getInitWidth() { return doubleProp(P_WIDTH); }
 
 	/**
 	 * 获取初始高度
 	 * @return
 	 */
-	protected int getInitHeight() {
-		return intProp(P_HEIGHT);
-	}
+	protected double getInitHeight() { return doubleProp(P_HEIGHT); }
 
 	/**
 	 * 创建一个中心位置在 (x, y) 且以 Container 为容器，使用 getClass() 的配置文件的游戏对象 
@@ -64,7 +60,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @param y
 	 * @param container
 	 */
-	public AbstractIBObject(int x, int y, Container container) {
+	public AbstractIBObject(double x, double y, Container container) {
 		this(x, y, container, null);
 	}
 
@@ -103,32 +99,20 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	}
 
 	@Override
-	public double getCenterX() {
-		return getX() + getWidth() / 2.0;
-	}
+	public Container getContainer() { return container; }
 
-	@Override
-	public double getCenterY() {
-		return getY() + getHeight() / 2.0;
-	}
-
-	@Override
-	public Container getContainer() {
-		return container;
-	}
-
-	protected void ensureIn(int minX, int maxX, int minY, int maxY) {
+	protected void ensureIn(double minX, double maxX, double minY, double maxY) {
 		if (getX() < minX) {
 			setX(minX);
 		}
 		if (getY() < minY) {
 			setY(minY);
 		}
-		if (getX() + getWidth() > maxX) {
-			setX(maxX - getWidth());
+		if (getX() + getW() > maxX) {
+			setX(maxX - getW());
 		}
-		if (getY() + getHeight() > maxY) {
-			setY(maxY - getHeight());
+		if (getY() + getH() > maxY) {
+			setY(maxY - getH());
 		}
 	}
 
@@ -137,9 +121,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @return
 	 */
 	@Override
-	public BufferedImage getNowImage() {
-		return getImage().next();
-	}
+	public BufferedImage getNowImage() { return getImage().next(); }
 
 	/**
 	 * 获取游戏对象的图片对象
@@ -163,9 +145,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * 设置当前游戏对象的图片
 	 * @param img
 	 */
-	public void setImage(Image img) {
-		this.img = img;
-	}
+	public void setImage(Image img) { this.img = img; }
 
 	/**
 	 * 设置对象的状态
@@ -183,8 +163,6 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * 获取当前对象状态
 	 * @return
 	 */
-	protected String getStatus() {
-		return status;
-	}
+	protected String getStatus() { return status; }
 
 }

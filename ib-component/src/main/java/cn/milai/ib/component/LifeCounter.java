@@ -23,11 +23,11 @@ public class LifeCounter extends LifeIndicator {
 
 	@Override
 	protected BufferedImage createImage() {
-		BufferedImage image = ImageUtil.newImage(getWidth(), getHeight());
+		BufferedImage image = ImageUtil.newImage(getIntW(), getIntH());
 		Graphics2D g2d = image.createGraphics();
 		g2d.setColor(LIFE_COLOR);
-		g2d.drawImage(getTargetImage(), 0, 0, getWidth() / 2, getHeight(), null);
-		g2d.drawString("" + getTarget().getLife(), getWidth() * 3 / 4, getHeight() / 2);
+		g2d.drawImage(getTargetImage(), 0, 0, getIntW() / 4, getIntH(), null);
+		g2d.drawString("" + getTarget().getLife(), getIntW() / 3, getIntH() / 2);
 		return image;
 	}
 

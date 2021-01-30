@@ -28,50 +28,50 @@ public interface Movable extends IBCharacter {
 	 * 获取 X 方向的速度
 	 * @return
 	 */
-	int getSpeedX();
+	double getSpeedX();
 
 	/**
 	 * 设置 X 方向速度
 	 * @param speedX
 	 */
-	void setSpeedX(int speedX);
+	void setSpeedX(double speedX);
 
 	/**
 	 * 获取 Y 方向速度
 	 * @return
 	 */
-	int getSpeedY();
+	double getSpeedY();
 
 	/**
 	 * 设置 Y 方向速度
 	 * @param speedY
 	 */
-	void setSpeedY(int speedY);
+	void setSpeedY(double speedY);
 
 	/**
 	 * 获取 X 方向额定速度
 	 * 即 X 方向可达的最大速度
 	 * @return
 	 */
-	int getRatedSpeedX();
+	double getRatedSpeedX();
 
 	/**
 	 * 设置 X 方向额定速度
 	 * @param ratedSpeedX
 	 */
-	void setRatedSpeedX(int ratedSpeedX);
+	void setRatedSpeedX(double ratedSpeedX);
 
 	/**
 	 * 获取 Y 方向额定速度
 	 * 即 Y 方向可达的最大速度
 	 * @return
 	 */
-	int getRatedSpeedY();
+	double getRatedSpeedY();
 
 	/**
 	 * 设置 Y 方向额定速度
 	 * @param ratedSpeedY
 	 */
-	void setRatedSpeedY(int ratedSpeedY);
+	void setRatedSpeedY(double ratedSpeedY);
 
 }

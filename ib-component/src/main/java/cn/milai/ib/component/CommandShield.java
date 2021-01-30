@@ -23,14 +23,10 @@ public class CommandShield extends AbstractIBObject implements Controllable {
 	}
 
 	@Override
-	public int getWidth() {
-		return 0;
-	}
+	public double getW() { return 0; }
 
 	@Override
-	public int getHeight() {
-		return 0;
-	}
+	public double getH() { return 0; }
 
 	@Override
 	public boolean exec(CommandType command) {
@@ -38,11 +34,10 @@ public class CommandShield extends AbstractIBObject implements Controllable {
 	}
 
 	@Override
-	protected int intProp(String key) {
+	protected double doubleProp(String key) {
 		return 0;
 	}
 
 	@Override
-	public void paintWith(Graphics g) {
-	}
+	public void paintWith(Graphics g) {}
 }

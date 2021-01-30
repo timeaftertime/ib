@@ -25,23 +25,20 @@ public class RotatableTest {
 		}
 
 		@Override
-		public int getWidth() {
-			return width;
-		}
+		public int getIntW() { return width; }
 
 		@Override
-		public int getHeight() {
-			return height;
-		}
+		public int getIntH() { return height; }
 
 		@Override
-		public double getCenterX() {
-			return getX() + width / 2.0;
-		}
+		public double getCenterX() { return getIntX() + width / 2.0; }
 
 		@Override
-		public double getCenterY() {
-			return super.getY() + height / 2.0;
+		public double getCenterY() { return super.getIntY() + height / 2.0; }
+
+		@Override
+		protected double doubleProp(String key) {
+			return 1;
 		}
 
 		@Override
@@ -60,8 +57,10 @@ public class RotatableTest {
 		Point p2 = new Point(0, 15).rotate(rotatable1.getCenterX(), rotatable1.getCenterY(), rotatable1.getDirection());
 		assertEquals(2, p2.getX());
 		assertEquals(16, p2.getY());
-		Point p3 = new Point(10, 15).rotate(rotatable1.getCenterX(), rotatable1.getCenterY(), rotatable1
-			.getDirection());
+		Point p3 = new Point(10, 15).rotate(
+			rotatable1.getCenterX(), rotatable1.getCenterY(), rotatable1
+				.getDirection()
+		);
 		assertEquals(12, p3.getX());
 		assertEquals(13, p3.getY());
 		Point p4 = new Point(5, 7).rotate(rotatable1.getCenterX(), rotatable1.getCenterY(), rotatable1.getDirection());

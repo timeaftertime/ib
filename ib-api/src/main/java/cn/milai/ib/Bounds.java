@@ -11,48 +11,84 @@ public interface Bounds {
 	 * 获取 X 坐标
 	 * @return
 	 */
-	int getX();
+	double getX();
+
+	/**
+	 * 获取 X 坐标四舍五入后的 int 值
+	 * @return
+	 */
+	int getIntX();
 
 	/**
 	 * 设置 X 坐标
 	 * @param x
 	 */
-	void setX(int x);
+	void setX(double x);
 
 	/**
 	 * 获取 Y 坐标
 	 * @return
 	 */
-	int getY();
+	double getY();
+
+	/**
+	 * 获取 Y 坐标四舍五入后的 int 值
+	 * @return
+	 */
+	int getIntY();
 
 	/**
 	 * 设置 Y 坐标
 	 * @param y
 	 */
-	void setY(int y);
+	void setY(double y);
 
 	/**
-	 * 宽度
+	 * 获取宽度
 	 * @return
 	 */
-	int getWidth();
+	double getW();
+
+	/**
+	 * 获取宽度四舍五入后的 int 值
+	 * @return
+	 */
+	int getIntW();
 
 	/**
 	 * 设置宽度
-	 * @param width
+	 * @param w
 	 */
-	void setWidth(int width);
+	void setW(double w);
 
 	/**
 	 * 获取高度
 	 * @return
 	 */
-	int getHeight();
+	double getH();
+
+	/**
+	 * 获取高度四舍五入后的 int 值
+	 * @return
+	 */
+	int getIntH();
 
 	/**
 	 * 设置高度
-	 * @param height
+	 * @param h
 	 */
-	void setHeight(int height);
+	void setH(double h);
+
+	/**
+	 * 中心 X 坐标
+	 * @return
+	 */
+	double getCenterX();
+
+	/**
+	 * 中心 Y 坐标
+	 * @return
+	 */
+	double getCenterY();
 
 }

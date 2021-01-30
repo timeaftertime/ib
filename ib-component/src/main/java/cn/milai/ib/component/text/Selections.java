@@ -40,14 +40,16 @@ public class Selections extends AbstractTextComponent {
 	public Selections(int x, int y, Container container, String question, String... selections) {
 		super(x, y, container);
 		this.selections = selections;
-		questionImg = ImageUtil.newImage(getBGColor(), getWidth(), getHeight());
+		questionImg = ImageUtil.newImage(getBGColor(), getIntW(), getIntH());
 		Graphics g = questionImg.createGraphics();
 		g.setFont(getTextFont());
-		ImageTextUtil.resizeToFit(question, g, getWidth(), getHeight());
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-		g.drawString(question,
-			(getWidth() - ImageTextUtil.getTextWidth(question, g)) / 2,
-			(getHeight() + ImageTextUtil.getTextHeight(g)) / 2);
+		ImageTextUtil.resizeToFit(question, g, getIntW(), getIntH());
+		g.drawRect(0, 0, getIntW() - 1, getIntH() - 1);
+		g.drawString(
+			question,
+			(getIntW() - ImageTextUtil.getTextWidth(question, g)) / 2,
+			(getIntH() + ImageTextUtil.getTextHeight(g)) / 2
+		);
 		buttons = new SelectionButton[selections.length];
 		for (int i = 0; i < buttons.length; i++) {
 			int index = i;
@@ -62,25 +64,19 @@ public class Selections extends AbstractTextComponent {
 	 * 获取默认背景颜色
 	 * @return
 	 */
-	private Color getBGColor() {
-		return parseColor(intProp(P_SELECTION_BG_COLOR));
-	}
+	private Color getBGColor() { return parseColor(intProp(P_SELECTION_BG_COLOR)); }
 
 	/**
 	 * 获取默认内边距
 	 * @return
 	 */
-	private int getPadding() {
-		return intProp(P_SELECTION_TEXT_PADDING);
-	}
+	private int getPadding() { return intProp(P_SELECTION_TEXT_PADDING); }
 
 	/**
 	 * 获取默认外边距
 	 * @return
 	 */
-	private int getMargin() {
-		return intProp(P_SELECTION_TEXT_MARGIN);
-	}
+	private int getMargin() { return intProp(P_SELECTION_TEXT_MARGIN); }
 
 	/**
 	 * 将当前组件从容器中移除
@@ -94,13 +90,9 @@ public class Selections extends AbstractTextComponent {
 	}
 
 	@Override
-	public BufferedImage getNowImage() {
-		return questionImg;
-	}
+	public BufferedImage getNowImage() { return questionImg; }
 
-	public int getValue() {
-		return value;
-	}
+	public int getValue() { return value; }
 
 	private class SelectionButton extends Button {
 
@@ -108,7 +100,7 @@ public class Selections extends AbstractTextComponent {
 
 		public SelectionButton(int index, Runnable afterpressed) {
 			super(0, 0, Selections.this.getContainer(), afterpressed);
-			int width = Selections.this.getWidth();
+			int width = Selections.this.getIntW();
 			int height = ImageTextUtil.getTextHeight(getTextFont()) + 2 * getPadding();
 			img = ImageUtil.newImage(getBGColor(), width, height);
 			Graphics g = img.createGraphics();
@@ -116,35 +108,31 @@ public class Selections extends AbstractTextComponent {
 			g.setFont(getTextFont());
 			String text = selections[index];
 			ImageTextUtil.resizeToFit(text, g, width - 2 * getPadding(), height - 2 * getPadding());
-			g.drawString(text,
+			g.drawString(
+				text,
 				(width - ImageTextUtil.getTextWidth(text, g)) / 2,
-				(height + ImageTextUtil.getTextHeight(g)) / 2);
+				(height + ImageTextUtil.getTextHeight(g)) / 2
+			);
 			setX(Selections.this.getX());
-			int topY = Selections.this.getY() + Selections.this.getHeight();
-			int preSelections = index * (2 * getMargin() + getHeight());
+			double topY = Selections.this.getY() + Selections.this.getIntH();
+			int preSelections = index * (2 * getMargin() + getIntH());
 			setY(topY + preSelections + getMargin());
 		}
 
-		protected int intProp(String key) {
+		protected double doubleProp(String key) {
 			if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 				return 0;
 			}
-			return super.intProp(key);
+			return super.doubleProp(key);
 		}
 
-		public BufferedImage getNowImage() {
-			return img;
-		};
+		public BufferedImage getNowImage() { return img; };
 
 		@Override
-		public int getWidth() {
-			return Selections.this.getWidth();
-		}
+		public double getW() { return Selections.this.getW(); }
 
 		@Override
-		public int getHeight() {
-			return img.getHeight();
-		}
+		public double getH() { return img.getHeight(); }
 
 	}
 

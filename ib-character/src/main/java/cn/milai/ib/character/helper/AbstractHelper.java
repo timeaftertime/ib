@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public abstract class AbstractHelper extends MovableIBCharacter implements Helper {
 
-	public AbstractHelper(int x, int y, UIContainer container) {
+	public AbstractHelper(double x, double y, UIContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());
@@ -18,7 +18,7 @@ public abstract class AbstractHelper extends MovableIBCharacter implements Helpe
 
 	@Override
 	protected void afterMove() {
-		if (getY() > getContainer().getHeight()) {
+		if (getIntY() > getContainer().getHeight()) {
 			getContainer().removeObject(this);
 		}
 	}
