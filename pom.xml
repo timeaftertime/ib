@@ -3,8 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai</groupId>
 	<artifactId>ib</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.4.RELEASE</version>
+	</parent>
 
 	<modules>
 		<module>ib-api</module>
@@ -16,9 +22,8 @@
 	</modules>
 
 	<properties>
-		<ib.version>1.0.2-SNAPSHOT</ib.version>
-		<beginning.version>0.0.1-SNAPSHOT</beginning.version>
-		<spring.version>5.2.3.RELEASE</spring.version>
+		<ib.version>1.0.2</ib.version>
+		<beginning.version>0.0.1</beginning.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 	</properties>
 
@@ -27,7 +32,6 @@
 			<!-- 编译插件 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -38,7 +42,6 @@
 			<!-- 资源文件拷贝插件 -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -47,7 +50,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.7</version>
 				<configuration>
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
@@ -117,21 +119,6 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>3.9</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-autoconfigure</artifactId>
-				<version>${spring.boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter</artifactId>
-				<version>${spring.boot.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
