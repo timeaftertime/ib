@@ -31,8 +31,8 @@ public abstract class AbstractDrama implements Drama {
 
 	@Override
 	public final void run(DramaContainer container) {
-		container.newSize(initWidth(), initHeight());
-		container.newUISize(initWidth(), initHeight());
+		container.newSize(initW(), initH());
+		container.newUISize(initW(), initH());
 		doRun(container);
 		container.restoreSize();
 		container.restoreUISize();
@@ -48,12 +48,12 @@ public abstract class AbstractDrama implements Drama {
 	 * 获取剧本执行时容器的初始宽度
 	 * @return
 	 */
-	protected abstract int initWidth();
+	protected abstract int initW();
 
 	/**
 	 * 获取剧本执行时容器的初始长度
 	 * @return
 	 */
-	protected abstract int initHeight();
+	protected abstract int initH();
 
 }

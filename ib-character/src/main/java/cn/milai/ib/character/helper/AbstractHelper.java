@@ -18,14 +18,12 @@ public abstract class AbstractHelper extends MovableIBCharacter implements Helpe
 
 	@Override
 	protected void afterMove() {
-		if (getIntY() > getContainer().getHeight()) {
+		if (getIntY() > getContainer().getH()) {
 			getContainer().removeObject(this);
 		}
 	}
 
 	@Override
-	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
-		return;
-	}
+	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException { return; }
 
 }

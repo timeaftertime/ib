@@ -11,8 +11,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
@@ -20,8 +18,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 
+import cn.milai.common.ex.unchecked.RethrownException;
+import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.io.InputStreams;
-import cn.milai.ib.ex.IBIOException;
 
 /**
  * 图片相关工具类
@@ -36,24 +35,22 @@ public abstract class ImageUtil {
 	 * 加载 url 指定的图片
 	 * @param url
 	 * @return
+	 * @throws RethrownException
 	 */
-	public static final BufferedImage[] loadImage(URL url) {
-		try {
-			return loadImage(url.openStream());
-		} catch (IOException e) {
-			throw new IBIOException(e);
-		}
+	public static BufferedImage[] loadImage(URL url) throws RethrownException {
+		return Uncheckeds.rethrow(() -> loadImage(url.openStream()));
 	}
 
 	/**
 	 * 从输入流读取图片
 	 * @param in
 	 * @return
+	 * @throws RethrownException
 	 */
-	public static final BufferedImage[] loadImage(InputStream in) {
-		BufferedImage[] images;
-		byte[] bytes = InputStreams.toBytes(in);
-		try {
+	public static BufferedImage[] loadImage(InputStream in) throws RethrownException {
+		return Uncheckeds.rethrow(() -> {
+			BufferedImage[] images;
+			byte[] bytes = InputStreams.toBytes(in);
 			ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 			reader.setInput(ImageIO.createImageInputStream(InputStreams.toInputStream(bytes)));
 			if (reader.getNumImages(true) > 0) {
@@ -64,18 +61,12 @@ public abstract class ImageUtil {
 			} else {
 				images = new BufferedImage[] { ImageIO.read(InputStreams.toInputStream(bytes)) };
 			}
-		} catch (IOException e) {
-			throw new IBIOException(e);
-		}
-		return images;
+			return images;
+		});
 	}
 
-	public static final BufferedImage[] loadImage(File file) {
-		try {
-			return loadImage(new FileInputStream(file));
-		} catch (FileNotFoundException e) {
-			throw new IBIOException(e);
-		}
+	public static final BufferedImage[] loadImage(File file) throws RethrownException {
+		return Uncheckeds.rethrow(() -> loadImage(new FileInputStream(file)));
 	}
 
 	/**

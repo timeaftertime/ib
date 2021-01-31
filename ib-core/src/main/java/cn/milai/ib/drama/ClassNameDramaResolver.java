@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import cn.milai.common.ex.unchecked.Uncheckeds;
+
 /**
  * 使用全类名反射获取剧本的剧本解析器
  * @author milai
@@ -14,16 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClassNameDramaResolver implements DramaResolver {
 
-	private Logger log = LoggerFactory.getLogger(ClassNameDramaResolver.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ClassNameDramaResolver.class);
 
 	@Override
 	public Drama resolve(String dramaCode) {
-		try {
-			return (Drama) Class.forName(dramaCode).newInstance();
-		} catch (Exception e) {
-			log.info("尝试解析剧本失败：resolver = {}, error = {}", getClass().getName(), e);
-			return null;
-		}
+		return Uncheckeds.logWith(
+			LOG, () -> (Drama) Class.forName(dramaCode).newInstance(), "解析剧本失败：resolver = %s", getClass().getName()
+		);
 	}
 
 }

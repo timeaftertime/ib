@@ -22,9 +22,7 @@ public class BaseAudio implements Audio {
 	}
 
 	@Override
-	public String getCode() {
-		return code;
-	}
+	public String getCode() { return code; }
 
 	@Override
 	public boolean play() {
@@ -37,8 +35,6 @@ public class BaseAudio implements Audio {
 	}
 
 	@Override
-	public boolean isComplete() {
-		return player.isComplete();
-	}
+	public boolean isComplete() { return player.isComplete(); }
 
 }

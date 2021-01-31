@@ -32,8 +32,8 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 		// 最先设置 container 以便构造时使用
 		this.container = container;
 		this.configClass = configClass == null ? getClass() : configClass;
-		double width = getInitWidth();
-		double height = getInitHeight();
+		double width = getInitW();
+		double height = getInitH();
 		x = x - width / 2;
 		y = y - height / 2;
 		setX(x);
@@ -46,13 +46,13 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * 获取初始宽度
 	 * @return
 	 */
-	protected double getInitWidth() { return doubleProp(P_WIDTH); }
+	protected double getInitW() { return doubleProp(P_WIDTH); }
 
 	/**
 	 * 获取初始高度
 	 * @return
 	 */
-	protected double getInitHeight() { return doubleProp(P_HEIGHT); }
+	protected double getInitH() { return doubleProp(P_HEIGHT); }
 
 	/**
 	 * 创建一个中心位置在 (x, y) 且以 Container 为容器，使用 getClass() 的配置文件的游戏对象 

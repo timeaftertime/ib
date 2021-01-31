@@ -70,7 +70,7 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 		g.setColor(getTextColor());
 		int lineHeight = ImageTextUtil.getTextHeight(g);
 		int totalHeight = lines.size() * lineHeight;
-		int nowY = (getContainer().getHeight() / 2) - (totalHeight / 2);
+		int nowY = (getContainer().getH() / 2) - (totalHeight / 2);
 		for (String line : lines) {
 			int lineWidth = ImageTextUtil.getTextWidth(line, g);
 			g.drawString(line, (getIntW() / 2) - (lineWidth / 2), nowY);
@@ -82,12 +82,12 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 
 	@Override
 	public int getIntW() {
-		return getContainer().getWidth();
+		return getContainer().getW();
 	}
 
 	@Override
 	public int getIntH() {
-		return getContainer().getHeight();
+		return getContainer().getH();
 	}
 
 	@Override

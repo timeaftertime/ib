@@ -166,14 +166,10 @@ public abstract class AbstractLifecycleContainer extends AbstractContainer imple
 	}
 
 	@Override
-	public boolean isClosed() {
-		return closed;
-	}
+	public boolean isClosed() { return closed; }
 
 	@Override
-	public boolean isPaused() {
-		return refresher.isPaused();
-	}
+	public boolean isPaused() { return refresher.isPaused(); }
 
 	/**
 	 * 同步获取 ContainerLifecycleListener 列表的副本
@@ -195,9 +191,7 @@ public abstract class AbstractLifecycleContainer extends AbstractContainer imple
 	 * 是否为 pined 状态
 	 * @return
 	 */
-	protected boolean isPined() {
-		return pined;
-	}
+	protected boolean isPined() { return pined; }
 
 	/**
 	 * 进行实际的刷新动作

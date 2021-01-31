@@ -74,10 +74,13 @@ public class StartForm extends JFrame {
 		JLabel label = new JLabel(gameMode.name());
 		label.setFont(LABEL_FONT);
 		while (getFontMetrics(label.getFont()).stringWidth(label.getText()) > getWidth()) {
-			label.setFont(new Font(
-				label.getFont().getFontName(),
-				label.getFont().getStyle(),
-				label.getFont().getSize() * 2 / 3));
+			label.setFont(
+				new Font(
+					label.getFont().getFontName(),
+					label.getFont().getStyle(),
+					label.getFont().getSize() * 2 / 3
+				)
+			);
 		}
 		c.gridx = 0;
 		c.gridy = index;

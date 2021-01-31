@@ -83,12 +83,12 @@ public interface Bounds {
 	 * 中心 X 坐标
 	 * @return
 	 */
-	double getCenterX();
+	double centerX();
 
 	/**
 	 * 中心 Y 坐标
 	 * @return
 	 */
-	double getCenterY();
+	double centerY();
 
 }

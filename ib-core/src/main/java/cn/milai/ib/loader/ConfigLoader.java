@@ -2,7 +2,6 @@ package cn.milai.ib.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -11,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.conf.PathConf;
-import cn.milai.ib.ex.IBIOException;
 import cn.milai.ib.util.PropertiesUtil;
 
 /**
@@ -49,11 +48,7 @@ public abstract class ConfigLoader {
 			LOG.info("配置文件 {} 不存在，尝试从 classpath 复制……", path);
 			Files.saveRethrow(path, InputStreams.toBytes(PathConf.confStream(clazz)));
 		}
-		try {
-			return new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-			throw new IBIOException("读取配置文件未知错误", e);
-		}
+		return Uncheckeds.rethrow(() -> new FileInputStream(file));
 	}
 
 }

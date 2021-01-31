@@ -39,14 +39,10 @@ public abstract class AbstractContainer implements Container {
 	}
 
 	@Override
-	public long getFrame() {
-		return frame;
-	}
+	public long getFrame() { return frame; }
 
 	@Override
-	public int getEpoch() {
-		return epoch;
-	}
+	public int getEpoch() { return epoch; }
 
 	@Override
 	public final void reset() {

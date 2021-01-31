@@ -68,9 +68,7 @@ public class ContainerRefreshThread extends Thread {
 	 * 是否处于 pause 状态
 	 * @return
 	 */
-	boolean isPaused() {
-		return paused;
-	}
+	boolean isPaused() { return paused; }
 
 	/**
 	 * 切换（开启/取消）暂停状态

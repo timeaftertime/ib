@@ -24,7 +24,7 @@ public interface Rotatable extends IBCharacter {
 	default Point[] getRealBoundPoints() {
 		Point[] points = IBCharacter.super.getRealBoundPoints();
 		for (int i = 0; i < points.length; i++) {
-			points[i] = points[i].rotate(getCenterX(), getCenterY(), getDirection());
+			points[i] = points[i].rotate(centerX(), centerY(), getDirection());
 		}
 		return points;
 	}

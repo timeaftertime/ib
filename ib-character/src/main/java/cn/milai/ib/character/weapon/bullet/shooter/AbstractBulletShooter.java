@@ -42,9 +42,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	/**
 	 * 创建一个无发射间隔、最大发射子弹数不限的子弹发射器
 	 */
-	public AbstractBulletShooter(IBCharacter owner) {
-		this(owner, 0, Integer.MAX_VALUE);
-	}
+	public AbstractBulletShooter(IBCharacter owner) { this(owner, 0, Integer.MAX_VALUE); }
 
 	public AbstractBulletShooter(IBCharacter owner, long shootInterval, int maxBulletNum) {
 		this.owner = owner;
@@ -53,14 +51,10 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	}
 
 	@Override
-	public IBCharacter getOwner() {
-		return owner;
-	}
+	public IBCharacter getOwner() { return owner; }
 
 	@Override
-	public void setOwner(IBCharacter owner) {
-		this.owner = owner;
-	}
+	public void setOwner(IBCharacter owner) { this.owner = owner; }
 
 	@Override
 	public boolean canShoot() {
@@ -92,33 +86,25 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	 * 获取发射子弹的最小间隔帧数
 	 * @return
 	 */
-	public long getShootInterval() {
-		return shootInterval;
-	}
+	public long getShootInterval() { return shootInterval; }
 
 	/**
 	 * 设置发射子弹的最小间隔帧数
 	 * @param shootInterval
 	 */
-	public void setShootInterval(long shootInterval) {
-		this.shootInterval = shootInterval;
-	}
+	public void setShootInterval(long shootInterval) { this.shootInterval = shootInterval; }
 
 	/**
 	 * 获取可以同时存活的子弹数
 	 * @return
 	 */
-	public int getMaxBulletNum() {
-		return maxBulletNum;
-	}
+	public int getMaxBulletNum() { return maxBulletNum; }
 
 	/**
 	 * 设置可以同时存活的子弹数
 	 * @param maxBulletNum
 	 */
-	public void setMaxBulletNum(int maxBulletNum) {
-		this.maxBulletNum = maxBulletNum;
-	}
+	public void setMaxBulletNum(int maxBulletNum) { this.maxBulletNum = maxBulletNum; }
 
 	/**
 	 * 实际产生要发射的子弹

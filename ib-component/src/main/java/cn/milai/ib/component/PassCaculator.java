@@ -40,17 +40,13 @@ public class PassCaculator {
 		transparency = 0;
 	}
 
-	public boolean isEnd() {
-		return frame >= exitFrame;
-	}
+	public boolean isEnd() { return frame >= exitFrame; }
 
 	/**
 	 * 是否处于透明度不变的阶段
 	 * @return
 	 */
-	public boolean isKeep() {
-		return frame >= inEndFrame && frame < outStartFrame;
-	}
+	public boolean isKeep() { return frame >= inEndFrame && frame < outStartFrame; }
 
 	/**
 	 * 计算下一透明度
@@ -74,8 +70,6 @@ public class PassCaculator {
 	 * 获取此时的透明度 (0完全透明 ~ 255完全不透明)
 	 * @return
 	 */
-	public int getTransparency() {
-		return transparency;
-	}
+	public int getTransparency() { return transparency; }
 
 }

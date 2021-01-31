@@ -22,7 +22,5 @@ public class AudioLoader {
 		return getAudioCreator().newAudio(audioCode, DramaResLoader.load(dramaCode, resource));
 	}
 
-	private static AudioCreator getAudioCreator() {
-		return IBCore.getBean(AudioCreator.class);
-	}
+	private static AudioCreator getAudioCreator() { return IBCore.getBean(AudioCreator.class); }
 }

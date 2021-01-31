@@ -24,7 +24,7 @@ public abstract class AbstractDramaContainer extends CharacterAwareContainer imp
 
 	@Override
 	public void newSize(int width, int height) {
-		sizes.add(new Size(getWidth(), getHeight()));
+		sizes.add(new Size(getW(), getH()));
 		resize(width, height);
 	}
 
@@ -39,7 +39,7 @@ public abstract class AbstractDramaContainer extends CharacterAwareContainer imp
 
 	@Override
 	public void newUISize(int width, int height) {
-		uiSizes.add(new Size(getUIWidth(), getUIHeight()));
+		uiSizes.add(new Size(getUIW(), getUIH()));
 		resizeUI(width, height);
 	}
 

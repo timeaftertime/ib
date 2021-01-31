@@ -96,8 +96,12 @@ public class PathConf {
 		String path = "/" + IMG_PREFIX + toPath(clazz) + statusAppend + IMG_SUFFIX;
 		InputStream in = clazz.getResourceAsStream(path);
 		if (in == null) {
-			log.error(String.format("获取图片输入流失败：class = %s, status = %s, file = classpath:%s",
-				clazz.getName(), status, path));
+			log.error(
+				String.format(
+					"获取图片输入流失败：class = %s, status = %s, file = classpath:%s",
+					clazz.getName(), status, path
+				)
+			);
 			throw new ImageNotFoundException(clazz, status);
 		}
 		return in;
@@ -113,8 +117,12 @@ public class PathConf {
 		String path = "/" + CONF_PREFIX + toPath(clazz) + CONF_SUFFIX;
 		InputStream in = clazz.getResourceAsStream(path);
 		if (in == null) {
-			log.error(String.format("获取配置文件输入流失败：class = %s, file = classpath:%s",
-				clazz.getName(), path));
+			log.error(
+				String.format(
+					"获取配置文件输入流失败：class = %s, file = classpath:%s",
+					clazz.getName(), path
+				)
+			);
 			throw new ConfigNotFoundException(clazz);
 		}
 		return in;

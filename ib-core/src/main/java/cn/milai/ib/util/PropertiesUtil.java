@@ -1,14 +1,14 @@
 package cn.milai.ib.util;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Properties;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
+
+import cn.milai.common.base.Charsets;
+import cn.milai.common.ex.unchecked.Uncheckeds;
 
 /**
  * Properties 相关工具类
@@ -16,8 +16,6 @@ import com.google.common.collect.Maps;
  * @author milai
  */
 public class PropertiesUtil {
-
-	private static final Charset CHARSET = Charsets.UTF_8;
 
 	/**
 	 * 以 UTF-8 编码加载并返回 in 指向的配置文件
@@ -27,11 +25,7 @@ public class PropertiesUtil {
 	 */
 	public static Map<String, String> load(InputStream in) {
 		Properties prop = new Properties();
-		try {
-			prop.load(new InputStreamReader(in, CHARSET));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Uncheckeds.log(() -> prop.load(new InputStreamReader(in, Charsets.UTF_8)));
 		Map<String, String> map = Maps.newHashMap();
 		for (String key : prop.stringPropertyNames()) {
 			map.put(key, prop.getProperty(key));

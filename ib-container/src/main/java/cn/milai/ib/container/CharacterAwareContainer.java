@@ -33,8 +33,8 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	 */
 	private static final int MAX_COMMAND_PER_FRAME = 5;
 
-	private int width;
-	private int height;
+	private int w;
+	private int h;
 
 	private List<IBCharacter> characters;
 	private List<Movable> movables;
@@ -42,9 +42,7 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 
 	private CommandDispatcher commandDispatcher;
 
-	public CharacterAwareContainer() {
-		init();
-	}
+	public CharacterAwareContainer() { init(); }
 
 	@Override
 	protected final void resetLifecycleContainer() {
@@ -167,19 +165,15 @@ public abstract class CharacterAwareContainer extends AbstractLifecycleContainer
 	}
 
 	@Override
-	public int getWidth() {
-		return width;
-	}
+	public int getW() { return w; }
 
 	@Override
-	public int getHeight() {
-		return height;
-	}
+	public int getH() { return h; }
 
 	@Override
 	public void resize(int width, int height) {
-		this.width = width;
-		this.height = height;
+		this.w = width;
+		this.h = height;
 	}
 
 	@Override

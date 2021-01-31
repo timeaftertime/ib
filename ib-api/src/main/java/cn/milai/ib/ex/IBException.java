@@ -12,8 +12,7 @@ public class IBException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IBException() {
-	}
+	public IBException() {}
 
 	public IBException(String message) {
 		super(message);
@@ -26,8 +25,8 @@ public class IBException extends RuntimeException {
 	public IBException(Throwable e) {
 		super(e);
 	}
-	
-	public IBException(String format, Object...args) {
+
+	public IBException(String format, Object... args) {
 		this(String.format(format, args));
 	}
 

@@ -20,7 +20,7 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	private static final int PADDING = 5;
 
 	private PassCaculator pass;
-	BufferedImage img;
+	private BufferedImage img;
 
 	/**
 	 * 创建一个多行文本

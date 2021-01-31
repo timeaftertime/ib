@@ -45,6 +45,12 @@ public class DramaStringLoader {
 		language = lang;
 	}
 
+	/**
+	 * 获取指定剧本指定 code 字符串在当前语言设置下的字符串
+	 * @param dramaCode
+	 * @param stringCode
+	 * @return
+	 */
 	public static String get(String dramaCode, String stringCode) {
 		String value = STRINGS
 			.computeIfAbsent(dramaCode, c -> Maps.newHashMap())
@@ -66,8 +72,9 @@ public class DramaStringLoader {
 		for (int i = 0; i < lines.size(); i++) {
 			String[] splits = lines.get(i).split("=", 2);
 			if (splits.length < 2) {
-				LOG.error("剧本字符串文件定义错误：{}", lines.get(i));
-				throw new IBException("剧本字符串文件定义错误：" + lines.get(i));
+				String msg = String.format("剧本字符串文件定义错误：%s", lines.get(i));
+				LOG.error(msg);
+				throw new IBException(msg);
 			}
 			// 多行字符串
 			String key = splits[0];

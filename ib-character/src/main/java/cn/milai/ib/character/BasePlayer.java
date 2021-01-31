@@ -14,83 +14,51 @@ public class BasePlayer implements Player {
 	private boolean a = false;
 
 	@Override
-	public void setUp() {
-		up = true;
-	}
+	public void setUp() { up = true; }
 
 	@Override
-	public void clearUp() {
-		up = false;
-	}
+	public void clearUp() { up = false; }
 
 	@Override
-	public void setDown() {
-		down = true;
-	}
+	public void setDown() { down = true; }
 
 	@Override
-	public void clearDown() {
-		down = false;
-	}
+	public void clearDown() { down = false; }
 
 	@Override
-	public void setLeft() {
-		left = true;
-	}
+	public void setLeft() { left = true; }
 
 	@Override
-	public void clearLeft() {
-		left = false;
-	}
+	public void clearLeft() { left = false; }
 
 	@Override
-	public void setRight() {
-		right = true;
-	}
+	public void setRight() { right = true; }
 
 	@Override
-	public void clearRight() {
-		right = false;
-	}
+	public void clearRight() { right = false; }
 
 	@Override
-	public void setA() {
-		a = true;
-	}
+	public void setA() { a = true; }
 
 	@Override
-	public void clearA() {
-		a = false;
-	}
+	public void clearA() { a = false; }
 
 	@Override
-	public boolean isUp() {
-		return up;
-	}
+	public boolean isUp() { return up; }
 
 	@Override
-	public boolean isDown() {
-		return down;
-	}
+	public boolean isDown() { return down; }
 
 	@Override
-	public boolean isLeft() {
-		return left;
-	}
+	public boolean isLeft() { return left; }
 
 	@Override
-	public boolean isRight() {
-		return right;
-	}
+	public boolean isRight() { return right; }
 
 	@Override
-	public boolean isA() {
-		return a;
-	}
+	public boolean isA() { return a; }
 
 	@Override
-	public void pushStatus(boolean createNew) {
-		throw new UnsupportedOperationException();
-	}
+	public void pushStatus(boolean createNew) { throw new UnsupportedOperationException(); }
 
 }

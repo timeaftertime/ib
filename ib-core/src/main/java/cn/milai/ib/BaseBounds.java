@@ -68,9 +68,9 @@ public class BaseBounds implements Bounds {
 	public void setH(double h) { this.h = h; }
 
 	@Override
-	public double getCenterX() { return getX() + getW() / 2; }
+	public double centerX() { return getX() + getW() / 2; }
 
 	@Override
-	public double getCenterY() { return getY() + getH() / 2; }
+	public double centerY() { return getY() + getH() / 2; }
 
 }

@@ -30,20 +30,16 @@ public class CharacterAwareContainerTest {
 		public double getH() { return height; }
 
 		@Override
-		public double getCenterX() { return getIntX() + width / 2.0; }
+		public double centerX() { return getIntX() + width / 2.0; }
 
 		@Override
-		public double getCenterY() { return getIntY() + height / 2.0; }
+		public double centerY() { return getIntY() + height / 2.0; }
 
 		@Override
-		protected int intProp(String key) {
-			return 1;
-		}
-		
+		protected int intProp(String key) { return 1; }
+
 		@Override
-		protected double doubleProp(String key) {
-			return 1;
-		}
+		protected double doubleProp(String key) { return 1; }
 	}
 
 	private Rotatable c1 = new RotatableCharacterStub(0, 0, 10, 15, Math.atan(-3.0 / 11), null);

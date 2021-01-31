@@ -11,6 +11,7 @@ import javazoom.jl.decoder.JavaLayerException;
  */
 public class BaseAudioCreator implements AudioCreator {
 
+	@Override
 	public Audio newAudio(String code, InputStream in) {
 		try {
 			return new BaseAudio(code, in);

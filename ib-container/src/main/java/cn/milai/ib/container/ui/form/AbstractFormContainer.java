@@ -98,17 +98,17 @@ public abstract class AbstractFormContainer extends AbstractDramaContainer imple
 	}
 
 	@Override
-	public int getUIWidth() {
+	public int getUIW() {
 		return form.getWidth();
 	}
 
 	@Override
-	public int getUIHeight() {
+	public int getUIH() {
 		return form.getHeight();
 	}
 
 	@Override
-	public int getUICHeight() {
+	public int getUICH() {
 		return form.getContentPane().getHeight();
 	}
 
@@ -154,8 +154,8 @@ public abstract class AbstractFormContainer extends AbstractDramaContainer imple
 	 */
 	protected void paintContainer(Graphics g) {
 		JFrame form = getForm();
-		int width = getWidth();
-		int height = getHeight();
+		int width = getW();
+		int height = getH();
 		BufferedImage image = (BufferedImage) form.createImage(width, height);
 		Graphics buffer = image.getGraphics();
 		if (bgImage != null) {
@@ -167,7 +167,7 @@ public abstract class AbstractFormContainer extends AbstractDramaContainer imple
 			o.paintWith(buffer);
 		}
 		buffer.dispose();
-		g.drawImage(camera.reflect(image), 0, 0, getUIWidth(), getUIHeight(), null);
+		g.drawImage(camera.reflect(image), 0, 0, getUIW(), getUIH(), null);
 	}
 
 	@Override

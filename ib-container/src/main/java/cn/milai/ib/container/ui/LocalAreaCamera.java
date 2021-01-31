@@ -46,12 +46,12 @@ public class LocalAreaCamera extends BaseBounds implements Camera {
 
 	@Override
 	public double toRealX(UIContainer c, double x) {
-		return getIntX() + x * (1.0 * getIntW() / c.getUIWidth());
+		return getIntX() + x * (1.0 * getIntW() / c.getUIW());
 	}
 
 	@Override
 	public double toRealY(UIContainer c, double y) {
-		return getIntY() + y * (1.0 * getIntH() / c.getUIHeight());
+		return getIntY() + y * (1.0 * getIntH() / c.getUIH());
 	}
 
 }

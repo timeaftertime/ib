@@ -24,9 +24,7 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 	public boolean isAlive() { return getContainer().getFrame() <= endFrame; }
 
 	@Override
-	public void toDead() {
-		endFrame = getContainer().getFrame();
-	}
+	public void toDead() { endFrame = getContainer().getFrame(); }
 
 	@Override
 	public int getZ() { return Paintable.DEFAULT_Z + 1; }

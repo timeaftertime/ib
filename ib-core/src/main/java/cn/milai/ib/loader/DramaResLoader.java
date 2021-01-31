@@ -1,19 +1,18 @@
 package cn.milai.ib.loader;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.http.Https;
 import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
@@ -121,12 +120,9 @@ public class DramaResLoader {
 		}
 		LOG.info("剧本 {} 的资源文件不存在，尝试从本地压缩文件获取……", dramaCode);
 		String zipFile = basePath + "/" + tarGzFileName(dramaCode);
-		if (!new File(zipFile).exists()) {
+		if (!Files.exists(zipFile)) {
 			LOG.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
-			Files.saveRethrow(
-				zipFile,
-				Https.getFile(PathConf.dramaResRepo(dramaCode))
-			);
+			Files.saveRethrow(zipFile, Https.getFile(PathConf.dramaResRepo(dramaCode)));
 		}
 		extract(basePath, tarGzFileName(dramaCode));
 	}
@@ -139,8 +135,9 @@ public class DramaResLoader {
 		File directory = new File(basePath);
 		if (!directory.isDirectory()) {
 			if (!directory.mkdirs()) {
-				LOG.error("创建剧本文件夹失败，path = {}", basePath);
-				throw new IBIOException(String.format("创建剧本资源文件夹失败，path = {}", basePath));
+				String msg = String.format("创建剧本资源文件夹失败，path = %s", basePath);
+				LOG.error(msg);
+				throw new IBIOException(msg);
 			}
 		}
 	}
@@ -162,27 +159,25 @@ public class DramaResLoader {
 	 */
 	private static final void extract(String basePath, String fileName) {
 		File file = new File(basePath + "/" + fileName);
-		LOG.info("开始解压剧本资源文件, file = {}", file);
-		try (ZipFile zip = new ZipFile(file)) {
-			Enumeration<? extends ZipEntry> entries = zip.entries();
-			while (entries.hasMoreElements()) {
-				ZipEntry entry = entries.nextElement();
-				LOG.debug("正在解压剧本资源文件, file = {}, entry = {}", file, entry.getName());
-				String pathname = basePath + "/" + entry.getName();
-				if (entry.isDirectory()) {
-					new File(pathname).mkdir();
-				} else {
-					Files.saveRethrow(pathname, InputStreams.toBytes(zip.getInputStream(entry)));
+		LOG.info("开始解压剧本资源文件: file = {}", file);
+		Uncheckeds.rethrow(() -> {
+			try (ZipFile zip = new ZipFile(file)) {
+				Enumeration<? extends ZipEntry> entries = zip.entries();
+				while (entries.hasMoreElements()) {
+					ZipEntry entry = entries.nextElement();
+					LOG.debug("解压剧本资源文件: file = {}, entry = {}", file, entry.getName());
+					String pathname = basePath + "/" + entry.getName();
+					if (entry.isDirectory()) {
+						Files.mkdir(pathname);
+					} else {
+						Files.saveRethrow(pathname, InputStreams.toBytes(zip.getInputStream(entry)));
+					}
+				}
+				if (!new File(basePath + "/" + CHECK_FILE).createNewFile()) {
+					LOG.warn("创建 {} 失败，文件可能已经存在", CHECK_FILE);
 				}
 			}
-			if (!new File(basePath + "/" + CHECK_FILE).createNewFile()) {
-				LOG.warn("创建" + CHECK_FILE + "失败，文件可能已经存在");
-			}
-		} catch (IOException e) {
-			LOG.error("解压资源文件未知错误, file = {}, error = {}", fileName, ExceptionUtils.getStackTrace(e));
-			throw new IBIOException(String.format("解压资源文件未知错误：file = {}", fileName));
-		}
-
-		LOG.info("解压剧本资源文件完成, file = {}", file);
+		}, "解压资源文件未知错误: file = %s", fileName);
+		LOG.info("解压剧本资源文件完成: file = {}", file);
 	}
 }

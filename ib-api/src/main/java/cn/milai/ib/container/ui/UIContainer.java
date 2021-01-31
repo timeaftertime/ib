@@ -27,31 +27,31 @@ public interface UIContainer extends Container {
 	 * 获取容器实际宽度
 	 * @return
 	 */
-	int getWidth();
+	int getW();
 
 	/**
 	 * 获取容器实际长度
 	 * @return
 	 */
-	int getHeight();
+	int getH();
 
 	/**
 	 * 获取当前容器的显示宽度
 	 * @return
 	 */
-	int getUIWidth();
+	int getUIW();
 
 	/**
 	 * 获取当前容器的显示高度
 	 * @return
 	 */
-	int getUIHeight();
+	int getUIH();
 
 	/**
 	 * 获取（去掉上边框后）游戏 Content 高度
 	 * @return
 	 */
-	int getUICHeight();
+	int getUICH();
 
 	/**
 	 * 重新设置容器的宽度和高度

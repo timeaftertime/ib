@@ -40,16 +40,16 @@ public class ViewObject extends AbstractIBObject {
 	 * 以指定 x 轴速度移动一次
 	 * @param speed
 	 */
-	public void moveX(int speed) {
-		setX(speed + getIntX());
+	public void moveX(double speed) {
+		setX(speed + getX());
 	}
 
 	/**
 	 * 以指定 y 轴速度移动一次
 	 * @param speed
 	 */
-	public void moveY(int speed) {
-		setY(getIntY() + speed);
+	public void moveY(double speed) {
+		setY(getY() + speed);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ViewObject extends AbstractIBObject {
 	 * @param speedX
 	 * @param speedY
 	 */
-	public void move(int speedX, int speedY) {
+	public void move(double speedX, double speedY) {
 		moveX(speedX);
 		moveY(speedY);
 	}

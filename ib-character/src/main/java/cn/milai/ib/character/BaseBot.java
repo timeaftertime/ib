@@ -10,18 +10,12 @@ public class BaseBot implements Bot {
 	private PlayerCharacter target;
 
 	@Override
-	public void setAttackTarget(PlayerCharacter target) {
-		this.target = target;
-	}
+	public void setAttackTarget(PlayerCharacter target) { this.target = target; }
 
 	@Override
-	public PlayerCharacter getAttackTarget() {
-		return target;
-	}
+	public PlayerCharacter getAttackTarget() { return target; }
 
 	@Override
-	public void selectAttackTarget() {
-		throw new UnsupportedOperationException();
-	}
+	public void selectAttackTarget() { throw new UnsupportedOperationException(); }
 
 }

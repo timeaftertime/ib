@@ -34,10 +34,10 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	}
 
 	private boolean outOfContainer() {
-		if (this.getX() > getContainer().getWidth()) {
+		if (this.getX() > getContainer().getW()) {
 			return true;
 		}
-		if (this.getY() > getContainer().getHeight()) {
+		if (this.getY() > getContainer().getH()) {
 			return true;
 		}
 		if (this.getX() + getW() < 0) {
@@ -50,14 +50,10 @@ public abstract class AbstractBullet extends MovableIBCharacter implements Bulle
 	}
 
 	@Override
-	protected double initRatedSpeedX() {
-		return getSpeed();
-	}
+	protected double initRatedSpeedX() { return getSpeed(); }
 
 	@Override
-	protected double initRatedSpeedY() {
-		return getSpeed();
-	}
+	protected double initRatedSpeedY() { return getSpeed(); }
 
 	/**
 	 * 获取子弹前进速度
