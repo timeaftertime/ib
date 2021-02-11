@@ -1,7 +1,7 @@
 package cn.milai.ib.character;
 
 import cn.milai.ib.AbstractIBObject;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * IBCharacter 的抽象实现
@@ -15,7 +15,8 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 
 	private IBCharacter lastAttacker;
 
-	public AbstractIBCharacter(double x, double y, UIContainer container, Class<? extends IBCharacter> configClass) {
+	public AbstractIBCharacter(double x, double y, LifecycleContainer container,
+		Class<? extends IBCharacter> configClass) {
 		super(x, y, container, configClass);
 		this.life = getInitLife();
 	}
@@ -23,7 +24,7 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	@Override
 	public int getInitLife() { return intProp(P_LIFE); }
 
-	public AbstractIBCharacter(double x, double y, UIContainer container) {
+	public AbstractIBCharacter(double x, double y, LifecycleContainer container) {
 		this(x, y, container, null);
 	}
 
@@ -90,12 +91,11 @@ public abstract class AbstractIBCharacter extends AbstractIBObject implements IB
 	}
 
 	@Override
-	public UIContainer getContainer() { return (UIContainer) super.getContainer(); }
+	public void ensureInContainer() {
+		ensureIn(0, getContainer().getW(), 0, getContainer().getH());
+	}
 
 	@Override
-	public void ensureInContainer() {
-		UIContainer c = getContainer();
-		ensureIn(0, c.getW(), 0, c.getH());
-	}
+	public LifecycleContainer getContainer() { return (LifecycleContainer) super.getContainer(); }
 
 }

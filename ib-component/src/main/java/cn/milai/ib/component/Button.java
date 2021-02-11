@@ -1,8 +1,10 @@
 package cn.milai.ib.component;
 
+import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.control.CommandType;
-import cn.milai.ib.container.control.Controllable;
+import cn.milai.ib.container.plugin.control.cmd.ClickCmd;
+import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.plugin.control.cmd.CmdType;
 
 /**
  * 按钮
@@ -26,12 +28,21 @@ public abstract class Button extends AbstractComponent implements Controllable {
 	}
 
 	@Override
-	public boolean exec(CommandType command) {
-		if (command != CommandType.CLICKED) {
+	public boolean exec(Cmd cmd) {
+		if (cmd.getType() != CmdType.CLICKED) {
 			return true;
 		}
 		afterPressed.run();
 		return false;
+	}
+
+	@Override
+	public boolean accept(Cmd cmd) {
+		if (cmd.getType() != CmdType.CLICKED || (!(cmd instanceof ClickCmd))) {
+			return false;
+		}
+		ClickCmd c = (ClickCmd) cmd;
+		return containsPoint(c.getX(), c.getY());
 	}
 
 }

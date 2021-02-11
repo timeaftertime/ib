@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import cn.milai.ib.component.PassCaculator;
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -28,11 +28,10 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	 * @param durationFrames
 	 * @param lines
 	 * @param lineInterval
-	 * @param container
+	 * @param c
 	 */
-	public LinesFullScreenPass(long durationFrames, List<String> lines, int lineInterval,
-		Container container) {
-		this(durationFrames / 3, durationFrames / 3, durationFrames / 3, lines, lineInterval, container);
+	public LinesFullScreenPass(long durationFrames, List<String> lines, int lineInterval, LifecycleContainer c) {
+		this(durationFrames / 3, durationFrames / 3, durationFrames / 3, lines, lineInterval, c);
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	 * @param container
 	 */
 	public LinesFullScreenPass(long inFrame, long keepFrame, long outFrame, List<String> lines,
-		int lineInterval, Container container) {
+		int lineInterval, LifecycleContainer container) {
 		super(0, 0, container);
 		pass = new PassCaculator(inFrame, keepFrame, outFrame);
 		this.lines = lines;
@@ -64,8 +63,10 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	private BufferedImage createImage() {
 		BufferedImage backgroud = ImageUtil.newImage(Color.BLACK, getIntW(), getIntH());
 		BufferedImage textLayer = ImageUtil.newImage(getIntW(), getIntH());
-		Graphics g = ImageUtil.createGraphics(textLayer,
-			1.0f * pass.getTransparency() / PassCaculator.MAX_TRANSPARENCY);
+		Graphics g = ImageUtil.createGraphics(
+			textLayer,
+			1.0f * pass.getTransparency() / PassCaculator.MAX_TRANSPARENCY
+		);
 		g.setFont(getTextFont());
 		g.setColor(getTextColor());
 		int lineHeight = ImageTextUtil.getTextHeight(g);
@@ -81,17 +82,13 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	}
 
 	@Override
-	public int getIntW() {
-		return getContainer().getW();
-	}
+	public int getIntW() { return getContainer().getW(); }
 
 	@Override
-	public int getIntH() {
-		return getContainer().getH();
-	}
+	public int getIntH() { return getContainer().getH(); }
 
 	@Override
-	public void afterRefresh(Container container) {
+	public void afterRefresh(LifecycleContainer container) {
 		pass.refresh();
 		if (pass.isEnd()) {
 			container.removeEventListener(this);

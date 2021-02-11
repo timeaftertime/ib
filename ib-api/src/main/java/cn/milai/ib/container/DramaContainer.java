@@ -1,8 +1,7 @@
 package cn.milai.ib.container;
 
-import cn.milai.ib.container.control.ControllableContainer;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.pluginable.media.MediaContainer;
+import cn.milai.ib.container.pluginable.ui.UIContainer;
 import cn.milai.ib.drama.Drama;
 
 /**
@@ -10,7 +9,7 @@ import cn.milai.ib.drama.Drama;
  * @author milai
  * @date 2020.12.02
  */
-public interface DramaContainer extends LifecycleContainer, UIContainer, ControllableContainer {
+public interface DramaContainer extends UIContainer, MediaContainer {
 
 	/**
 	 * 保存当前容器的实际显示宽度和高度到实际栈，并设置当前实际宽度高度为新值

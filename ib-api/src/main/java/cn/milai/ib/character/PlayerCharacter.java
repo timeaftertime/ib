@@ -1,7 +1,6 @@
 package cn.milai.ib.character;
 
-import cn.milai.ib.container.control.CommandType;
-import cn.milai.ib.container.control.Controllable;
+import cn.milai.ib.container.plugin.control.cmd.Cmd;
 
 /**
  * 玩家角色
@@ -11,8 +10,8 @@ import cn.milai.ib.container.control.Controllable;
 public interface PlayerCharacter extends IBCharacter, Controllable {
 
 	@Override
-	default boolean exec(CommandType type) {
-		switch (type) {
+	default boolean exec(Cmd cmd) {
+		switch (cmd.getType()) {
 			case UP : {
 				setUp();
 				return false;
@@ -60,9 +59,7 @@ public interface PlayerCharacter extends IBCharacter, Controllable {
 	}
 
 	@Override
-	default int getCamp() {
-		return Camp.PLAYER;
-	}
+	default int getCamp() { return Camp.PLAYER; }
 
 	/**
 	 * 设置向上移动的状态

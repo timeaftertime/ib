@@ -15,6 +15,8 @@ import cn.milai.ib.util.StringUtil;
  */
 public class SystemConf {
 
+	private SystemConf() {}
+
 	/**
 	 * 可以通过命令行参数或配置文件指定的系统级参数
 	 */
@@ -82,7 +84,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final String getStr(String key) {
+	public static String getStr(String key) {
 		return SYS_PROPS.get(key).trim();
 	}
 
@@ -91,7 +93,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final double getDouble(String key) {
+	public static double getDouble(String key) {
 		return Double.parseDouble(getStr(key));
 	}
 
@@ -100,7 +102,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final int getInt(String key) {
+	public static int getInt(String key) {
 		return Integer.parseInt(getStr(key));
 	}
 
@@ -111,7 +113,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final String strProp(Class<?> clazz, String key) {
+	public static String strProp(Class<?> clazz, String key) {
 		String value = ConfigLoader.load(clazz).get(key);
 		if (value == null) {
 			throw new PropNotFoundException(clazz, key);
@@ -125,7 +127,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final int intProp(Class<?> clazz, String key) {
+	public static int intProp(Class<?> clazz, String key) {
 		return StringUtil.parseInt(strProp(clazz, key));
 	}
 
@@ -135,7 +137,7 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final long longProp(Class<?> clazz, String key) {
+	public static long longProp(Class<?> clazz, String key) {
 		return Long.parseLong(strProp(clazz, key));
 	}
 
@@ -145,8 +147,16 @@ public class SystemConf {
 	 * @param key
 	 * @return
 	 */
-	public static final double doubleProp(Class<?> clazz, String key) {
+	public static double doubleProp(Class<?> clazz, String key) {
 		return Double.parseDouble(strProp(clazz, key));
+	}
+
+	/**
+	 * 获取当前游戏刷新时间间隔（微秒）
+	 * @return
+	 */
+	public static long refreshMillisec() {
+		return frameProrate(50L);
 	}
 
 }

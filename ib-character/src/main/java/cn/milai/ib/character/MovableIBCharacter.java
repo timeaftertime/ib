@@ -1,7 +1,7 @@
 package cn.milai.ib.character;
 
 import cn.milai.ib.character.property.Movable;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 可移动的游戏对象
@@ -14,7 +14,7 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 	private double speedX;
 	private double speedY;
 
-	public MovableIBCharacter(double x, double y, UIContainer container) {
+	public MovableIBCharacter(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		ratedSpeedX = initRatedSpeedX();
 		ratedSpeedY = initRatedSpeedY();
@@ -61,9 +61,6 @@ public abstract class MovableIBCharacter extends AbstractIBCharacter implements 
 
 	@Override
 	public void setSpeedY(double speedY) { this.speedY = speedY; }
-
-	@Override
-	public UIContainer getContainer() { return (UIContainer) super.getContainer(); }
 
 	/**
 	 * 实际移动坐标前调用

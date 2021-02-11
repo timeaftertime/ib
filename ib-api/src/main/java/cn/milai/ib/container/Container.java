@@ -3,8 +3,6 @@ package cn.milai.ib.container;
 import java.util.List;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.ui.Audio;
-import cn.milai.ib.container.ui.Image;
 
 /**
  * 游戏对象的容器
@@ -14,85 +12,45 @@ import cn.milai.ib.container.ui.Image;
 public interface Container {
 
 	/**
-	 * 向容器中添加游戏对象
-	 * 若操作失败将抛出 IBContainerException
+	 * 向容器中添加游戏对象，同一对象不会被重复添加，返回是否实际添加成功
 	 * @param obj
 	 */
-	public void addObject(IBObject obj) throws IBContainerException;
+	boolean addObject(IBObject obj);
 
 	/**
-	 * 从容器中移除游戏对象
-	 * 若操作失败将抛出 IBContainerException
+	 * 从容器中移除游戏对象，返回是否实际移除成功
 	 * @param obj
-	 * @throws IBContainerException
 	 */
-	public void removeObject(IBObject obj) throws IBContainerException;
+	boolean removeObject(IBObject obj);
 
 	/**
-	 * 获得容器中属于指定类型及其子类的游戏对象列表
-	 * 若获取失败将抛出 IBContainerException
+	 * 获得容器中属于指定类型及其子类的对象列表
 	 * @param type
 	 * @return
-	 * @throws IBContainerException
 	 */
-	<T> List<T> getAll(Class<T> type) throws IBContainerException;
+	<T extends IBObject> List<T> getAll(Class<T> type);
 
 	/**
-	 * 获取当前累计的帧数，获取失败则返回 -1
-	 * 
+	 * 清空容器中所有对象
+	 */
+	void reset();
+
+	/**
+	 * 获取容器实际宽度
 	 * @return
 	 */
-	long getFrame();
+	int getW();
 
 	/**
-	 * 添加游戏事件监听器
-	 * @param listener
-	 * @throws IBContainerException
-	 */
-	void addEventListener(ContainerEventListener listener) throws IBContainerException;
-
-	/**
-	 * 移除游戏事件监听器
-	 * @param listener
-	 * @throws IBContainerException
-	 */
-	void removeEventListener(ContainerEventListener listener) throws IBContainerException;
-
-	/**
-	 * 播放音频
-	 * 若操作失败将抛出 IBContainerException
-	 * @param audio
-	 * @throws IBContainerException
-	 */
-	void playAudio(Audio audio) throws IBContainerException;
-
-	/**
-	 * 停止一个音频的播放
-	 * @param code
-	 * @throws IBContainerException
-	 */
-	void stopAudio(String code) throws IBContainerException;
-
-	/**
-	 * 设置背景图片
-	 * 若操作失败将抛出 IBContainerException
-	 * @param img
-	 * @throws IBContainerException
-	 */
-	void setBackgroud(Image img) throws IBContainerException;
-
-	/**
-	 * 获取纪元
+	 * 获取容器实际长度
 	 * @return
 	 */
-	int getEpoch();
+	int getH();
 
 	/**
-	 * 重置容器
-	 * 移除所有游戏对象和监听器，帧数不会清零
-	 * {@link ContainerEventListener#afterEpochChanged(Container)} 将被调用
-	 * {@link ContainerEventListener#onObjectRemoved(IBObject)} 不会被调用
-	 * @throws IBContainerException
+	 * 重新设置容器的宽度和高度
+	 * @param width
+	 * @param height
 	 */
-	void reset() throws IBContainerException;
+	void resize(int width, int height);
 }

@@ -1,33 +1,22 @@
 package cn.milai.ib.container.lifecycle;
 
+import cn.milai.ib.IBObject;
+import cn.milai.ib.container.CloseableIBContainer;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.container.ContainerClosedException;
 
 /**
  * 有生命周期（可启动、暂停、关闭等操作）的容器
  * 2020.01.16
  * @author milai
  */
-public interface LifecycleContainer extends Container {
+public interface LifecycleContainer extends CloseableIBContainer {
 
 	/**
-	 * 启动容器
-	 *  每个实例只能启动一次
+	 * 启动容器。多次调用该方法将被忽略
 	 * @throws ContainerClosedException 若容器已被关闭
 	 */
 	void start() throws ContainerClosedException;
-
-	/**
-	 * 关闭容器
-	 * 每个实例只能被关闭一次
-	 * 调用 start 前可以调用 close，但 close 后不能再 reset 或 start
-	 */
-	void close();
-
-	/**
-	 * 容器是否出于关闭状态
-	 * @return
-	 */
-	boolean isClosed();
 
 	/**
 	 * 暂停或继续容器
@@ -50,10 +39,45 @@ public interface LifecycleContainer extends Container {
 	void setPined(boolean pin) throws ContainerClosedException;
 
 	/**
-	 * 添加一个容器生命周期事件的监听者
-	 * 若调用时容器已经被关闭, {@link ContainerLifecycleListener#onContainerClosed()}将立刻被调用
+	 * 返回容器中游戏角色是否被固定
+	 * @return
+	 * @throws ContainerClosedException
+	 */
+	boolean isPined() throws ContainerClosedException;
+
+	/**
+	 * 获取当前累计的帧数，获取失败则返回 -1
+	 * 
+	 * @return
+	 */
+	long getFrame();
+
+	/**
+	 * 添加游戏事件监听器
+	 * @param listener
+	 * @throws ContainerClosedException
+	 */
+	void addEventListener(ContainerEventListener listener) throws ContainerClosedException;
+
+	/**
+	 * 移除游戏事件监听器
 	 * @param listener
 	 */
-	void addLifeCycleListener(ContainerLifecycleListener listener);
+	void removeEventListener(ContainerEventListener listener);
+
+	/**
+	 * 获取纪元
+	 * @return
+	 */
+	int getEpoch();
+
+	/**
+	 * 重置容器
+	 * 移除所有游戏对象和监听器，帧数不会清零
+	 * {@link ContainerEventListener#afterEpochChanged(Container)} 将在容器中对象被清空后调用
+	 * {@link ContainerEventListener#onObjectRemoved(IBObject)} 不会被调用
+	 * @throws ContainerClosedException
+	 */
+	void reset() throws ContainerClosedException;
 
 }

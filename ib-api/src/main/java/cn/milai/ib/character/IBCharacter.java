@@ -3,7 +3,7 @@ package cn.milai.ib.character;
 import java.awt.Graphics;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 参与到游戏中的游戏角色
@@ -41,9 +41,7 @@ public interface IBCharacter extends IBObject {
 	 * 获取当前角色所属阵营
 	 * @return
 	 */
-	default int getCamp() {
-		return 0;
-	}
+	default int getCamp() { return 0; }
 
 	/**
 	 * 是否存活
@@ -58,8 +56,7 @@ public interface IBCharacter extends IBObject {
 	/**
 	 *  进入死亡状态时应调用此方法
 	 */
-	default void onDead() {
-	}
+	default void onDead() {}
 
 	/**
 	 * 获取最后使当前角色生命值减少的游戏角色
@@ -100,13 +97,11 @@ public interface IBCharacter extends IBObject {
 	void setDirection(double radian);
 
 	/**
-	 * 获取所属 UI 容器
-	 */
-	UIContainer getContainer();
-
-	/**
 	 * 确保当前游戏角色出于容器中，若不在，将其移动到容器之中
 	 */
 	void ensureInContainer();
+
+	@Override
+	LifecycleContainer getContainer();
 
 }

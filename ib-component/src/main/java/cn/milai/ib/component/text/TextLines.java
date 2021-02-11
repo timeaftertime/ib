@@ -6,8 +6,8 @@ import java.util.List;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.component.PassCaculator;
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -33,7 +33,8 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	 * @param keepFrame 维持不变的持续帧数
 	 * @param outFrame 渐出的持续帧数
 	 */
-	public TextLines(int x, int y, Container container, List<String> lines, Color bgColor, long inFrame, long keepFrame,
+	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long inFrame,
+		long keepFrame,
 		long outFrame) {
 		super(x, y, container);
 		container.addEventListener(this);
@@ -52,7 +53,7 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	 * @param bgColor 背景颜色
 	 * @param frame 整个显示过程的总帧数
 	 */
-	public TextLines(int x, int y, Container container, List<String> lines, Color bgColor, long frame) {
+	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long frame) {
 		this(x, y, container, lines, bgColor, frame / 3, frame / 3, frame / 3);
 	}
 
@@ -65,7 +66,7 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	}
 
 	@Override
-	public void afterRefresh(Container container) {
+	public void afterRefresh(LifecycleContainer container) {
 		pass.refresh();
 		if (pass.isEnd()) {
 			container.removeEventListener(this);

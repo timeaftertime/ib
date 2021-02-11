@@ -1,8 +1,8 @@
 package cn.milai.ib.drama;
 
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.ui.Audio;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.container.plugin.ui.Image;
 
 /**
  * 剧本

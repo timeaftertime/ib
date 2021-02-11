@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
 
 /**

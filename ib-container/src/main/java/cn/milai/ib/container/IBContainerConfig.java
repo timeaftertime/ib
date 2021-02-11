@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import cn.milai.ib.container.ui.AudioCreator;
-import cn.milai.ib.container.ui.BaseAudioCreator;
-import cn.milai.ib.container.ui.BaseImage;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.media.AudioCreator;
+import cn.milai.ib.container.plugin.media.BaseAudioCreator;
+import cn.milai.ib.container.plugin.ui.BaseImage;
+import cn.milai.ib.container.plugin.ui.Image;
 
 /**
  * Spring Boot Starter 类

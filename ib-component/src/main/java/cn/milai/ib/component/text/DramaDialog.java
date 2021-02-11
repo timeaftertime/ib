@@ -9,12 +9,13 @@ import org.springframework.core.annotation.Order;
 
 import com.google.common.collect.Maps;
 
+import cn.milai.ib.character.Controllable;
 import cn.milai.ib.component.WaitNextPageTip;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.control.CommandType;
-import cn.milai.ib.container.control.Controllable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.plugin.control.cmd.CmdType;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -186,15 +187,16 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 	}
 
 	@Override
-	public boolean exec(CommandType command) {
-		if (command == CommandType.A) {
+	public boolean exec(Cmd cmd) {
+		if (cmd.getType() == CmdType.A) {
 			return false;
 		}
-		if (command == CommandType.U_A) {
+		if (cmd.getType() == CmdType.U_A) {
 			pageDown();
 			return false;
 		}
 		return true;
 	}
+
 
 }

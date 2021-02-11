@@ -2,7 +2,7 @@ package cn.milai.ib.character.explosion;
 
 import cn.milai.ib.Paintable;
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 爆炸的抽象基类
@@ -15,7 +15,7 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 
 	private long endFrame;
 
-	public AbstractExplosion(double x, double y, UIContainer container) {
+	public AbstractExplosion(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		this.endFrame = getContainer().getFrame() + LAST_FRAMES;
 	}
@@ -24,7 +24,9 @@ public abstract class AbstractExplosion extends AbstractIBCharacter implements E
 	public boolean isAlive() { return getContainer().getFrame() <= endFrame; }
 
 	@Override
-	public void toDead() { endFrame = getContainer().getFrame(); }
+	public void toDead() {
+		endFrame = getContainer().getFrame();
+	}
 
 	@Override
 	public int getZ() { return Paintable.DEFAULT_Z + 1; }

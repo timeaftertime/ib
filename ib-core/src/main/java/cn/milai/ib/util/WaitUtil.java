@@ -4,10 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.milai.ib.IBObject;
+import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ContainerEventListener;
-import cn.milai.ib.container.IBContainerException;
-import cn.milai.ib.container.lifecycle.ContainerLifecycleListener;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
@@ -37,7 +36,7 @@ public class WaitUtil {
 				try {
 					// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态
 					c.removeEventListener(listener);
-				} catch (IBContainerException e1) {
+				} catch (ContainerClosedException e1) {
 					LOG.warn("容器已经关闭", e1);
 				}
 				Thread.interrupted();
@@ -78,8 +77,7 @@ public class WaitUtil {
 
 	}
 
-	private static class CountDownInterrupter extends ThreadNotifier implements ContainerEventListener,
-		ContainerLifecycleListener {
+	private static class CountDownInterrupter extends ThreadNotifier implements ContainerEventListener {
 
 		private long frame;
 
@@ -90,7 +88,7 @@ public class WaitUtil {
 		}
 
 		@Override
-		public void afterRefresh(Container container) {
+		public void afterRefresh(LifecycleContainer container) {
 			if (--frame <= 0) {
 				container.removeEventListener(this);
 				notifyThread();
@@ -98,7 +96,7 @@ public class WaitUtil {
 		}
 
 		@Override
-		public void afterEpochChanged(Container container) {
+		public void afterEpochChanged(LifecycleContainer container) {
 			notifyThread();
 		}
 
@@ -116,19 +114,23 @@ public class WaitUtil {
 		public RemoveObjInterrupter(IBObject obj, Thread thread) {
 			super(thread);
 			this.obj = obj;
-			obj.getContainer().addEventListener(this);
+			Container c = obj.getContainer();
+			if (!LifecycleContainer.class.isInstance(c)) {
+				throw new IllegalArgumentException("对象所属容器必须为 " + LifecycleContainer.class);
+			}
+			((LifecycleContainer) c).addEventListener(this);
 		}
 
 		@Override
 		public void onObjectRemoved(IBObject obj) {
 			if (this.obj == obj) {
-				obj.getContainer().removeEventListener(this);
+				((LifecycleContainer) obj.getContainer()).removeEventListener(this);
 				notifyThread();
 			}
 		}
 
 		@Override
-		public void afterEpochChanged(Container container) {
+		public void afterEpochChanged(LifecycleContainer container) {
 			notifyThread();
 		}
 

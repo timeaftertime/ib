@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.geometry.Point;
 
 public class RotatableTest {
@@ -17,7 +17,7 @@ public class RotatableTest {
 		private int width;
 		private int height;
 
-		public RotatableStub(int x, int y, int width, int height, double direction, UIContainer container) {
+		public RotatableStub(int x, int y, int width, int height, double direction, LifecycleContainer container) {
 			super(x, y, container);
 			this.width = width;
 			this.height = height;

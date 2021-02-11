@@ -13,7 +13,7 @@ import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.conf.PathConf;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.util.ImageUtil;
 
 /**

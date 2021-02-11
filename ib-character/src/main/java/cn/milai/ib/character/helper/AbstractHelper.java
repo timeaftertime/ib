@@ -2,7 +2,7 @@ package cn.milai.ib.character.helper;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.MovableIBCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * Helper 的抽象基类
@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public abstract class AbstractHelper extends MovableIBCharacter implements Helper {
 
-	public AbstractHelper(double x, double y, UIContainer container) {
+	public AbstractHelper(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());
@@ -24,6 +24,8 @@ public abstract class AbstractHelper extends MovableIBCharacter implements Helpe
 	}
 
 	@Override
-	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException { return; }
+	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
+		return;
+	}
 
 }

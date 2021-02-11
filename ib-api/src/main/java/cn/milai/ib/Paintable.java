@@ -3,7 +3,7 @@ package cn.milai.ib;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.plugin.ui.Image;
 
 /**
  * 可绘制的
