@@ -12,8 +12,6 @@ import cn.milai.ib.container.plugin.ui.UIPlugin;
  */
 public class BaseDramaContainer extends BasePluginableContainer implements DramaContainer {
 
-	public BaseDramaContainer() {}
-
 	private static class Size {
 		int width;
 		int height;
@@ -30,7 +28,7 @@ public class BaseDramaContainer extends BasePluginableContainer implements Drama
 	@Override
 	public void newSize(int width, int height) {
 		sizes.add(new Size(getW(), getH()));
-		resize(width, height);
+		super.newSize(width, height);
 	}
 
 	@Override
@@ -39,7 +37,7 @@ public class BaseDramaContainer extends BasePluginableContainer implements Drama
 			return;
 		}
 		Size size = sizes.pop();
-		resize(size.width, size.height);
+		newSize(size.width, size.height);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import cn.milai.ib.IBCore;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.drama.DramaResolver;
 import cn.milai.ib.loader.DramaResLoader;
@@ -25,7 +25,7 @@ import cn.milai.ib.util.WaitUtil;
  */
 @Order(0)
 @Component
-public class StoryMode extends AbstractGameMode implements ContainerEventListener {
+public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	/**
 	 * 默认宽度
@@ -54,6 +54,7 @@ public class StoryMode extends AbstractGameMode implements ContainerEventListene
 	public void init() {
 		InputStream in = StoryMode.class.getResourceAsStream(STAGE_CONF_FILE);
 		dramaCodes = InputStreams.readLines(in).stream()
+			.map(line -> line.trim())
 			.filter(line -> !line.startsWith("#"))
 			.collect(Collectors.toList());
 		dramaResolvers = IBCore.getBeansOrdered(DramaResolver.class);

@@ -66,7 +66,7 @@ public interface UIPlugin extends ContainerPlugin {
 	 * @param height
 	 */
 	default void resizeWithUI(int width, int height) {
-		getContainer().resize(width, height);
+		getContainer().newSize(width, height);
 		resizeUI(width, height);
 	}
 

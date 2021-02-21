@@ -1,12 +1,17 @@
 package cn.milai.ib.container;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import cn.milai.common.base.Collects;
 import cn.milai.ib.IBObject;
+import cn.milai.ib.container.listener.ContainerListener;
+import cn.milai.ib.container.listener.ObjectListener;
 
 /**
  * {@link Container} 默认实现
@@ -18,22 +23,29 @@ public class BaseContainer implements Container {
 	private int w;
 	private int h;
 
-	private List<IBObject> objs;
+	private Set<IBObject> objs = Sets.newHashSet();
 
-	private Set<IBObject> exists = Sets.newHashSet();
-
-	public BaseContainer() {
-		objs = Lists.newCopyOnWriteArrayList();
-	}
+	/**
+	 * 容器对象事件监听器列表
+	 */
+	private List<ObjectListener> objectListeners = Lists.newArrayList();
 
 	@Override
 	public synchronized boolean addObject(IBObject obj) {
-		return exists.add(obj) && objs.add(obj);
+		if (objs.add(obj)) {
+			notifyObjectAdded(obj);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public synchronized boolean removeObject(IBObject obj) {
-		return exists.remove(obj) && objs.remove(obj);
+		if (objs.remove(obj)) {
+			notifyObjectRemoved(obj);
+			return true;
+		}
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -53,6 +65,54 @@ public class BaseContainer implements Container {
 	@Override
 	public void reset() {
 		objs.clear();
+		synchronized (objectListeners) {
+			notifyObjectCleared();
+			objectListeners = Collects.unfilter(objectListeners, ContainerListener::inEpoch);
+		}
+	}
+
+	@Override
+	public void addObjectListener(ObjectListener listener) {
+		synchronized (objectListeners) {
+			objectListeners.add(listener);
+		}
+	}
+
+	@Override
+	public void removeObjectListener(ObjectListener listener) {
+		synchronized (objectListeners) {
+			objectListeners.remove(listener);
+		}
+	}
+
+	private void notifyObjectRemoved(IBObject obj) {
+		notifyObjectsRemoved(Collections.unmodifiableList(Arrays.asList(obj)));
+	}
+
+	private void notifyObjectCleared() {
+		notifyObjectsRemoved(Collections.unmodifiableList(getAll(IBObject.class)));
+	}
+
+	private void notifyObjectsRemoved(List<IBObject> all) {
+		for (ObjectListener listener : safeObjectListeners()) {
+			listener.onObjectRemoved(all);
+		}
+	}
+
+	private void notifyObjectAdded(IBObject obj) {
+		for (ObjectListener listener : safeObjectListeners()) {
+			listener.onObjectAdded(obj);
+		}
+	}
+
+	/**
+	 * 线程安全地获取 {@link #objectListeners} 副本
+	 * @return
+	 */
+	private List<ObjectListener> safeObjectListeners() {
+		synchronized (objectListeners) {
+			return Lists.newArrayList(objectListeners);
+		}
 	}
 
 	@Override
@@ -62,7 +122,7 @@ public class BaseContainer implements Container {
 	public int getH() { return h; }
 
 	@Override
-	public void resize(int w, int h) {
+	public void newSize(int w, int h) {
 		this.w = w;
 		this.h = h;
 	}

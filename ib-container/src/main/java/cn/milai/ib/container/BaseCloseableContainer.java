@@ -5,11 +5,11 @@ import java.util.List;
 import cn.milai.ib.IBObject;
 
 /**
- * {@link CloseableIBContainer} 抽象实现
+ * {@link CloseableContainer} 抽象实现
  * @author milai
  * @date 2021.02.04
  */
-public class BaseCloseableIBContainer extends BaseContainer implements CloseableIBContainer {
+public class BaseCloseableContainer extends BaseContainer implements CloseableContainer {
 
 	/**
 	 * 容器是否已经关闭
@@ -18,6 +18,7 @@ public class BaseCloseableIBContainer extends BaseContainer implements Closeable
 
 	@Override
 	public void close() {
+		checkClosed();
 		closed = true;
 	}
 
@@ -31,13 +32,13 @@ public class BaseCloseableIBContainer extends BaseContainer implements Closeable
 	}
 
 	@Override
-	public boolean addObject(IBObject obj) throws ContainerClosedException {
+	public final boolean addObject(IBObject obj) throws ContainerClosedException {
 		checkClosed();
 		return super.addObject(obj);
 	}
 
 	@Override
-	public boolean removeObject(IBObject obj) throws ContainerClosedException {
+	public final boolean removeObject(IBObject obj) throws ContainerClosedException {
 		checkClosed();
 		return super.removeObject(obj);
 	}
@@ -46,13 +47,6 @@ public class BaseCloseableIBContainer extends BaseContainer implements Closeable
 	public void reset() throws ContainerClosedException {
 		checkClosed();
 		super.reset();
-	}
-
-	@Override
-	public void checkClosed() throws ContainerClosedException {
-		if (isClosed()) {
-			throw new ContainerClosedException();
-		}
 	}
 
 }

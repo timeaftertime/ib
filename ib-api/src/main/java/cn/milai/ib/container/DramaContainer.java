@@ -16,6 +16,7 @@ public interface DramaContainer extends UIContainer, MediaContainer {
 	 * @param width
 	 * @param height
 	 */
+	@Override
 	void newSize(int width, int height);
 
 	/**

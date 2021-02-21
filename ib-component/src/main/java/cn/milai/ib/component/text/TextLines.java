@@ -6,8 +6,8 @@ import java.util.List;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.component.PassCaculator;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -15,7 +15,7 @@ import cn.milai.ib.util.ImageUtil;
  * @author milai
  * @date 2020.04.05
  */
-public class TextLines extends AbstractTextComponent implements ContainerEventListener {
+public class TextLines extends AbstractTextComponent implements LifecycleListener {
 
 	private static final int PADDING = 5;
 
@@ -37,7 +37,7 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 		long keepFrame,
 		long outFrame) {
 		super(x, y, container);
-		container.addEventListener(this);
+		container.addLifecycleListener(this);
 		pass = new PassCaculator(inFrame, keepFrame, outFrame);
 		img = ImageUtil.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
 		setW(img.getWidth());
@@ -69,7 +69,7 @@ public class TextLines extends AbstractTextComponent implements ContainerEventLi
 	public void afterRefresh(LifecycleContainer container) {
 		pass.refresh();
 		if (pass.isEnd()) {
-			container.removeEventListener(this);
+			container.removeLifecycleListener(this);
 			container.removeObject(this);
 		}
 	}

@@ -1,5 +1,8 @@
 package cn.milai.ib.container.lifecycle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.ContainerClosedException;
 
@@ -10,10 +13,7 @@ import cn.milai.ib.container.ContainerClosedException;
  */
 public class LifecycleThread extends Thread {
 
-	/**
-	 * 每帧的实际时间间隔
-	 */
-	private static final long MILLISEC_PER_FRAME = SystemConf.refreshMillisec();
+	private static final Logger LOG = LoggerFactory.getLogger(LifecycleThread.class);
 
 	/**
 	 * 帧数，即容器启动到现在刷新的次数
@@ -29,8 +29,15 @@ public class LifecycleThread extends Thread {
 
 	private BaseLifecycleContainer container;
 
+	private long lastStartMillisec;
+
 	LifecycleThread(LifecycleContainer container) {
 		this.container = (BaseLifecycleContainer) container;
+	}
+	
+	@Override
+	public void interrupt() {
+		super.interrupt();
 	}
 
 	@Override
@@ -38,9 +45,11 @@ public class LifecycleThread extends Thread {
 		try {
 			setName(THREAD_NAME);
 			while (!container.isClosed()) {
-				responsePaused();
-				frame++;
-				container.doRefresh();
+				startNewFrame();
+				if (!isPaused()) {
+					frame++;
+					container.doRefresh();
+				}
 				sleepOneFrame();
 			}
 		} catch (ContainerClosedException e) {
@@ -48,24 +57,22 @@ public class LifecycleThread extends Thread {
 		}
 	}
 
-	private void responsePaused() {
-		if (isPaused()) {
-			while (!Thread.interrupted() && !container.isClosed()) {
-				sleepOneFrame();
-			}
-		} else {
-			// 确保非 paused 状态清除中断状态，以免 sleepOneFrame 失效
-			Thread.interrupted();
+	private void sleepOneFrame() {
+		long refreshMillisec = SystemConf.refreshMillisec();
+		long pre = System.currentTimeMillis() - lastStartMillisec;
+		if (pre > refreshMillisec) {
+			LOG.warn("刷新超时: expected = {}, real = {}", refreshMillisec, pre);
+			return;
+		}
+		try {
+			Thread.sleep(refreshMillisec - pre);
+		} catch (InterruptedException e) {
+			LOG.warn("刷新等待被中断");
 		}
 	}
 
-	private void sleepOneFrame() {
-		try {
-			Thread.sleep(MILLISEC_PER_FRAME);
-		} catch (InterruptedException e) {
-			// 保留中断状态
-			this.interrupt();
-		}
+	private void startNewFrame() {
+		lastStartMillisec = System.currentTimeMillis();
 	}
 
 	/**

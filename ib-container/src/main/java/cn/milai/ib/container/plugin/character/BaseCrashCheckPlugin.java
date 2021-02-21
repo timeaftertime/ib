@@ -1,5 +1,6 @@
 package cn.milai.ib.container.plugin.character;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cn.milai.ib.character.Camp;
@@ -7,8 +8,9 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.BaseObjectPlugin;
-import cn.milai.ib.container.plugin.ObjectLifecycleListener;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.listener.ContainerListener;
+import cn.milai.ib.container.plugin.BaseMonitorPlugin;
 import cn.milai.ib.geometry.Rect;
 
 /**
@@ -16,15 +18,15 @@ import cn.milai.ib.geometry.Rect;
  * @author milai
  * @date 2021.02.10
  */
-public class BaseCrashCheckPlugin extends BaseObjectPlugin<CanCrash> implements CrashCheckPlugin {
+public class BaseCrashCheckPlugin extends BaseMonitorPlugin<CanCrash> implements CrashCheckPlugin {
 
 	public BaseCrashCheckPlugin() {
 		super(CanCrash.class);
 	}
 
 	@Override
-	protected ObjectLifecycleListener newEventListener() {
-		return new ObjectLifecycleListener() {
+	protected List<ContainerListener> newListeners() {
+		return Arrays.asList(new LifecycleListener() {
 			@Override
 			public void afterRefresh(LifecycleContainer container) {
 				if (container.isPaused()) {
@@ -42,7 +44,7 @@ public class BaseCrashCheckPlugin extends BaseObjectPlugin<CanCrash> implements 
 					}
 				}
 			}
-		};
+		});
 	}
 
 	/**

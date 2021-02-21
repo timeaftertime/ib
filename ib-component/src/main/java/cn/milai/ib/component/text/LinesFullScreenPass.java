@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import cn.milai.ib.component.PassCaculator;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;
 
@@ -16,7 +16,7 @@ import cn.milai.ib.util.ImageUtil;
  * @author milai
  * @date 2020.02.21
  */
-public class LinesFullScreenPass extends AbstractTextComponent implements ContainerEventListener {
+public class LinesFullScreenPass extends AbstractTextComponent implements LifecycleListener {
 
 	private PassCaculator pass;
 	private BufferedImage img;
@@ -49,7 +49,7 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 		pass = new PassCaculator(inFrame, keepFrame, outFrame);
 		this.lines = lines;
 		this.lineInterval = lineInterval;
-		container.addEventListener(this);
+		container.addLifecycleListener(this);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Contai
 	public void afterRefresh(LifecycleContainer container) {
 		pass.refresh();
 		if (pass.isEnd()) {
-			container.removeEventListener(this);
+			container.removeLifecycleListener(this);
 			container.removeObject(this);
 		}
 	}

@@ -1,5 +1,6 @@
 package cn.milai.ib.container.plugin.control;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -10,8 +11,9 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.BaseObjectPlugin;
-import cn.milai.ib.container.plugin.ObjectLifecycleListener;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.listener.ContainerListener;
+import cn.milai.ib.container.plugin.BaseMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 
 /**
@@ -19,7 +21,7 @@ import cn.milai.ib.container.plugin.control.cmd.Cmd;
  * @author milai
  * @date 2020.12.12
  */
-public class BaseControlPlugin extends BaseObjectPlugin<Controllable> implements ControlPlugin {
+public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implements ControlPlugin {
 
 	/**
 	 * 每帧每个 fromId 最多执行多少条指令
@@ -46,8 +48,8 @@ public class BaseControlPlugin extends BaseObjectPlugin<Controllable> implements
 	}
 
 	@Override
-	protected ObjectLifecycleListener newEventListener() {
-		return new ObjectLifecycleListener() {
+	protected List<ContainerListener> newListeners() {
+		return Arrays.asList(new LifecycleListener() {
 			@Override
 			public void afterRefresh(LifecycleContainer container) {
 				for (int i = 0; i < CMD_PER_FRAME; i++) {
@@ -66,7 +68,7 @@ public class BaseControlPlugin extends BaseObjectPlugin<Controllable> implements
 					}
 				}
 			}
-		};
+		});
 	}
 
 	/**

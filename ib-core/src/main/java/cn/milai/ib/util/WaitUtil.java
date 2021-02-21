@@ -1,13 +1,20 @@
 package cn.milai.ib.util;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.LongStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.ContainerClosedException;
+import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.listener.ObjectListener;
 
 /**
  * 等待同步相关工具类
@@ -25,24 +32,15 @@ public class WaitUtil {
 	 * @param frame 等待的帧数
 	 */
 	public static void wait(LifecycleContainer container, long frame) {
-		waitInterruption(new CountDownInterrupter(container, frame, Thread.currentThread()), container, frame / 2);
-	}
-
-	private static void waitInterruption(ContainerEventListener listener, LifecycleContainer c, long checkInterval) {
-		while (!Thread.interrupted() && !c.isClosed()) {
-			try {
-				Thread.sleep(checkInterval);
-			} catch (InterruptedException e) {
-				try {
-					// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态
-					c.removeEventListener(listener);
-				} catch (ContainerClosedException e1) {
-					LOG.warn("容器已经关闭", e1);
-				}
-				Thread.interrupted();
-				return;
-			}
+		LifecycleListener listener = new WaitFrames(container, frame, Thread.currentThread());
+		container.addLifecycleListener(listener);
+		long startFrame = container.getFrame();
+		doWait(container, LongStream.iterate(frame, pre -> 1).iterator());
+		long realFrame = container.getFrame() - startFrame;
+		if (realFrame < frame) {
+			LOG.warn("wait 被提前中断: expectedFrame = {}, realFrame = {}", frame, realFrame);
 		}
+		container.removeLifecycleListener(listener);
 	}
 
 	/**
@@ -53,15 +51,15 @@ public class WaitUtil {
 	 * @param 检查中断的间隔帧数
 	 */
 	public static void waitRemove(IBObject obj, long checkFrame) {
-		waitInterruption(
-			new RemoveObjInterrupter(obj, Thread.currentThread()),
-			(LifecycleContainer) obj.getContainer(),
-			checkFrame
-		);
+		Container container = obj.getContainer();
+		ObjectListener listener = new WaitRemoved(obj, Thread.currentThread());
+		container.addObjectListener(listener);
+		doWait(container, LongStream.iterate(checkFrame, pre -> checkFrame).iterator());
+		container.removeObjectListener(listener);
 	}
 
-	private static class ThreadNotifier {
-		private boolean notified = false;
+	private static abstract class ThreadNotifier {
+		private AtomicBoolean notified = new AtomicBoolean();
 		private Thread thread;
 
 		public ThreadNotifier(Thread thread) {
@@ -69,7 +67,7 @@ public class WaitUtil {
 		}
 
 		protected synchronized void notifyThread() {
-			if (notified) {
+			if (!notified.compareAndSet(false, true)) {
 				return;
 			}
 			thread.interrupt();
@@ -77,20 +75,18 @@ public class WaitUtil {
 
 	}
 
-	private static class CountDownInterrupter extends ThreadNotifier implements ContainerEventListener {
+	private static class WaitFrames extends ThreadNotifier implements LifecycleListener {
 
 		private long frame;
 
-		public CountDownInterrupter(LifecycleContainer container, long frame, Thread thread) {
+		public WaitFrames(LifecycleContainer container, long frame, Thread thread) {
 			super(thread);
 			this.frame = frame;
-			container.addEventListener(this);
 		}
 
 		@Override
 		public void afterRefresh(LifecycleContainer container) {
 			if (--frame <= 0) {
-				container.removeEventListener(this);
 				notifyThread();
 			}
 		}
@@ -107,33 +103,42 @@ public class WaitUtil {
 
 	}
 
-	private static class RemoveObjInterrupter extends ThreadNotifier implements ContainerEventListener {
+	private static class WaitRemoved extends ThreadNotifier implements ObjectListener {
 
-		private IBObject obj;
+		private IBObject target;
 
-		public RemoveObjInterrupter(IBObject obj, Thread thread) {
+		public WaitRemoved(IBObject target, Thread thread) {
 			super(thread);
-			this.obj = obj;
-			Container c = obj.getContainer();
-			if (!LifecycleContainer.class.isInstance(c)) {
-				throw new IllegalArgumentException("对象所属容器必须为 " + LifecycleContainer.class);
-			}
-			((LifecycleContainer) c).addEventListener(this);
+			this.target = target;
 		}
 
 		@Override
-		public void onObjectRemoved(IBObject obj) {
-			if (this.obj == obj) {
-				((LifecycleContainer) obj.getContainer()).removeEventListener(this);
-				notifyThread();
+		public void onObjectRemoved(List<IBObject> objs) {
+			for (IBObject obj : objs) {
+				if (this.target == obj) {
+					((LifecycleContainer) obj.getContainer()).removeObjectListener(this);
+					notifyThread();
+				}
 			}
 		}
 
-		@Override
-		public void afterEpochChanged(LifecycleContainer container) {
-			notifyThread();
-		}
+	}
 
+	private static void doWait(Container c, Iterator<Long> checkInterval) {
+		boolean isCloseable = CloseableContainer.class.isInstance(c);
+		while (!Thread.interrupted()) {
+			if (isCloseable && ((CloseableContainer) c).isClosed()) {
+				break;
+			}
+			try {
+				long millisec = (checkInterval.hasNext() ? checkInterval.next() : 1) * SystemConf.refreshMillisec();
+				Thread.sleep(millisec);
+			} catch (InterruptedException e) {
+				// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态
+				Thread.interrupted();
+				return;
+			}
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
@@ -17,16 +18,18 @@ public interface PluginableContainer extends LifecycleContainer {
 	/**
 	 * 向容器中添加指定插件
 	 * @param plugin
+	 * @throws IllegalStateException 若插件正在运行
+	 * @throws ContainerClosedException
 	 */
-	void addPlugin(ContainerPlugin plugin);
+	void addPlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException;
 
 	/**
 	 * 从当前容器中移除指定插件，若插件正在运行，将先停止该插件
-	 * 如果插件正在运行且不属于当前容器，将抛出异常
 	 * @param plugin
-	 * @throws IllegalStateException
+	 * @throws IllegalStateException 若插件正在运行且不属于当前容器
+	 * @throws ContainerClosedException
 	 */
-	void removePlugin(ContainerPlugin plugin) throws IllegalStateException;
+	void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException;
 
 	/**
 	 * 获取当前容器中所有指定类型插件列表
@@ -53,8 +56,10 @@ public interface PluginableContainer extends LifecycleContainer {
 	 * @param <T>
 	 * @param pluginClass
 	 * @param c
+	 * @throws ContainerClosedException
 	 */
-	default <T extends ContainerPlugin> void fire(Class<T> pluginClass, Consumer<T> c) {
+	default <T extends ContainerPlugin> void fire(Class<T> pluginClass, Consumer<T> c) throws ContainerClosedException {
+		checkClosed();
 		T plugin = getPlugin(pluginClass);
 		if (plugin == null) {
 			return;
@@ -68,8 +73,12 @@ public interface PluginableContainer extends LifecycleContainer {
 	 * @param <T>
 	 * @param pluginClass
 	 * @param c
+	 * @return
+	 * @throws
 	 */
-	default <T extends ContainerPlugin, R> R fire(Class<T> pluginClass, Function<T, R> c, R def) {
+	default <T extends ContainerPlugin, R> R fire(Class<T> pluginClass, Function<T, R> c, R def)
+		throws ContainerClosedException {
+		checkClosed();
 		T plugin = getPlugin(pluginClass);
 		if (plugin == null) {
 			return def;
@@ -79,8 +88,10 @@ public interface PluginableContainer extends LifecycleContainer {
 
 	/**
 	 * 以当前容器为目标启动持有的所有插件
+	 * @throws ContainerClosedException
 	 */
-	default void startAllPlugins() {
+	default void startAllPlugins() throws ContainerClosedException {
+		checkClosed();
 		for (ContainerPlugin plugin : getPlugins(ContainerPlugin.class)) {
 			plugin.start(this);
 		}

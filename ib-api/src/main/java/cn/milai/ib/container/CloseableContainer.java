@@ -9,12 +9,13 @@ import cn.milai.ib.IBObject;
  * @author milai
  * @date 2021.02.04
  */
-public interface CloseableIBContainer extends Container {
+public interface CloseableContainer extends Container {
 
 	/**
-	 * 关闭容器。多次调用该方法将被忽略，可在调用 {@link #start()} 前可以调用该方法
+	 * 关闭容器
+	 * @throws ContainerClosedException
 	 */
-	void close();
+	void close() throws ContainerClosedException;
 
 	/**
 	 * 容器是否已经关闭
@@ -59,5 +60,9 @@ public interface CloseableIBContainer extends Container {
 	 * 检查当前容器是否已经关闭，若已经关闭，抛出异常
 	 * @throws ContainerClosedException
 	 */
-	void checkClosed() throws ContainerClosedException;
+	default void checkClosed() throws ContainerClosedException {
+		if (isClosed()) {
+			throw new ContainerClosedException();
+		}
+	}
 }

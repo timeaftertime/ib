@@ -7,8 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.plugin.PluginableContainer;
 import cn.milai.ib.util.ImageUtil;
@@ -40,7 +40,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	 */
 	private long lastFrame;
 
-	private ContainerEventListener listener;
+	private LifecycleListener listener;
 
 	@Override
 	public void setCamera(Camera camera) { this.camera = camera; }
@@ -105,18 +105,13 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	protected final void onStart() {
 		camera = new BaseCamera();
 		lastFrame = getContainer().getFrame();
-		listener = new ContainerEventListener() {
-			@Override
-			public boolean acrossEpoch() {
-				return true;
-			}
-
+		listener = new LifecycleListener() {
 			@Override
 			public void afterRefresh(LifecycleContainer container) {
 				refreshUI();
 			}
 		};
-		getContainer().addEventListener(listener);
+		getContainer().addLifecycleListener(listener);
 		initUI();
 	}
 
@@ -127,7 +122,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 
 	@Override
 	protected final void onStop() {
-		getContainer().removeEventListener(listener);
+		getContainer().removeLifecycleListener(listener);
 		destroyUI();
 	}
 

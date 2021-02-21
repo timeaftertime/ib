@@ -7,9 +7,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import cn.milai.common.base.Collects;
+import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.BaseLifecycleContainer;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 
 /**
  * {@link PluginableContainer} 默认实现
@@ -22,12 +23,7 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 
 	public BasePluginableContainer() {
 		plugins = Sets.newConcurrentHashSet();
-		addEventListener(new ContainerEventListener() {
-			@Override
-			public boolean acrossEpoch() {
-				return true;
-			}
-
+		addLifecycleListener(new LifecycleListener() {
 			@Override
 			public void onContainerClosed() {
 				stopAllPlugins();
@@ -42,7 +38,8 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	}
 
 	@Override
-	public void addPlugin(ContainerPlugin plugin) {
+	public void addPlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException {
+		checkClosed();
 		if (plugin.isRunning()) {
 			throw new IllegalStateException("不能添加运行中的插件");
 		}
@@ -50,7 +47,8 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	}
 
 	@Override
-	public void removePlugin(ContainerPlugin plugin) throws IllegalStateException {
+	public void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException {
+		checkClosed();
 		if (plugin.isRunning()) {
 			if (plugin.getContainer() != this) {
 				throw new IllegalStateException("不能移除不属于当前容器的插件");

@@ -7,8 +7,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.listener.ObjectListener;
 
 /**
  * {@link Container} 某类型对象的监听器，容器关闭后监听到的列表不会清空
@@ -17,39 +17,30 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
  */
 public class ContainerMonitor<T extends IBObject> {
 
-	private LifecycleContainer container;
-	private Set<T> objs = Sets.newConcurrentHashSet();
-	private ContainerEventListener listener;
+	private Container container;
+	private Set<T> monitored = Sets.newConcurrentHashSet();
+	private ObjectListener listener;
 
-	private ContainerMonitor(LifecycleContainer container, Class<T> clazz) {
+	private ContainerMonitor(Container container, Class<T> clazz) {
 		this.container = container;
-		listener = new ContainerEventListener() {
-
-			@Override
-			public boolean acrossEpoch() {
-				return true;
-			}
+		listener = new ObjectListener() {
 
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onObjectAdded(IBObject obj) {
 				if (clazz.isInstance(obj)) {
-					objs.add((T) obj);
+					monitored.add((T) obj);
 				}
 			}
 
 			@Override
-			public void onObjectRemoved(IBObject obj) {
-				objs.remove(obj);
+			public void onObjectRemoved(List<IBObject> objs) {
+				monitored.removeAll(objs);
 			}
 
-			@Override
-			public void afterEpochChanged(LifecycleContainer container) {
-				objs.clear();
-			}
 		};
-		container.addEventListener(listener);
-		objs.addAll(container.getAll(clazz));
+		container.addObjectListener(listener);
+		monitored.addAll(container.getAll(clazz));
 	}
 
 	public static <T extends IBObject> ContainerMonitor<T> monitor(LifecycleContainer container, Class<T> clazz) {
@@ -60,12 +51,12 @@ public class ContainerMonitor<T extends IBObject> {
 	 * 获取监听器监听到的关联容器中指令类型对象的列表
 	 * @return
 	 */
-	public List<T> getAll() { return Lists.newArrayList(objs); }
+	public List<T> getAll() { return Lists.newArrayList(monitored); }
 
 	/**
 	 * 停止监听
 	 */
 	public void stop() {
-		container.removeEventListener(listener);
+		container.removeObjectListener(listener);
 	}
 }

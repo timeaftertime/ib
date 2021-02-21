@@ -3,6 +3,7 @@ package cn.milai.ib.container;
 import java.util.List;
 
 import cn.milai.ib.IBObject;
+import cn.milai.ib.container.listener.ObjectListener;
 
 /**
  * 游戏对象的容器
@@ -52,5 +53,17 @@ public interface Container {
 	 * @param width
 	 * @param height
 	 */
-	void resize(int width, int height);
+	void newSize(int width, int height);
+
+	/**
+	 * 添加一个容器对象监听器
+	 * @param listener
+	 */
+	void addObjectListener(ObjectListener listener);
+
+	/**
+	 * 移除一个容器对象监听器
+	 * @param listener
+	 */
+	void removeObjectListener(ObjectListener listener);
 }
