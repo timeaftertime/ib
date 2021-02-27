@@ -2,8 +2,8 @@ package cn.milai.ib.container;
 
 import java.util.Stack;
 
-import cn.milai.ib.container.plugin.BasePluginableContainer;
 import cn.milai.ib.container.plugin.ui.UIPlugin;
+import cn.milai.ib.container.pluginable.BasePluginableContainer;
 
 /**
  * {@link DramaContainer} 的抽象实现

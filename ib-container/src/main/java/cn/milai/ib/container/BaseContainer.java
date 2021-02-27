@@ -95,13 +95,13 @@ public class BaseContainer implements Container {
 
 	private void notifyObjectsRemoved(List<IBObject> all) {
 		for (ObjectListener listener : safeObjectListeners()) {
-			listener.onObjectRemoved(all);
+			listener.onObjectRemoved(this, all);
 		}
 	}
 
 	private void notifyObjectAdded(IBObject obj) {
 		for (ObjectListener listener : safeObjectListeners()) {
-			listener.onObjectAdded(obj);
+			listener.onObjectAdded(this, obj);
 		}
 	}
 

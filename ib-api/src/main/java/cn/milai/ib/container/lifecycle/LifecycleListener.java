@@ -22,7 +22,8 @@ public interface LifecycleListener extends ContainerListener {
 
 	/**
 	 * 容器被关闭时调用
+	 * @param container
 	 */
-	default void onContainerClosed() {}
+	default void onContainerClosed(LifecycleContainer container) {}
 
 }

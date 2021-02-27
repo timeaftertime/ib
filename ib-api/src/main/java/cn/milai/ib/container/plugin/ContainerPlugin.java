@@ -1,5 +1,7 @@
 package cn.milai.ib.container.plugin;
 
+import cn.milai.ib.container.pluginable.PluginableContainer;
+
 /**
  * 容器插件
  * @author milai

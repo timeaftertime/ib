@@ -6,6 +6,7 @@ import java.util.List;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.property.Explosible;
+import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.BaseMonitorPlugin;
@@ -25,7 +26,7 @@ public class BaseExplosiblePlugin extends BaseMonitorPlugin<Explosible> implemen
 	protected List<ContainerListener> newListeners() {
 		return Arrays.asList(new ObjectListener() {
 			@Override
-			public void onObjectRemoved(List<IBObject> objs) {
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
 				for (IBObject obj : objs) {
 					if (!(obj instanceof Explosible)) {
 						return;

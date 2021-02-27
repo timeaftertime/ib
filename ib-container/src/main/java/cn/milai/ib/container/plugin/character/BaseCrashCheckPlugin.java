@@ -29,9 +29,12 @@ public class BaseCrashCheckPlugin extends BaseMonitorPlugin<CanCrash> implements
 		return Arrays.asList(new LifecycleListener() {
 			@Override
 			public void afterRefresh(LifecycleContainer container) {
-				if (container.isPaused()) {
+				if (container.isPaused() || container.isPined()) {
 					return;
 				}
+
+				long start = System.currentTimeMillis();
+
 				List<CanCrash> canCrashs = getAll();
 				for (int i = 1; i < canCrashs.size(); i++) {
 					for (int j = 0; j < i; j++) {
@@ -43,6 +46,8 @@ public class BaseCrashCheckPlugin extends BaseMonitorPlugin<CanCrash> implements
 						}
 					}
 				}
+
+				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
 		});
 	}

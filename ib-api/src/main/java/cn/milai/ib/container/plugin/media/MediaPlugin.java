@@ -2,14 +2,20 @@ package cn.milai.ib.container.plugin.media;
 
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.plugin.ContainerPlugin;
+import cn.milai.ib.container.plugin.metrics.MetrizablePlugin;
 
 /**
  * 用于播放媒体的 {@link ContainerPlugin}
  * @author milai
  * @date 2021.02.09
  */
-public interface MediaPlugin extends ContainerPlugin {
-	
+public interface MediaPlugin extends MetrizablePlugin {
+
+	/**
+	 * {@link ContainerPlugin} media 类别
+	 */
+	String CATEGORY_MEDIA = "media";
+
 	/**
 	 * 播放音频。若参数为 null 将忽略
 	 * @param audio
@@ -23,5 +29,8 @@ public interface MediaPlugin extends ContainerPlugin {
 	 * @throws ContainerClosedException
 	 */
 	void stopAudio(String code) throws ContainerClosedException;
+
+	@Override
+	default String getCategory() { return CATEGORY_MEDIA; }
 
 }

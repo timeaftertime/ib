@@ -1,4 +1,4 @@
-package cn.milai.ib.container.plugin;
+package cn.milai.ib.container.pluginable;
 
 import java.util.List;
 import java.util.Set;
@@ -7,10 +7,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import cn.milai.common.base.Collects;
+import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.BaseLifecycleContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.plugin.ContainerPlugin;
 
 /**
  * {@link PluginableContainer} 默认实现
@@ -20,13 +22,15 @@ import cn.milai.ib.container.lifecycle.LifecycleListener;
 public class BasePluginableContainer extends BaseLifecycleContainer implements PluginableContainer {
 
 	private Set<ContainerPlugin> plugins;
+	private List<PluginListener> listeners;
 
 	public BasePluginableContainer() {
 		plugins = Sets.newConcurrentHashSet();
+		listeners = Lists.newArrayList();
 		addLifecycleListener(new LifecycleListener() {
 			@Override
-			public void onContainerClosed() {
-				stopAllPlugins();
+			public void onContainerClosed(LifecycleContainer container) {
+				Uncheckeds.log(BasePluginableContainer.this::stopAllPlugins);
 			}
 
 			@Override
@@ -43,7 +47,9 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 		if (plugin.isRunning()) {
 			throw new IllegalStateException("不能添加运行中的插件");
 		}
-		plugins.add(plugin);
+		if (plugins.add(plugin)) {
+			notifyPluginAdded(plugin);
+		}
 	}
 
 	@Override
@@ -55,7 +61,31 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 			}
 			plugin.stop();
 		}
-		plugins.remove(plugin);
+		if (plugins.remove(plugin)) {
+			notifyPluginRemoved(plugin);
+		}
+	}
+
+	@Override
+	public void addPluginListener(PluginListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removePluginListener(PluginListener listener) {
+		listeners.remove(listener);
+	}
+
+	private void notifyPluginAdded(ContainerPlugin plugin) {
+		for (PluginListener listener : listeners) {
+			listener.onPluginAdded(this, plugin);
+		}
+	}
+
+	private void notifyPluginRemoved(ContainerPlugin plugin) {
+		for (PluginListener listener : listeners) {
+			listener.onPluginRemoved(this, plugin);
+		}
 	}
 
 	private void stopAllPlugins() {

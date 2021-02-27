@@ -28,12 +28,17 @@ public class BaseAliveCheckPlugin extends BaseMonitorPlugin<IBCharacter> impleme
 				if (container.isPaused()) {
 					return;
 				}
+
+				long start = System.currentTimeMillis();
+
 				for (IBCharacter character : getAll()) {
 					if (!character.isAlive()) {
 						character.onDead();
 						getContainer().removeObject(character);
 					}
 				}
+
+				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
 		});
 	}

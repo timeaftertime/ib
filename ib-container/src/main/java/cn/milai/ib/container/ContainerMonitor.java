@@ -27,14 +27,14 @@ public class ContainerMonitor<T extends IBObject> {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public void onObjectAdded(IBObject obj) {
+			public void onObjectAdded(Container container, IBObject obj) {
 				if (clazz.isInstance(obj)) {
 					monitored.add((T) obj);
 				}
 			}
 
 			@Override
-			public void onObjectRemoved(List<IBObject> objs) {
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
 				monitored.removeAll(objs);
 			}
 

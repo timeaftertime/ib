@@ -10,5 +10,5 @@ import cn.milai.ib.container.plugin.MonitorPlugin;
  * @date 2021.02.10
  */
 public interface ExplosiblePlugin extends MonitorPlugin<Explosible> {
-	
+
 }

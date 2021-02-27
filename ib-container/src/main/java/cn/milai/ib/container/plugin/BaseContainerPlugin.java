@@ -2,6 +2,8 @@ package cn.milai.ib.container.plugin;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import cn.milai.ib.container.pluginable.PluginableContainer;
+
 /**
  * {@link ContainerPlugin} 默认实现
  * @author milai
@@ -63,4 +65,5 @@ public class BaseContainerPlugin implements ContainerPlugin {
 			start(c);
 		}
 	}
+
 }

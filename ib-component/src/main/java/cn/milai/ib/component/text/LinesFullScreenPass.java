@@ -46,10 +46,18 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Lifecy
 	public LinesFullScreenPass(long inFrame, long keepFrame, long outFrame, List<String> lines,
 		int lineInterval, LifecycleContainer container) {
 		super(0, 0, container);
-		pass = new PassCaculator(inFrame, keepFrame, outFrame);
+		pass = new PassCaculator(inFrame, keepFrame, outFrame, p -> {
+			container.removeLifecycleListener(this);
+			container.removeObject(this);
+		});
 		this.lines = lines;
 		this.lineInterval = lineInterval;
 		container.addLifecycleListener(this);
+	}
+
+	@Override
+	public void afterRefresh(LifecycleContainer container) {
+		pass.refresh();
 	}
 
 	@Override
@@ -87,12 +95,4 @@ public class LinesFullScreenPass extends AbstractTextComponent implements Lifecy
 	@Override
 	public int getIntH() { return getContainer().getH(); }
 
-	@Override
-	public void afterRefresh(LifecycleContainer container) {
-		pass.refresh();
-		if (pass.isEnd()) {
-			container.removeLifecycleListener(this);
-			container.removeObject(this);
-		}
-	}
 }

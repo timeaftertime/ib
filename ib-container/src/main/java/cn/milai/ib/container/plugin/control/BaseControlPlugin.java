@@ -52,6 +52,8 @@ public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implement
 		return Arrays.asList(new LifecycleListener() {
 			@Override
 			public void afterRefresh(LifecycleContainer container) {
+				long start = System.currentTimeMillis();
+
 				for (int i = 0; i < CMD_PER_FRAME; i++) {
 					for (Queue<Cmd> q : cmdQueues.values()) {
 						Cmd cmd = q.poll();
@@ -67,6 +69,8 @@ public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implement
 						}
 					}
 				}
+
+				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
 		});
 	}

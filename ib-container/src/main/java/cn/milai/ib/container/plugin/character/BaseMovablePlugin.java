@@ -28,9 +28,14 @@ public class BaseMovablePlugin extends BaseMonitorPlugin<Movable> implements Mov
 				if (container.isPaused() || container.isPined()) {
 					return;
 				}
+
+				long start = System.currentTimeMillis();
+
 				for (Movable m : getAll()) {
 					m.move();
 				}
+
+				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
 		});
 	}

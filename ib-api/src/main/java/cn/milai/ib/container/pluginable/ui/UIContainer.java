@@ -1,8 +1,8 @@
 package cn.milai.ib.container.pluginable.ui;
 
-import cn.milai.ib.container.plugin.PluginableContainer;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.plugin.ui.UIPlugin;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 
 /**
  * 可能持有 {@link UIPlugin} 的容器

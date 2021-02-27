@@ -76,7 +76,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	public synchronized final void close() {
 		super.close();
 		for (LifecycleListener listener : safeLifecycleListeners()) {
-			listener.onContainerClosed();
+			listener.onContainerClosed(this);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	@Override
 	public void addLifecycleListener(LifecycleListener listener) {
 		if (isClosed()) {
-			listener.onContainerClosed();
+			listener.onContainerClosed(this);
 			return;
 		}
 		synchronized (lifecycleListeners) {

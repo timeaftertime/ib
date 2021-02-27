@@ -1,4 +1,4 @@
-package cn.milai.ib.container.plugin;
+package cn.milai.ib.container.pluginable;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -7,6 +7,7 @@ import java.util.function.Function;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.ContainerPlugin;
 
 /**
  * 可添加 {@link ContainerPlugin} 的  {@link Container}
@@ -30,6 +31,18 @@ public interface PluginableContainer extends LifecycleContainer {
 	 * @throws ContainerClosedException
 	 */
 	void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException;
+
+	/**
+	 * 添加一个插件事件监听器
+	 * @param listener
+	 */
+	void addPluginListener(PluginListener listener);
+
+	/**
+	 * 移除一个插件事件监听器
+	 * @param listener
+	 */
+	void removePluginListener(PluginListener listener);
 
 	/**
 	 * 获取当前容器中所有指定类型插件列表
@@ -71,6 +84,7 @@ public interface PluginableContainer extends LifecycleContainer {
 	 * 使用 {@link #getPlugin(Class)} 获取的指定类型 {@link ContainerPlugin} 调用指定 {@link Function} 并返回其返回值
 	 * 若 {@link #getPlugin(Class)} 返回 null 将不调用 {@link Function} ，直接返回 {@code def}
 	 * @param <T>
+	 * @param <R>
 	 * @param pluginClass
 	 * @param c
 	 * @return

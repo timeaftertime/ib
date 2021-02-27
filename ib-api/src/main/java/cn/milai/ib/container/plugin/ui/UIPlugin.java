@@ -3,13 +3,19 @@ package cn.milai.ib.container.plugin.ui;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.container.plugin.ContainerPlugin;
+import cn.milai.ib.container.plugin.metrics.MetrizablePlugin;
 
 /**
  * 用于展示用于界面的 {@link ContainerPlugin}
  * @author milai
  * @date 2021.02.09
  */
-public interface UIPlugin extends ContainerPlugin {
+public interface UIPlugin extends MetrizablePlugin {
+
+	/**
+	 * 刷新 UI 所用的毫秒数
+	 */
+	public static final String KEY_REFRESH_UI = "refreshUI";
 
 	/**
 	 * 设置将被显示的视野范围
@@ -81,5 +87,8 @@ public interface UIPlugin extends ContainerPlugin {
 	 * @param img
 	 */
 	void setBackgroud(Image img);
+
+	@Override
+	default String getCategory() { return "ui"; }
 
 }

@@ -11,6 +11,7 @@ import cn.milai.ib.container.plugin.character.BaseExplosiblePlugin;
 import cn.milai.ib.container.plugin.character.BaseMovablePlugin;
 import cn.milai.ib.container.plugin.control.BaseControlPlugin;
 import cn.milai.ib.container.plugin.media.BaseMediaPlugin;
+import cn.milai.ib.container.plugin.metrics.BaseMetricPlugin;
 import cn.milai.ib.container.pluginable.ui.FormUIContainer;
 
 /**
@@ -29,6 +30,7 @@ public class BattleFormContainer extends BaseDramaContainer implements FormUICon
 		addPlugin(new BaseExplosiblePlugin());
 		addPlugin(new BaseMediaPlugin());
 		addPlugin(new BaseFormUIPlugin());
+		addPlugin(new BaseMetricPlugin());
 		startAllPlugins();
 	}
 

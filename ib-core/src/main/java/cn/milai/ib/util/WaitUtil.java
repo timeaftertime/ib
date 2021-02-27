@@ -97,7 +97,7 @@ public class WaitUtil {
 		}
 
 		@Override
-		public void onContainerClosed() {
+		public void onContainerClosed(LifecycleContainer container) {
 			notifyThread();
 		}
 
@@ -113,7 +113,7 @@ public class WaitUtil {
 		}
 
 		@Override
-		public void onObjectRemoved(List<IBObject> objs) {
+		public void onObjectRemoved(Container container, List<IBObject> objs) {
 			for (IBObject obj : objs) {
 				if (this.target == obj) {
 					((LifecycleContainer) obj.getContainer()).removeObjectListener(this);

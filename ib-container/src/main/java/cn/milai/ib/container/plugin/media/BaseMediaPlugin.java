@@ -11,7 +11,7 @@ import com.google.common.collect.Sets;
 
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
-import cn.milai.ib.container.plugin.PluginableContainer;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.util.WaitUtil;
 
 /**

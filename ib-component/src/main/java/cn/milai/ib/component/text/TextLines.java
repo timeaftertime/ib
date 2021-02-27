@@ -29,19 +29,10 @@ public class TextLines extends AbstractTextComponent implements LifecycleListene
 	 * @param container
 	 * @param lines 需要显示的文本
 	 * @param bgColor 背景颜色
-	 * @param inFrame 渐入的持续帧数
-	 * @param keepFrame 维持不变的持续帧数
-	 * @param outFrame 渐出的持续帧数
+	 * @param frame 整个显示过程的总帧数
 	 */
-	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long inFrame,
-		long keepFrame,
-		long outFrame) {
-		super(x, y, container);
-		container.addLifecycleListener(this);
-		pass = new PassCaculator(inFrame, keepFrame, outFrame);
-		img = ImageUtil.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
-		setW(img.getWidth());
-		setH(img.getHeight());
+	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long frame) {
+		this(x, y, container, lines, bgColor, frame / 3, frame / 3, frame / 3);
 	}
 
 	/**
@@ -51,10 +42,27 @@ public class TextLines extends AbstractTextComponent implements LifecycleListene
 	 * @param container
 	 * @param lines 需要显示的文本
 	 * @param bgColor 背景颜色
-	 * @param frame 整个显示过程的总帧数
+	 * @param inFrame 渐入的持续帧数
+	 * @param keepFrame 维持不变的持续帧数
+	 * @param outFrame 渐出的持续帧数
 	 */
-	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long frame) {
-		this(x, y, container, lines, bgColor, frame / 3, frame / 3, frame / 3);
+	public TextLines(int x, int y, LifecycleContainer container, List<String> lines, Color bgColor, long inFrame,
+		long keepFrame,
+		long outFrame) {
+		super(x, y, container);
+		container.addLifecycleListener(this);
+		pass = new PassCaculator(inFrame, keepFrame, outFrame, c -> {
+			container.removeLifecycleListener(this);
+			container.removeObject(this);
+		});
+		img = ImageUtil.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
+		setW(img.getWidth());
+		setH(img.getHeight());
+	}
+
+	@Override
+	public void afterRefresh(LifecycleContainer container) {
+		pass.refresh();
 	}
 
 	@Override
@@ -63,15 +71,6 @@ public class TextLines extends AbstractTextComponent implements LifecycleListene
 			return 0;
 		}
 		return super.doubleProp(key);
-	}
-
-	@Override
-	public void afterRefresh(LifecycleContainer container) {
-		pass.refresh();
-		if (pass.isEnd()) {
-			container.removeLifecycleListener(this);
-			container.removeObject(this);
-		}
 	}
 
 	@Override

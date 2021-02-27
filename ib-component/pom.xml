@@ -12,6 +12,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>cn.milai</groupId>
+			<artifactId>beginning-thread</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.milai</groupId>
 			<artifactId>ib-core</artifactId>
 		</dependency>
 	</dependencies>

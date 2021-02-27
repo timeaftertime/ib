@@ -13,6 +13,7 @@ import cn.milai.ib.IBCore;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.drama.DramaResolver;
@@ -99,7 +100,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	}
 
 	@Override
-	public void onContainerClosed() {
+	public void onContainerClosed(LifecycleContainer container) {
 		this.interrupt();
 	}
 

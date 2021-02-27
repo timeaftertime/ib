@@ -36,11 +36,6 @@ public class LifecycleThread extends Thread {
 	}
 	
 	@Override
-	public void interrupt() {
-		super.interrupt();
-	}
-
-	@Override
 	public void run() {
 		try {
 			setName(THREAD_NAME);

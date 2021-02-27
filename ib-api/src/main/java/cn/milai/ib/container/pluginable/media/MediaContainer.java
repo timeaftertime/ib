@@ -1,8 +1,8 @@
 package cn.milai.ib.container.pluginable.media;
 
-import cn.milai.ib.container.plugin.PluginableContainer;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 
 /**
  * 可能持有 {@link MediaPlugin} 的 {@link PluginableContainer}

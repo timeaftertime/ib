@@ -10,7 +10,7 @@ import cn.milai.ib.IBObject;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
-import cn.milai.ib.container.plugin.PluginableContainer;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -65,6 +65,8 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	}
 
 	private void refreshUI() {
+		long start = System.currentTimeMillis();
+		
 		PluginableContainer container = getContainer();
 		int w = container.getW();
 		int h = container.getH();
@@ -85,6 +87,8 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 		buffer.dispose();
 		nowImage = image;
 		afterRefresh();
+		
+		metric(KEY_REFRESH_UI, System.currentTimeMillis() - start);
 	}
 
 	/**

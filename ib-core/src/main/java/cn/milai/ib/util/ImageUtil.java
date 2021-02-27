@@ -150,9 +150,9 @@ public abstract class ImageUtil {
 	 * @param transaparency
 	 * @return
 	 */
-	public static Graphics createGraphics(BufferedImage img, float transaparency) {
+	public static Graphics createGraphics(BufferedImage img, double transaparency) {
 		Graphics2D g2d = img.createGraphics();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transaparency));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) transaparency));
 		return g2d;
 	}
 
