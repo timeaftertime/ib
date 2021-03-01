@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
@@ -69,7 +69,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @return
 	 */
 	protected int intProp(String key) {
-		return SystemConf.intProp(configClass, key);
+		return IBConf.intProp(configClass, key);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @return
 	 */
 	protected long longProp(String key) {
-		return SystemConf.longProp(configClass, key);
+		return IBConf.longProp(configClass, key);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @return
 	 */
 	protected double doubleProp(String key) {
-		return SystemConf.doubleProp(configClass, key);
+		return IBConf.doubleProp(configClass, key);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * @return
 	 */
 	protected String prop(String key) {
-		return SystemConf.strProp(configClass, key);
+		return IBConf.strProp(configClass, key);
 	}
 
 	@Override

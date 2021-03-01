@@ -3,7 +3,7 @@ package cn.milai.ib.container.lifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.ContainerClosedException;
 
 /**
@@ -53,7 +53,7 @@ public class LifecycleThread extends Thread {
 	}
 
 	private void sleepOneFrame() {
-		long refreshMillisec = SystemConf.refreshMillisec();
+		long refreshMillisec = IBConf.refreshMillisec();
 		long pre = System.currentTimeMillis() - lastStartMillisec;
 		if (pre > refreshMillisec) {
 			LOG.warn("刷新超时: expected = {}, real = {}", refreshMillisec, pre);

@@ -81,8 +81,7 @@ public class DramaResLoader {
 	private static Map<String, byte[]> doLoadResources(String dramaCode, String basePath) {
 		Map<String, byte[]> resources = Maps.newConcurrentMap();
 		for (File file : new File(basePath).listFiles()) {
-			if (file.getName().equals(CHECK_FILE)
-				|| file.getName().equals(tarGzFileName(dramaCode))) {
+			if (file.getName().equals(CHECK_FILE) || file.getName().equals(tarGzFileName(dramaCode))) {
 				continue;
 			}
 			resources.putAll(loadFilesFrom("", file));

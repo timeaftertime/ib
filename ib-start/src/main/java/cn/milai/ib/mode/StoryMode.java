@@ -1,14 +1,11 @@
 package cn.milai.ib.mode;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import cn.milai.common.io.InputStreams;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.container.ContainerClosedException;
@@ -39,11 +36,10 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	private static final int HEIGHT = 689;
 
 	private static final int SHOW_DRAMA_NAME_FRAMES = 60;
-	private static final String STAGE_CONF_FILE = "/ib-stages.conf";
 	private static final String THREAD_NAME_PREFIX = "Story#";
 
 	private DramaContainer container;
-	private List<String> dramaCodes;
+	private String[] dramaCodes;
 	private List<DramaResolver> dramaResolvers;
 
 	@Override
@@ -53,11 +49,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	@Override
 	public void init() {
-		InputStream in = StoryMode.class.getResourceAsStream(STAGE_CONF_FILE);
-		dramaCodes = InputStreams.readLines(in).stream()
-			.map(line -> line.trim())
-			.filter(line -> !line.startsWith("#"))
-			.collect(Collectors.toList());
+		dramaCodes = IBCore.getBean(StoryConf.class).getStages();
 		dramaResolvers = IBCore.getBeansOrdered(DramaResolver.class);
 		container = IBCore.getBean(DramaContainer.class);
 	}
@@ -66,21 +58,21 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	public void run() {
 		try {
 			container.start();
-			for (int i = 0; i < dramaCodes.size() && !Thread.interrupted(); i++) {
+			for (int i = 0; i < dramaCodes.length && !Thread.interrupted(); i++) {
 				container.reset();
 				container.resizeWithUI(WIDTH, HEIGHT);
 				LinesFullScreenPass loading = new LinesFullScreenPass(
 					SHOW_DRAMA_NAME_FRAMES, Arrays.asList("NOW LOADING……"), 7, container
 				);
 				container.addObject(loading);
-				Drama drama = resolveDrama(dramaCodes.get(i));
-				setName(THREAD_NAME_PREFIX + dramaCodes.get(i));
+				Drama drama = resolveDrama(dramaCodes[i]);
+				setName(THREAD_NAME_PREFIX + dramaCodes[i]);
 				container.removeObject(loading);
 				LinesFullScreenPass stageInfo = new LinesFullScreenPass(
 					SHOW_DRAMA_NAME_FRAMES, Arrays.asList("第 " + (i + 1) + " 关", drama.getName()), 7, container
 				);
 				container.addObject(stageInfo);
-				DramaResLoader.load(dramaCodes.get(i));
+				DramaResLoader.load(dramaCodes[i]);
 				WaitUtil.waitRemove(stageInfo, 5);
 				drama.run(container);
 			}

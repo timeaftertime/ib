@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
@@ -131,7 +131,7 @@ public class WaitUtil {
 				break;
 			}
 			try {
-				long millisec = (checkInterval.hasNext() ? checkInterval.next() : 1) * SystemConf.refreshMillisec();
+				long millisec = (checkInterval.hasNext() ? checkInterval.next() : 1) * IBConf.refreshMillisec();
 				Thread.sleep(millisec);
 			} catch (InterruptedException e) {
 				// 确保当前线程若是被 listener 以外的地方提前中断，也会在退出时清除线程中断状态

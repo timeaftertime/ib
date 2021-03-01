@@ -2,8 +2,7 @@ package cn.milai.ib.container.plugin.ui;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.conf.SysProps;
-import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.conf.IBConf;
 
 /**
  * Image 默认实现
@@ -27,7 +26,7 @@ public class BaseImage implements Image {
 
 	@Override
 	public synchronized BufferedImage next() {
-		nextCnt = (nextCnt + 1) % SystemConf.getInt(SysProps.IMAGE_UPDATE_FRAME);
+		nextCnt = (nextCnt + 1) % IBConf.imageUpdateFrame();
 		if (nextCnt == 0) {
 			imageIndex = (imageIndex + 1) % images.length;
 		}

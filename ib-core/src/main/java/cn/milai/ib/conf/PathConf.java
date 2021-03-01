@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.milai.ib.IBCore;
 import cn.milai.ib.loader.ex.ConfigNotFoundException;
 import cn.milai.ib.loader.ex.ImageNotFoundException;
 
@@ -17,6 +18,8 @@ public class PathConf {
 
 	private static final Logger log = LoggerFactory.getLogger(PathConf.class);
 
+	private static RepoConf repoConf = IBCore.getBean(RepoConf.class);
+
 	private static final String CONF_PREFIX = "conf/";
 	private static final String CONF_SUFFIX = ".conf";
 
@@ -28,6 +31,8 @@ public class PathConf {
 	private static final String DRAMA_SUFFIX = ".drama";
 
 	private static final String DRAMA_RES_PREFFIX = "dramaRes/";
+
+	private PathConf() {}
 
 	/**
 	 * 获取 clazz 图片的本地绝对路径
@@ -46,7 +51,7 @@ public class PathConf {
 	 */
 	public static String imgPath(Class<?> clazz, String status) {
 		String statusAppend = (status == null) ? "" : (IMG_STATUS_SPLIT + status);
-		return resourcePath() + IMG_PREFIX + toPath(clazz) + statusAppend + IMG_SUFFIX;
+		return repoConf.getLocalResourcePath() + IMG_PREFIX + toPath(clazz) + statusAppend + IMG_SUFFIX;
 	}
 
 	/**
@@ -55,7 +60,7 @@ public class PathConf {
 	 * @return
 	 */
 	public static String confPath(Class<?> clazz) {
-		return resourcePath() + CONF_PREFIX + toPath(clazz) + CONF_SUFFIX;
+		return repoConf.getLocalResourcePath() + CONF_PREFIX + toPath(clazz) + CONF_SUFFIX;
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class PathConf {
 	 * @return
 	 */
 	public static String dramaPath(String dramaCode) {
-		return resourcePath() + DRAMA_PREFIX + toPath(dramaCode) + DRAMA_SUFFIX;
+		return repoConf.getLocalResourcePath() + DRAMA_PREFIX + toPath(dramaCode) + DRAMA_SUFFIX;
 	}
 
 	/**
@@ -73,15 +78,7 @@ public class PathConf {
 	 * @return
 	 */
 	public static String dramaResPath(String dramaCode) {
-		return resourcePath() + DRAMA_RES_PREFFIX + toPath(dramaCode);
-	}
-
-	/**
-	 * 获取资源文件所在根目录
-	 * @return
-	 */
-	private static final String resourcePath() {
-		return SystemConf.getStr(SysProps.RESOURCE_PATH);
+		return repoConf.getLocalResourcePath() + DRAMA_RES_PREFFIX + toPath(dramaCode);
 	}
 
 	/**
@@ -134,7 +131,7 @@ public class PathConf {
 	 * @return
 	 */
 	public static String dramaRepo(String clipCode) {
-		return SystemConf.repoURL() + "/file/drama?dramaCode=" + clipCode;
+		return repoConf.getRemoteUrl() + "/file/drama?dramaCode=" + clipCode;
 	}
 
 	/**
@@ -143,7 +140,7 @@ public class PathConf {
 	 * @return
 	 */
 	public static String dramaResRepo(String clipCode) {
-		return SystemConf.repoURL() + "/file/dramaRes?dramaCode=" + clipCode;
+		return repoConf.getRemoteUrl() + "/file/dramaRes?dramaCode=" + clipCode;
 	}
 
 	/**
