@@ -1,7 +1,6 @@
 # 敌星弹雨 Infinity Battle
 ![Java Version](https://img.shields.io/badge/java-8-green)
-![Spring Version](https://img.shields.io/badge/spring-5.2.3.RELEASE-green)
-![Spring Boot Version](https://img.shields.io/badge/spring%20boot-2.2.4.RELEASE-green)
+![Spring Boot Version](https://img.shields.io/badge/spring%20boot-2.4.3-green)
 ## 简介
 使用 Java 实现的简单 2D 游戏引擎。
 
@@ -18,3 +17,4 @@
 ## 相关项目
 * <a href="https://github.com/timeaftertime/ib-demo">**ib-demo**</a>
 * <a href="https://github.com/timeaftertime/ib-dramafile">**ib-dramafile**</a>
+* <a href="https://github.com/timeaftertime/ib-repo">**ib-repo**</a>
