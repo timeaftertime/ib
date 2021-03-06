@@ -19,6 +19,8 @@ import cn.milai.ib.loader.ex.DramaStringNotFoundException;
  */
 public class DramaStringLoader {
 
+	private DramaStringLoader() {}
+
 	private static final Logger LOG = LoggerFactory.getLogger(DramaStringLoader.class);
 
 	/**
@@ -38,7 +40,7 @@ public class DramaStringLoader {
 	 */
 	private static final Map<String, Map<String, Map<String, String>>> STRINGS = Maps.newHashMap();
 
-	public void setLanguage(String lang) {
+	public static void setLanguage(String lang) {
 		if (!ZH_CN.equals(lang) && !EN_US.equals(lang)) {
 			throw new IllegalAccessError("暂时只支持中文和英文：" + lang);
 		}

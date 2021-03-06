@@ -27,6 +27,8 @@ import cn.milai.ib.loader.ex.DramaResourceNotFoundException;
  */
 public class DramaResLoader {
 
+	private DramaResLoader() {}
+
 	private static final Logger LOG = LoggerFactory.getLogger(DramaResLoader.class);
 
 	/**
@@ -156,7 +158,7 @@ public class DramaResLoader {
 	 * @param basePath
 	 * @param fileName
 	 */
-	private static final void extract(String basePath, String fileName) {
+	private static void extract(String basePath, String fileName) {
 		File file = new File(basePath + "/" + fileName);
 		LOG.info("开始解压剧本资源文件: file = {}", file);
 		Uncheckeds.rethrow(() -> {

@@ -1,9 +1,5 @@
 package cn.milai.ib.util;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 public final class StringUtil {
 
 	/**
@@ -11,8 +7,7 @@ public final class StringUtil {
 	 */
 	private static final String INF = "INF";
 
-	private StringUtil() {
-	}
+	private StringUtil() {}
 
 	/**
 	 * 将表示整数的字符串转换为对应的整数值
@@ -46,16 +41,4 @@ public final class StringUtil {
 		return str.startsWith("0x") ? Long.parseLong(str.substring(2), 16) : Long.parseLong(str);
 	}
 
-	/**
-	 * 将字符串以换行切割，返回切割后字符串的列表
-	 * @param str
-	 * @return
-	 */
-	public static final List<String> lines(String str) {
-		List<String> strs = Lists.newArrayList();
-		for (String line : str.split("\n")) {
-			strs.add(line);
-		}
-		return strs;
-	}
 }

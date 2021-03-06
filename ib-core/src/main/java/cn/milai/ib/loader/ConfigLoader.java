@@ -21,7 +21,9 @@ import cn.milai.ib.util.PropertiesUtil;
  * 2019.11.24
  * @author milai
  */
-public abstract class ConfigLoader {
+public class ConfigLoader {
+
+	private ConfigLoader() {}
 
 	private static final Logger LOG = LoggerFactory.getLogger(ConfigLoader.class);
 

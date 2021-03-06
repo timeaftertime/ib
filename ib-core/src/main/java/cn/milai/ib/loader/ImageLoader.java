@@ -21,7 +21,9 @@ import cn.milai.ib.util.ImageUtil;
  * @author milai
  * @date 2019.11.16
  */
-public abstract class ImageLoader {
+public class ImageLoader {
+
+	private ImageLoader() {}
 
 	private static final Logger LOG = LoggerFactory.getLogger(ImageLoader.class);
 

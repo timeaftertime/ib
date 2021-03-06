@@ -136,7 +136,7 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 			}
 		}
 		lines.add(FOOTER);
-		LOG.info(Strings.toLines(lines));
+		LOG.info(Strings.joinLineSeparator(lines));
 	}
 
 	private int maxNameLen() {

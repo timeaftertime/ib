@@ -11,6 +11,8 @@ import cn.milai.ib.container.plugin.media.AudioCreator;
  */
 public class AudioLoader {
 
+	private AudioLoader() {}
+
 	/**
 	 * 加载指定剧本的指定 code 的音频
 	 * @param audioCode
