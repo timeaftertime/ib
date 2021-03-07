@@ -4,8 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
+import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.container.Container;
@@ -22,7 +21,7 @@ public class ViewObject extends AbstractIBObject {
 	private double rotateRadian;
 	private boolean horizontalFlipped = false;
 
-	private Map<BufferedImage, BufferedImage> flipped = Maps.newConcurrentMap();
+	private Map<BufferedImage, BufferedImage> flipped = new ConcurrentHashMap<>();
 
 	/**
 	 * 创建一个指定中心坐标 (centerX, centerY) 、指定容器，使用 configClass 配置的视图对象

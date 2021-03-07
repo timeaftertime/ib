@@ -3,11 +3,10 @@ package cn.milai.ib.component.text;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.annotation.Order;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.ib.character.Controllable;
 import cn.milai.ib.component.WaitNextPageTip;
@@ -76,7 +75,7 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 	}
 
 	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
-		Map<String, Object> m = Maps.newHashMap();
+		Map<String, Object> m = new HashMap<>();
 		m.put(PARAM_TEXT, text == null ? "" : text);
 		m.put(PARAM_SPEAKER_IMG, speakerImg);
 		m.put(PARAM_SPEAKER_NAME, speakerName == null ? "" : speakerName);
@@ -197,6 +196,5 @@ public class DramaDialog extends AbstractTextComponent implements Controllable {
 		}
 		return true;
 	}
-
 
 }

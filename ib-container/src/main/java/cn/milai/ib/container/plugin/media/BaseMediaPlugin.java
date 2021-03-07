@@ -1,13 +1,12 @@
 package cn.milai.ib.container.plugin.media;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
@@ -23,11 +22,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 
 	private static final String THREAD_NAME = "IBAudioPlay";
 	private static final int THREAD_POOL_SIZE = 2;
-	private Map<String, Audio> audios;
-
-	public BaseMediaPlugin() {
-		audios = Maps.newConcurrentMap();
-	}
+	private Map<String, Audio> audios = new ConcurrentHashMap<>();
 
 	@Override
 	public final void playAudio(Audio audio) throws ContainerClosedException {
@@ -52,10 +47,10 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 	}
 
 	public void run(int startEpoch) {
-		List<String> fetched = Lists.newArrayList();
+		List<String> fetched = new ArrayList<>();
 		ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		while (startEpoch == getContainer().getEpoch() && isRunning()) {
-			for (String code : Sets.newHashSet(audios.keySet())) {
+			for (String code : new HashSet<>(audios.keySet())) {
 				Audio audio = audios.get(code);
 				if (audio == null) {
 					continue;

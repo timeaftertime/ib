@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.http.Https;
@@ -40,7 +39,7 @@ public class DramaResLoader {
 	 * 已经加载到内存的资源
 	 * drama -> { resource -> 资源字节数组 } 
 	 */
-	private static final Map<String, Map<String, byte[]>> RESOURCES = Maps.newConcurrentMap();
+	private static final Map<String, Map<String, byte[]>> RESOURCES = new ConcurrentHashMap<>();
 
 	/**
 	 * 获取 drama 下的资源 resource 的输入流
@@ -81,7 +80,7 @@ public class DramaResLoader {
 	}
 
 	private static Map<String, byte[]> doLoadResources(String dramaCode, String basePath) {
-		Map<String, byte[]> resources = Maps.newConcurrentMap();
+		Map<String, byte[]> resources = new ConcurrentHashMap<>();
 		for (File file : new File(basePath).listFiles()) {
 			if (file.getName().equals(CHECK_FILE) || file.getName().equals(tarGzFileName(dramaCode))) {
 				continue;
@@ -98,7 +97,7 @@ public class DramaResLoader {
 	 * @return
 	 */
 	private static Map<String, byte[]> loadFilesFrom(String prefix, File now) {
-		Map<String, byte[]> resources = Maps.newConcurrentMap();
+		Map<String, byte[]> resources = new ConcurrentHashMap<>();
 		if (!now.isDirectory()) {
 			resources.put(prefix + "/" + now.getName(), Files.toBytes(now));
 			return resources;

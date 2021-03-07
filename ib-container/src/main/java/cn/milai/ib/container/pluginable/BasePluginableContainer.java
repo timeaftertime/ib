@@ -1,10 +1,11 @@
 package cn.milai.ib.container.pluginable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.common.base.Collects;
 import cn.milai.common.ex.unchecked.Uncheckeds;
@@ -21,12 +22,10 @@ import cn.milai.ib.container.plugin.ContainerPlugin;
  */
 public class BasePluginableContainer extends BaseLifecycleContainer implements PluginableContainer {
 
-	private Set<ContainerPlugin> plugins;
-	private List<PluginListener> listeners;
+	private Set<ContainerPlugin> plugins = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private List<PluginListener> listeners = new CopyOnWriteArrayList<>();
 
 	public BasePluginableContainer() {
-		plugins = Sets.newConcurrentHashSet();
-		listeners = Lists.newArrayList();
 		addLifecycleListener(new LifecycleListener() {
 			@Override
 			public void onContainerClosed(LifecycleContainer container) {
@@ -97,7 +96,7 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ContainerPlugin> List<T> getPlugins(Class<T> pluginClass) {
-		return (List<T>) Collects.filter(Lists.newArrayList(plugins), p -> pluginClass.isInstance(p));
+		return (List<T>) Collects.filterList(new ArrayList<>(plugins), p -> pluginClass.isInstance(p));
 	}
 
 }

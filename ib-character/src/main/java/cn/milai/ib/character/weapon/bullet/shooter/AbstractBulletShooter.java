@@ -1,9 +1,10 @@
 package cn.milai.ib.character.weapon.bullet.shooter;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.google.common.collect.Lists;
-
+import cn.milai.common.base.Collects;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.weapon.bullet.Bullet;
 
@@ -32,7 +33,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	/**
 	 * 已经发射出去的子弹
 	 */
-	private List<Bullet> bullets = Lists.newArrayList();
+	private List<Bullet> bullets = new CopyOnWriteArrayList<>();
 
 	/**
 	 * 武器持有者
@@ -42,7 +43,9 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	/**
 	 * 创建一个无发射间隔、最大发射子弹数不限的子弹发射器
 	 */
-	public AbstractBulletShooter(IBCharacter owner) { this(owner, 0, Integer.MAX_VALUE); }
+	public AbstractBulletShooter(IBCharacter owner) {
+		this(owner, 0, Integer.MAX_VALUE);
+	}
 
 	public AbstractBulletShooter(IBCharacter owner, long shootInterval, int maxBulletNum) {
 		this.owner = owner;
@@ -61,11 +64,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 		if (lastShootFrame + getShootInterval() >= owner.getContainer().getFrame()) {
 			return false;
 		}
-		for (Bullet bullet : Lists.newArrayList(bullets)) {
-			if (!bullet.isAlive()) {
-				bullets.remove(bullet);
-			}
-		}
+		Collects.remainMet(bullets, bullet -> bullet.isAlive());
 		if (bullets.size() >= getMaxBulletNum()) {
 			return false;
 		}
@@ -76,9 +75,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	public final Bullet[] createBullets() {
 		lastShootFrame = owner.getContainer().getFrame();
 		Bullet[] newBullets = createBullets0();
-		for (Bullet bullet : newBullets) {
-			bullets.add(bullet);
-		}
+		bullets.addAll(Arrays.asList(newBullets));
 		return newBullets;
 	}
 

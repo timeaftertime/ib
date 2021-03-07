@@ -1,5 +1,6 @@
 package cn.milai.ib;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
 
 /**
  * Spring ApplicationContext 持有者
@@ -68,7 +67,7 @@ public class IBCore implements ApplicationContextAware {
 	 * @throws BeansException
 	 */
 	public static <T> List<T> getBeans(Class<T> requiredType) throws BeansException {
-		return Lists.newArrayList(ctx.getBeansOfType(requiredType).values().iterator());
+		return new ArrayList<>(ctx.getBeansOfType(requiredType).values());
 	}
 
 	/**

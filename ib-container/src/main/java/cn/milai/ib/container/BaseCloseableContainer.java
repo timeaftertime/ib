@@ -1,6 +1,7 @@
 package cn.milai.ib.container;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import cn.milai.ib.IBObject;
 
@@ -14,16 +15,15 @@ public class BaseCloseableContainer extends BaseContainer implements CloseableCo
 	/**
 	 * 容器是否已经关闭
 	 */
-	private boolean closed = false;
+	private AtomicBoolean closed = new AtomicBoolean();
 
 	@Override
-	public void close() {
-		checkClosed();
-		closed = true;
+	public boolean close() {
+		return closed.compareAndSet(false, true);
 	}
 
 	@Override
-	public boolean isClosed() { return closed; }
+	public boolean isClosed() { return closed.get(); }
 
 	@Override
 	public final <T extends IBObject> List<T> getAll(Class<T> type) throws ContainerClosedException {

@@ -1,14 +1,13 @@
 package cn.milai.ib.container.plugin.metrics;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import cn.milai.common.base.Strings;
 import cn.milai.common.thread.counter.Counter;
@@ -44,12 +43,12 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	 * 每种 category 对应的 {@link MetricsPlugin} 的指标信息。
 	 * 其中 List 的下标与 {@link #categoryReigistered} 对应
 	 */
-	private Map<String, List<Metrics>> metricsByCategory = Maps.newConcurrentMap();
+	private Map<String, List<Metrics>> metricsByCategory = new ConcurrentHashMap<>();
 
 	/**
 	 * 每种 category 对应的 {@link MetricsPlugin} 列表
 	 */
-	private Map<String, List<MetrizablePlugin>> categoryReigistered = Maps.newConcurrentMap();
+	private Map<String, List<MetrizablePlugin>> categoryReigistered = new ConcurrentHashMap<>();
 
 	@Override
 	public void metric(MetrizablePlugin plugin, String k, Object v) {
@@ -103,7 +102,7 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	}
 
 	private List<MetrizablePlugin> getPluginsByCategory(String category) {
-		return categoryReigistered.computeIfAbsent(category, c -> Lists.newArrayList());
+		return categoryReigistered.computeIfAbsent(category, c -> new ArrayList<>());
 	}
 
 	/**
@@ -113,17 +112,17 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	 */
 	private List<Metrics> getMetricsByCategory(String category) {
 		synchronized (metricsByCategory) {
-			return metricsByCategory.computeIfAbsent(category, c -> Lists.newArrayList());
+			return metricsByCategory.computeIfAbsent(category, c -> new ArrayList<>());
 		}
 	}
 
 	private void logMetrics() {
-		List<String> lines = Lists.newArrayList();
+		List<String> lines = new ArrayList<>();
 		lines.add(HEADER);
 		synchronized (metricsByCategory) {
 			String printFormat = "%-" + maxNameLen() + "s|%s";
 			for (String category : metricsByCategory.keySet()) {
-				List<Metrics> metricsList = Lists.newArrayList(metricsByCategory.get(category));
+				List<Metrics> metricsList = new ArrayList<>(metricsByCategory.get(category));
 				for (int i = 0; i < metricsList.size(); i++) {
 					Metrics metrics = metricsList.get(i);
 					if (metrics.isEmpty()) {

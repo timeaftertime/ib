@@ -1,10 +1,10 @@
 package cn.milai.ib.container;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
@@ -18,7 +18,7 @@ import cn.milai.ib.container.listener.ObjectListener;
 public class ContainerMonitor<T extends IBObject> {
 
 	private Container container;
-	private Set<T> monitored = Sets.newConcurrentHashSet();
+	private Set<T> monitored = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	private ObjectListener listener;
 
 	private ContainerMonitor(Container container, Class<T> clazz) {
@@ -51,7 +51,7 @@ public class ContainerMonitor<T extends IBObject> {
 	 * 获取监听器监听到的关联容器中指令类型对象的列表
 	 * @return
 	 */
-	public List<T> getAll() { return Lists.newArrayList(monitored); }
+	public List<T> getAll() { return new ArrayList<>(monitored); }
 
 	/**
 	 * 停止监听

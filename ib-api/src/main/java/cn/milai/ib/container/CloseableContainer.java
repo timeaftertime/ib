@@ -12,10 +12,10 @@ import cn.milai.ib.IBObject;
 public interface CloseableContainer extends Container {
 
 	/**
-	 * 关闭容器
-	 * @throws ContainerClosedException
+	 * 关闭容器，返回是否真正进行了关闭操作
+	 * @return
 	 */
-	void close() throws ContainerClosedException;
+	boolean close();
 
 	/**
 	 * 容器是否已经关闭

@@ -1,10 +1,9 @@
 package cn.milai.ib.container.plugin.metrics;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 数据指标
@@ -13,7 +12,7 @@ import com.google.common.collect.Maps;
  */
 public class Metrics {
 
-	private Map<String, String> kvs = Maps.newConcurrentMap();
+	private Map<String, String> kvs = new ConcurrentHashMap<>();
 
 	/**
 	 * 设置指定 {@code k} 的值为 {@code v}
@@ -41,7 +40,7 @@ public class Metrics {
 
 	@Override
 	public String toString() {
-		List<String> pairs = Lists.newArrayList();
+		List<String> pairs = new ArrayList<>();
 		for (String k : kvs.keySet()) {
 			pairs.add(String.format("%s=%s", k, kvs.get(k)));
 		}

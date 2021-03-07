@@ -3,11 +3,10 @@ package cn.milai.ib.loader;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
@@ -31,7 +30,7 @@ public class ImageLoader {
 	 * 已经加载的图片
 	 * fileName -> Image
 	 */
-	private static final Map<String, BufferedImage[]> IMAGES = Maps.newConcurrentMap();
+	private static final Map<String, BufferedImage[]> IMAGES = new ConcurrentHashMap<>();
 
 	private static Image loadImageFile(File file) {
 		return buildImage(IMAGES.computeIfAbsent(file.toString(), f -> ImageUtil.loadImage(file)));

@@ -1,8 +1,8 @@
 package cn.milai.ib.container.lifecycle;
 
 import java.util.List;
-
-import com.google.common.collect.Lists;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.BaseCloseableContainer;
@@ -24,24 +24,19 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	/**
 	 * 容器是否已经启动
 	 */
-	private boolean started = false;
+	private AtomicBoolean started = new AtomicBoolean();
 
 	/**
 	 * 游戏对象是否被固定住
 	 */
-	private volatile boolean pined;
+	private volatile boolean pined = false;
 
 	/**
 	 * 容器生命周期事件监听器列表
 	 */
-	private List<LifecycleListener> lifecycleListeners;
+	private List<LifecycleListener> lifecycleListeners = new CopyOnWriteArrayList<>();
 
 	private LifecycleThread refresher = new LifecycleThread(this);
-
-	public BaseLifecycleContainer() {
-		pined = false;
-		lifecycleListeners = Lists.newArrayList();
-	}
 
 	@Override
 	public long getFrame() { return refresher.getFrame(); }
@@ -53,31 +48,31 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	public final void reset() {
 		super.reset();
 		epoch++;
-		synchronized (lifecycleListeners) {
-			notifyEpochChanged();
-			lifecycleListeners = Collects.unfilter(lifecycleListeners, ContainerListener::inEpoch);
-		}
+		notifyEpochChanged();
+		lifecycleListeners = Collects.removeMet(lifecycleListeners, ContainerListener::inEpoch);
 		pined = false;
 		// 确保重置后处于非暂停状态
 		refresher.cancelPause();
 	}
 
 	@Override
-	public synchronized final void start() throws ContainerClosedException {
+	public final void start() throws ContainerClosedException {
 		checkClosed();
-		if (started) {
+		if (!started.compareAndSet(false, true)) {
 			return;
 		}
-		started = true;
 		refresher.start();
 	}
 
 	@Override
-	public synchronized final void close() {
-		super.close();
-		for (LifecycleListener listener : safeLifecycleListeners()) {
-			listener.onContainerClosed(this);
+	public final boolean close() {
+		if (super.close()) {
+			for (LifecycleListener listener : lifecycleListeners) {
+				listener.onContainerClosed(this);
+			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override
@@ -101,20 +96,16 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 			listener.onContainerClosed(this);
 			return;
 		}
-		synchronized (lifecycleListeners) {
-			this.lifecycleListeners.add(listener);
-		}
+		this.lifecycleListeners.add(listener);
 	}
 
 	@Override
 	public void removeLifecycleListener(LifecycleListener listener) {
-		synchronized (lifecycleListeners) {
-			this.lifecycleListeners.remove(listener);
-		}
+		this.lifecycleListeners.remove(listener);
 	}
 
 	private void notifyEpochChanged() {
-		for (LifecycleListener listener : safeLifecycleListeners()) {
+		for (LifecycleListener listener : lifecycleListeners) {
 			listener.afterEpochChanged(this);
 		}
 	}
@@ -123,18 +114,8 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	 * 通知刷新监听器
 	 */
 	private void notifyAfterRefresh() {
-		for (LifecycleListener listener : safeLifecycleListeners()) {
+		for (LifecycleListener listener : lifecycleListeners) {
 			listener.afterRefresh(this);
-		}
-	}
-
-	/**
-	 * 线程安全地获取 {@link #lifecycleListeners} 的副本
-	 * @return
-	 */
-	private List<LifecycleListener> safeLifecycleListeners() {
-		synchronized (lifecycleListeners) {
-			return Lists.newArrayList(lifecycleListeners);
 		}
 	}
 

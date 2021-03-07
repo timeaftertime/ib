@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.io.Files;
@@ -31,7 +30,7 @@ public class ConfigLoader {
 	 * 已经加载的配置
 	 * class.getName() -> Map
 	 */
-	public static final Map<String, Map<String, String>> PROPS = Maps.newConcurrentMap();
+	public static final Map<String, Map<String, String>> PROPS = new ConcurrentHashMap<>();
 
 	/**
 	 * 获取指定 Class 的配置信息

@@ -1,9 +1,8 @@
 package cn.milai.ib.container.plugin.ui.form;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.ib.container.plugin.control.cmd.CmdType;
 
@@ -13,11 +12,10 @@ import cn.milai.ib.container.plugin.control.cmd.CmdType;
  */
 public class KeyboardMap {
 
-	private KeyboardMap() {
-	}
+	private KeyboardMap() {}
 
-	private static final Map<Integer, CmdType> SET_MAPPING = Maps.newHashMap();
-	private static final Map<Integer, CmdType> UNSET_MAPPING = Maps.newHashMap();
+	private static final Map<Integer, CmdType> SET_MAPPING = new HashMap<>();
+	private static final Map<Integer, CmdType> UNSET_MAPPING = new HashMap<>();
 
 	static {
 		SET_MAPPING.put(KeyEvent.VK_W, CmdType.UP);

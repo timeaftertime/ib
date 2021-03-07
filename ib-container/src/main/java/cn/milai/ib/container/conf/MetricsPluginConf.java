@@ -1,11 +1,10 @@
 package cn.milai.ib.container.conf;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.ib.container.plugin.metrics.MetricsPlugin;
 
@@ -19,7 +18,7 @@ import cn.milai.ib.container.plugin.metrics.MetricsPlugin;
 public class MetricsPluginConf {
 
 	private int interval = 0;
-	private Map<String, Boolean> categories = Maps.newHashMap();
+	private Map<String, Boolean> categories = new HashMap<>();
 
 	public int getInterval() { return interval; }
 

@@ -2,11 +2,10 @@ package cn.milai.ib.loader;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.ex.IBException;
@@ -38,7 +37,7 @@ public class DramaStringLoader {
 	/**
 	 * dramaCode -> { lang -> { stringCode -> stringValue} }
 	 */
-	private static final Map<String, Map<String, Map<String, String>>> STRINGS = Maps.newHashMap();
+	private static final Map<String, Map<String, Map<String, String>>> STRINGS = new ConcurrentHashMap<>();
 
 	public static void setLanguage(String lang) {
 		if (!ZH_CN.equals(lang) && !EN_US.equals(lang)) {
@@ -55,7 +54,7 @@ public class DramaStringLoader {
 	 */
 	public static String get(String dramaCode, String stringCode) {
 		String value = STRINGS
-			.computeIfAbsent(dramaCode, c -> Maps.newHashMap())
+			.computeIfAbsent(dramaCode, c -> new ConcurrentHashMap<>())
 			.computeIfAbsent(language, lang -> loadStrings(dramaCode, lang))
 			.get(stringCode);
 		if (value == null) {
@@ -69,7 +68,7 @@ public class DramaStringLoader {
 	}
 
 	private static Map<String, String> loadStrings(String dramaCode, String lang) {
-		Map<String, String> strings = Maps.newHashMap();
+		Map<String, String> strings = new ConcurrentHashMap<>();
 		List<String> lines = InputStreams.readLines(DramaResLoader.load(dramaCode, getResourceName(lang)));
 		for (int i = 0; i < lines.size(); i++) {
 			String[] splits = lines.get(i).split("=", 2);
