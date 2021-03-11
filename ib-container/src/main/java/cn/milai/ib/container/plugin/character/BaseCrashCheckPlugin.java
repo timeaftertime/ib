@@ -8,8 +8,8 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.listener.ContainerListener;
+import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseMonitorPlugin;
 import cn.milai.ib.geometry.Rect;
 

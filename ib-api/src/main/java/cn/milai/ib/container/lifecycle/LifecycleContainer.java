@@ -3,6 +3,7 @@ package cn.milai.ib.container.lifecycle;
 import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
+import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.listener.ObjectListener;
 
 /**

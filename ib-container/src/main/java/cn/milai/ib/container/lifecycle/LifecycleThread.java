@@ -1,10 +1,14 @@
 package cn.milai.ib.container.lifecycle;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.milai.common.thread.BlockCondition;
 import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.ContainerClosedException;
+import cn.milai.ib.container.listener.LifecycleListener;
 
 /**
  * {@link LifecycleContainer} 容器的刷新线程
@@ -25,7 +29,9 @@ public class LifecycleThread extends Thread {
 	/**
 	 * 是否被暂停
 	 */
-	private volatile boolean paused = false;
+	private AtomicBoolean paused = new AtomicBoolean();;
+
+	private BlockCondition pauseCondition;
 
 	private BaseLifecycleContainer container;
 
@@ -34,18 +40,19 @@ public class LifecycleThread extends Thread {
 	LifecycleThread(LifecycleContainer container) {
 		this.container = (BaseLifecycleContainer) container;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			setName(THREAD_NAME);
 			while (!container.isClosed()) {
 				startNewFrame();
-				if (!isPaused()) {
-					frame++;
-					container.doRefresh();
-				}
+				frame++;
+				container.doRefresh();
 				sleepOneFrame();
+				if (isPaused()) {
+					pauseCondition.await();
+				}
 			}
 		} catch (ContainerClosedException e) {
 			// 容器关闭，停止刷新线程
@@ -74,25 +81,34 @@ public class LifecycleThread extends Thread {
 	 * 是否处于 pause 状态
 	 * @return
 	 */
-	boolean isPaused() { return paused; }
+	boolean isPaused() { return paused.get(); }
 
 	/**
 	 * 切换（开启/取消）暂停状态
 	 */
-	void switchPause() {
-		if (paused) {
-			cancelPause();
+	synchronized void switchPause() {
+		if (paused.compareAndSet(false, true)) {
+			pauseCondition = new BlockCondition(() -> !paused.get(), c -> paused.set(false));
+			container.addLifecycleListener(new LifecycleListener() {
+				@Override
+				public void onContainerClosed(LifecycleContainer container) {
+					if (pauseCondition != null && !pauseCondition.isMet()) {
+						pauseCondition.toMet();
+					}
+				}
+			});
 		} else {
-			paused = true;
+			cancelPause();
 		}
 	}
 
 	/**
 	 * 取消暂停状态
 	 */
-	void cancelPause() {
-		paused = false;
-		this.interrupt();
+	synchronized void cancelPause() {
+		if (paused.compareAndSet(true, false)) {
+			pauseCondition.toMet();
+		}
 	}
 
 	public long getFrame() { return frame; }

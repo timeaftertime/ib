@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 
 /**
  * {@link MediaPlugin} 默认实现
@@ -71,7 +71,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 			if (container == null) {
 				break;
 			}
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		pool.shutdown();
 	}

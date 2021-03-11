@@ -3,10 +3,8 @@ package cn.milai.ib.container.plugin;
 import java.util.Collections;
 import java.util.List;
 
-import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.ObjectListener;
-import cn.milai.ib.container.pluginable.PluginListener;
+import cn.milai.ib.container.listener.Listeners;
 
 /**
  * {@link ListenersPlugin} 默认实现
@@ -21,30 +19,14 @@ public class ListenersPlugin extends BaseContainerPlugin {
 	protected void onStart() {
 		listeners = newListeners();
 		for (ContainerListener listener : listeners) {
-			if (listener instanceof ObjectListener) {
-				getContainer().addObjectListener((ObjectListener) listener);
-			}
-			if (listener instanceof LifecycleListener) {
-				getContainer().addLifecycleListener((LifecycleListener) listener);
-			}
-			if (listener instanceof PluginListener) {
-				getContainer().addPluginListener((PluginListener) listener);
-			}
+			Listeners.add(getContainer(), listener);
 		}
 	}
 
 	@Override
 	protected final void onStop() {
 		for (ContainerListener listener : listeners) {
-			if (listener instanceof ObjectListener) {
-				getContainer().removeObjectListener((ObjectListener) listener);
-			}
-			if (listener instanceof LifecycleListener) {
-				getContainer().removeLifecycleListener((LifecycleListener) listener);
-			}
-			if (listener instanceof PluginListener) {
-				getContainer().removePluginListener((PluginListener) listener);
-			}
+			Listeners.remove(getContainer(), listener);
 		}
 	}
 

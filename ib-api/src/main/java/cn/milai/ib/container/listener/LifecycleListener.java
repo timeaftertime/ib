@@ -1,6 +1,6 @@
-package cn.milai.ib.container.lifecycle;
+package cn.milai.ib.container.listener;
 
-import cn.milai.ib.container.listener.ContainerListener;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * {@link LifecycleContainer} 生命周期事件监听器

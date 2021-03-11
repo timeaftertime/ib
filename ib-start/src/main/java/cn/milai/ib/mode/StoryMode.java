@@ -11,11 +11,11 @@ import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.drama.DramaResolver;
 import cn.milai.ib.loader.DramaResLoader;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 
 /**
  * 剧情模式
@@ -73,7 +73,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 				);
 				container.addObject(stageInfo);
 				DramaResLoader.load(dramaCodes[i]);
-				WaitUtil.waitRemove(stageInfo, 5);
+				Waits.waitRemove(stageInfo, 5);
 				drama.run(container);
 			}
 		} catch (ContainerClosedException e) {
