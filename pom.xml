@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai</groupId>
 	<artifactId>ib</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -22,8 +22,8 @@
 	</modules>
 
 	<properties>
-		<ib.version>1.0.3</ib.version>
-		<beginning.version>0.0.2</beginning.version>
+		<ib.version>1.0.4-SNAPSHOT</ib.version>
+		<beginning.version>0.0.3-SNAPSHOT</beginning.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
