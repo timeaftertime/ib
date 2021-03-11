@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cn.milai</groupId>
 		<artifactId>ib</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.3</version>
 	</parent>
 	<artifactId>ib-api</artifactId>
 	<description>Infinity Battle 最基本的 API</description>
