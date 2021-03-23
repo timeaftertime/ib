@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.component.Button;
+import cn.milai.ib.component.button.Button;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.util.ImageTextUtil;
 import cn.milai.ib.util.ImageUtil;

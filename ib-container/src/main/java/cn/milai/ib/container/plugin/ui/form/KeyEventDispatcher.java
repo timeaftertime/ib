@@ -20,6 +20,7 @@ public class KeyEventDispatcher extends KeyAdapter {
 
 	KeyEventDispatcher(FormUIPlugin ui) {
 		this.ui = ui;
+		ui.getForm().addKeyListener(this);
 	}
 
 	@Override

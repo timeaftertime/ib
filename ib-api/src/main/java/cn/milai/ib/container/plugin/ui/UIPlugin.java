@@ -30,6 +30,24 @@ public interface UIPlugin extends MetrizablePlugin {
 	Camera getCamera();
 
 	/**
+	 * 获取指定 UI X 的实际 X
+	 * @param x
+	 * @return
+	 */
+	default double toRealX(double x) {
+		return getCamera().toRealX(this, x);
+	}
+
+	/**
+	 * 获取指定 UI Y 的实际 Y
+	 * @param y
+	 * @return
+	 */
+	default double toRealY(double y) {
+		return getCamera().toRealY(this, y);
+	}
+
+	/**
 	 * 获取当前容器实际宽度
 	 * @return
 	 */

@@ -1,5 +1,8 @@
 package cn.milai.ib.container.listener;
 
+import java.util.List;
+
+import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.pluginable.PluginListener;
@@ -44,6 +47,30 @@ public class Listeners {
 		if ((container instanceof PluginableContainer) && (listener instanceof PluginListener)) {
 			((PluginableContainer) container).removePluginListener((PluginListener) listener);
 		}
+	}
+
+	/**
+	 * 获取一个监听指定 {@link IBObject} 移除的 {@link ObjectListener}。
+	 * 指定 {@link IBObject} 被移除时将用其调用 {@link ObjectCallback#callback(Container, IBObject)}
+	 * @param callback
+	 * @param removed
+	 * @return
+	 */
+	public static ObjectListener removedListener(ObjectCallback callback, IBObject... removed) {
+		return new ObjectListener() {
+			@Override
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
+				for (IBObject o : removed) {
+					if (objs.contains(o)) {
+						callback.callback(container, o);
+					}
+				}
+			}
+		};
+	}
+
+	public static interface ObjectCallback {
+		void callback(Container container, IBObject obj);
 	}
 
 }

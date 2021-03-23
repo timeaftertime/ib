@@ -70,10 +70,10 @@ public class Waits {
 		Listeners.remove(container, listener);
 	}
 
-	private static class CloseMonitor implements LifecycleListener {
+	private static class ResetMonitor implements LifecycleListener {
 		private Counter c;
 
-		public CloseMonitor(Container container, Counter c) {
+		public ResetMonitor(Container container, Counter c) {
 			this.c = c;
 		}
 
@@ -91,7 +91,7 @@ public class Waits {
 
 	}
 
-	private static class RefreshCounter extends CloseMonitor {
+	private static class RefreshCounter extends ResetMonitor {
 
 		public RefreshCounter(LifecycleContainer container, Counter c) {
 			super(container, c);
@@ -104,7 +104,7 @@ public class Waits {
 
 	}
 
-	private static class RemoveCounter extends CloseMonitor implements ObjectListener {
+	private static class RemoveCounter extends ResetMonitor implements ObjectListener {
 		private IBObject target;
 
 		public RemoveCounter(Counter counter, IBObject target) {

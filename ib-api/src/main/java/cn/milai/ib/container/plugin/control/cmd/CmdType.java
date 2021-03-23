@@ -41,5 +41,7 @@ public enum CmdType {
 	U_D,
 	// 点击 指令
 	CLICKED,
+	// (鼠标)移动指令
+	OVER,
 
 }

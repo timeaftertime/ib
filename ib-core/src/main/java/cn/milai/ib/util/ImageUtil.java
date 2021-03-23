@@ -75,9 +75,7 @@ public abstract class ImageUtil {
 	 * @return
 	 */
 	public static BufferedImage copy(BufferedImage image) {
-		BufferedImage img = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-		img.setData(image.getData());
-		return img;
+		return transform(new AffineTransform(1, 0, 0, 1, 0, 0), image);
 	}
 
 	/**
@@ -215,7 +213,11 @@ public abstract class ImageUtil {
 		for (int i = 0; i < img.getWidth(); i++) {
 			for (int j = 0; j < img.getHeight(); j++) {
 				// 0x00FFFFFF == AARRGGBB
-				img.setRGB(i, j, (img.getRGB(i, j) & 0x00FFFFFF) | transparency << 24);
+				int argb = img.getRGB(i, j);
+				if ((argb & 0xFF000000) == 0) {
+					continue;
+				}
+				img.setRGB(i, j, (argb & 0x00FFFFFF) | transparency << 24);
 			}
 		}
 		return img;

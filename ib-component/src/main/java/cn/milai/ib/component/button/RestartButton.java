@@ -1,4 +1,4 @@
-package cn.milai.ib.component;
+package cn.milai.ib.component.button;
 
 import cn.milai.ib.container.Container;
 

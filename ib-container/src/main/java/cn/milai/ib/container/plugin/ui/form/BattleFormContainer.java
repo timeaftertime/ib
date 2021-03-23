@@ -3,8 +3,10 @@ package cn.milai.ib.container.plugin.ui.form;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import cn.milai.ib.component.button.CloseButton;
 import cn.milai.ib.container.BaseDramaContainer;
 import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.character.BaseAliveCheckPlugin;
 import cn.milai.ib.container.plugin.character.BaseCrashCheckPlugin;
 import cn.milai.ib.container.plugin.character.BaseExplosiblePlugin;
@@ -23,6 +25,13 @@ import cn.milai.ib.container.pluginable.ui.FormUIContainer;
 public class BattleFormContainer extends BaseDramaContainer implements FormUIContainer {
 
 	public BattleFormContainer() {
+		CloseButton closeButton = new CloseButton(
+			0, 0, this, () -> fire(FormUIPlugin.class, p -> p.getForm().dispose())
+		);
+		addObjectListener(Listeners.removedListener((c, o) -> {
+			c.addObject(o);
+		}, closeButton));
+
 		addPlugin(new BaseControlPlugin());
 		addPlugin(new BaseMovablePlugin());
 		addPlugin(new BaseCrashCheckPlugin());

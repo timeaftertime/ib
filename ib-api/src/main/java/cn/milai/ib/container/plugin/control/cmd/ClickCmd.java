@@ -5,11 +5,7 @@ package cn.milai.ib.container.plugin.control.cmd;
  * @author milai
  * @date 2021.02.10
  */
-public class ClickCmd extends BaseCmd {
-
-	private double x;
-
-	private double y;
+public class ClickCmd extends PointCmd {
 
 	/**
 	 * 构造一个点击指令
@@ -18,13 +14,7 @@ public class ClickCmd extends BaseCmd {
 	 * @param y 点击的 y 坐标
 	 */
 	public ClickCmd(int fromId, double x, double y) {
-		super(CmdType.CLICKED, fromId);
-		this.x = x;
-		this.y = y;
+		super(CmdType.CLICKED, fromId, x, y);
 	}
-
-	public double getX() { return x; }
-
-	public double getY() { return y; }
 
 }

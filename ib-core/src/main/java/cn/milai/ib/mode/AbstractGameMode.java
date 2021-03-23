@@ -8,7 +8,7 @@ package cn.milai.ib.mode;
 public abstract class AbstractGameMode extends Thread implements GameMode {
 
 	@Override
-	public synchronized void start() {
+	public synchronized final void start() {
 		init();
 		super.start();
 	}
