@@ -117,6 +117,27 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 				}
 				return y >= 0 && y <= TITLE_H;
 			}
+
+			@Override
+			protected void doRebounds(int preX, int preY, int preW, int preH, int x, int y, int w, int h) {
+				int minW = titleButtons.length * TITLE_W;
+				int minH = TITLE_H;
+				if (w < minW) {
+					if (x != preX) {
+						int dir = x > preX ? 1 : -1;
+						x = preX + dir * (preW - minW);
+					}
+					w = minW;
+				}
+				if (h < minH) {
+					if (y != preY) {
+						int dir = y > preY ? 1 : -1;
+						y = preY + dir * (preH - minH);
+					}
+					h = minH;
+				}
+				setBounds(x, y, w, h);
+			}
 		};
 		initTitle();
 		new MouseEventDispatcher(this);
@@ -134,7 +155,6 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 			container.addObject(b);
 		}
 		container.addObjectListener(Listeners.removedListener((c, b) -> c.addObject(b), titleButtons));
-
 	}
 
 	private void drawTitle(Graphics g) {
