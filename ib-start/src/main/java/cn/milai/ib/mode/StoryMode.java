@@ -7,11 +7,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.ib.IBCore;
-import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.control.text.LinesFullScreenPass;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.drama.DramaResolver;
 import cn.milai.ib.loader.DramaResLoader;

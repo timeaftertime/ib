@@ -33,7 +33,7 @@ public class KeyEventDispatcher extends KeyAdapter {
 			return;
 		}
 		ui.getContainer().fire(ControlPlugin.class, controller -> {
-			controller.addCommand(new BaseCmd(type, DEF_FROM_ID));
+			controller.addCmd(new BaseCmd(type, DEF_FROM_ID));
 		});
 	}
 
@@ -42,7 +42,7 @@ public class KeyEventDispatcher extends KeyAdapter {
 		// TODO 临时暂停方案
 		if (KeyboardMap.isPause(e.getKeyCode())) {
 			ui.getContainer().switchPause();
-			ui.getContainer().fire(ControlPlugin.class, controller -> controller.clearCommands());
+			ui.getContainer().fire(ControlPlugin.class, controller -> controller.clearCmds());
 			return;
 		}
 		if (ui.getContainer().isPaused()) {
@@ -53,7 +53,7 @@ public class KeyEventDispatcher extends KeyAdapter {
 			return;
 		}
 		ui.getContainer().fire(ControlPlugin.class, controller -> {
-			controller.addCommand(new BaseCmd(type, DEF_FROM_ID));
+			controller.addCmd(new BaseCmd(type, DEF_FROM_ID));
 		});
 	}
 }

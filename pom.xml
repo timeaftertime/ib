@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cn.milai</groupId>
-	<artifactId>ib</artifactId>
+	<groupId>cn.milai.ib</groupId>
+	<artifactId>ib-parent</artifactId>
 	<version>1.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -14,8 +14,8 @@
 
 	<modules>
 		<module>ib-api</module>
-		<module>ib-character</module>
-		<module>ib-component</module>
+		<module>ib-role</module>
+		<module>ib-control</module>
 		<module>ib-start</module>
 		<module>ib-core</module>
 		<module>ib-container</module>
@@ -68,42 +68,42 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.beginning</groupId>
 				<artifactId>beginning-http</artifactId>
 				<version>${beginning.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.beginning</groupId>
 				<artifactId>beginning-thread</artifactId>
 				<version>${beginning.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.ib</groupId>
 				<artifactId>ib-api</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.ib</groupId>
 				<artifactId>ib-core</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
-				<artifactId>ib-character</artifactId>
+				<groupId>cn.milai.ib</groupId>
+				<artifactId>ib-role</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
-				<artifactId>ib-component</artifactId>
+				<groupId>cn.milai.ib</groupId>
+				<artifactId>ib-control</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.ib</groupId>
 				<artifactId>ib-container</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cn.milai</groupId>
+				<groupId>cn.milai.ib</groupId>
 				<artifactId>ib-start</artifactId>
 				<version>${ib.version}</version>
 			</dependency>

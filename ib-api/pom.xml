@@ -2,13 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>cn.milai</groupId>
-		<artifactId>ib</artifactId>
+		<groupId>cn.milai.ib</groupId>
+		<artifactId>ib-parent</artifactId>
 		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-api</artifactId>
-	<description>Infinity Battle 最基本的 API</description>
-
-	<dependencies>
-	</dependencies>
+	<description>顶级 API</description>
 </project>

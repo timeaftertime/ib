@@ -9,12 +9,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
-import cn.milai.ib.character.Controllable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.role.Controllable;
 
 /**
  * {@link ControlPlugin} 默认实现
@@ -88,7 +88,7 @@ public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implement
 	 * @param c 待处理指令
 	 */
 	@Override
-	public void addCommand(Cmd c) {
+	public void addCmd(Cmd c) {
 		Queue<Cmd> q = cmdQueues.computeIfAbsent(c.getFromId(), id -> new ConcurrentLinkedQueue<>());
 		synchronized (q) {
 			if (q.size() >= maxCommandQueueSize) {
@@ -101,11 +101,11 @@ public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implement
 	@Override
 	public void onReset() {
 		super.onReset();
-		clearCommands();
+		clearCmds();
 	}
 
 	@Override
-	public void clearCommands() {
+	public void clearCmds() {
 		cmdQueues.clear();
 	}
 

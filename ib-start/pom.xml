@@ -2,21 +2,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>cn.milai</groupId>
-		<artifactId>ib</artifactId>
+		<groupId>cn.milai.ib</groupId>
+		<artifactId>ib-parent</artifactId>
 		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-start</artifactId>
-	<description>游戏启动</description>
+	<description>引擎启动模块</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-character</artifactId>
+			<groupId>cn.milai.ib</groupId>
+			<artifactId>ib-role</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-component</artifactId>
+			<groupId>cn.milai.ib</groupId>
+			<artifactId>ib-control</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

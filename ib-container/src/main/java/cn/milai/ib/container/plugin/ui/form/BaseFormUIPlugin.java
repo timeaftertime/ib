@@ -12,12 +12,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import cn.milai.ib.component.button.Button;
-import cn.milai.ib.component.button.CloseButton;
-import cn.milai.ib.component.button.MinimizeButton;
 import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.ui.AbstractUIPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.control.button.Button;
+import cn.milai.ib.control.button.CloseButton;
+import cn.milai.ib.control.button.MinimizeButton;
 
 /**
  * {@link FormUIPlugin} 抽象基类

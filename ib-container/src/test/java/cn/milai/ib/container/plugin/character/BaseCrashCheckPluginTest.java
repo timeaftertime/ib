@@ -5,9 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.character.property.Rotatable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.role.BaseCrashCheckPlugin;
+import cn.milai.ib.role.AbstractRole;
+import cn.milai.ib.role.property.Rotatable;
 
 /**
  * {@link BaseCrashCheckPlugin} 测试类
@@ -16,7 +17,7 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
  */
 public class BaseCrashCheckPluginTest {
 
-	private static class RotatableCharacterStub extends AbstractIBCharacter implements Rotatable {
+	private static class RotatableCharacterStub extends AbstractRole implements Rotatable {
 
 		private double width;
 		private double height;

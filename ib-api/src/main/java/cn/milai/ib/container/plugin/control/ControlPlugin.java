@@ -14,12 +14,12 @@ public interface ControlPlugin extends MetrizablePlugin {
 	 * 添加一个待处理指令
 	 * @param cmd
 	 */
-	void addCommand(Cmd cmd);
+	void addCmd(Cmd cmd);
 
 	/**
 	 * 清空所有待处理指令
 	 */
-	void clearCommands();
+	void clearCmds();
 
 	@Override
 	default String getCategory() { return "control"; }

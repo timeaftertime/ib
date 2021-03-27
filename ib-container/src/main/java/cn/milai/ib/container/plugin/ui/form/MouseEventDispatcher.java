@@ -36,7 +36,7 @@ public class MouseEventDispatcher extends MouseAdapter {
 		ui.getContainer().fire(ControlPlugin.class, controller -> {
 			double x = ui.getCamera().toRealX(ui, e.getX());
 			double y = ui.getCamera().toRealY(ui, e.getY());
-			controller.addCommand(new ClickCmd(DEF_FROM_ID, x, y));
+			controller.addCmd(new ClickCmd(DEF_FROM_ID, x, y));
 		});
 	}
 
@@ -45,7 +45,7 @@ public class MouseEventDispatcher extends MouseAdapter {
 		ui.getContainer().fire(ControlPlugin.class, controller -> {
 			double x = ui.getCamera().toRealX(ui, e.getX());
 			double y = ui.getCamera().toRealY(ui, e.getY());
-			controller.addCommand(new OverCmd(DEF_FROM_ID, x, y));
+			controller.addCmd(new OverCmd(DEF_FROM_ID, x, y));
 		});
 	}
 }

@@ -3,18 +3,18 @@ package cn.milai.ib.container.plugin.ui.form;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import cn.milai.ib.component.button.CloseButton;
 import cn.milai.ib.container.BaseDramaContainer;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.Listeners;
-import cn.milai.ib.container.plugin.character.BaseAliveCheckPlugin;
-import cn.milai.ib.container.plugin.character.BaseCrashCheckPlugin;
-import cn.milai.ib.container.plugin.character.BaseExplosiblePlugin;
-import cn.milai.ib.container.plugin.character.BaseMovablePlugin;
 import cn.milai.ib.container.plugin.control.BaseControlPlugin;
 import cn.milai.ib.container.plugin.media.BaseMediaPlugin;
 import cn.milai.ib.container.plugin.metrics.BaseMetricPlugin;
+import cn.milai.ib.container.plugin.role.BaseAliveCheckPlugin;
+import cn.milai.ib.container.plugin.role.BaseCrashCheckPlugin;
+import cn.milai.ib.container.plugin.role.BaseExplosiblePlugin;
+import cn.milai.ib.container.plugin.role.BaseMovablePlugin;
 import cn.milai.ib.container.pluginable.ui.FormUIContainer;
+import cn.milai.ib.control.button.CloseButton;
 
 /**
  * Form 实现 UI 的战斗场景的 {@link DramaContainer}

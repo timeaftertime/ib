@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.container.Container;
+import cn.milai.ib.role.Role;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -30,7 +30,7 @@ public class ViewObject extends AbstractIBObject {
 	 * @param container
 	 * @param configClass
 	 */
-	public ViewObject(int centerX, int centerY, Container container, Class<? extends IBCharacter> configClass) {
+	public ViewObject(int centerX, int centerY, Container container, Class<? extends Role> configClass) {
 		super(centerX, centerY, container, configClass);
 		rotateRadian = 0;
 	}
