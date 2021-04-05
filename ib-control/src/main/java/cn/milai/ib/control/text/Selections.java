@@ -119,7 +119,8 @@ public class Selections extends AbstractTextControl {
 			setY(topY + preSelections + getMargin());
 		}
 
-		protected double doubleProp(String key) {
+		@Override
+		public double doubleProp(String key) {
 			if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 				return 0;
 			}

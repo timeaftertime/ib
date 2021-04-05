@@ -1,12 +1,14 @@
 package cn.milai.ib.container.listener;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.pluginable.PluginListener;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.role.Role;
 
 /**
  * {@link ContainerListener} 工具类
@@ -56,7 +58,7 @@ public class Listeners {
 	 * @param removed
 	 * @return
 	 */
-	public static ObjectListener removedListener(ObjectCallback callback, IBObject... removed) {
+	public static ObjectListener removedListener(ObjectCallback<IBObject> callback, IBObject... removed) {
 		return new ObjectListener() {
 			@Override
 			public void onObjectRemoved(Container container, List<IBObject> objs) {
@@ -69,8 +71,51 @@ public class Listeners {
 		};
 	}
 
-	public static interface ObjectCallback {
-		void callback(Container container, IBObject obj);
+	/**
+	 * 获取一个通过指定回调方法实现的 {@link ObjectListener}
+	 * @param onAdded {@link ObjectListener#onObjectAdded(Container, IBObject)} 的实现
+	 * @param onRemoved {@link ObjectListener#onObjectRemoved(Container, List)} 的实现
+	 * @return
+	 */
+	public static ObjectListener objectListener(ObjectCallback<IBObject> onAdded, ObjectsCallback<IBObject> onRemoved) {
+		return new ObjectListener() {
+			@Override
+			public void onObjectAdded(Container container, IBObject obj) {
+				if (onAdded != null) {
+					onAdded.callback(container, obj);
+				}
+			}
+
+			@Override
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
+				if (onRemoved != null) {
+					onRemoved.callback(container, objs);
+				}
+			}
+		};
+	}
+
+	public static ObjectListener roleListener(ObjectCallback<Role> onAdded, ObjectsCallback<Role> onRemoved) {
+		return objectListener(
+			onAdded == null ? null : (c, o) -> {
+				if (o instanceof Role) {
+					onAdded.callback(c, (Role) o);
+				}
+			},
+			onRemoved == null ? null : (c, os) -> {
+				onRemoved.callback(
+					c, os.stream().filter(o -> (o instanceof Role)).map(o -> (Role) o).collect(Collectors.toList())
+				);
+			}
+		);
+	}
+
+	public static interface ObjectCallback<T extends IBObject> {
+		void callback(Container container, T obj);
+	}
+
+	public static interface ObjectsCallback<T extends IBObject> {
+		void callback(Container container, List<T> obj);
 	}
 
 }

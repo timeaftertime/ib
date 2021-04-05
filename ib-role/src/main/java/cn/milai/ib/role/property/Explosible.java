@@ -1,17 +1,17 @@
 package cn.milai.ib.role.property;
 
-import cn.milai.ib.role.Role;
-import cn.milai.ib.role.explosion.creator.ExplosionCreator;
+import cn.milai.ib.role.explosion.Explosion;
 
 /**
- * 可爆炸的游戏角色
+ * 可爆炸
  * @author milai
+ * @date 2021.03.29
  */
-public interface Explosible extends Role {
+public interface Explosible extends Property {
 
 	/**
-	 * 获取当前角色的爆炸构造器
+	 * 返回产生的爆炸
 	 * @return
 	 */
-	ExplosionCreator getExplosionCreator();
+	Explosion[] createExplosions();
 }

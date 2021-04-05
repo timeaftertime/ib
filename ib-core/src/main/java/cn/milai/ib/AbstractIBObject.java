@@ -64,37 +64,23 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 		this(x, y, container, null);
 	}
 
-	/**
-	 * 获取对象的 int 类型配置信息
-	 * @return
-	 */
-	protected int intProp(String key) {
+	@Override
+	public int intProp(String key) {
 		return IBConf.intProp(configClass, key);
 	}
 
-	/**
-	 * 获取对象的 long 类型配置信息
-	 * @return
-	 */
-	protected long longProp(String key) {
+	@Override
+	public long longProp(String key) {
 		return IBConf.longProp(configClass, key);
 	}
 
-	/**
-	 * 获取对象的 double 类型配置信息
-	 * @param key
-	 * @return
-	 */
-	protected double doubleProp(String key) {
+	@Override
+	public double doubleProp(String key) {
 		return IBConf.doubleProp(configClass, key);
 	}
 
-	/**
-	 * 获取对象的 String 类型配置信息
-	 * @param key
-	 * @return
-	 */
-	protected String prop(String key) {
+	@Override
+	public String prop(String key) {
 		return IBConf.strProp(configClass, key);
 	}
 

@@ -1,12 +1,11 @@
 package cn.milai.ib.role.property;
 
-import cn.milai.ib.role.Role;
-
 /**
- * 携带了分数的游戏角色
+ * 分数
  * @author milai
+ * @date 2021.03.29
  */
-public interface HasScore extends Role {
+public interface Score extends Property {
 
 	String P_SCORE = "score";
 
@@ -14,6 +13,6 @@ public interface HasScore extends Role {
 	 * 消灭本对象时获得的分数
 	 * @return
 	 */
-	int getScore();
+	int getValue();
 
 }

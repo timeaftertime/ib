@@ -1,13 +1,11 @@
 package cn.milai.ib.role.property;
 
-import cn.milai.ib.role.Role;
-
 /**
- * 可移动角色
+ * 可移动
  * @author milai
- * @date 2020.02.20
+ * @date 2021.03.29
  */
-public interface Movable extends Role {
+public interface Movable extends Property {
 
 	/**
 	 * 属性 [初始额定 X 速度] 的 key
@@ -20,9 +18,19 @@ public interface Movable extends Role {
 	String P_RATED_SPEED_Y = "ratedSpeedY";
 
 	/**
-	 * 使当前角色移动一次
+	 * 每次移动后调用
 	 */
-	void move();
+	default void onMove() {}
+
+	/**
+	 * 开始移动前调用
+	 */
+	default void beforeMove() {}
+
+	/**
+	 * 结束移动后调用
+	 */
+	default void afterMove() {}
 
 	/**
 	 * 获取 X 方向的速度

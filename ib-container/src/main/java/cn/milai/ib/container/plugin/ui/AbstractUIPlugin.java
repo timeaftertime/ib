@@ -11,6 +11,8 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Rotatable;
 import cn.milai.ib.util.ImageUtil;
 
 /**
@@ -66,7 +68,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 
 	private void refreshUI() {
 		long start = System.currentTimeMillis();
-		
+
 		PluginableContainer container = getContainer();
 		int w = container.getW();
 		int h = container.getH();
@@ -82,12 +84,16 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 		List<IBObject> objs = container.getAll(IBObject.class);
 		Collections.sort(objs, Comparator.comparingInt(IBObject::getZ));
 		for (IBObject o : objs) {
-			o.paintWith(buffer);
+			if ((o instanceof Role) && ((Role) o).hasProperty(Rotatable.class)) {
+				Rotatable.paintWith(buffer, (Role) o);
+			} else {
+				o.paintWith(buffer);
+			}
 		}
 		buffer.dispose();
 		nowImage = image;
 		afterRefresh();
-		
+
 		metric(KEY_REFRESH_UI, System.currentTimeMillis() - start);
 	}
 

@@ -1,10 +1,10 @@
 package cn.milai.ib.control.button;
 
+import cn.milai.ib.Controllable;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
 import cn.milai.ib.control.AbstractControl;
-import cn.milai.ib.role.Controllable;
 
 /**
  * 按钮

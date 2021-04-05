@@ -9,19 +9,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
+import cn.milai.ib.Controllable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.plugin.BaseMonitorPlugin;
+import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.role.Controllable;
 
 /**
  * {@link ControlPlugin} 默认实现
  * @author milai
  * @date 2020.12.12
  */
-public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implements ControlPlugin {
+public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implements ControlPlugin {
 
 	/**
 	 * 每帧每个 fromId 最多执行多少条指令
@@ -101,6 +101,10 @@ public class BaseControlPlugin extends BaseMonitorPlugin<Controllable> implement
 	@Override
 	public void onReset() {
 		super.onReset();
+		clearCmds();
+	}
+
+	protected void afterRemoveListeners() {
 		clearCmds();
 	}
 

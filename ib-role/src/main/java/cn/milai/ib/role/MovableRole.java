@@ -2,73 +2,67 @@ package cn.milai.ib.role;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.base.BaseMovable;
+import cn.milai.ib.role.property.holder.MovableHolder;
 
 /**
  * 可移动的游戏对象
  * @author milai
  */
-public abstract class MovableRole extends AbstractRole implements Movable {
-
-	private double ratedSpeedX;
-	private double ratedSpeedY;
-	private double speedX;
-	private double speedY;
+public abstract class MovableRole extends AbstractRole implements MovableHolder {
 
 	public MovableRole(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
-		ratedSpeedX = initRatedSpeedX();
-		ratedSpeedY = initRatedSpeedY();
-		speedX = 0;
-		speedY = 0;
-	}
-
-	protected double initRatedSpeedX() {
-		return doubleProp(Movable.P_RATED_SPEED_X);
-	}
-
-	protected double initRatedSpeedY() {
-		return doubleProp(Movable.P_RATED_SPEED_Y);
 	}
 
 	@Override
-	public double getRatedSpeedX() { return ratedSpeedX; }
+	protected void initProperties() {
+		super.initProperties();
+		setMovable(new BaseMovable(this) {
+			@Override
+			protected void beforeRefreshSpeeds() {
+				MovableRole.this.beforeRefreshSpeeds(this);
+			}
 
-	@Override
-	public void setRatedSpeedX(double ratedSpeedX) { this.ratedSpeedX = ratedSpeedX; }
+			@Override
+			protected void afterRefreshSpeeds() {
+				MovableRole.this.afterRefreshSpeeds(this);
+			}
 
-	@Override
-	public double getRatedSpeedY() { return ratedSpeedY; }
+			@Override
+			public void onMove() {
+				MovableRole.this.onMove(this);
+			}
 
-	@Override
-	public void setRatedSpeedY(double ratedSpeedY) { this.ratedSpeedY = ratedSpeedY; }
-
-	@Override
-	public final void move() {
-		beforeMove();
-		setX(getX() + getSpeedX());
-		setY(getY() + getSpeedY());
-		afterMove();
+			@Override
+			public void afterMove() {
+				MovableRole.this.afterMove(this);
+			}
+		});
 	}
-
-	@Override
-	public double getSpeedX() { return speedX; }
-
-	@Override
-	public void setSpeedX(double speedX) { this.speedX = speedX; }
-
-	@Override
-	public double getSpeedY() { return speedY; }
-
-	@Override
-	public void setSpeedY(double speedY) { this.speedY = speedY; }
 
 	/**
-	 * 实际移动坐标前调用
+	 * 移动后调用
+	 * @param m
 	 */
-	protected void beforeMove() {}
+	protected void afterMove(Movable m) {}
 
 	/**
-	 * 实际移动坐标后调用
+	 * 开始计算移动速度前调用
+	 * @param m
 	 */
-	protected void afterMove() {}
+	protected void beforeRefreshSpeeds(Movable m) {}
+
+	/**
+	 * 完成移动速度计算后调用
+	 * @param m
+	 */
+	protected void afterRefreshSpeeds(Movable m) {}
+
+	/**
+	 * 每次进行一次移动后调用
+	 * @param m
+	 */
+	protected void onMove(Movable m) {}
+
 }

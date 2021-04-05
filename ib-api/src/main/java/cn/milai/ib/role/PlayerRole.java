@@ -1,5 +1,6 @@
 package cn.milai.ib.role;
 
+import cn.milai.ib.Controllable;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 
 /**

@@ -6,7 +6,7 @@ import java.util.List;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.plugin.BaseMonitorPlugin;
+import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.role.Role;
 
 /**
@@ -14,7 +14,7 @@ import cn.milai.ib.role.Role;
  * @author milai
  * @date 2021.02.10
  */
-public class BaseAliveCheckPlugin extends BaseMonitorPlugin<Role> implements AliveCheckPlugin {
+public class BaseAliveCheckPlugin extends TypeMonitorPlugin<Role> implements AliveCheckPlugin {
 
 	public BaseAliveCheckPlugin() {
 		super(Role.class);
@@ -31,10 +31,10 @@ public class BaseAliveCheckPlugin extends BaseMonitorPlugin<Role> implements Ali
 
 				long start = System.currentTimeMillis();
 
-				for (Role character : getAll()) {
-					if (!character.isAlive()) {
-						character.onDead();
-						getContainer().removeObject(character);
+				for (Role role : getAll()) {
+					if (!role.isAlive()) {
+						role.onDead();
+						getContainer().removeObject(role);
 					}
 				}
 

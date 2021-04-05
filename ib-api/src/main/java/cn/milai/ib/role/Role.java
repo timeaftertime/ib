@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import cn.milai.ib.IBObject;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.role.property.Property;
 
 /**
  * 参与到游戏中的游戏角色
@@ -67,19 +68,19 @@ public interface Role extends IBObject {
 
 	/**
 	 * 恢复指定生命
-	 * @param character 引起该次恢复的游戏角色
+	 * @param from 引起该次恢复的游戏角色
 	 * @param life
 	 * @throws IllegalArgumentException 若 life < 0
 	 */
-	void gainLife(Role character, int life) throws IllegalArgumentException;
+	void gainLife(Role from, int life) throws IllegalArgumentException;
 
 	/**
 	 * 失去指定生命
-	 * @param character 引起该次失去的游戏角色
+	 * @param from 引起该次失去的游戏角色
 	 * @param life
 	 * @throws IllegalArgumentException 若 life < 0
 	 */
-	void loseLife(Role character, int life) throws IllegalArgumentException;
+	void loseLife(Role from, int life) throws IllegalArgumentException;
 
 	/**
 	 * 获取当前游戏角色的朝向与 y 轴负方向的夹角弧度
@@ -103,5 +104,30 @@ public interface Role extends IBObject {
 
 	@Override
 	LifecycleContainer getContainer();
+
+	/**
+	 * 获取指定类型的 {@link Property}
+	 * @param <T>
+	 * @param c
+	 * @return
+	 */
+	<T extends Property> T getProperty(Class<T> c);
+
+	/**
+	 * 设置指定类型的 {@link Property} 为 {@code p}，返回之前该类型的 {@link Property}
+	 * @param <T>
+	 * @param c
+	 * @param p
+	 * @return
+	 */
+	<T extends Property> T putProperty(Class<T> c, T p);
+
+	/**
+	 * 判断当前 {@link Role} 是否有指定 {@link Property}
+	 * @param <T>
+	 * @param c
+	 * @return
+	 */
+	<T extends Property> boolean hasProperty(Class<T> c);
 
 }

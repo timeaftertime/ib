@@ -1,7 +1,11 @@
 package cn.milai.ib.role;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.milai.ib.AbstractIBObject;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.role.property.Property;
 
 /**
  * IBCharacter 的抽象实现
@@ -15,10 +19,35 @@ public abstract class AbstractRole extends AbstractIBObject implements Role {
 
 	private Role lastAttacker;
 
+	private Map<Class<? extends Property>, Property> properties = new ConcurrentHashMap<>();
+
 	public AbstractRole(double x, double y, LifecycleContainer container,
 		Class<? extends Role> configClass) {
 		super(x, y, container, configClass);
 		this.life = getInitLife();
+		initProperties();
+	}
+
+	/**
+	 * 初始化 {@link Property}
+	 */
+	protected void initProperties() {}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Property> T putProperty(Class<T> c, T p) {
+		return (T) properties.put(c, p);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Property> T getProperty(Class<T> c) {
+		return (T) properties.get(c);
+	}
+
+	@Override
+	public <T extends Property> boolean hasProperty(Class<T> c) {
+		return properties.containsKey(c);
 	}
 
 	@Override

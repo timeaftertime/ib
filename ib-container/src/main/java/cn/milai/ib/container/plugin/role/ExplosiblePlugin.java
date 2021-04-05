@@ -1,7 +1,6 @@
 package cn.milai.ib.container.plugin.role;
 
 import cn.milai.ib.container.plugin.ContainerPlugin;
-import cn.milai.ib.container.plugin.MonitorPlugin;
 import cn.milai.ib.role.property.Explosible;
 
 /**
@@ -9,6 +8,6 @@ import cn.milai.ib.role.property.Explosible;
  * @author milai
  * @date 2021.02.10
  */
-public interface ExplosiblePlugin extends MonitorPlugin<Explosible> {
+public interface ExplosiblePlugin extends ContainerPlugin {
 
 }
