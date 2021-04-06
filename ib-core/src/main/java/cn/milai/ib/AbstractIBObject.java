@@ -46,13 +46,13 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	 * 获取初始宽度
 	 * @return
 	 */
-	protected double getInitW() { return doubleProp(P_WIDTH); }
+	protected double getInitW() { return doubleConf(P_WIDTH); }
 
 	/**
 	 * 获取初始高度
 	 * @return
 	 */
-	protected double getInitH() { return doubleProp(P_HEIGHT); }
+	protected double getInitH() { return doubleConf(P_HEIGHT); }
 
 	/**
 	 * 创建一个中心位置在 (x, y) 且以 Container 为容器，使用 getClass() 的配置文件的游戏对象 
@@ -65,23 +65,23 @@ public abstract class AbstractIBObject extends BaseBounds implements IBObject {
 	}
 
 	@Override
-	public int intProp(String key) {
-		return IBConf.intProp(configClass, key);
+	public int intConf(String key) {
+		return IBConf.intConf(configClass, key);
 	}
 
 	@Override
-	public long longProp(String key) {
-		return IBConf.longProp(configClass, key);
+	public long longConf(String key) {
+		return IBConf.longConf(configClass, key);
 	}
 
 	@Override
-	public double doubleProp(String key) {
-		return IBConf.doubleProp(configClass, key);
+	public double doubleConf(String key) {
+		return IBConf.doubleConf(configClass, key);
 	}
 
 	@Override
-	public String prop(String key) {
-		return IBConf.strProp(configClass, key);
+	public String conf(String key) {
+		return IBConf.strConf(configClass, key);
 	}
 
 	@Override

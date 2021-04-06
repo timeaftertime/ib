@@ -47,12 +47,12 @@ public class RotatableTest {
 		}
 
 		@Override
-		public double doubleProp(String key) {
+		public double doubleConf(String key) {
 			return 1;
 		}
 
 		@Override
-		public int intProp(String key) {
+		public int intConf(String key) {
 			return 1;
 		}
 

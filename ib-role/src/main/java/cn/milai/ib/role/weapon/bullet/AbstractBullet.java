@@ -31,7 +31,7 @@ public abstract class AbstractBullet extends MovableRole implements Bullet {
 	@Override
 	protected void initProperties() {
 		super.initProperties();
-		setDamage(new BaseDamage(this, intProp(P_POWER)));
+		setDamage(new BaseDamage(this, intConf(P_POWER)));
 		setCollider(new BaseCollider(this) {
 			@Override
 			public void onCrash(Collider crashed) {

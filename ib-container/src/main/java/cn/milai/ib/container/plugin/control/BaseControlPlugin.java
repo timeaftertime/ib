@@ -10,9 +10,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import cn.milai.ib.Controllable;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 
@@ -49,30 +48,25 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(new LifecycleListener() {
-			@Override
-			public void afterRefresh(LifecycleContainer container) {
-				long start = System.currentTimeMillis();
-
-				for (int i = 0; i < CMD_PER_FRAME; i++) {
-					for (Queue<Cmd> q : cmdQueues.values()) {
-						Cmd cmd = q.poll();
-						if (cmd == null) {
-							continue;
-						}
-						List<Controllable> all = getAll();
-						AnnotationAwareOrderComparator.sort(all);
-						for (Controllable c : all) {
-							if (c.accept(cmd) && !c.exec(cmd)) {
-								break;
-							}
+		return Arrays.asList(Listeners.refreshListener(container -> {
+			long start = System.currentTimeMillis();
+			for (int i = 0; i < CMD_PER_FRAME; i++) {
+				for (Queue<Cmd> q : cmdQueues.values()) {
+					Cmd cmd = q.poll();
+					if (cmd == null) {
+						continue;
+					}
+					List<Controllable> all = getAll();
+					AnnotationAwareOrderComparator.sort(all);
+					for (Controllable c : all) {
+						if (c.accept(cmd) && !c.exec(cmd)) {
+							break;
 						}
 					}
 				}
-
-				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
-		});
+			metric(KEY_DELAY, System.currentTimeMillis() - start);
+		}));
 	}
 
 	/**

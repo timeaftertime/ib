@@ -7,8 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import cn.milai.ib.IBObject;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.role.Role;
@@ -115,13 +115,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	protected final void onStart() {
 		camera = new BaseCamera();
 		lastFrame = getContainer().getFrame();
-		listener = new LifecycleListener() {
-			@Override
-			public void afterRefresh(LifecycleContainer container) {
-				refreshUI();
-			}
-		};
-		getContainer().addLifecycleListener(listener);
+		getContainer().addLifecycleListener(listener = Listeners.refreshListener(c -> refreshUI()));
 		initUI();
 	}
 

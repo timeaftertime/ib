@@ -18,9 +18,9 @@ public abstract class AbstractTextControl extends AbstractControl implements Tex
 
 	public AbstractTextControl(int x, int y, Container container) {
 		super(x, y, container);
-		int textSize = intProp(P_TEXT_SIZE);
-		font = new Font(prop(P_TEXT_FONT), Font.BOLD, textSize);
-		color = parseColor(intProp(P_TEXT_COLOR));
+		int textSize = intConf(P_TEXT_SIZE);
+		font = new Font(conf(P_TEXT_FONT), Font.BOLD, textSize);
+		color = parseColor(intConf(P_TEXT_COLOR));
 	}
 
 	protected static Color parseColor(int color) {

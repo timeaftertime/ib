@@ -51,7 +51,7 @@ public abstract class AbstractRole extends AbstractIBObject implements Role {
 	}
 
 	@Override
-	public int getInitLife() { return intProp(P_LIFE); }
+	public int getInitLife() { return intConf(P_LIFE); }
 
 	public AbstractRole(double x, double y, LifecycleContainer container) {
 		this(x, y, container, null);

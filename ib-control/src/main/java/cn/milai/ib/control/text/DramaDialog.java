@@ -57,10 +57,10 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	public DramaDialog(int x, int y, Container container, Map<String, Object> params) {
 		super(x, y, container);
 
-		horMargin = intProp(P_HOR_MARGIN);
-		verMargin = intProp(P_VER_MARGIN);
-		speakerWidth = intProp(P_SPEAKER_WIDTH);
-		speakerHeight = intProp(P_SPEAKER_HEIGHT);
+		horMargin = intConf(P_HOR_MARGIN);
+		verMargin = intConf(P_VER_MARGIN);
+		speakerWidth = intConf(P_SPEAKER_WIDTH);
+		speakerHeight = intConf(P_SPEAKER_HEIGHT);
 		this.text = (String) params.get(PARAM_TEXT);
 		readIndex = 0;
 		Image image = (Image) params.get(PARAM_SPEAKER_IMG);

@@ -66,11 +66,11 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 	}
 
 	@Override
-	public double doubleProp(String key) {
+	public double doubleConf(String key) {
 		if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 			return 0;
 		}
-		return super.doubleProp(key);
+		return super.doubleConf(key);
 	}
 
 	@Override

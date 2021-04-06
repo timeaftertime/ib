@@ -3,9 +3,8 @@ package cn.milai.ib.container.plugin.role;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.PropertyMonitorPlugin;
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.geometry.Rect;
@@ -27,30 +26,24 @@ public class BaseCrashCheckPlugin extends PropertyMonitorPlugin<Collider> implem
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(new LifecycleListener() {
-			@Override
-			public void afterRefresh(LifecycleContainer container) {
-				if (container.isPaused() || container.isPined()) {
-					return;
-				}
-
-				long start = System.currentTimeMillis();
-
-				List<Collider> colliders = getAll();
-				for (int i = 1; i < colliders.size(); i++) {
-					for (int j = 0; j < i; j++) {
-						Collider c1 = colliders.get(i);
-						Collider c2 = colliders.get(j);
-						if (isCrashed(c1.getRole(), c2.getRole())) {
-							c1.onCrash(c2);
-							c2.onCrash(c1);
-						}
+		return Arrays.asList(Listeners.refreshListener(c -> {
+			if (c.isPaused() || c.isPined()) {
+				return;
+			}
+			long start = System.currentTimeMillis();
+			List<Collider> colliders = getAll();
+			for (int i = 1; i < colliders.size(); i++) {
+				for (int j = 0; j < i; j++) {
+					Collider c1 = colliders.get(i);
+					Collider c2 = colliders.get(j);
+					if (isCrashed(c1.getRole(), c2.getRole())) {
+						c1.onCrash(c2);
+						c2.onCrash(c1);
 					}
 				}
-
-				metric(KEY_DELAY, System.currentTimeMillis() - start);
 			}
-		});
+			metric(KEY_DELAY, System.currentTimeMillis() - start);
+		}));
 	}
 
 	/**

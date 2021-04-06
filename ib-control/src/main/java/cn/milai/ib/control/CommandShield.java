@@ -34,7 +34,7 @@ public class CommandShield extends AbstractIBObject implements Controllable {
 	}
 
 	@Override
-	public double doubleProp(String key) {
+	public double doubleConf(String key) {
 		return 0;
 	}
 

@@ -110,12 +110,25 @@ public class Listeners {
 		);
 	}
 
+	public static LifecycleListener refreshListener(ContainerCallback afterRefreshed) {
+		return new LifecycleListener() {
+			@Override
+			public void afterRefresh(LifecycleContainer container) {
+				afterRefreshed.callback(container);
+			}
+		};
+	}
+
 	public static interface ObjectCallback<T extends IBObject> {
 		void callback(Container container, T obj);
 	}
 
 	public static interface ObjectsCallback<T extends IBObject> {
 		void callback(Container container, List<T> obj);
+	}
+
+	public static interface ContainerCallback {
+		void callback(LifecycleContainer container);
 	}
 
 }

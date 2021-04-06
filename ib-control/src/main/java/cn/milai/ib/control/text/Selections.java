@@ -64,19 +64,19 @@ public class Selections extends AbstractTextControl {
 	 * 获取默认背景颜色
 	 * @return
 	 */
-	private Color getBGColor() { return parseColor(intProp(P_SELECTION_BG_COLOR)); }
+	private Color getBGColor() { return parseColor(intConf(P_SELECTION_BG_COLOR)); }
 
 	/**
 	 * 获取默认内边距
 	 * @return
 	 */
-	private int getPadding() { return intProp(P_SELECTION_TEXT_PADDING); }
+	private int getPadding() { return intConf(P_SELECTION_TEXT_PADDING); }
 
 	/**
 	 * 获取默认外边距
 	 * @return
 	 */
-	private int getMargin() { return intProp(P_SELECTION_TEXT_MARGIN); }
+	private int getMargin() { return intConf(P_SELECTION_TEXT_MARGIN); }
 
 	/**
 	 * 将当前组件从容器中移除
@@ -120,11 +120,11 @@ public class Selections extends AbstractTextControl {
 		}
 
 		@Override
-		public double doubleProp(String key) {
+		public double doubleConf(String key) {
 			if (IBObject.P_WIDTH.equals(key) || IBObject.P_HEIGHT.equals(key)) {
 				return 0;
 			}
-			return super.doubleProp(key);
+			return super.doubleConf(key);
 		}
 
 		public BufferedImage getNowImage() { return img; };

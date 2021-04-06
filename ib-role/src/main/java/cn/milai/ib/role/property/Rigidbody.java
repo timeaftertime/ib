@@ -32,7 +32,7 @@ public interface Rigidbody extends Property {
 	 * @return
 	 */
 	default double confForceX() {
-		return getRole().doubleProp(P_FORCE_X);
+		return getRole().doubleConf(P_FORCE_X);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public interface Rigidbody extends Property {
 	 * @return
 	 */
 	default double confForceY() {
-		return getRole().doubleProp(P_FORCE_Y);
+		return getRole().doubleConf(P_FORCE_Y);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public interface Rigidbody extends Property {
 	 * @return
 	 */
 	default double confMass() {
-		return getRole().doubleProp(P_MASS);
+		return getRole().doubleConf(P_MASS);
 	}
 
 	/**
@@ -99,5 +99,5 @@ public interface Rigidbody extends Property {
 	 * 获取所受阻力
 	 * @return
 	 */
-	default double getResistance() { return getRole().doubleProp(P_RESISTANCE); }
+	default double getResistance() { return getRole().doubleConf(P_RESISTANCE); }
 }

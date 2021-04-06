@@ -60,26 +60,26 @@ public interface IBObject extends Paintable, Bounds {
 	 * 获取对象的 int 类型配置信息
 	 * @return
 	 */
-	int intProp(String key);
+	int intConf(String key);
 
 	/**
 	 * 获取对象的 long 类型配置信息
 	 * @return
 	 */
-	long longProp(String key);
+	long longConf(String key);
 
 	/**
 	 * 获取对象的 double 类型配置信息
 	 * @param key
 	 * @return
 	 */
-	double doubleProp(String key);
+	double doubleConf(String key);
 
 	/**
 	 * 获取对象的 String 类型配置信息
 	 * @param key
 	 * @return
 	 */
-	String prop(String key);
+	String conf(String key);
 
 }

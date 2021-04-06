@@ -11,7 +11,7 @@ import cn.milai.ib.role.AbstractRole;
  */
 public abstract class AbstractExplosion extends AbstractRole implements Explosion {
 
-	private final long LAST_FRAMES = longProp(P_LAST_FRAME);
+	private final long LAST_FRAMES = longConf(P_LAST_FRAME);
 
 	private long endFrame;
 

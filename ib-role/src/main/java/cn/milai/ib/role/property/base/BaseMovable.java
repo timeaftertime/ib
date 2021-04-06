@@ -29,11 +29,11 @@ public class BaseMovable extends BaseProperty implements Movable {
 	}
 
 	protected double initRatedSpeedX() {
-		return getRole().doubleProp(Movable.P_RATED_SPEED_X);
+		return getRole().doubleConf(Movable.P_RATED_SPEED_X);
 	}
 
 	protected double initRatedSpeedY() {
-		return getRole().doubleProp(Movable.P_RATED_SPEED_Y);
+		return getRole().doubleConf(Movable.P_RATED_SPEED_Y);
 	}
 
 	@Override

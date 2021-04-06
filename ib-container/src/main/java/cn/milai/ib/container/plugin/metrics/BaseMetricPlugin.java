@@ -14,9 +14,8 @@ import cn.milai.common.thread.counter.Counter;
 import cn.milai.common.thread.counter.DownCounter;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.container.conf.MetricsPluginConf;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 import cn.milai.ib.container.plugin.ListenersPlugin;
 import cn.milai.ib.container.pluginable.PluginListener;
@@ -76,20 +75,15 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	@Override
 	public List<ContainerListener> newListeners() {
 		return Arrays.asList(
-			new LifecycleListener() {
-				@Override
-				public void afterRefresh(LifecycleContainer container) {
-					long start = System.currentTimeMillis();
-
-					counter.count();
-					if (counter.isMet()) {
-						counter.reset();
-						logMetrics();
-
-						metric(KEY_DELAY, System.currentTimeMillis() - start);
-					}
+			Listeners.refreshListener(c -> {
+				long start = System.currentTimeMillis();
+				counter.count();
+				if (counter.isMet()) {
+					counter.reset();
+					logMetrics();
+					metric(KEY_DELAY, System.currentTimeMillis() - start);
 				}
-			},
+			}),
 			new PluginListener() {
 				@Override
 				public void onPluginRemoved(PluginableContainer container, ContainerPlugin plugin) {

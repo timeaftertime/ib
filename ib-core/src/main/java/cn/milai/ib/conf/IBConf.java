@@ -31,7 +31,7 @@ public class IBConf {
 	 * @param key
 	 * @return
 	 */
-	public static String strProp(Class<?> clazz, String key) {
+	public static String strConf(Class<?> clazz, String key) {
 		String value = ConfigLoader.load(clazz).get(key);
 		if (value == null) {
 			throw new PropNotFoundException(clazz, key);
@@ -45,8 +45,8 @@ public class IBConf {
 	 * @param key
 	 * @return
 	 */
-	public static int intProp(Class<?> clazz, String key) {
-		return StringUtil.parseInt(strProp(clazz, key));
+	public static int intConf(Class<?> clazz, String key) {
+		return StringUtil.parseInt(strConf(clazz, key));
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class IBConf {
 	 * @param key
 	 * @return
 	 */
-	public static long longProp(Class<?> clazz, String key) {
-		return Long.parseLong(strProp(clazz, key));
+	public static long longConf(Class<?> clazz, String key) {
+		return Long.parseLong(strConf(clazz, key));
 	}
 
 	/**
@@ -65,8 +65,8 @@ public class IBConf {
 	 * @param key
 	 * @return
 	 */
-	public static double doubleProp(Class<?> clazz, String key) {
-		return Double.parseDouble(strProp(clazz, key));
+	public static double doubleConf(Class<?> clazz, String key) {
+		return Double.parseDouble(strConf(clazz, key));
 	}
 
 	/**
