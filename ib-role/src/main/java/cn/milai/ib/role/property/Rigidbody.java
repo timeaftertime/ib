@@ -23,6 +23,16 @@ public interface Rigidbody extends Property {
 	String P_FORCE_Y = "forceY";
 
 	/**
+	 * 能突破 {@link Movable#P_RATED_SPEED_X} 的力
+	 */
+	String P_EXTRA_FORCE_X = "extraForceX";
+
+	/**
+	 * 能突破 {@link Movable#P_RATED_SPEED_Y} 的力
+	 */
+	String P_EXTRA_FORCE_Y = "extraForceY";
+
+	/**
 	 * 阻力大小
 	 */
 	String P_RESISTANCE = "resistance";
@@ -87,13 +97,59 @@ public interface Rigidbody extends Property {
 	 * 获取 X 方向加速度
 	 * @return
 	 */
-	default double getACCX() { return getForceX() / mass(); }
+	default double accX() {
+		return getForceX() / mass();
+	}
 
 	/**
 	 * 获取 Y 方向加速度
 	 * @return
 	 */
-	default double getACCY() { return getForceY() / mass(); }
+	default double accY() {
+		return getForceY() / mass();
+	}
+
+	/**
+	 * 给 X 方向增加额外力，返回增加后 X 方向额外力
+	 * @param force
+	 * @return
+	 */
+	double addExtraForceX(double force);
+
+	/**
+	 * 给 Y 方向增加额外力，返回增加后 Y 方向额外力
+	 * @param force
+	 * @return
+	 */
+	double addExtraForceY(double force);
+
+	/**
+	 * 获取 X 方向额外力
+	 * @return
+	 */
+	double getExtraForceX();
+
+	/**
+	 * 获取 Y 方向额外力
+	 * @return
+	 */
+	double getExtraForceY();
+
+	/**
+	 * 获取 X 方向 extra 力造成的加速度
+	 * @return
+	 */
+	default double extraACCX() {
+		return getExtraForceX() / mass();
+	}
+
+	/**
+	 * 获取 Y 方向 extra 力造成的加速度
+	 * @return
+	 */
+	default double extraACCY() {
+		return getExtraForceY() / mass();
+	}
 
 	/**
 	 * 获取所受阻力

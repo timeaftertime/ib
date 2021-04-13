@@ -15,6 +15,6 @@ public class BaseCollider extends BaseProperty implements Collider {
 	}
 
 	@Override
-	public void onCrash(Collider collider) {}
+	public void onCollided(Collider collider) {}
 
 }

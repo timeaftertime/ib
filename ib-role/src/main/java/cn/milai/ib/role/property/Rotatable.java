@@ -15,29 +15,44 @@ import cn.milai.ib.util.ImageUtil;
  */
 public interface Rotatable extends Property {
 
-	default boolean containsPoint(double x, double y) {
-		return new Rect(getRealBoundPoints()).containsPoint(Math.round(x), Math.round(y));
-	}
-
-	default Point[] getRealBoundPoints() {
-		Role role = getRole();
-		Point[] points = role.getRealBoundPoints();
-		for (int i = 0; i < points.length; i++) {
-			points[i] = points[i].rotate(role.centerX(), role.centerY(), role.getDirection());
-		}
-		return points;
+	/**
+	 * 指定 {@link Role} 是否制定点
+	 * @param role
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	static boolean containsPoint(Role role, double x, double y) {
+		return getBoundRect(role).containsPoint(Math.round(x), Math.round(y));
 	}
 
 	/**
-	 * 实现 {@link Rotatable} 接口的类不能出现覆盖了 {@link #paintWith(Graphics)} 的父类
+	 * 获取 {@link Role} 实际边界 {@link Rect}
+	 * @param role
+	 * @return
 	 */
-	static void paintWith(Graphics g, Role role) {
-		if (!role.isAlive()) {
+	static Rect getBoundRect(Role role) {
+		if (!role.hasProperty(Rotatable.class)) {
+			return new Rect(role);
+		}
+		Point[] points = role.toPoints();
+		for (int i = 0; i < points.length; i++) {
+			points[i] = points[i].rotate(role.centerX(), role.centerY(), role.getDirection());
+		}
+		return new Rect(points);
+	}
+
+	/**
+	 * 使用指定 {@link Graphics} 绘制指定 {@link Role}
+	 * @param g
+	 * @param r
+	 */
+	static void paintWith(Graphics g, Role r) {
+		if (!r.isAlive()) {
 			return;
 		}
 		ImageUtil.paint(
-			(Graphics2D) g, role.getNowImage(), role.getIntX(), role.getIntY(), role.getIntW(), role.getIntH(), role
-				.getDirection()
+			(Graphics2D) g, r.getNowImage(), r.getIntX(), r.getIntY(), r.getIntW(), r.getIntH(), r.getDirection()
 		);
 	}
 }

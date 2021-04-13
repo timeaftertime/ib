@@ -18,7 +18,7 @@ public abstract class AbstractHelper extends MovableRole implements Helper {
 		super(x, y, container);
 		setCollider(new BaseCollider(this) {
 			@Override
-			public void onCrash(Collider crashed) {
+			public void onCollided(Collider crashed) {
 				Role r = crashed.getRole();
 				if (!(r instanceof PlayerRole)) {
 					return;

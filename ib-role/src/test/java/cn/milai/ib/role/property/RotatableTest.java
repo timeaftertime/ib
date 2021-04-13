@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.role.AbstractRole;
 import cn.milai.ib.role.Role;
@@ -16,34 +15,14 @@ public class RotatableTest {
 
 	private static class RotatableStub extends AbstractRole implements RotatableHolder {
 
-		private int width;
-		private int height;
-
-		public RotatableStub(int x, int y, int width, int height, double direction, LifecycleContainer container) {
-			super(x, y, container);
-			this.width = width;
-			this.height = height;
+		public RotatableStub(int x, int y, double w, double h, double direction) {
+			super(0, 0, null);
+			resetBounds(x, y, w, h);
 			setDirection(direction);
 			setRotatable(new Rotatable() {
 				@Override
 				public Role getRole() { return RotatableStub.this; }
 			});
-		}
-
-		@Override
-		public int getIntW() { return width; }
-
-		@Override
-		public int getIntH() { return height; }
-
-		@Override
-		public double centerX() {
-			return getIntX() + width / 2.0;
-		}
-
-		@Override
-		public double centerY() {
-			return super.getIntY() + height / 2.0;
 		}
 
 		@Override
@@ -58,7 +37,9 @@ public class RotatableTest {
 
 	}
 
-	private Rotatable rotatable = new RotatableStub(0, 0, 10, 15, Math.atan(-3.0 / 11), null).rotatable();
+	// 绕中心旋转 -15.26 度
+	private RotatableHolder role = new RotatableStub(0, 0, 10, 15, Math.atan(-3.0 / 11));
+	private Rotatable rotatable = role.rotatable();
 
 	@Test
 	public void testRotate() {
@@ -79,20 +60,20 @@ public class RotatableTest {
 
 	@Test
 	public void testContainsPoint() {
-		assertTrue(rotatable.containsPoint(5, 7));
-		assertTrue(rotatable.containsPoint(5, 15));
-		assertTrue(rotatable.containsPoint(9, 4));
-		assertTrue(rotatable.containsPoint(-1, 2));
-		assertFalse(rotatable.containsPoint(0, 0));
-		assertFalse(rotatable.containsPoint(0, 15));
-		assertFalse(rotatable.containsPoint(10, 0));
-		assertFalse(rotatable.containsPoint(10, 15));
-		assertFalse(rotatable.containsPoint(3, 0));
-		assertFalse(rotatable.containsPoint(0, 10));
-		assertFalse(rotatable.containsPoint(1, 13));
-		assertFalse(rotatable.containsPoint(4, 16));
-		assertFalse(rotatable.containsPoint(-10, -16));
-		assertFalse(rotatable.containsPoint(100, -16));
+		assertTrue(Rotatable.containsPoint(role, 5, 7));
+		assertTrue(Rotatable.containsPoint(role, 5, 15));
+		assertTrue(Rotatable.containsPoint(role, 9, 4));
+		assertTrue(Rotatable.containsPoint(role, -1, 2));
+		assertFalse(Rotatable.containsPoint(role, 0, 0));
+		assertFalse(Rotatable.containsPoint(role, 0, 15));
+		assertFalse(Rotatable.containsPoint(role, 10, 0));
+		assertFalse(Rotatable.containsPoint(role, 10, 15));
+		assertFalse(Rotatable.containsPoint(role, 3, 0));
+		assertFalse(Rotatable.containsPoint(role, 0, 10));
+		assertFalse(Rotatable.containsPoint(role, 1, 13));
+		assertFalse(Rotatable.containsPoint(role, 4, 16));
+		assertFalse(Rotatable.containsPoint(role, -10, -16));
+		assertFalse(Rotatable.containsPoint(role, 100, -16));
 	}
 
 }

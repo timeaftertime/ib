@@ -41,4 +41,9 @@ public class Point {
 		double y2 = y + (this.y - y) * Math.cos(radian) + (x - this.x) * -Math.sin(radian);
 		return new Point(Math.round(x2), Math.round(y2));
 	}
+
+	@Override
+	public String toString() {
+		return String.format("(%d, %d)", x, y);
+	}
 }

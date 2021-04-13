@@ -2,6 +2,7 @@ package cn.milai.ib.container.listener;
 
 import java.util.List;
 
+import cn.milai.common.base.Collects;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Property;
@@ -13,8 +14,11 @@ import cn.milai.ib.role.property.Property;
  */
 public class PropertyMonitor<T extends Property> extends ContainerMonitor {
 
+	private Class<T> c;
+
 	private PropertyMonitor(Container container, Class<T> c) {
 		super(container, o -> Role.class.isInstance(o) && ((Role) o).hasProperty(c));
+		this.c = c;
 	}
 
 	/**
@@ -29,5 +33,11 @@ public class PropertyMonitor<T extends Property> extends ContainerMonitor {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getAll() { return (List<Role>) super.getAll(); }
+
+	/**
+	 * 获取监听到的所有属性
+	 * @return
+	 */
+	public List<T> getProps() { return Collects.mapList(getAll(), r -> r.getProperty(c)); };
 
 }

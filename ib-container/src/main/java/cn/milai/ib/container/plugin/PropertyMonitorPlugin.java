@@ -2,7 +2,6 @@ package cn.milai.ib.container.plugin;
 
 import java.util.List;
 
-import cn.milai.common.base.Collects;
 import cn.milai.ib.container.listener.PropertyMonitor;
 import cn.milai.ib.role.property.Property;
 
@@ -33,5 +32,5 @@ public class PropertyMonitorPlugin<T extends Property> extends ListenersPlugin {
 	 * 获取监听到的所有 {@link Property} 列表
 	 * @return
 	 */
-	protected List<T> getAll() { return Collects.mapList(monitor.getAll(), r -> r.getProperty(clazz)); }
+	protected List<T> getAll() { return monitor.getProps(); }
 }

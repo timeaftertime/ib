@@ -76,12 +76,24 @@ public class BaseMovable extends BaseProperty implements Movable {
 			return;
 		}
 		Rigidbody r = getRole().getProperty(Rigidbody.class);
-		speedX += r.getACCX();
-		speedY += r.getACCY();
-		// 清除受力
+		// 加速度
+		speedX += r.accX();
+		speedY += r.accY();
 		r.addForceX(-r.getForceX());
 		r.addForceY(-r.getForceY());
-		// 加速度
+		// 不超过额定速度
+		if (Math.abs(speedX) > ratedSpeedX) {
+			speedX = ratedSpeedX * (speedX > 0 ? 1 : -1);
+		}
+		if (Math.abs(speedY) > ratedSpeedY) {
+			speedY = ratedSpeedY * (speedY > 0 ? 1 : -1);
+		}
+		// 额外加速度
+		speedX += r.extraACCX();
+		speedY += r.extraACCY();
+		r.addExtraForceX(-r.getExtraForceX());
+		r.addExtraForceY(-r.getExtraForceY());
+		//  阻力加速度
 		double deltaX = 0;
 		double deltaY = speedY == 0 ? 0 : r.getResistance() / r.mass();
 		if (speedX != 0) {
@@ -89,7 +101,6 @@ public class BaseMovable extends BaseProperty implements Movable {
 			deltaX = r.getResistance() * Math.cos(alpha) / r.mass();
 			deltaY = r.getResistance() * Math.sin(alpha) / r.mass();
 		}
-		//  阻力加速度
 		if (speedX > 0) {
 			speedX = Math.max(0, speedX - deltaX);
 		} else if (speedX < 0) {
@@ -100,13 +111,7 @@ public class BaseMovable extends BaseProperty implements Movable {
 		} else if (speedY < 0) {
 			speedY = Math.min(0, speedY + deltaY);
 		}
-		// 不超过额定速度
-		if (Math.abs(speedX) > ratedSpeedX) {
-			speedX = ratedSpeedX * (speedX > 0 ? 1 : -1);
-		}
-		if (Math.abs(speedY) > ratedSpeedY) {
-			speedY = ratedSpeedY * (speedY > 0 ? 1 : -1);
-		}
+
 	}
 
 	@Override

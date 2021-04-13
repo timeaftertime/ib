@@ -1,4 +1,4 @@
-package cn.milai.ib;
+package cn.milai.ib.geometry;
 
 /**
  * 限制范围
@@ -80,6 +80,20 @@ public interface Bounds {
 	void setH(double h);
 
 	/**
+	 * 重新设置边界
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 */
+	default void resetBounds(double x, double y, double w, double h) {
+		setX(x);
+		setY(y);
+		setW(w);
+		setH(h);
+	}
+
+	/**
 	 * 中心 X 坐标
 	 * @return
 	 */
@@ -90,5 +104,27 @@ public interface Bounds {
 	 * @return
 	 */
 	double centerY();
+
+	/**
+	 * 获取四个边界点，顺序为左上、左下、右下、右上点的坐标
+	 * @return
+	 */
+	default Point[] toPoints() {
+		long x = (long) getX();
+		long y = (long) getY();
+		long w = (long) getW();
+		long h = (long) getH();
+		return new Point[] { new Point(x, y), new Point(x, y + h), new Point(x + w, y + h), new Point(x + w, y), };
+	}
+
+	/**
+	 * 当前 {@link Bounds} 是否包含指定点
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	default boolean containsPoint(double x, double y) {
+		return x >= getX() && x <= getX() + getW() && y >= getY() && y <= getY() + getH();
+	}
 
 }

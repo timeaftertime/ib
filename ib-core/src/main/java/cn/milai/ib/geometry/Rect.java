@@ -24,6 +24,17 @@ public class Rect {
 	}
 
 	/**
+	 * 使用指定 {@code x}, {@codey} 坐标及宽带 {@code w}、高度 {@code h} 构造一个不旋转的矩形
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 */
+	public Rect(Bounds bounds) {
+		this(bounds.toPoints());
+	}
+
+	/**
 	 * 判断当前矩形是否与指定矩形有交点
 	 * @param q
 	 * @return

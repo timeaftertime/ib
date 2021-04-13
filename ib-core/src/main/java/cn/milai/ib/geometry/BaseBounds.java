@@ -1,4 +1,4 @@
-package cn.milai.ib;
+package cn.milai.ib.geometry;
 
 /**
  * {@link Bounds } 的默认实现
@@ -25,10 +25,7 @@ public class BaseBounds implements Bounds {
 	 * @param h
 	 */
 	public BaseBounds(double x, double y, double w, double h) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+		resetBounds(x, y, w, h);
 	}
 
 	@Override
@@ -68,9 +65,13 @@ public class BaseBounds implements Bounds {
 	public void setH(double h) { this.h = h; }
 
 	@Override
-	public double centerX() { return getX() + getW() / 2; }
+	public double centerX() {
+		return getX() + getW() / 2;
+	}
 
 	@Override
-	public double centerY() { return getY() + getH() / 2; }
+	public double centerY() {
+		return getY() + getH() / 2;
+	}
 
 }

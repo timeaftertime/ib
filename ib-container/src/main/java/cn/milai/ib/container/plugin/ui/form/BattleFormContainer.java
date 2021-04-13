@@ -9,10 +9,9 @@ import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.control.BaseControlPlugin;
 import cn.milai.ib.container.plugin.media.BaseMediaPlugin;
 import cn.milai.ib.container.plugin.metrics.BaseMetricPlugin;
+import cn.milai.ib.container.plugin.physics.BasePhysicsPlugin;
 import cn.milai.ib.container.plugin.role.BaseAliveCheckPlugin;
-import cn.milai.ib.container.plugin.role.BaseCrashCheckPlugin;
 import cn.milai.ib.container.plugin.role.BaseExplosiblePlugin;
-import cn.milai.ib.container.plugin.role.BaseMovablePlugin;
 import cn.milai.ib.container.pluginable.ui.FormUIContainer;
 import cn.milai.ib.control.button.CloseButton;
 
@@ -33,8 +32,9 @@ public class BattleFormContainer extends BaseDramaContainer implements FormUICon
 		}, closeButton));
 
 		addPlugin(new BaseControlPlugin());
-		addPlugin(new BaseMovablePlugin());
-		addPlugin(new BaseCrashCheckPlugin());
+		addPlugin(new BasePhysicsPlugin());
+		//		addPlugin(new BaseMovablePlugin());
+		//		addPlugin(new BaseCrashCheckPlugin());
 		addPlugin(new BaseAliveCheckPlugin());
 		addPlugin(new BaseExplosiblePlugin());
 		addPlugin(new BaseMediaPlugin());

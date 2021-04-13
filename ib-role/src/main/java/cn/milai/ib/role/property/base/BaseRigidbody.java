@@ -13,6 +13,8 @@ public class BaseRigidbody extends BaseProperty implements Rigidbody {
 	private double mass;
 	private double forceX;
 	private double forceY;
+	private double extraForceX;
+	private double extraForceY;
 
 	public BaseRigidbody(Role role) {
 		super(role);
@@ -42,5 +44,21 @@ public class BaseRigidbody extends BaseProperty implements Rigidbody {
 	public double addForceY(double force) {
 		return this.forceY += force;
 	}
+
+	@Override
+	public double addExtraForceX(double force) {
+		return extraForceX = extraForceX + force;
+	}
+
+	@Override
+	public double addExtraForceY(double force) {
+		return extraForceY = extraForceY + force;
+	}
+
+	@Override
+	public double getExtraForceX() { return extraForceX; }
+
+	@Override
+	public double getExtraForceY() { return extraForceY; }
 
 }

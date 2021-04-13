@@ -34,7 +34,7 @@ public abstract class AbstractBullet extends MovableRole implements Bullet {
 		setDamage(new BaseDamage(this, intConf(P_POWER)));
 		setCollider(new BaseCollider(this) {
 			@Override
-			public void onCrash(Collider crashed) {
+			public void onCollided(Collider crashed) {
 				if (!canCrashWith(crashed)) {
 					return;
 				}

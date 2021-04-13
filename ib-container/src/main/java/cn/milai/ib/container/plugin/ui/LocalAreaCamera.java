@@ -2,7 +2,7 @@ package cn.milai.ib.container.plugin.ui;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.BaseBounds;
+import cn.milai.ib.geometry.BaseBounds;
 
 /**
  * 用于等比例显示局部区域的 {@link Camera} 实现

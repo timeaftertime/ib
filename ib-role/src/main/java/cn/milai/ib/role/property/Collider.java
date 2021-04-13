@@ -11,6 +11,6 @@ public interface Collider extends Property {
 	 * 与另一个游戏角色碰撞时调用
 	 * @param collider
 	 */
-	void onCrash(Collider collider);
+	void onCollided(Collider collider);
 
 }
