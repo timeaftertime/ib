@@ -83,10 +83,10 @@ public class BaseMovable extends BaseProperty implements Movable {
 		r.addForceY(-r.getForceY());
 		// 不超过额定速度
 		if (Math.abs(speedX) > ratedSpeedX) {
-			speedX = ratedSpeedX * (speedX > 0 ? 1 : -1);
+			speedX = ratedSpeedX * Math.signum(speedX);
 		}
 		if (Math.abs(speedY) > ratedSpeedY) {
-			speedY = ratedSpeedY * (speedY > 0 ? 1 : -1);
+			speedY = ratedSpeedY * Math.signum(speedY);
 		}
 		// 额外加速度
 		speedX += r.extraACCX();

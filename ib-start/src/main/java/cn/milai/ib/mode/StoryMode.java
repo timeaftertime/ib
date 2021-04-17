@@ -44,7 +44,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	@Override
 	public String name() {
-		return "故事模式";
+		return "剧情模式";
 	}
 
 	@Override

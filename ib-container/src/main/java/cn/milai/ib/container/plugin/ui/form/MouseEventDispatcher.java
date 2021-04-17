@@ -5,6 +5,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.plugin.control.ControlPlugin;
 import cn.milai.ib.container.plugin.control.cmd.ClickCmd;
 import cn.milai.ib.container.plugin.control.cmd.OverCmd;
@@ -17,6 +22,8 @@ import cn.milai.ib.container.plugin.control.cmd.OverCmd;
 public class MouseEventDispatcher extends MouseAdapter {
 
 	private static final int DEF_FROM_ID = 0;
+
+	private final static Logger LOG = LoggerFactory.getLogger(MouseEventDispatcher.class);
 
 	private FormUIPlugin ui;
 
@@ -33,19 +40,28 @@ public class MouseEventDispatcher extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		ui.getContainer().fire(ControlPlugin.class, controller -> {
-			double x = ui.getCamera().toRealX(ui, e.getX());
-			double y = ui.getCamera().toRealY(ui, e.getY());
-			controller.addCmd(new ClickCmd(DEF_FROM_ID, x, y));
-		});
+		try {
+			ui.getContainer().fire(ControlPlugin.class, controller -> {
+				double x = ui.getCamera().toRealX(ui, e.getX());
+				double y = ui.getCamera().toRealY(ui, e.getY());
+				controller.addCmd(new ClickCmd(DEF_FROM_ID, x, y));
+			});
+		} catch (ContainerClosedException ex) {
+			LOG.info("容器已经关闭: {}", ExceptionUtils.getStackTrace(ex));
+		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		ui.getContainer().fire(ControlPlugin.class, controller -> {
-			double x = ui.getCamera().toRealX(ui, e.getX());
-			double y = ui.getCamera().toRealY(ui, e.getY());
-			controller.addCmd(new OverCmd(DEF_FROM_ID, x, y));
-		});
+		try {
+			ui.getContainer().fire(ControlPlugin.class, controller -> {
+				double x = ui.getCamera().toRealX(ui, e.getX());
+				double y = ui.getCamera().toRealY(ui, e.getY());
+				controller.addCmd(new OverCmd(DEF_FROM_ID, x, y));
+			});
+		} catch (ContainerClosedException ex) {
+			LOG.info("容器已经关闭: {}", ExceptionUtils.getStackTrace(ex));
+		}
+
 	}
 }

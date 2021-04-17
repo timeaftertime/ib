@@ -14,7 +14,4 @@ public class BaseCollider extends BaseProperty implements Collider {
 		super(role);
 	}
 
-	@Override
-	public void onCollided(Collider collider) {}
-
 }

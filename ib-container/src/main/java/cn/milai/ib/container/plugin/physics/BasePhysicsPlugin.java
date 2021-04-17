@@ -1,8 +1,11 @@
 package cn.milai.ib.container.plugin.physics;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -25,13 +28,19 @@ import cn.milai.ib.role.property.Rotatable;
  */
 public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin {
 
+	private static final int REGION_ROW = 2;
+	private static final int REGION_COL = 2;
+
 	private PropertyMonitor<Collider> colliders;
 	private PropertyMonitor<Movable> movables;
+	private List<Region> regions;
+	private Map<RolePair, Boolean> collided;
 
 	@Override
 	protected void afterAddListeners() {
 		colliders = PropertyMonitor.monitor(getContainer(), Collider.class);
 		movables = PropertyMonitor.monitor(getContainer(), Movable.class);
+		collided = new HashMap<>();
 	}
 
 	@Override
@@ -41,24 +50,68 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 				return;
 			}
 			long start = System.currentTimeMillis();
-			Queue<Mover> movers = new PriorityBlockingQueue<Mover>(
-				Collects.mapList(movables.getProps(), Mover::new)
-			);
-			Set<Mover> started = new HashSet<>();
-			while (!movers.isEmpty()) {
-				Mover now = movers.poll();
-				Movable m = now.getMovable();
-				if (started.add(now)) {
-					m.beforeMove();
-				}
-				if (doMove(now, movers.isEmpty() ? 0 : movers.peek().getFuelRatio())) {
-					m.afterMove();
-					continue;
-				}
-				movers.offer(now);
-			}
+			run();
 			metric(KEY_DELAY, System.currentTimeMillis() - start);
 		}));
+	}
+
+	public void run() {
+		initRegions();
+		initCollided();
+		Queue<Mover> movers = new PriorityBlockingQueue<Mover>(
+			Collects.mapList(movables.getProps(), Mover::new)
+		);
+		Set<Mover> started = new HashSet<>();
+		while (!movers.isEmpty()) {
+			Mover now = movers.poll();
+			Movable m = now.getMovable();
+			if (started.add(now)) {
+				m.beforeMove();
+			}
+			double nextFuelRatio = movers.isEmpty() ? 0 : movers.peek().getFuelRatio();
+			if (!doMove(now, nextFuelRatio)) {
+				movers.offer(now);
+				continue;
+			}
+			m.afterMove();
+		}
+	}
+
+	private List<Region> initRegions() {
+		regions = new ArrayList<>();
+		double regionW = 1.0 * getContainer().getW() / REGION_ROW;
+		double regionH = 1.0 * getContainer().getH() / REGION_COL;
+		for (int i = 0; i < REGION_ROW; i++) {
+			for (int j = 0; j < REGION_COL; j++) {
+				regions.add(new Region(i * regionW, j * regionH, regionW, regionH));
+			}
+		}
+		for (Role r : colliders.getAll()) {
+			refreshRegionOf(r);
+		}
+		return regions;
+	}
+
+	private void initCollided() {
+		collided = new HashMap<>();
+		for (Role r1 : colliders.getAll()) {
+			for (Role r2 : colliders.getAll()) {
+				if (r1 == r2) {
+					continue;
+				}
+				collided.put(new RolePair(r1, r2), isCollided(r1, r2));
+			}
+		}
+	}
+
+	private Set<Role> sameRegion(Role r) {
+		Set<Role> roles = new HashSet<>();
+		for (Region region : regions) {
+			if (region.has(r)) {
+				roles.addAll(region.getRoles());
+			}
+		}
+		return roles;
 	}
 
 	/**
@@ -73,39 +126,55 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 		if (!r.hasProperty(Collider.class)) {
 			r.setX(r.getX() + m.getSpeedX());
 			r.setY(r.getY() + m.getSpeedY());
+			m.onMove();
+			checkCollision(r);
 			return true;
 		}
-		return moveUntil(nextFuelRatio, now);
-	}
-
-	/**
-	 *  移动 {@link Mover} 直到其 {@link Mover#getFuelRatio()} 小于指定值或等于 0
-	 * @param nextFuelRatio
-	 * @param now
-	 * @return
-	 */
-	private boolean moveUntil(double nextFuelRatio, Mover now) {
-		Role r1 = now.getMovable().getRole();
-		Collider c1 = r1.getProperty(Collider.class);
 		while (now.getFuelRatio() >= nextFuelRatio && now.getFuelRatio() != 0) {
 			now.move();
 			now.getMovable().onMove();
-
-			for (Role r2 : colliders.getAll()) {
-				if (!r2.isAlive()) {
-					continue;
-				}
-				if (isCollided(r1, r2)) {
-					Collider c2 = r2.getProperty(Collider.class);
-					c1.onCollided(c2);
-					c2.onCollided(c1);
-					if (!r1.isAlive()) {
-						return true;
-					}
-				}
-			}
+			checkCollision(r);
 		}
 		return now.getFuelRatio() == 0;
+	}
+
+	private void refreshRegionOf(Role r) {
+		for (Region region : regions) {
+			region.check(r);
+		}
+	}
+
+	private void checkCollision(Role r1) {
+		refreshRegionOf(r1);
+		for (Role r2 : Collects.unfilterList(sameRegion(r1), r -> Camp.sameCamp(r1.getCamp(), r.getCamp()))) {
+			if (!r1.isAlive()) {
+				return;
+			}
+			if (!r2.isAlive()) {
+				continue;
+			}
+			checkCollisionBetween(r1, r2);
+		}
+	}
+
+	private void checkCollisionBetween(Role r1, Role r2) {
+		Collider c1 = r1.getProperty(Collider.class);
+		Collider c2 = r2.getProperty(Collider.class);
+		boolean nowCollided = isCollided(r1, r2);
+		RolePair key = new RolePair(r1, r2);
+		if (nowCollided) {
+			if (!collided.get(key)) {
+				c1.onCollided(c2);
+				c2.onCollided(c1);
+			} else {
+				c1.onTouching(c2);
+				c2.onTouching(c1);
+			}
+		} else {
+			c1.onLeave(c2);
+			c2.onLeave(c1);
+		}
+		collided.put(key, nowCollided);
 	}
 
 	/**
@@ -115,9 +184,6 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	 * @return
 	 */
 	public static boolean isCollided(Role r1, Role r2) {
-		if (Camp.sameCamp(r1.getCamp(), r2.getCamp())) {
-			return false;
-		}
 		return Rotatable.getBoundRect(r1).intersects(Rotatable.getBoundRect(r2));
 	}
 }
