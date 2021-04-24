@@ -15,8 +15,7 @@ public interface GameMode {
 
 	/**
 	 * 初始化游戏模式，在 start() 之前将被调用
-	 * 由于所有 GameMode 都会在启动时实例化，所有 GameMode 的
-	 * 构造方法应该尽量简单，而把初始操作放在 init 中
+	 * 由于所有 GameMode 都会在启动时实例化，所有 GameMode 的构造方法应该尽量简单，而把初始操作放在 init 中
 	 */
 	default void init() {
 

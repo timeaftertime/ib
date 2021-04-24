@@ -126,13 +126,14 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 		if (!r.hasProperty(Collider.class)) {
 			r.setX(r.getX() + m.getSpeedX());
 			r.setY(r.getY() + m.getSpeedY());
+			now.move();
 			m.onMove();
 			checkCollision(r);
 			return true;
 		}
 		while (now.getFuelRatio() >= nextFuelRatio && now.getFuelRatio() != 0) {
 			now.move();
-			now.getMovable().onMove();
+			m.onMove();
 			checkCollision(r);
 		}
 		return now.getFuelRatio() == 0;
@@ -147,6 +148,9 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	private void checkCollision(Role r1) {
 		refreshRegionOf(r1);
 		for (Role r2 : Collects.unfilterList(sameRegion(r1), r -> Camp.sameCamp(r1.getCamp(), r.getCamp()))) {
+			if (r1 == r2) {
+				continue;
+			}
 			if (!r1.isAlive()) {
 				return;
 			}

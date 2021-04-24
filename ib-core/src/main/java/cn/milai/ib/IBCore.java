@@ -8,14 +8,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
-import org.springframework.stereotype.Component;
 
 /**
  * Spring ApplicationContext 持有者
  * @author milai
  * @date 2020.02.20
  */
-@Component
+@InfinityBattleMod
 public class IBCore implements ApplicationContextAware {
 
 	private static ApplicationContext ctx;

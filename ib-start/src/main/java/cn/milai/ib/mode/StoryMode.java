@@ -3,8 +3,9 @@ package cn.milai.ib.mode;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import cn.milai.ib.IBCore;
 import cn.milai.ib.container.ContainerClosedException;
@@ -21,8 +22,9 @@ import cn.milai.ib.util.Waits;
  * 剧情模式
  * @author milai
  */
+@Configuration
 @Order(0)
-@Component
+@ConditionalOnBean(StoryConf.class)
 public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	/**
@@ -78,7 +80,14 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 			}
 		} catch (ContainerClosedException e) {
 			// 容器关闭，结束游戏
+			return;
 		}
+		container.reset();
+		container.resizeWithUI(WIDTH, HEIGHT);
+		LinesFullScreenPass loading = new LinesFullScreenPass(
+			SHOW_DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7, container
+		);
+		container.addObject(loading);
 	}
 
 	private Drama resolveDrama(String dramaCode) {
