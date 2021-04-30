@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.control.button.Button;
-import cn.milai.ib.util.ImageTextUtil;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Texts;
+import cn.milai.ib.graphics.Images;
 
 /**
  * 提供多个选项的组件
@@ -40,15 +40,15 @@ public class Selections extends AbstractTextControl {
 	public Selections(int x, int y, Container container, String question, String... selections) {
 		super(x, y, container);
 		this.selections = selections;
-		questionImg = ImageUtil.newImage(getBGColor(), getIntW(), getIntH());
+		questionImg = Images.newImage(getBGColor(), getIntW(), getIntH());
 		Graphics g = questionImg.createGraphics();
 		g.setFont(getTextFont());
-		ImageTextUtil.resizeToFit(question, g, getIntW(), getIntH());
+		Texts.resizeToFit(question, g, getIntW(), getIntH());
 		g.drawRect(0, 0, getIntW() - 1, getIntH() - 1);
 		g.drawString(
 			question,
-			(getIntW() - ImageTextUtil.getTextWidth(question, g)) / 2,
-			(getIntH() + ImageTextUtil.getTextHeight(g)) / 2
+			(getIntW() - Texts.getTextWidth(question, g)) / 2,
+			(getIntH() + Texts.getTextHeight(g)) / 2
 		);
 		buttons = new SelectionButton[selections.length];
 		for (int i = 0; i < buttons.length; i++) {
@@ -101,17 +101,17 @@ public class Selections extends AbstractTextControl {
 		public SelectionButton(int index, Runnable afterpressed) {
 			super(0, 0, Selections.this.getContainer(), afterpressed);
 			int width = Selections.this.getIntW();
-			int height = ImageTextUtil.getTextHeight(getTextFont()) + 2 * getPadding();
-			img = ImageUtil.newImage(getBGColor(), width, height);
+			int height = Texts.getTextHeight(getTextFont()) + 2 * getPadding();
+			img = Images.newImage(getBGColor(), width, height);
 			Graphics g = img.createGraphics();
 			g.drawRect(0, 0, width - 1, height - 1);
 			g.setFont(getTextFont());
 			String text = selections[index];
-			ImageTextUtil.resizeToFit(text, g, width - 2 * getPadding(), height - 2 * getPadding());
+			Texts.resizeToFit(text, g, width - 2 * getPadding(), height - 2 * getPadding());
 			g.drawString(
 				text,
-				(width - ImageTextUtil.getTextWidth(text, g)) / 2,
-				(height + ImageTextUtil.getTextHeight(g)) / 2
+				(width - Texts.getTextWidth(text, g)) / 2,
+				(height + Texts.getTextHeight(g)) / 2
 			);
 			setX(Selections.this.getX());
 			double topY = Selections.this.getY() + Selections.this.getIntH();

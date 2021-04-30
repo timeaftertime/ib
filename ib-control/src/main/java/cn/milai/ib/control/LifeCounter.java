@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * 计数型生命显示器
@@ -23,7 +23,7 @@ public class LifeCounter extends LifeIndicator {
 
 	@Override
 	protected BufferedImage createImage() {
-		BufferedImage image = ImageUtil.newImage(getIntW(), getIntH());
+		BufferedImage image = Images.newImage(getIntW(), getIntH());
 		Graphics2D g2d = image.createGraphics();
 		g2d.setColor(LIFE_COLOR);
 		g2d.drawImage(getTargetImage(), 0, 0, getIntW() / 4, getIntH(), null);

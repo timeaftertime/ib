@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * 仅用于显示的游戏对象
@@ -90,14 +90,14 @@ public class ViewObject extends AbstractIBObject {
 			g.drawImage(getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), null);
 			return;
 		}
-		ImageUtil.paint((Graphics2D) g, getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), rotateRadian);
+		Images.paint((Graphics2D) g, getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), rotateRadian);
 	}
 
 	@Override
 	public BufferedImage getNowImage() {
 		BufferedImage img = super.getNowImage();
 		if (horizontalFlipped) {
-			img = flipped.computeIfAbsent(img, i -> ImageUtil.horizontalFlip(i));
+			img = flipped.computeIfAbsent(img, i -> Images.horizontalFlip(i));
 		}
 		return img;
 	}

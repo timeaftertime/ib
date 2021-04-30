@@ -1,4 +1,4 @@
-package cn.milai.ib.util;
+package cn.milai.ib.graphics;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -23,13 +23,13 @@ import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.io.InputStreams;
 
 /**
- * 图片相关工具类
- * 2019.11.21
+ * 图片工具类
  * @author milai
+ * @date 2021.04.26
  */
-public abstract class ImageUtil {
+public class Images {
 
-	private ImageUtil() {}
+	private Images() {}
 
 	/**
 	 * 加载 url 指定的图片
@@ -52,14 +52,14 @@ public abstract class ImageUtil {
 			BufferedImage[] images;
 			byte[] bytes = InputStreams.toBytes(in);
 			ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
-			reader.setInput(ImageIO.createImageInputStream(InputStreams.toInputStream(bytes)));
+			reader.setInput(ImageIO.createImageInputStream(InputStreams.fromBytes(bytes)));
 			if (reader.getNumImages(true) > 0) {
 				images = new BufferedImage[reader.getNumImages(true)];
 				for (int i = 0; i < reader.getNumImages(false); i++) {
 					images[i] = reader.read(i);
 				}
 			} else {
-				images = new BufferedImage[] { ImageIO.read(InputStreams.toInputStream(bytes)) };
+				images = new BufferedImage[] { ImageIO.read(InputStreams.fromBytes(bytes)) };
 			}
 			return images;
 		});
@@ -121,21 +121,21 @@ public abstract class ImageUtil {
 		Graphics tmp = newImage(1, 1).createGraphics();
 		tmp.setFont(font);
 		tmp.setColor(fgColor);
-		int lineHeight = ImageTextUtil.getTextHeight(tmp);
+		int lineHeight = Texts.getTextHeight(tmp);
 		int totalHeight = lines.size() * lineHeight + 2 * padding + (lines.size() - 1) * lineInterval;
 		int maxWidth = 0;
 		for (String line : lines) {
-			maxWidth = Integer.max(maxWidth, ImageTextUtil.getTextWidth(line, tmp));
+			maxWidth = Integer.max(maxWidth, Texts.getTextWidth(line, tmp));
 		}
 		maxWidth += 2 * padding;
-		BufferedImage img = bgColor == null ? ImageUtil.newImage(maxWidth, totalHeight)
-			: ImageUtil.newImage(bgColor, maxWidth, totalHeight);
+		BufferedImage img = bgColor == null ? Images.newImage(maxWidth, totalHeight)
+			: Images.newImage(bgColor, maxWidth, totalHeight);
 		Graphics g = img.createGraphics();
 		g.setFont(font);
 		g.setColor(fgColor);
 		int nowY = padding - 1 + lineHeight - 1;
 		for (String line : lines) {
-			int lineWidth = ImageTextUtil.getTextWidth(line, g);
+			int lineWidth = Texts.getTextWidth(line, g);
 			g.drawString(line, padding + (maxWidth / 2) - (lineWidth / 2), nowY);
 			nowY += lineHeight + lineInterval;
 		}

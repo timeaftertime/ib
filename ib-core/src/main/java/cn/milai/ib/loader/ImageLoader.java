@@ -13,7 +13,7 @@ import cn.milai.common.io.InputStreams;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Images;
 
 /**
  * 图片加载器，同一 URL 的图片只会被加载一次
@@ -26,6 +26,8 @@ public class ImageLoader {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ImageLoader.class);
 
+	private static final String DEFAULT_STATUS = "default";
+
 	/**
 	 * 已经加载的图片
 	 * fileName -> Image
@@ -33,7 +35,7 @@ public class ImageLoader {
 	private static final Map<String, BufferedImage[]> IMAGES = new ConcurrentHashMap<>();
 
 	private static Image loadImageFile(File file) {
-		return buildImage(IMAGES.computeIfAbsent(file.toString(), f -> ImageUtil.loadImage(file)));
+		return buildImage(IMAGES.computeIfAbsent(file.toString(), f -> Images.loadImage(file)));
 	}
 
 	/**
@@ -43,7 +45,7 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(Class<?> clazz) {
-		return load(clazz, null);
+		return load(clazz, DEFAULT_STATUS);
 	}
 
 	/**
@@ -54,7 +56,10 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(Class<?> clazz, String status) {
-		String path = PathConf.imgPath(clazz, status);
+		if (status == null) {
+			status = DEFAULT_STATUS;
+		}
+		String path = PathConf.imgFile(clazz, status);
 		File file = new File(path);
 		if (!file.exists()) {
 			LOG.info("图片文件 {} 不存在，尝试从 classpath 复制……", path);
@@ -70,7 +75,7 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(String dramaCode, String resource) {
-		return buildImage(ImageUtil.loadImage(DramaResLoader.load(dramaCode, resource)));
+		return buildImage(Images.loadImage(DramaResLoader.load(dramaCode, resource)));
 	}
 
 	private static Image buildImage(BufferedImage... images) {

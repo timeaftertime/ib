@@ -20,28 +20,15 @@ public class PathConf {
 
 	private static RepoConf repoConf = IBCore.getBean(RepoConf.class);
 
-	private static final String CONF_PREFIX = "conf/";
-	private static final String CONF_SUFFIX = ".conf";
+	private static final String RES_PREFIX = "res/";
 
-	private static final String IMG_PREFIX = "img/";
+	private static final String CONFIG_FILE = "config.properties";
+
 	private static final String IMG_SUFFIX = ".gif";
-	private static final String IMG_STATUS_SPLIT = "$";
 
-	private static final String DRAMA_PREFIX = "drama/";
-	private static final String DRAMA_SUFFIX = ".drama";
-
-	private static final String DRAMA_RES_PREFFIX = "dramaRes/";
+	private static final String DRAMA_ZIP_RES = "dramaRes";
 
 	private PathConf() {}
-
-	/**
-	 * 获取 clazz 图片的本地绝对路径
-	 * @param clazz
-	 * @return
-	 */
-	public static String imgPath(Class<?> clazz) {
-		return imgPath(clazz, null);
-	}
 
 	/**
 	 * 获取 clazz 在 status 状态图片的本地绝对路径
@@ -49,9 +36,8 @@ public class PathConf {
 	 * @param status
 	 * @return
 	 */
-	public static String imgPath(Class<?> clazz, String status) {
-		String statusAppend = (status == null) ? "" : (IMG_STATUS_SPLIT + status);
-		return repoConf.getLocalResourcePath() + IMG_PREFIX + toPath(clazz) + statusAppend + IMG_SUFFIX;
+	public static String imgFile(Class<?> clazz, String status) {
+		return repoConf.getLocalResourcePath() + toResPath(clazz) + status + IMG_SUFFIX;
 	}
 
 	/**
@@ -59,26 +45,21 @@ public class PathConf {
 	 * @param clazz
 	 * @return
 	 */
-	public static String confPath(Class<?> clazz) {
-		return repoConf.getLocalResourcePath() + CONF_PREFIX + toPath(clazz) + CONF_SUFFIX;
+	public static String configFile(Class<?> clazz) {
+		return repoConf.getLocalResourcePath() + toResPath(clazz) + CONFIG_FILE;
+	}
+
+	public static String dramaResZipPath() {
+		return repoConf.getLocalResourcePath() + DRAMA_ZIP_RES + "/";
 	}
 
 	/**
-	 * 获取剧本文件的本地绝对路径
-	 * @param dramaCode
+	 * 获取指定资源 code 对应本地目录的绝对路径
+	 * @param code
 	 * @return
 	 */
-	public static String dramaPath(String dramaCode) {
-		return repoConf.getLocalResourcePath() + DRAMA_PREFIX + toPath(dramaCode) + DRAMA_SUFFIX;
-	}
-
-	/**
-	 * 获取剧本资源文件夹的本地绝对路径
-	 * @param dramaCode
-	 * @return
-	 */
-	public static String dramaResPath(String dramaCode) {
-		return repoConf.getLocalResourcePath() + DRAMA_RES_PREFFIX + toPath(dramaCode);
+	public static String codePath(String code) {
+		return repoConf.getLocalResourcePath() + toResPath(code);
 	}
 
 	/**
@@ -89,15 +70,11 @@ public class PathConf {
 	 * @throws ImageNotFoundException 若图片文件不存在
 	 */
 	public static InputStream imgStream(Class<?> clazz, String status) throws ImageNotFoundException {
-		String statusAppend = (status == null) ? "" : (IMG_STATUS_SPLIT + status);
-		String path = "/" + IMG_PREFIX + toPath(clazz) + statusAppend + IMG_SUFFIX;
+		String path = "/" + toResPath(clazz) + status + IMG_SUFFIX;
 		InputStream in = clazz.getResourceAsStream(path);
 		if (in == null) {
 			log.error(
-				String.format(
-					"获取图片输入流失败：class = %s, status = %s, file = classpath:%s",
-					clazz.getName(), status, path
-				)
+				String.format("获取图片输入流失败：class = %s, status = %s, file = classpath:%s", clazz.getName(), status, path)
 			);
 			throw new ImageNotFoundException(clazz, status);
 		}
@@ -110,8 +87,8 @@ public class PathConf {
 	 * @return
 	 * @throws ConfigNotFoundException 若配置文件不存在
 	 */
-	public static InputStream confStream(Class<?> clazz) throws ConfigNotFoundException {
-		String path = "/" + CONF_PREFIX + toPath(clazz) + CONF_SUFFIX;
+	public static InputStream configStream(Class<?> clazz) throws ConfigNotFoundException {
+		String path = "/" + toResPath(clazz) + CONFIG_FILE;
 		InputStream in = clazz.getResourceAsStream(path);
 		if (in == null) {
 			log.error(
@@ -148,16 +125,16 @@ public class PathConf {
 	 * @param clazz
 	 * @return
 	 */
-	public static String toPath(Class<?> clazz) {
-		return clazz.getName().replace('.', '/');
+	private static String toResPath(Class<?> clazz) {
+		return toResPath(clazz.getName());
 	}
 
 	/**
-	 * 获取 drama 对应资源文件中间目录
-	 * @param dramaCode
+	 * 获取指定资源 code 对应资源文件目录
+	 * @param code
 	 * @return
 	 */
-	public static String toPath(String dramaCode) {
-		return dramaCode.replace('.', '/');
+	private static String toResPath(String code) {
+		return RES_PREFIX + code.replace('.', '/') + "/";
 	}
 }

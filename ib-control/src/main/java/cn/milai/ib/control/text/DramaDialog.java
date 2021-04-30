@@ -15,8 +15,8 @@ import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.CmdType;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.WaitNextPageTip;
-import cn.milai.ib.util.ImageTextUtil;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Texts;
+import cn.milai.ib.graphics.Images;
 
 /**
  * 显示剧情文字的对话框
@@ -99,7 +99,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	 * 创建下一张只包含文字说话者头像的图片
 	 */
 	private BufferedImage createNextBaseImage() {
-		BufferedImage img = ImageUtil.newImage(getIntW(), getIntH());
+		BufferedImage img = Images.newImage(getIntW(), getIntH());
 		Graphics g = initNewGraphics(img);
 		render(g);
 		g.dispose();
@@ -134,7 +134,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 			g.drawString(speakerName, horMargin + speakerWidth, speakerHeight / 2);
 		}
 		// 说话内容
-		int textHeight = ImageTextUtil.getTextHeight(g);
+		int textHeight = Texts.getTextHeight(g);
 		int nowBottom = verMargin + textHeight + speakerHeight;
 		// 至少绘制一行
 		int limitBottom = Integer.max(getIntH() - verMargin, nowBottom + textHeight);
@@ -149,7 +149,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 		// 确保一行至少一个字符
 		int widthLimit = Integer.max(
 			// 有待绘字符才调用该方法，所以这里直接 charAt() 不会有问题
-			ImageTextUtil.getTextWidth(SAMPLE_STR + text.charAt(readIndex), g),
+			Texts.getTextWidth(SAMPLE_STR + text.charAt(readIndex), g),
 			getIntW() - 2 * horMargin
 		);
 		StringBuilder sb = new StringBuilder();
@@ -159,7 +159,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 				readIndex++;
 				return sb.toString();
 			}
-			if (ImageTextUtil.getTextWidth(sb.toString() + ch, g) > widthLimit) {
+			if (Texts.getTextWidth(sb.toString() + ch, g) > widthLimit) {
 				return sb.toString();
 			}
 			sb.append(ch);
@@ -169,7 +169,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 
 	@Override
 	public BufferedImage getNowImage() {
-		BufferedImage img = ImageUtil.copy(baseImage);
+		BufferedImage img = Images.copy(baseImage);
 		Graphics2D g = img.createGraphics();
 		// 表示还有下一页的箭头
 		if (readIndex < text.length()) {

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Images;
 
 /**
  * (鼠标)离开时会减少透明度的 {@link Button}
@@ -25,6 +25,6 @@ public class OpacityButton extends Button {
 	@Override
 	public BufferedImage getNowImage() {
 		BufferedImage img = super.getNowImage();
-		return isOvered() ? img : transparents.computeIfAbsent(img, i -> ImageUtil.transparent(ImageUtil.copy(img), TRANSPARENCY));
+		return isOvered() ? img : transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), TRANSPARENCY));
 	}
 }

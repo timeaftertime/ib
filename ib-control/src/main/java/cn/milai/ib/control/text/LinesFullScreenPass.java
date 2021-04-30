@@ -8,8 +8,8 @@ import java.util.List;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.PassCaculator;
-import cn.milai.ib.util.ImageTextUtil;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Texts;
+import cn.milai.ib.graphics.Images;
 
 /**
  * 全屏显示多行文字渐入、渐出的组件
@@ -69,19 +69,19 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	}
 
 	private BufferedImage createImage() {
-		BufferedImage backgroud = ImageUtil.newImage(Color.BLACK, getIntW(), getIntH());
-		BufferedImage textLayer = ImageUtil.newImage(getIntW(), getIntH());
-		Graphics g = ImageUtil.createGraphics(
+		BufferedImage backgroud = Images.newImage(Color.BLACK, getIntW(), getIntH());
+		BufferedImage textLayer = Images.newImage(getIntW(), getIntH());
+		Graphics g = Images.createGraphics(
 			textLayer,
 			1.0f * pass.getTransparency() / PassCaculator.MAX_TRANSPARENCY
 		);
 		g.setFont(getTextFont());
 		g.setColor(getTextColor());
-		int lineHeight = ImageTextUtil.getTextHeight(g);
+		int lineHeight = Texts.getTextHeight(g);
 		int totalHeight = lines.size() * lineHeight;
 		int nowY = (getContainer().getH() / 2) - (totalHeight / 2);
 		for (String line : lines) {
-			int lineWidth = ImageTextUtil.getTextWidth(line, g);
+			int lineWidth = Texts.getTextWidth(line, g);
 			g.drawString(line, (getIntW() / 2) - (lineWidth / 2), nowY);
 			nowY += lineHeight + lineInterval;
 		}

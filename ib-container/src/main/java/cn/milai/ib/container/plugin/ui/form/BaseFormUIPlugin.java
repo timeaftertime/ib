@@ -1,13 +1,8 @@
 package cn.milai.ib.container.plugin.ui.form;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -18,6 +13,8 @@ import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.control.button.Button;
 import cn.milai.ib.control.button.CloseButton;
 import cn.milai.ib.control.button.MinimizeButton;
+import cn.milai.ib.graphics.TextConfig;
+import cn.milai.ib.graphics.Texts;
 
 /**
  * {@link FormUIPlugin} 抽象基类
@@ -30,19 +27,24 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 	/**
 	 * 每个标题栏按钮宽度
 	 */
-	private final int TITLE_W = 30;
+	private static final int TITLE_W = 30;
 
 	/**
 	 * 每个标题栏按钮高度
 	 */
-	private final int TITLE_H = 18;
+	private static final int TITLE_H = 18;
 
-	private Font DEF_TITLE_FONT = new Font("华文行楷", Font.BOLD, TITLE_H);
+	private static final Font DEF_TITLE_FONT = new Font("华文行楷", Font.BOLD, TITLE_H);
 
 	/**
 	 * 标题栏边距
 	 */
 	private static final int TITLE_PADDING = 10;
+
+	private static final TextConfig CONFIG = new TextConfig()
+		.setColor(Color.WHITE)
+		.setBgColor(Color.BLACK)
+		.setFont(DEF_TITLE_FONT);
 
 	private JFrame form;
 
@@ -104,7 +106,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 					lastX += w;
 				}
 				BufferedImage base = getNowImage();
-				drawTitle(base.getGraphics());
+				Texts.strokeText(base.getGraphics(), getTitle(), TITLE_PADDING, TITLE_PADDING * 2, CONFIG);
 				g.drawImage(base, 0, 0, getWidth(), getHeight(), null);
 			}
 
@@ -155,21 +157,6 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 			container.addObject(b);
 		}
 		container.addObjectListener(Listeners.removedListener((c, b) -> c.addObject(b), titleButtons));
-	}
-
-	private void drawTitle(Graphics g) {
-		GlyphVector v = DEF_TITLE_FONT.createGlyphVector(
-			form.getFontMetrics(DEF_TITLE_FONT).getFontRenderContext(), getTitle()
-		);
-		Shape shape = v.getOutline();
-		Graphics2D gg = (Graphics2D) g;
-		gg.translate(TITLE_PADDING, TITLE_PADDING * 2);
-		gg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		gg.setColor(Color.WHITE);
-		gg.fill(shape);
-		gg.setColor(Color.BLACK);
-		gg.setStroke(new BasicStroke(0.1f));
-		gg.draw(shape);
 	}
 
 	@Override

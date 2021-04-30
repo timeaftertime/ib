@@ -7,8 +7,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.container.Container;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * 血条型生命指示器
@@ -30,7 +30,7 @@ public class BloodStrip extends LifeIndicator {
 	public BufferedImage createImage() {
 		int portraitSize = getIntH();
 		int bloodY = portraitSize / 2;
-		BufferedImage image = ImageUtil.newImage(getIntW(), getIntH());
+		BufferedImage image = Images.newImage(getIntW(), getIntH());
 		Graphics2D g2d = image.createGraphics();
 		// 血条背景
 		g2d.setColor(BACK_COLOR);

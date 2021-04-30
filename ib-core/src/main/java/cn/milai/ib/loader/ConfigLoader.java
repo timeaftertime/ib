@@ -43,11 +43,11 @@ public class ConfigLoader {
 	}
 
 	private static final InputStream getConfigStream(Class<?> clazz) {
-		String path = PathConf.confPath(clazz);
+		String path = PathConf.configFile(clazz);
 		File file = new File(path);
 		if (!file.exists()) {
 			LOG.info("配置文件 {} 不存在，尝试从 classpath 复制……", path);
-			Files.saveRethrow(path, InputStreams.toBytes(PathConf.confStream(clazz)));
+			Files.saveRethrow(path, InputStreams.toBytes(PathConf.configStream(clazz)));
 		}
 		return Uncheckeds.rethrow(() -> new FileInputStream(file));
 	}

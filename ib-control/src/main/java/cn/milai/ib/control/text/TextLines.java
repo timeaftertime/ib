@@ -8,7 +8,7 @@ import cn.milai.ib.IBObject;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.PassCaculator;
-import cn.milai.ib.util.ImageUtil;
+import cn.milai.ib.graphics.Images;
 
 /**
  * 显示多行文字、背景透明的窗口组件
@@ -55,7 +55,7 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 			container.removeLifecycleListener(this);
 			container.removeObject(this);
 		});
-		img = ImageUtil.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
+		img = Images.newTextImage(lines, getTextFont(), getTextColor(), bgColor, PADDING, 0);
 		setW(img.getWidth());
 		setH(img.getHeight());
 	}
@@ -76,7 +76,7 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 	@Override
 	public BufferedImage getNowImage() {
 		if (!pass.isKeep()) {
-			ImageUtil.transparent(img, pass.getTransparency());
+			Images.transparent(img, pass.getTransparency());
 		}
 		return img;
 	}

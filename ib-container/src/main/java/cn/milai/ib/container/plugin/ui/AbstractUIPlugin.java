@@ -11,9 +11,9 @@ import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Rotatable;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * {@link UIPlugin} 抽象实现
@@ -76,7 +76,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 			return;
 		}
 		lastFrame = container.getFrame();
-		BufferedImage image = ImageUtil.newImage(w, h);
+		BufferedImage image = Images.newImage(w, h);
 		Graphics buffer = image.getGraphics();
 		if (bgImage != null) {
 			buffer.drawImage(bgImage.next(), 0, 0, w, h, null);

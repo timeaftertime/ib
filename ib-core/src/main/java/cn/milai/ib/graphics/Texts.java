@@ -1,16 +1,22 @@
-package cn.milai.ib.util;
+package cn.milai.ib.graphics;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 
 /**
- * 图片上的文字相关工具类
+ * 文本工具类
  * @author milai
- * @date 2020.02.21
+ * @date 2021.04.26
  */
-public class ImageTextUtil {
+public class Texts {
+
+	private Texts() {}
 
 	private static final String SAMPLE_STR = "A_《字！……";
 
@@ -39,7 +45,7 @@ public class ImageTextUtil {
 	 * @return
 	 */
 	public static int getTextHeight(Font font) {
-		Graphics2D g = ImageUtil.newImage(1, 1).createGraphics();
+		Graphics2D g = Images.newImage(1, 1).createGraphics();
 		g.setFont(font);
 		return getTextHeight(g);
 	}
@@ -73,5 +79,28 @@ public class ImageTextUtil {
 			font = new Font(font.getName(), font.getStyle(), newSize);
 			g.setFont(font);
 		}
+	}
+
+	/**
+	 * 使用 g 根据指定配置在 (x, y) 处绘制带描边的 text 文本
+	 * @param g
+	 * @param text
+	 * @param x
+	 * @param y
+	 * @param config
+	 */
+	public static void strokeText(Graphics g, String text, int x, int y, TextConfig config) {
+		Font font = config.getFont();
+		FontMetrics fontMetrics = g.getFontMetrics(font);
+		Shape shape = font.createGlyphVector(fontMetrics.getFontRenderContext(), text).getOutline();
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.translate(x, y);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setColor(config.getColor());
+		g2d.fill(shape);
+		g2d.setColor(config.getBgColor());
+		g2d.setStroke(new BasicStroke(config.getStrokeWidth()));
+		g2d.draw(shape);
+		g2d.translate(-x, -y);
 	}
 }

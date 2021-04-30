@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.geometry.Rect;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * 改变朝向时需要同时旋转图片和实体框
@@ -51,7 +51,7 @@ public interface Rotatable extends Property {
 		if (!r.isAlive()) {
 			return;
 		}
-		ImageUtil.paint(
+		Images.paint(
 			(Graphics2D) g, r.getNowImage(), r.getIntX(), r.getIntY(), r.getIntW(), r.getIntH(), r.getDirection()
 		);
 	}

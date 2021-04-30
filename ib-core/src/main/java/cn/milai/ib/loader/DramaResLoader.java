@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -17,7 +16,6 @@ import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.ex.IBIOException;
-import cn.milai.ib.loader.ex.DramaResourceNotFoundException;
 
 /**
  * 剧本相关资源加载器
@@ -30,16 +28,12 @@ public class DramaResLoader {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DramaResLoader.class);
 
+	private static final ResourceLoader LOADER = new ResourceLoader();
+
 	/**
 	 * 用于表示剧本对应资源是否已经存在于本地的文件名
 	 */
 	private static final String CHECK_FILE = ".ib";
-
-	/**
-	 * 已经加载到内存的资源
-	 * drama -> { resource -> 资源字节数组 } 
-	 */
-	private static final Map<String, Map<String, byte[]>> RESOURCES = new ConcurrentHashMap<>();
 
 	/**
 	 * 获取 drama 下的资源 resource 的输入流
@@ -49,11 +43,14 @@ public class DramaResLoader {
 	 * @return
 	 */
 	public static InputStream load(String dramaCode, String resource) {
-		byte[] data = RESOURCES.computeIfAbsent(dramaCode, c -> loadResource(c)).get(resource);
+		Map<String, byte[]> resources = load(dramaCode);
+		byte[] data = resources.get(resource);
 		if (data == null) {
-			throw new DramaResourceNotFoundException(dramaCode, resource);
+			String msg = String.format("资源未找到: dramaCode = %s, resource = %s", dramaCode, resource);
+			LOG.error(msg);
+			throw new IBIOException(msg);
 		}
-		return InputStreams.toInputStream(data);
+		return InputStreams.fromBytes(data);
 	}
 
 	/**
@@ -61,51 +58,19 @@ public class DramaResLoader {
 	 * @param dramaCode
 	 */
 	public static Map<String, byte[]> load(String dramaCode) {
-		return RESOURCES.computeIfAbsent(dramaCode, c -> loadResource(dramaCode));
+		String basePath = PathConf.codePath(dramaCode);
+		ensureResourceDirectory(basePath);
+		ensureResources(basePath, dramaCode);
+		return LOADER.load(dramaCode, true);
 	}
 
 	/**
 	 * 将指定 drama 下所有资源回收，从内存中去除
 	 * @param dramaCode
+	 * @return 之前缓存的资源
 	 */
-	public static void expire(String dramaCode) {
-		RESOURCES.remove(dramaCode);
-	}
-
-	private static Map<String, byte[]> loadResource(String dramaCode) {
-		String basePath = PathConf.dramaResPath(dramaCode);
-		ensureResourceDirectory(basePath);
-		ensureResourceFiles(basePath, dramaCode);
-		return doLoadResources(dramaCode, basePath);
-	}
-
-	private static Map<String, byte[]> doLoadResources(String dramaCode, String basePath) {
-		Map<String, byte[]> resources = new ConcurrentHashMap<>();
-		for (File file : new File(basePath).listFiles()) {
-			if (file.getName().equals(CHECK_FILE) || file.getName().equals(tarGzFileName(dramaCode))) {
-				continue;
-			}
-			resources.putAll(loadFilesFrom("", file));
-		}
-		return resources;
-	}
-
-	/**
-	 * 读取文件或读取文件夹中所有文件
-	 * @param prefix
-	 * @param now
-	 * @return
-	 */
-	private static Map<String, byte[]> loadFilesFrom(String prefix, File now) {
-		Map<String, byte[]> resources = new ConcurrentHashMap<>();
-		if (!now.isDirectory()) {
-			resources.put(prefix + "/" + now.getName(), Files.toBytes(now));
-			return resources;
-		}
-		for (File child : now.listFiles()) {
-			resources.putAll(loadFilesFrom(prefix + "/" + now.getName(), child));
-		}
-		return resources;
+	public static Map<String, byte[]> unload(String dramaCode) {
+		return LOADER.unload(dramaCode);
 	}
 
 	/**
@@ -113,18 +78,19 @@ public class DramaResLoader {
 	 * @param basePath
 	 * @param dramaCode
 	 */
-	private static void ensureResourceFiles(String basePath, String dramaCode) {
+	private static void ensureResources(String basePath, String dramaCode) {
 		File checkFile = new File(basePath + "/" + CHECK_FILE);
 		if (checkFile.exists()) {
 			return;
 		}
 		LOG.info("剧本 {} 的资源文件不存在，尝试从本地压缩文件获取……", dramaCode);
-		String zipFile = basePath + "/" + tarGzFileName(dramaCode);
+		String zipFileName = zipFileName(dramaCode);
+		String zipFile = PathConf.dramaResZipPath() + zipFileName;
 		if (!Files.exists(zipFile)) {
 			LOG.info("剧本 {} 的本地压缩文件不存在，尝试从远程服务器获取……", dramaCode);
 			Files.saveRethrow(zipFile, Https.getFile(PathConf.dramaResRepo(dramaCode)));
 		}
-		extract(basePath, tarGzFileName(dramaCode));
+		extract(basePath, new File(zipFile));
 	}
 
 	/**
@@ -135,7 +101,7 @@ public class DramaResLoader {
 		File directory = new File(basePath);
 		if (!directory.isDirectory()) {
 			if (!directory.mkdirs()) {
-				String msg = String.format("创建剧本资源文件夹失败，path = %s", basePath);
+				String msg = String.format("创建剧本资源文件夹失败: path = %s", basePath);
 				LOG.error(msg);
 				throw new IBIOException(msg);
 			}
@@ -148,24 +114,23 @@ public class DramaResLoader {
 	 * @param dramaCode
 	 * @return
 	 */
-	private static String tarGzFileName(String dramaCode) {
+	private static String zipFileName(String dramaCode) {
 		return dramaCode + ".zip";
 	}
 
 	/**
-	 * 解压 basePath 下指定 .zip 文件到 basePath
+	 * 解压指定 .zip 文件到 basePath 下
 	 * @param basePath
-	 * @param fileName
+	 * @param zipFile
 	 */
-	private static void extract(String basePath, String fileName) {
-		File file = new File(basePath + "/" + fileName);
-		LOG.info("开始解压剧本资源文件: file = {}", file);
+	private static void extract(String basePath, File zipFile) {
+		LOG.info("开始解压剧本资源文件: file = {}", zipFile);
 		Uncheckeds.rethrow(() -> {
-			try (ZipFile zip = new ZipFile(file)) {
+			try (ZipFile zip = new ZipFile(zipFile)) {
 				Enumeration<? extends ZipEntry> entries = zip.entries();
 				while (entries.hasMoreElements()) {
 					ZipEntry entry = entries.nextElement();
-					LOG.debug("解压剧本资源文件: file = {}, entry = {}", file, entry.getName());
+					LOG.debug("解压剧本资源文件: file = {}, entry = {}", zipFile, entry.getName());
 					String pathname = basePath + "/" + entry.getName();
 					if (entry.isDirectory()) {
 						Files.mkdir(pathname);
@@ -177,7 +142,7 @@ public class DramaResLoader {
 					LOG.warn("创建 {} 失败，文件可能已经存在", CHECK_FILE);
 				}
 			}
-		}, "解压资源文件未知错误: file = %s", fileName);
-		LOG.info("解压剧本资源文件完成: file = {}", file);
+		}, "解压资源文件未知错误: file = %s", zipFile);
+		LOG.info("解压剧本资源文件完成: file = {}", zipFile);
 	}
 }
