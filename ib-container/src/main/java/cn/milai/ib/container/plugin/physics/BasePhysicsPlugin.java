@@ -12,7 +12,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.PropertyMonitor;
 import cn.milai.ib.container.plugin.ListenersPlugin;
 import cn.milai.ib.role.Camp;
@@ -45,7 +45,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(Listeners.refreshListener(c -> {
+		return Arrays.asList(ContainerListeners.refreshListener(c -> {
 			if (c.isPaused() || c.isPined()) {
 				return;
 			}

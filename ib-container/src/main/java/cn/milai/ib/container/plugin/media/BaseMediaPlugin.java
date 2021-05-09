@@ -40,7 +40,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 	}
 
 	@Override
-	public void onReset() {
+	public void doReset() {
 		for (String code : audios.keySet()) {
 			audios.remove(code);
 		}

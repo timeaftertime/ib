@@ -3,11 +3,13 @@ package cn.milai.ib.container.plugin.ui.form;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ui.AbstractUIPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.control.button.Button;
@@ -57,15 +59,6 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 	public JFrame getForm() { return form; }
 
 	@Override
-	public int getUIW() { return form.getWidth(); }
-
-	@Override
-	public int getUIH() { return form.getHeight(); }
-
-	@Override
-	public int getUICH() { return form.getContentPane().getHeight(); }
-
-	@Override
 	public void resizeUI(int width, int height) {
 		form.setSize(width, height);
 		form.setLocationRelativeTo(null);
@@ -79,8 +72,27 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		form.setTitle(title);
 	}
 
+	private void initTitle() {
+		setTitle(DEF_TITLE);
+		PluginableContainer container = getContainer();
+		titleButtons = new Button[] {
+			new MinimizeButton(0, 0, container, () -> form.setExtendedState(JFrame.ICONIFIED)),
+			new CloseButton(0, 0, container, container::close),
+		};
+		for (Button b : titleButtons) {
+			container.addObject(b);
+		}
+		container.addObjectListener(ContainerListeners.removedListener((c, b) -> c.addObject(b), titleButtons));
+	}
+
 	@Override
-	protected void afterRefresh() {
+	protected void stopUIPlugin() {
+		form.setVisible(false);
+		form.dispose();
+	}
+
+	@Override
+	public void refreshUIPlugin() {
 		if (getContainer().isClosed() || !isRunning()) {
 			return;
 		}
@@ -88,9 +100,14 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		form.repaint();
 	}
 
+	@Override
+	protected void doReset() {
+		initTitle();
+	}
+
 	@SuppressWarnings("serial")
 	@Override
-	protected void initUI() {
+	protected void startUIPlugin() {
 		form = new UndecoratedForm() {
 			@Override
 			public final void paint(Graphics g) {
@@ -105,7 +122,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 					b.setY(0);
 					lastX += w;
 				}
-				BufferedImage base = getNowImage();
+				BufferedImage base = getUI();
 				Texts.strokeText(base.getGraphics(), getTitle(), TITLE_PADDING, TITLE_PADDING * 2, CONFIG);
 				g.drawImage(base, 0, 0, getWidth(), getHeight(), null);
 			}
@@ -141,28 +158,15 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 				setBounds(x, y, w, h);
 			}
 		};
+		form.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				getContainer().close();
+			}
+		});
 		initTitle();
-		new MouseEventDispatcher(this);
-		new KeyEventDispatcher(this);
-	}
-
-	private void initTitle() {
-		setTitle(DEF_TITLE);
-		PluginableContainer container = getContainer();
-		titleButtons = new Button[] {
-			new MinimizeButton(0, 0, container, () -> form.setExtendedState(JFrame.ICONIFIED)),
-			new CloseButton(0, 0, container, container::close),
-		};
-		for (Button b : titleButtons) {
-			container.addObject(b);
-		}
-		container.addObjectListener(Listeners.removedListener((c, b) -> c.addObject(b), titleButtons));
-	}
-
-	@Override
-	protected void destroyUI() {
-		form.setVisible(false);
-		form.dispose();
+		new MouseEventDispatcher(BaseFormUIPlugin.this);
+		new KeyEventDispatcher(BaseFormUIPlugin.this);
 	}
 
 }

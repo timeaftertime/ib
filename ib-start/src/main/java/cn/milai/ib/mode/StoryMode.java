@@ -101,7 +101,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	}
 
 	@Override
-	public void onContainerClosed(LifecycleContainer container) {
+	public void onClosed(LifecycleContainer container) {
 		this.interrupt();
 	}
 

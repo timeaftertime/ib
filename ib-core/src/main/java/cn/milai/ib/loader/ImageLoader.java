@@ -69,13 +69,13 @@ public class ImageLoader {
 	}
 
 	/**
-	 * 加载指定剧本的指定图片
-	 * @param dramaCode
+	 * 加载指定命名空间 code 的指定图片
+	 * @param code
 	 * @param resource
 	 * @return
 	 */
-	public static Image load(String dramaCode, String resource) {
-		return buildImage(Images.loadImage(DramaResLoader.load(dramaCode, resource)));
+	public static Image load(String code, String resource) {
+		return buildImage(Images.loadImage(DramaResLoader.load(code, resource)));
 	}
 
 	private static Image buildImage(BufferedImage... images) {

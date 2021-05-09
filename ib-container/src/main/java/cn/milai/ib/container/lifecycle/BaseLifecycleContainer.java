@@ -69,7 +69,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	public final boolean close() {
 		if (super.close()) {
 			for (LifecycleListener listener : lifecycleListeners) {
-				listener.onContainerClosed(this);
+				listener.onClosed(this);
 			}
 			return true;
 		}
@@ -94,7 +94,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	@Override
 	public void addLifecycleListener(LifecycleListener listener) {
 		if (isClosed()) {
-			listener.onContainerClosed(this);
+			listener.onClosed(this);
 			return;
 		}
 		this.lifecycleListeners.add(listener);
@@ -107,7 +107,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 
 	private void notifyEpochChanged() {
 		for (LifecycleListener listener : lifecycleListeners) {
-			listener.afterEpochChanged(this);
+			listener.onEpochChanged(this);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	 */
 	private void notifyAfterRefresh() {
 		for (LifecycleListener listener : lifecycleListeners) {
-			listener.afterRefresh(this);
+			listener.onRefresh(this);
 		}
 	}
 

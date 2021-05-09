@@ -11,7 +11,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import cn.milai.ib.Controllable;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 
@@ -48,7 +48,7 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(Listeners.refreshListener(container -> {
+		return Arrays.asList(ContainerListeners.refreshListener(container -> {
 			long start = System.currentTimeMillis();
 			for (int i = 0; i < CMD_PER_FRAME; i++) {
 				for (Queue<Cmd> q : cmdQueues.values()) {
@@ -93,8 +93,8 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 	}
 
 	@Override
-	public void onReset() {
-		super.onReset();
+	public void doReset() {
+		super.doReset();
 		clearCmds();
 	}
 

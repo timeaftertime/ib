@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 
 /**
  * {@link ListenersPlugin} 默认实现
@@ -20,7 +20,7 @@ public class ListenersPlugin extends BaseContainerPlugin {
 	protected final void onStart() {
 		listeners = newListeners();
 		for (ContainerListener listener : listeners) {
-			Listeners.add(getContainer(), listener);
+			ContainerListeners.add(getContainer(), listener);
 		}
 		afterAddListeners();
 	}
@@ -33,7 +33,7 @@ public class ListenersPlugin extends BaseContainerPlugin {
 	@Override
 	protected final void onStop() {
 		for (ContainerListener listener : listeners) {
-			Listeners.remove(getContainer(), listener);
+			ContainerListeners.remove(getContainer(), listener);
 		}
 		afterRemoveListeners();
 	}

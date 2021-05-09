@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.role.Role;
 
@@ -21,7 +21,7 @@ public class BaseAliveCheckPlugin extends TypeMonitorPlugin<Role> implements Ali
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(Listeners.refreshListener(c -> {
+		return Arrays.asList(ContainerListeners.refreshListener(c -> {
 			if (c.isPaused()) {
 				return;
 			}

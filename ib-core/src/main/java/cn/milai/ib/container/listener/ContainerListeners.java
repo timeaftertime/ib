@@ -15,7 +15,7 @@ import cn.milai.ib.role.Role;
  * @author milai
  * @date 2021.03.09
  */
-public class Listeners {
+public class ContainerListeners {
 
 	/**
 	 * 根据 {@code listener} 所实现的接口类型，分别调用对应的 add 方法添加到 {@code container} 中
@@ -113,7 +113,7 @@ public class Listeners {
 	public static LifecycleListener refreshListener(ContainerCallback afterRefreshed) {
 		return new LifecycleListener() {
 			@Override
-			public void afterRefresh(LifecycleContainer container) {
+			public void onRefresh(LifecycleContainer container) {
 				afterRefreshed.callback(container);
 			}
 		};

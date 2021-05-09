@@ -28,14 +28,13 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	public BasePluginableContainer() {
 		addLifecycleListener(new LifecycleListener() {
 			@Override
-			public void onContainerClosed(LifecycleContainer container) {
+			public void onClosed(LifecycleContainer container) {
 				Uncheckeds.log(BasePluginableContainer.this::stopAllPlugins);
 			}
 
 			@Override
-			public void afterEpochChanged(LifecycleContainer container) {
-				stopAllPlugins();
-				startAllPlugins();
+			public void onEpochChanged(LifecycleContainer container) {
+				resetAllPlugins();
 			}
 		});
 	}
@@ -90,6 +89,12 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	private void stopAllPlugins() {
 		for (ContainerPlugin plugin : plugins) {
 			plugin.stop();
+		}
+	}
+
+	private void resetAllPlugins() {
+		for (ContainerPlugin plugin : plugins) {
+			plugin.reset();
 		}
 	}
 

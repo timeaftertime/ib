@@ -12,10 +12,8 @@ import cn.milai.ib.container.plugin.metrics.MetrizablePlugin;
  */
 public interface UIPlugin extends MetrizablePlugin {
 
-	/**
-	 * 刷新 UI 所用的毫秒数
-	 */
-	public static final String KEY_REFRESH_UI = "refreshUI";
+	@Override
+	default String getCategory() { return "ui"; }
 
 	/**
 	 * 设置将被显示的视野范围
@@ -51,13 +49,13 @@ public interface UIPlugin extends MetrizablePlugin {
 	 * 获取当前容器实际宽度
 	 * @return
 	 */
-	int getW();
+	default int getW() { return getContainer().getW(); }
 
 	/**
 	 * 获取当前容器实际高度
 	 * @return
 	 */
-	int getH();
+	default int getH() { return getContainer().getH(); }
 
 	/**
 	 * 获取当前容器的显示宽度
@@ -78,11 +76,13 @@ public interface UIPlugin extends MetrizablePlugin {
 	int getUICH();
 
 	/**
-	 * 重新设置容器的显示宽度和高度并使中心位置回到屏幕中心
+	 * 重新设置容器的显示宽度和高度
 	 * @param width
 	 * @param height
 	 */
-	void resizeUI(int width, int height);
+	default void resizeUI(int width, int height) {
+		getContainer().newSize(width, height);
+	}
 
 	/**
 	 * 重新设置容器实际的、显示的宽度和高度为 width, height 并保持显示中心位置不变
@@ -95,18 +95,9 @@ public interface UIPlugin extends MetrizablePlugin {
 	}
 
 	/**
-	 * 线程安全地获取当前容器（被 {@link Camera}转换之前）的显示图片
+	 * 获取当前应该展示 UI
 	 * @return
 	 */
-	BufferedImage getNowImage();
-
-	/**
-	 * 设置背景图片
-	 * @param img
-	 */
-	void setBackgroud(Image img);
-
-	@Override
-	default String getCategory() { return "ui"; }
+	BufferedImage getUI();
 
 }

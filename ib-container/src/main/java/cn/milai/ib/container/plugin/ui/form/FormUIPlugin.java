@@ -28,4 +28,13 @@ public interface FormUIPlugin extends UIPlugin {
 	 */
 	JFrame getForm();
 
+	@Override
+	default int getUIW() { return getForm().getWidth(); }
+
+	@Override
+	default int getUIH() { return getForm().getHeight(); }
+
+	@Override
+	default int getUICH() { return getForm().getContentPane().getHeight(); }
+
 }

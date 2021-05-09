@@ -11,7 +11,7 @@ import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.ObjectListener;
 
 /**
@@ -65,9 +65,9 @@ public class Waits {
 	}
 
 	private static void withListener(Container container, ContainerListener listener, Counter counter) {
-		Listeners.add(container, listener);
+		ContainerListeners.add(container, listener);
 		counter.await();
-		Listeners.remove(container, listener);
+		ContainerListeners.remove(container, listener);
 	}
 
 	private static class ResetMonitor implements LifecycleListener {
@@ -80,12 +80,12 @@ public class Waits {
 		protected Counter getCounter() { return c; }
 
 		@Override
-		public void afterEpochChanged(LifecycleContainer container) {
+		public void onEpochChanged(LifecycleContainer container) {
 			c.toMet();
 		}
 
 		@Override
-		public void onContainerClosed(LifecycleContainer container) {
+		public void onClosed(LifecycleContainer container) {
 			c.toMet();
 		}
 
@@ -98,7 +98,7 @@ public class Waits {
 		}
 
 		@Override
-		public void afterRefresh(LifecycleContainer container) {
+		public void onRefresh(LifecycleContainer container) {
 			getCounter().count();
 		}
 

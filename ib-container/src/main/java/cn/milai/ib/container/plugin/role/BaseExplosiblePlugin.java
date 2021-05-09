@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ListenersPlugin;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
@@ -19,7 +19,7 @@ public class BaseExplosiblePlugin extends ListenersPlugin implements ExplosibleP
 
 	@Override
 	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(Listeners.roleListener(null, (c, roles) -> {
+		return Arrays.asList(ContainerListeners.roleListener(null, (c, roles) -> {
 			for (Role role : roles) {
 				if (role.isAlive() || !role.hasProperty(Explosible.class)) {
 					continue;

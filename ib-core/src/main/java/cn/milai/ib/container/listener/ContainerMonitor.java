@@ -29,7 +29,7 @@ public class ContainerMonitor {
 	 */
 	public ContainerMonitor(Container container, Predicate<IBObject> filter) {
 		this.container = container;
-		listener = Listeners.objectListener((c, o) -> {
+		listener = ContainerListeners.objectListener((c, o) -> {
 			if (filter.test(o)) {
 				monitored.add(o);
 			}

@@ -91,7 +91,7 @@ public class LifecycleThread extends Thread {
 			pauseCondition = new BlockCondition(() -> !paused.get(), c -> paused.set(false));
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onContainerClosed(LifecycleContainer container) {
+				public void onClosed(LifecycleContainer container) {
 					if (pauseCondition != null && !pauseCondition.isMet()) {
 						pauseCondition.toMet();
 					}

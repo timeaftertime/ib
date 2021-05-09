@@ -15,7 +15,7 @@ import cn.milai.common.thread.counter.DownCounter;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.container.conf.MetricsPluginConf;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 import cn.milai.ib.container.plugin.ListenersPlugin;
 import cn.milai.ib.container.pluginable.PluginListener;
@@ -75,7 +75,7 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	@Override
 	public List<ContainerListener> newListeners() {
 		return Arrays.asList(
-			Listeners.refreshListener(c -> {
+			ContainerListeners.refreshListener(c -> {
 				long start = System.currentTimeMillis();
 				counter.count();
 				if (counter.isMet()) {

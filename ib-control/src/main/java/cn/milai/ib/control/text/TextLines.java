@@ -61,7 +61,7 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 	}
 
 	@Override
-	public void afterRefresh(LifecycleContainer container) {
+	public void onRefresh(LifecycleContainer container) {
 		pass.refresh();
 	}
 

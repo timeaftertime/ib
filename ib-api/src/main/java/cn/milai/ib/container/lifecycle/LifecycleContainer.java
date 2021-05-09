@@ -75,7 +75,7 @@ public interface LifecycleContainer extends CloseableContainer {
 	 * 重置容器。
 	 * 移除所有游戏对象、所有 {@link LifecycleListener#acrossEpoch()} 为 false 的监听器。
 	 * 帧数不会清零。
-	 * {@link LifecycleListener#afterEpochChanged(Container)} 将在容器中对象被清空后、监听器被移除前调用，
+	 * {@link LifecycleListener#onEpochChanged(Container)} 将在容器中对象被清空后、监听器被移除前调用，
 	 * {@link ObjectListener#onObjectRemoved(java.util.List)} 将在游戏对象被清空、监听器被移除前调用。
 	 * @throws ContainerClosedException
 	 */

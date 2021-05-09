@@ -40,7 +40,7 @@ public class BaseContainerPlugin implements ContainerPlugin {
 		if (!isRunning()) {
 			return;
 		}
-		onReset();
+		doReset();
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class BaseContainerPlugin implements ContainerPlugin {
 	/**
 	 * 重置插件时调用
 	 */
-	protected void onReset() {
+	protected void doReset() {
 		PluginableContainer c = getContainer();
 		if (stop()) {
 			start(c);

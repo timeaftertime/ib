@@ -1,11 +1,12 @@
 package cn.milai.ib.container.pluginable.ui;
 
+import cn.milai.ib.container.plugin.printer.PrinterPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.plugin.ui.UIPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 
 /**
- * 可能持有 {@link UIPlugin} 的容器
+ * 可能持有 {@link UIPlugin}、 {@link PrinterPlugin} 的容器
  * @author milai
  * @date 2021.02.11
  */
@@ -16,7 +17,7 @@ public interface UIContainer extends PluginableContainer {
 	 * @param img
 	 */
 	default void setBackgroud(Image img) {
-		fire(UIPlugin.class, ui -> ui.setBackgroud(img));
+		fire(PrinterPlugin.class, p -> p.setBackgroud(img));
 	}
 
 	/**
