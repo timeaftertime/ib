@@ -14,12 +14,11 @@ public class PointCmd extends BaseCmd {
 	/**
 	 * 构造一个 {@link PointCmd}
 	 * @param type
-	 * @param fromId
-	 * @param x 点击的 x 坐标
-	 * @param y 点击的 y 坐标
+	 * @param x (实际)坐标
+	 * @param y (实际)坐标
 	 */
-	public PointCmd(CmdType type, int fromId, double x, double y) {
-		super(type, fromId);
+	public PointCmd(int type, double x, double y) {
+		super(type);
 		this.x = x;
 		this.y = y;
 	}

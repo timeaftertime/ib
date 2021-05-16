@@ -50,6 +50,38 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 
 	private JFrame form;
 
+	private KeyEventDispatcher keyEventDispatcher;
+
+	private MouseEventDispatcher mouseEventDispatcher;
+
+	public void setKeyMapping(KeyMapping keyMapping) {
+		KeyEventDispatcher newDispatcher = new KeyEventDispatcher(this, keyMapping);
+		if (isRunning()) {
+			getForm().removeKeyListener(this.keyEventDispatcher);
+			setKeyDispatcher(newDispatcher);
+		}
+		this.keyEventDispatcher = newDispatcher;
+	}
+
+	private void setKeyDispatcher(KeyEventDispatcher newDispatcher) {
+		getForm().addKeyListener(newDispatcher);
+	}
+
+	public void setMouseMapping(MouseMapping mouseMapping) {
+		MouseEventDispatcher newDispatcher = new MouseEventDispatcher(this, mouseMapping);
+		if (isRunning()) {
+			getForm().removeMouseListener(this.mouseEventDispatcher);
+			getForm().removeMouseMotionListener(this.mouseEventDispatcher);
+			setMouseEventDispatcher(newDispatcher);
+		}
+		this.mouseEventDispatcher = newDispatcher;
+	}
+
+	private void setMouseEventDispatcher(MouseEventDispatcher newDispatcher) {
+		getForm().addMouseListener(newDispatcher);
+		getForm().addMouseMotionListener(newDispatcher);
+	}
+
 	/**
 	 * 标题栏按钮
 	 */
@@ -96,7 +128,6 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		if (getContainer().isClosed() || !isRunning()) {
 			return;
 		}
-		form.setVisible(true);
 		form.repaint();
 	}
 
@@ -164,9 +195,12 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 				getContainer().close();
 			}
 		});
+		setKeyDispatcher(keyEventDispatcher);
+		setMouseEventDispatcher(mouseEventDispatcher);
 		initTitle();
-		new MouseEventDispatcher(BaseFormUIPlugin.this);
-		new KeyEventDispatcher(BaseFormUIPlugin.this);
+
+		form.repaint();
+		form.setVisible(true);
 	}
 
 }

@@ -10,15 +10,6 @@ import cn.milai.ib.container.plugin.control.cmd.Cmd;
 public interface Controllable extends IBObject {
 
 	/**
-	 * 是否接收指定 {@link Cmd}
-	 * @param cmd
-	 * @return
-	 */
-	default boolean accept(Cmd cmd) {
-		return true;
-	}
-
-	/**
 	 * 执行指定指令
 	 * @param cmd 指令
 	 * @return 是否需要继续调用下一个{@code Controllable}

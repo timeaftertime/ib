@@ -123,6 +123,9 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	@Override
 	public boolean isPined() { return pined; }
 
+	@Override
+	public boolean isRunning() { return started.get() && !isClosed(); }
+
 	/**
 	 * 进行实际的刷新动作
 	 */

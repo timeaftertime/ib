@@ -7,24 +7,22 @@ package cn.milai.ib.container.plugin.control.cmd;
  */
 public class BaseCmd implements Cmd {
 
-	private CmdType type;
-	private int fromId;
+	private int type;
 
-	public BaseCmd(CmdType type, int fromId) {
+	public BaseCmd(int type) {
 		this.type = type;
-		this.fromId = fromId;
 	}
 
 	/**
 	 * 获取指令类型
 	 * @return
 	 */
-	public CmdType getType() { return type; }
+	public int getType() { return type; }
 
 	/**
-	 * 获取发出指令者的 id
-	 * @return
+	 * 设置指令类型
+	 * @param type
 	 */
-	public int getFromId() { return fromId; }
+	public void setType(int type) { this.type = type; }
 
 }

@@ -8,15 +8,29 @@ package cn.milai.ib.container.plugin.control.cmd;
 public interface Cmd {
 
 	/**
-	 * 获取指令类型
-	 * @return
+	 * 预定义指令类型，无操作
 	 */
-	CmdType getType();
+	int NOOP = 0;
 
 	/**
-	 * 获取发出指令者的 id
+	 * 预定义指令类型，暂停
+	 */
+	int PAUSE = -1;
+
+	/**
+	 * 预定义指令类型，悬浮
+	 */
+	int OVER = -2;
+
+	/**
+	 * 预定义指令类型，点击
+	 */
+	int CLICK = -3;
+
+	/**
+	 * 获取指令类型，自定义类型应该大于 0
 	 * @return
 	 */
-	int getFromId();
-	
+	default int getType() { return NOOP; }
+
 }

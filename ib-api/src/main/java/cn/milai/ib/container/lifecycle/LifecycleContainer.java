@@ -28,9 +28,8 @@ public interface LifecycleContainer extends CloseableContainer {
 	/**
 	 * 容器是否出于暂停状态
 	 * @return
-	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	boolean isPaused() throws ContainerClosedException;
+	boolean isPaused();
 
 	/**
 	 * 设置是否固定游戏角色，即是否暂停游戏角色的移动、碰撞检测、存活检测
@@ -43,9 +42,14 @@ public interface LifecycleContainer extends CloseableContainer {
 	/**
 	 * 返回容器中游戏角色是否被固定
 	 * @return
-	 * @throws ContainerClosedException
 	 */
-	boolean isPined() throws ContainerClosedException;
+	boolean isPined();
+
+	/**
+	 * 返回容器是否已经调用 {@link #start()} 且没有调用 {@link #close()}
+	 * @return
+	 */
+	boolean isRunning();
 
 	/**
 	 * 获取当前累计的帧数

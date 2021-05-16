@@ -10,6 +10,7 @@ import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.BaseContainerPlugin;
 import cn.milai.ib.container.plugin.printer.PrinterPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.graphics.Images;
 
 /**
  * {@link UIPlugin} 抽象实现
@@ -23,7 +24,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	/**
 	 * 当前的 ui
 	 */
-	private BufferedImage ui;
+	private BufferedImage ui = Images.newImage(1, 1);
 
 	/**
 	 * 上次重新生成 UI 的帧计数
@@ -40,7 +41,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	@Override
 	protected final void onStart() {
 		setCamera(new BaseCamera());
-		lastFrame = getContainer().getFrame();
+		lastFrame = getContainer().getFrame() - 1;
 		getContainer().addLifecycleListener(containerListener = ContainerListeners.refreshListener(c -> refreshUI()));
 		startUIPlugin();
 	}
@@ -83,7 +84,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 				lastFrame = container.getFrame();
 				PrinterPlugin printer = container.getPlugin(PrinterPlugin.class);
 				if (printer == null) {
-					LOG.trace("容器没有 {} 插件，返回空 UI", PrinterPlugin.class.getName());
+					LOG.debug("容器没有 {} 插件，返回空 UI", PrinterPlugin.class.getName());
 					return;
 				}
 				ui = printer.print();

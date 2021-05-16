@@ -2,9 +2,7 @@ package cn.milai.ib.container.plugin.control;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
@@ -34,7 +32,7 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 
 	private int maxCommandQueueSize;
 
-	private Map<Integer, Queue<Cmd>> cmdQueues;
+	private Queue<Cmd> cmdQueue;
 
 	/**
 	 * 创建持有大小为指定大小的待处理指令队列的指令分发器
@@ -43,7 +41,7 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 	public BaseControlPlugin(int maxCommandQueueSize) {
 		super(Controllable.class);
 		this.maxCommandQueueSize = maxCommandQueueSize;
-		cmdQueues = new ConcurrentHashMap<>();
+		cmdQueue = new ConcurrentLinkedQueue<>();
 	}
 
 	@Override
@@ -51,22 +49,24 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 		return Arrays.asList(ContainerListeners.refreshListener(container -> {
 			long start = System.currentTimeMillis();
 			for (int i = 0; i < CMD_PER_FRAME; i++) {
-				for (Queue<Cmd> q : cmdQueues.values()) {
-					Cmd cmd = q.poll();
-					if (cmd == null) {
-						continue;
-					}
-					List<Controllable> all = getAll();
-					AnnotationAwareOrderComparator.sort(all);
-					for (Controllable c : all) {
-						if (c.accept(cmd) && !c.exec(cmd)) {
-							break;
-						}
-					}
+				Cmd cmd = cmdQueue.poll();
+				if (cmd == null) {
+					continue;
 				}
+				dispatchCmd(cmd);
 			}
 			metric(KEY_DELAY, System.currentTimeMillis() - start);
 		}));
+	}
+
+	private void dispatchCmd(Cmd cmd) {
+		List<Controllable> all = getAll();
+		AnnotationAwareOrderComparator.sort(all);
+		for (Controllable c : all) {
+			if (!c.exec(cmd)) {
+				break;
+			}
+		}
 	}
 
 	/**
@@ -83,28 +83,33 @@ public class BaseControlPlugin extends TypeMonitorPlugin<Controllable> implement
 	 */
 	@Override
 	public void addCmd(Cmd c) {
-		Queue<Cmd> q = cmdQueues.computeIfAbsent(c.getFromId(), id -> new ConcurrentLinkedQueue<>());
-		synchronized (q) {
-			if (q.size() >= maxCommandQueueSize) {
-				q.poll();
+		if (getContainer().isPaused()) {
+			if (c.getType() == Cmd.PAUSE) {
+				dispatchCmd(c);
 			}
-			q.add(c);
+			return;
+		}
+		synchronized (cmdQueue) {
+			if (cmdQueue.size() >= maxCommandQueueSize) {
+				cmdQueue.poll();
+			}
+			cmdQueue.add(c);
 		}
 	}
 
 	@Override
 	public void doReset() {
-		super.doReset();
 		clearCmds();
 	}
 
+	@Override
 	protected void afterRemoveListeners() {
 		clearCmds();
 	}
 
 	@Override
 	public void clearCmds() {
-		cmdQueues.clear();
+		cmdQueue.clear();
 	}
 
 }

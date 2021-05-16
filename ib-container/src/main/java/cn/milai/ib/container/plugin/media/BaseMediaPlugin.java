@@ -39,13 +39,6 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 		audios.remove(code);
 	}
 
-	@Override
-	public void doReset() {
-		for (String code : audios.keySet()) {
-			audios.remove(code);
-		}
-	}
-
 	public void run(int startEpoch) {
 		List<String> fetched = new ArrayList<>();
 		ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);

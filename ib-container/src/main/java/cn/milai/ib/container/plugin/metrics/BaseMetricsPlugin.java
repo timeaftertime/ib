@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import cn.milai.common.base.Strings;
 import cn.milai.common.thread.counter.Counter;
 import cn.milai.common.thread.counter.DownCounter;
-import cn.milai.ib.IBCore;
 import cn.milai.ib.container.conf.MetricsPluginConf;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
@@ -26,17 +25,17 @@ import cn.milai.ib.container.pluginable.PluginableContainer;
  * @author milai
  * @date 2021.02.25
  */
-public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
+public class BaseMetricsPlugin extends ListenersPlugin implements MetricsPlugin {
 
 	private static final String HEADER = "=============>";
 
 	private static final String FOOTER = "<===============================================================";
 
-	private static final Logger LOG = LoggerFactory.getLogger(BaseMetricPlugin.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseMetricsPlugin.class);
 
-	private MetricsPluginConf conf = IBCore.getBean(MetricsPluginConf.class);
+	private MetricsPluginConf conf;
 
-	private Counter counter = conf.getInterval() > 0 ? new DownCounter(conf.getInterval()) : new Counter() {};
+	private Counter counter;
 
 	/**
 	 * 每种 category 对应的 {@link MetricsPlugin} 的指标信息。
@@ -48,6 +47,11 @@ public class BaseMetricPlugin extends ListenersPlugin implements MetricsPlugin {
 	 * 每种 category 对应的 {@link MetricsPlugin} 列表
 	 */
 	private Map<String, List<MetrizablePlugin>> categoryReigistered = new ConcurrentHashMap<>();
+
+	public BaseMetricsPlugin(MetricsPluginConf conf) {
+		this.conf = conf;
+		counter = conf.getInterval() > 0 ? new DownCounter(conf.getInterval()) : new Counter() {};
+	}
 
 	@Override
 	public void metric(MetrizablePlugin plugin, String k, Object v) {

@@ -25,6 +25,10 @@ public class OpacityButton extends Button {
 	@Override
 	public BufferedImage getNowImage() {
 		BufferedImage img = super.getNowImage();
-		return isOvered() ? img : transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), TRANSPARENCY));
+		if (isOvered()) {
+			return img;
+		}
+		return transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), TRANSPARENCY));
 	}
+
 }

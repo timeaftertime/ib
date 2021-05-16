@@ -51,7 +51,9 @@ public class LifecycleThread extends Thread {
 				container.doRefresh();
 				sleepOneFrame();
 				if (isPaused()) {
+					LOG.debug("容器开始暂停……");
 					pauseCondition.await();
+					LOG.debug("容器结束暂停……");
 				}
 			}
 		} catch (ContainerClosedException e) {

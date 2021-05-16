@@ -12,11 +12,11 @@ import cn.milai.ib.Controllable;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.control.cmd.CmdType;
+import cn.milai.ib.container.plugin.control.cmd.PointCmd;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.WaitNextPageTip;
-import cn.milai.ib.graphics.Texts;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.graphics.Texts;
 
 /**
  * 显示剧情文字的对话框
@@ -187,14 +187,21 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 
 	@Override
 	public boolean exec(Cmd cmd) {
-		if (cmd.getType() == CmdType.A) {
-			return false;
-		}
-		if (cmd.getType() == CmdType.U_A) {
+		if (isPageDownCmd(cmd)) {
 			pageDown();
+		}
+		return false;
+	}
+
+	protected boolean isPageDownCmd(Cmd cmd) {
+		if (cmd.getType() != Cmd.CLICK) {
 			return false;
 		}
-		return true;
+		if (!(cmd instanceof PointCmd)) {
+			return false;
+		}
+		PointCmd c = (PointCmd) cmd;
+		return containsPoint(c.getX(), c.getY());
 	}
 
 }

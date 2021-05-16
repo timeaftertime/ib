@@ -8,9 +8,7 @@ package cn.milai.ib.role;
 public interface BotRole extends Bot, Role {
 
 	@Override
-	default int getCamp() {
-		return Camp.ENEMY;
-	}
+	default int getCamp() { return Camp.ENEMY; }
 
 	/**
 	 * 设置攻击目标

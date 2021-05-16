@@ -34,43 +34,36 @@ public abstract class Button extends AbstractControl implements Controllable {
 
 	@Override
 	public boolean exec(Cmd cmd) {
-		switch (cmd.getType()) {
-			case CLICKED :
+		if (!(cmd instanceof PointCmd)) {
+			return true;
+		}
+		PointCmd c = (PointCmd) cmd;
+		if (c.getType() == Cmd.CLICK) {
+			if (inCmdPoint(c)) {
 				afterPressed.run();
 				return false;
-			case OVER :
-				if (inCmdPoint(cmd)) {
-					if (!isOvered()) {
-						overed = true;
-						onEntered();
-					}
-				} else {
-					if (isOvered()) {
-						overed = false;
-						onExited();
-					}
+			}
+			return true;
+		}
+		if (c.getType() == Cmd.OVER) {
+			if (inCmdPoint(c)) {
+				if (!isOvered()) {
+					overed = true;
+					onEntered();
 				}
-				return true;
-			default:
-				return true;
+			} else {
+				if (isOvered()) {
+					overed = false;
+					onExited();
+				}
+			}
+			return true;
 		}
+		return true;
 	}
 
-	@Override
-	public boolean accept(Cmd cmd) {
-		switch (cmd.getType()) {
-			case CLICKED :
-				return inCmdPoint(cmd);
-			case OVER :
-				return true;
-			default:
-				return false;
-		}
-	}
-
-	private boolean inCmdPoint(Cmd cmd) {
-		PointCmd c = (PointCmd) cmd;
-		return containsPoint(c.getX(), c.getY());
+	private boolean inCmdPoint(PointCmd cmd) {
+		return containsPoint(cmd.getX(), cmd.getY());
 	}
 
 	/**

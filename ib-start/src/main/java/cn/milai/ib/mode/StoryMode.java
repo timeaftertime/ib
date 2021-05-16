@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import cn.milai.ib.IBCore;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.text.LinesFullScreenPass;
 import cn.milai.ib.drama.Drama;
@@ -37,8 +36,8 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	 */
 	private static final int HEIGHT = 689;
 
-	private static final int SHOW_DRAMA_NAME_FRAMES = 60;
-	private static final String THREAD_NAME_PREFIX = "Story#";
+	private static final int DRAMA_NAME_FRAMES = 60;
+	private static final String STORY_THREAD = "Story#";
 
 	private DramaContainer container;
 	private String[] dramaCodes;
@@ -60,34 +59,34 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	public void run() {
 		try {
 			container.start();
-			for (int i = 0; i < dramaCodes.length && !Thread.interrupted(); i++) {
+			container.resizeWithUI(WIDTH, HEIGHT);
+			for (int i = 0; i < dramaCodes.length; i++) {
 				container.reset();
-				container.resizeWithUI(WIDTH, HEIGHT);
 				LinesFullScreenPass loading = new LinesFullScreenPass(
-					SHOW_DRAMA_NAME_FRAMES, Arrays.asList("NOW LOADING……"), 7, container
+					DRAMA_NAME_FRAMES, Arrays.asList("NOW LOADING……"), 7, container
 				);
 				container.addObject(loading);
 				Drama drama = resolveDrama(dramaCodes[i]);
-				setName(THREAD_NAME_PREFIX + dramaCodes[i]);
+				setName(STORY_THREAD + dramaCodes[i]);
 				container.removeObject(loading);
 				LinesFullScreenPass stageInfo = new LinesFullScreenPass(
-					SHOW_DRAMA_NAME_FRAMES, Arrays.asList("第 " + (i + 1) + " 关", drama.getName()), 7, container
+					DRAMA_NAME_FRAMES, Arrays.asList("第 " + (i + 1) + " 关", drama.getName()), 7, container
 				);
 				container.addObject(stageInfo);
 				DramaResLoader.load(dramaCodes[i]);
 				Waits.waitRemove(stageInfo, 5);
 				drama.run(container);
 			}
+			container.reset();
+			container.addObject(
+				new LinesFullScreenPass(
+					DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7, container
+				)
+			);
 		} catch (ContainerClosedException e) {
 			// 容器关闭，结束游戏
 			return;
 		}
-		container.reset();
-		container.resizeWithUI(WIDTH, HEIGHT);
-		LinesFullScreenPass loading = new LinesFullScreenPass(
-			SHOW_DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7, container
-		);
-		container.addObject(loading);
 	}
 
 	private Drama resolveDrama(String dramaCode) {
@@ -98,11 +97,6 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 			}
 		}
 		throw new DramaCanNotResolveException(dramaCode);
-	}
-
-	@Override
-	public void onClosed(LifecycleContainer container) {
-		this.interrupt();
 	}
 
 }
