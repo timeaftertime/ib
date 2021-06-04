@@ -1,5 +1,7 @@
 package cn.milai.ib.control.button;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import cn.milai.ib.Controllable;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
@@ -18,6 +20,8 @@ public abstract class Button extends AbstractControl implements Controllable {
 	 */
 	private boolean overed = false;
 
+	private AtomicBoolean clicked = new AtomicBoolean();
+
 	private Runnable afterPressed;
 
 	/**
@@ -32,6 +36,14 @@ public abstract class Button extends AbstractControl implements Controllable {
 		this.afterPressed = afterPressed;
 	}
 
+	private void callAfterPressed() {
+		if (!clicked.compareAndSet(false, true)) {
+			return;
+		}
+		afterPressed.run();
+		clicked.set(false);
+	}
+
 	@Override
 	public boolean exec(Cmd cmd) {
 		if (!(cmd instanceof PointCmd)) {
@@ -40,12 +52,12 @@ public abstract class Button extends AbstractControl implements Controllable {
 		PointCmd c = (PointCmd) cmd;
 		if (c.getType() == Cmd.CLICK) {
 			if (inCmdPoint(c)) {
-				afterPressed.run();
+				callAfterPressed();
 				return false;
 			}
 			return true;
 		}
-		if (c.getType() == Cmd.OVER) {
+		if (c.getType() == Cmd.MOVE) {
 			if (inCmdPoint(c)) {
 				if (!isOvered()) {
 					overed = true;

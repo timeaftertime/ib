@@ -40,7 +40,7 @@ public class StartForm extends JFrame {
 	}
 
 	private void init() {
-		List<GameMode> gameModes = IBCore.getBeansOrdered(GameMode.class);
+		List<GameMode> gameModes = IBCore.getOrderedBeans(GameMode.class);
 		setSize(WIDTH, TITLE_HEIGHT + PER_MODE_HEIGHT * gameModes.size());
 		setLocationRelativeTo(null);
 		setResizable(false);

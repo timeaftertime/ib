@@ -18,7 +18,7 @@ public class BaseAudio implements Audio {
 
 	public BaseAudio(String code, InputStream in) throws JavaLayerException {
 		this.code = code;
-		player = new Player(in);
+		player = createPlayer(in);
 	}
 
 	@Override
@@ -36,5 +36,15 @@ public class BaseAudio implements Audio {
 
 	@Override
 	public boolean isComplete() { return player.isComplete(); }
+
+	/**
+	 * 使用指定 {@link InputStream} 构造一个 {@link Player}
+	 * @param in
+	 * @return
+	 * @throws JavaLayerException
+	 */
+	protected Player createPlayer(InputStream in) throws JavaLayerException {
+		return new Player(in);
+	}
 
 }

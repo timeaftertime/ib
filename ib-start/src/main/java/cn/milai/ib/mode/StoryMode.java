@@ -51,7 +51,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	@Override
 	public void init() {
 		dramaCodes = IBCore.getBean(StoryConf.class).getStages();
-		dramaResolvers = IBCore.getBeansOrdered(DramaResolver.class);
+		dramaResolvers = IBCore.getOrderedBeans(DramaResolver.class);
 		container = IBCore.getBean(DramaContainer.class);
 	}
 

@@ -64,8 +64,8 @@ public class BaseContainer implements Container {
 
 	@Override
 	public void reset() {
-		objs.clear();
 		notifyObjectCleared();
+		objs.clear();
 		objectListeners = Collects.unfilterList(objectListeners, ContainerListener::inEpoch);
 	}
 

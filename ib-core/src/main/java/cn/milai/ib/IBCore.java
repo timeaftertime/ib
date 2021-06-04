@@ -76,7 +76,7 @@ public class IBCore implements ApplicationContextAware {
 	 * @return
 	 * @throws BeansException
 	 */
-	public static <T> List<T> getBeansOrdered(Class<T> requiredType) throws BeansException {
+	public static <T> List<T> getOrderedBeans(Class<T> requiredType) throws BeansException {
 		List<T> beans = getBeans(requiredType);
 		AnnotationAwareOrderComparator.sort(beans);
 		return beans;

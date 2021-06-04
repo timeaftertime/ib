@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 import cn.milai.ib.container.conf.MetricsPluginConf;
 import cn.milai.ib.container.plugin.ContainerPlugin;
@@ -40,15 +39,9 @@ import cn.milai.ib.container.plugin.ui.form.MouseMapping;
 public class ContainerAutoConfiguration {
 
 	@Bean
-	@Lazy
 	@ConditionalOnMissingBean(Container.class)
-	public DramaContainer battleFormContainer(List<ContainerPlugin> plugins) {
-		DramaContainer container = new BaseDramaContainer();
-		for (ContainerPlugin plugin : plugins) {
-			container.addPlugin(plugin);
-		}
-		container.startAllPlugins();
-		return container;
+	public BaseDramaContainerFactory baseContainer(List<ContainerPlugin> plugins) {
+		return new BaseDramaContainerFactory(plugins);
 	}
 
 	@Bean

@@ -54,7 +54,7 @@ public class MouseLocationMapping implements MouseMapping {
 	 * @return
 	 */
 	protected int movedCmdTYpe() {
-		return Cmd.OVER;
+		return Cmd.MOVE;
 	}
 
 	/**

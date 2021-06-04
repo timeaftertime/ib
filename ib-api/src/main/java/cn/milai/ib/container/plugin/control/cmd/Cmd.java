@@ -20,7 +20,7 @@ public interface Cmd {
 	/**
 	 * 预定义指令类型，悬浮
 	 */
-	int OVER = -2;
+	int MOVE = -2;
 
 	/**
 	 * 预定义指令类型，点击
