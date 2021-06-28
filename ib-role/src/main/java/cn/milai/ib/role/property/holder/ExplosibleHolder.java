@@ -14,17 +14,14 @@ public interface ExplosibleHolder extends Role {
 	 * 获取持有的 {@link Explosible} 对象
 	 * @return
 	 */
-	default Explosible explosible() {
-		return getProperty(Explosible.class);
-	}
+	default Explosible getExplosible() { return getProperty(Explosible.class); }
 
 	/**
-	 * 设置 {@link Explosible} 并返回之前设置的值
-	 * @param explosible
-	 * @return
+	 * 设置关联的 {@link Explosible}
+	 * @param e
 	 */
-	default Explosible setExplosible(Explosible explosible) {
-		return putProperty(Explosible.class, explosible);
+	default void setExplosible(Explosible e) {
+		putProperty(Explosible.class, e);
 	}
 
 }

@@ -4,8 +4,9 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.milai.ib.container.Container;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.obj.BasePainter;
+import cn.milai.ib.obj.property.Painter;
 
 /**
  * (鼠标)离开时会减少透明度的 {@link Button}
@@ -18,17 +19,22 @@ public class OpacityButton extends Button {
 
 	private Map<BufferedImage, BufferedImage> transparents = new HashMap<>();
 
-	public OpacityButton(int x, int y, Container container, Runnable afterPressed) {
-		super(x, y, container, afterPressed);
+	public OpacityButton(Runnable afterPressed) {
+		super(afterPressed);
 	}
 
 	@Override
-	public BufferedImage getNowImage() {
-		BufferedImage img = super.getNowImage();
-		if (isOvered()) {
-			return img;
-		}
-		return transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), TRANSPARENCY));
+	protected Painter initPainter() {
+		return new BasePainter() {
+			@Override
+			public BufferedImage getNowImage() {
+				BufferedImage img = super.getNowImage();
+				if (isOvered()) {
+					return img;
+				}
+				return transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), TRANSPARENCY));
+			}
+		};
 	}
 
 }

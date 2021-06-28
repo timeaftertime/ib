@@ -14,16 +14,14 @@ public interface RotatableHolder extends Role {
 	 * 获取持有的 {@link Rotatable}
 	 * @return
 	 */
-	default Rotatable rotatable() {
-		return getProperty(Rotatable.class);
-	}
+	default Rotatable getRotatable() { return getProperty(Rotatable.class); }
 
 	/**
-	 * 设置 {@link Rotatable} 并返回之前的 {@link Rotatable}
-	 * @param rotatable
-	 * @return
+	 * 设置关联的 {@link Rotatable}
+	 * @param r
 	 */
-	default Rotatable setRotatable(Rotatable rotatable) {
-		return putProperty(Rotatable.class, rotatable);
+	default void setRotatable(Rotatable r) {
+		putProperty(Rotatable.class, r);
 	}
+
 }

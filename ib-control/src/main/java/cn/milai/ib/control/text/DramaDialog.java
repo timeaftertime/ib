@@ -8,8 +8,7 @@ import java.util.Map;
 
 import org.springframework.core.annotation.Order;
 
-import cn.milai.ib.Controllable;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.config.ProtoConfiguarable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
@@ -17,50 +16,43 @@ import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.WaitNextPageTip;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.graphics.Texts;
+import cn.milai.ib.obj.BasePainter;
+import cn.milai.ib.obj.Controllable;
+import cn.milai.ib.obj.property.Painter;
 
 /**
  * 显示剧情文字的对话框
  * @author milai
  */
 @Order(-100)
+@ProtoConfiguarable
 public class DramaDialog extends AbstractTextControl implements Controllable {
 
 	private static final String SAMPLE_STR = "字";
-
-	public static final String P_HOR_MARGIN = "horMargin";
-	public static final String P_VER_MARGIN = "verMargin";
-	public static final String P_SPEAKER_WIDTH = "speakerWidth";
-	public static final String P_SPEAKER_HEIGHT = "speakerHeight";
 
 	public static final String PARAM_TEXT = "text";
 	public static final String PARAM_SPEAKER_IMG = "speakerImg";
 	public static final String PARAM_SPEAKER_NAME = "speakerName";
 
 	private BufferedImage baseImage;
-	private static WaitNextPageTip waitNextPage;
+	private static WaitNextPageTip waitNextPage = new WaitNextPageTip();
 
-	private int horMargin;
-	private int verMargin;
+	private int horMargin = 17;
+	private int verMargin = 7;
 
 	private String text;
 	private int readIndex;
 
 	private BufferedImage speakerImg;
 	private String speakerName;
-	private int speakerWidth;
-	private int speakerHeight;
+	private int speakerWidth = 70;
+	private int speakerHeight = 70;
 
-	public DramaDialog(int x, int y, Image speaker, String text, Container container) {
-		this(x, y, container, asParams(text, speaker, null));
+	public DramaDialog(int x, int y, Image speaker, String text) {
+		this(asParams(text, speaker, null));
 	}
 
-	public DramaDialog(int x, int y, Container container, Map<String, Object> params) {
-		super(x, y, container);
-
-		horMargin = intConf(P_HOR_MARGIN);
-		verMargin = intConf(P_VER_MARGIN);
-		speakerWidth = intConf(P_SPEAKER_WIDTH);
-		speakerHeight = intConf(P_SPEAKER_HEIGHT);
+	public DramaDialog(Map<String, Object> params) {
 		this.text = (String) params.get(PARAM_TEXT);
 		readIndex = 0;
 		Image image = (Image) params.get(PARAM_SPEAKER_IMG);
@@ -68,10 +60,8 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 			this.speakerImg = image.first();
 		}
 		this.speakerName = (String) params.get(PARAM_SPEAKER_NAME);
-		waitNextPage = new WaitNextPageTip(0, 0, container);
 		pageDown();
-
-		((LifecycleContainer) getContainer()).setPined(true);
+		((LifecycleContainer) container()).setPined(true);
 	}
 
 	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
@@ -87,7 +77,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	 */
 	private void pageDown() {
 		if (readIndex >= text.length()) {
-			LifecycleContainer container = (LifecycleContainer) getContainer();
+			LifecycleContainer container = (LifecycleContainer) container();
 			container.removeObject(this);
 			container.setPined(false);
 			return;
@@ -112,8 +102,8 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	 */
 	private Graphics initNewGraphics(BufferedImage image) {
 		Graphics g = image.getGraphics();
-		g.setFont(getTextFont());
-		g.setColor(getTextColor());
+		g.setFont(getTextProperty().getFont());
+		g.setColor(getTextProperty().getColor());
 		return g;
 	}
 
@@ -168,21 +158,26 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	}
 
 	@Override
-	public BufferedImage getNowImage() {
-		BufferedImage img = Images.copy(baseImage);
-		Graphics2D g = img.createGraphics();
-		// 表示还有下一页的箭头
-		if (readIndex < text.length()) {
-			g.drawImage(
-				waitNextPage.getNowImage(),
-				getIntW() - waitNextPage.getIntW(),
-				getIntH() - waitNextPage.getIntH(),
-				waitNextPage.getIntW(),
-				waitNextPage.getIntH(),
-				null
-			);
-		}
-		return img;
+	protected Painter initPainter() {
+		return new BasePainter() {
+			@Override
+			public BufferedImage getNowImage() {
+				BufferedImage img = Images.copy(baseImage);
+				Graphics2D g = img.createGraphics();
+				// 表示还有下一页的箭头
+				if (readIndex < text.length()) {
+					g.drawImage(
+						waitNextPage.getPainter().getNowImage(),
+						getIntW() - waitNextPage.getIntW(),
+						getIntH() - waitNextPage.getIntH(),
+						waitNextPage.getIntW(),
+						waitNextPage.getIntH(),
+						null
+					);
+				}
+				return img;
+			}
+		};
 	}
 
 	@Override

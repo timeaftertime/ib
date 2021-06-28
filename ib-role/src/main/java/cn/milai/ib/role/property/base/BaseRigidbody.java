@@ -1,6 +1,5 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Rigidbody;
 
 /**
@@ -8,25 +7,25 @@ import cn.milai.ib.role.property.Rigidbody;
  * @author milai
  * @date 2021.03.28
  */
-public class BaseRigidbody extends BaseProperty implements Rigidbody {
+public class BaseRigidbody extends BaseRoleProperty implements Rigidbody {
 
-	private double mass;
+	private double mass = 1;
 	private double forceX;
 	private double forceY;
+	private double resistance;
+
 	private double extraForceX;
 	private double extraForceY;
 
-	public BaseRigidbody(Role role) {
-		super(role);
-		this.mass = confMass();
-		if (mass <= 0) {
-			throw new IllegalArgumentException("mass 必须大于 0");
-		}
-	}
+	@Override
+	public double getMass() { return mass; }
 
 	@Override
-	public double mass() {
-		return mass;
+	public void setMass(double mass) {
+		if (mass <= 0) {
+			throw new IllegalArgumentException("质量必须大于 0");
+		}
+		this.mass = mass;
 	}
 
 	@Override
@@ -60,5 +59,16 @@ public class BaseRigidbody extends BaseProperty implements Rigidbody {
 
 	@Override
 	public double getExtraForceY() { return extraForceY; }
+
+	@Override
+	public double getResistance() { return resistance; }
+
+	@Override
+	public void setResistance(double resistance) {
+		if (resistance < 0) {
+			throw new IllegalArgumentException("阻力必须大于等于 0");
+		}
+		this.resistance = resistance;
+	}
 
 }

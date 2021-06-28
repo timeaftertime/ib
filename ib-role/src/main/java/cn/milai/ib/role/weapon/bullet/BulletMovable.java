@@ -1,0 +1,39 @@
+package cn.milai.ib.role.weapon.bullet;
+
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.base.BaseMovable;
+
+/**
+ * {@link Bullet} 的 {@link Movable}
+ * @author milai
+ * @date 2021.06.25
+ */
+public class BulletMovable extends BaseMovable {
+
+	@Override
+	public void afterMove() {
+		if (outOfContainer()) {
+			owner().container().removeObject(owner());
+		}
+	}
+
+	private boolean outOfContainer() {
+		Role r = owner();
+		LifecycleContainer c = r.container();
+		if (r.getX() > c.getW()) {
+			return true;
+		}
+		if (r.getY() > c.getH()) {
+			return true;
+		}
+		if (r.getX() + r.getW() < 0) {
+			return true;
+		}
+		if (r.getY() + r.getH() < 0) {
+			return true;
+		}
+		return false;
+	}
+}

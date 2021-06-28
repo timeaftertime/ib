@@ -2,8 +2,8 @@ package cn.milai.ib.container;
 
 import java.util.List;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 游戏对象的容器
@@ -13,13 +13,14 @@ import cn.milai.ib.container.listener.ObjectListener;
 public interface Container {
 
 	/**
-	 * 向容器中添加游戏对象，同一对象不会被重复添加，返回是否实际添加成功
+	 * 向容器中添加游戏对象并设置其所属容器为当前容器。
+	 * 同一对象不会被重复添加，返回是否实际添加成功
 	 * @param obj
 	 */
 	boolean addObject(IBObject obj);
 
 	/**
-	 * 从容器中移除游戏对象，返回是否实际移除成功
+	 * 从容器中移除游戏对象并设置其所属容器为 {@code null}，返回是否实际移除成功
 	 * @param obj
 	 */
 	boolean removeObject(IBObject obj);

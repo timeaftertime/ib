@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.common.base.Collects;
-import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * {@link Container} 默认实现
@@ -33,6 +33,7 @@ public class BaseContainer implements Container {
 	@Override
 	public boolean addObject(IBObject obj) {
 		if (objs.add(obj)) {
+			obj.init(this);
 			notifyObjectAdded(obj);
 			return true;
 		}

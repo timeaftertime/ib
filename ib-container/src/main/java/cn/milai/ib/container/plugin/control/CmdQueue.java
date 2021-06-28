@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import cn.milai.ib.Controllable;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.obj.Controllable;
 
 /**
  * {@link Cmd} 队列

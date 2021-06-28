@@ -58,7 +58,7 @@ public class DramaResLoader {
 	 * @param dramaCode
 	 */
 	public static Map<String, byte[]> load(String dramaCode) {
-		String basePath = PathConf.codePath(dramaCode);
+		String basePath = PathConf.codeToPath(dramaCode);
 		ensureResourceDirectory(basePath);
 		ensureResources(basePath, dramaCode);
 		return LOADER.load(dramaCode, true);

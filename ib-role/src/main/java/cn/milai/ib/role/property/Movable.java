@@ -5,17 +5,9 @@ package cn.milai.ib.role.property;
  * @author milai
  * @date 2021.03.29
  */
-public interface Movable extends Property {
+public interface Movable extends RoleProperty {
 
-	/**
-	 * 属性 [初始额定 X 速度] 的 key
-	 */
-	String P_RATED_SPEED_X = "ratedSpeedX";
-
-	/**
-	 * 属性 [初始额定 Y 速度] 的 key
-	 */
-	String P_RATED_SPEED_Y = "ratedSpeedY";
+	String NAME = "movable";
 
 	/**
 	 * 每次移动后调用

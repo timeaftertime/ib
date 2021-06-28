@@ -14,16 +14,14 @@ public interface RigidbodyHolder extends Role {
 	 * 获取持有的 {@link Rigidbody}
 	 * @return
 	 */
-	default Rigidbody rigidbody() {
-		return getProperty(Rigidbody.class);
-	}
+	default Rigidbody getRigidbody() { return getProperty(Rigidbody.class); }
 
 	/**
-	 * 设置 {@link Rigidbody} 并返回之前的值
-	 * @param rigidbody
-	 * @return
+	 * 设置关联 {@link Rigidbody}
+	 * @param r
 	 */
-	default Rigidbody setRigidbody(Rigidbody rigidbody) {
-		return putProperty(Rigidbody.class, rigidbody);
+	default void setRigidbody(Rigidbody r) {
+		putProperty(Rigidbody.class, r);
 	}
+
 }

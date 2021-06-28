@@ -21,7 +21,7 @@ public class BaseExplosiblePlugin extends ListenersPlugin implements ExplosibleP
 	protected List<ContainerListener> newListeners() {
 		return Arrays.asList(ContainerListeners.roleListener(null, (c, roles) -> {
 			for (Role role : roles) {
-				if (role.isAlive() || !role.hasProperty(Explosible.class)) {
+				if (role.getHealth().isAlive() || !role.hasProperty(Explosible.class)) {
 					continue;
 				}
 				for (Explosion explosion : role.getProperty(Explosible.class).createExplosions()) {

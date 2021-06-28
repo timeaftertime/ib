@@ -1,19 +1,20 @@
 package cn.milai.ib.conf;
 
 import cn.milai.ib.IBCore;
-import cn.milai.ib.loader.ConfigLoader;
-import cn.milai.ib.loader.ex.PropNotFoundException;
-import cn.milai.ib.util.StringUtil;
+import cn.milai.ib.config.Configurable;
 
 /**
- * InfinityBattle 系统级配置
+ * Infinity Battle 全局配置
  * @author milai
+ * @date 2021.06.11
  */
 public class IBConf {
 
+	private IBConf() {}
+
 	private static CoreConf conf = IBCore.getBean(CoreConf.class);
 
-	private IBConf() {}
+	private static RepoConf repoConf = IBCore.getBean(RepoConf.class);
 
 	/**
 	 * 按照 {@link CoreConf#getSpeed()} 设置的比例缩放指定时间
@@ -25,51 +26,6 @@ public class IBConf {
 	}
 
 	/**
-	 * 获取指定游戏对象 String 类型配置
-	 * 将去掉字符串前后的空字符
-	 * @param clazz
-	 * @param key
-	 * @return
-	 */
-	public static String strConf(Class<?> clazz, String key) {
-		String value = ConfigLoader.load(clazz).get(key);
-		if (value == null) {
-			throw new PropNotFoundException(clazz, key);
-		}
-		return value.trim();
-	}
-
-	/**
-	 * 获取指定游戏对象 int 类型配置
-	 * @param clazz
-	 * @param key
-	 * @return
-	 */
-	public static int intConf(Class<?> clazz, String key) {
-		return StringUtil.parseInt(strConf(clazz, key));
-	}
-
-	/**
-	 * 获取指定游戏对象 long 类型配置
-	 * @param clazz
-	 * @param key
-	 * @return
-	 */
-	public static long longConf(Class<?> clazz, String key) {
-		return Long.parseLong(strConf(clazz, key));
-	}
-
-	/**
-	 * 获取指定游戏对象 double 类型配置
-	 * @param clazz
-	 * @param key
-	 * @return
-	 */
-	public static double doubleConf(Class<?> clazz, String key) {
-		return Double.parseDouble(strConf(clazz, key));
-	}
-
-	/**
 	 * 获取当前游戏刷新时间间隔（微秒）
 	 * @return
 	 */
@@ -77,8 +33,28 @@ public class IBConf {
 		return frameProrate(50L);
 	}
 
+	/**
+	 * 获取 gif 图片刷新帧数
+	 * @return
+	 */
 	public static int imageUpdateFrame() {
 		return conf.getImageUpdateFrame();
+	}
+
+	/**
+	 * 获取配置文件不存在时是否需要初始化配置到文件
+	 * @return
+	 */
+	public static boolean saveConfigFile() {
+		return conf.isSaveConfigFile();
+	}
+
+	/**
+	 * 获取 {@link Configurable} 配置文件根目录
+	 * @return
+	 */
+	public static String configFilePath() {
+		return repoConf.getLocalResourcePath() + "config/";
 	}
 
 }

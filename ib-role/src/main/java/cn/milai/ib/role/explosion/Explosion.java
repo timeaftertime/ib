@@ -9,9 +9,4 @@ import cn.milai.ib.role.Role;
  */
 public interface Explosion extends Role {
 
-	/**
-	 * 属性 lastFrame(爆炸持续帧数) 的 key
-	 */
-	String P_LAST_FRAME = "lastFrame";
-
 }

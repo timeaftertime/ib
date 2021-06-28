@@ -1,6 +1,5 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
 
@@ -9,32 +8,12 @@ import cn.milai.ib.role.property.Rigidbody;
  * @author milai
  * @date 2021.03.29
  */
-public class BaseMovable extends BaseProperty implements Movable {
+public class BaseMovable extends BaseRoleProperty implements Movable {
 
 	private double ratedSpeedX;
 	private double ratedSpeedY;
 	private double speedX;
 	private double speedY;
-
-	public BaseMovable(Role role) {
-		super(role);
-		ratedSpeedX = initRatedSpeedX();
-		ratedSpeedY = initRatedSpeedY();
-		initSpeed();
-	}
-
-	protected void initSpeed() {
-		speedX = 0;
-		speedY = 0;
-	}
-
-	protected double initRatedSpeedX() {
-		return getRole().doubleConf(Movable.P_RATED_SPEED_X);
-	}
-
-	protected double initRatedSpeedY() {
-		return getRole().doubleConf(Movable.P_RATED_SPEED_Y);
-	}
 
 	@Override
 	public double getRatedSpeedX() { return ratedSpeedX; }
@@ -72,10 +51,10 @@ public class BaseMovable extends BaseProperty implements Movable {
 	}
 
 	private void doRefreshSpeeds() {
-		if (!getRole().hasProperty(Rigidbody.class)) {
+		Rigidbody r = owner().getProperty(Rigidbody.class);
+		if (r == null) {
 			return;
 		}
-		Rigidbody r = getRole().getProperty(Rigidbody.class);
 		// 加速度
 		speedX += r.accX();
 		speedY += r.accY();
@@ -95,11 +74,11 @@ public class BaseMovable extends BaseProperty implements Movable {
 		r.addExtraForceY(-r.getExtraForceY());
 		//  阻力加速度
 		double deltaX = 0;
-		double deltaY = speedY == 0 ? 0 : r.getResistance() / r.mass();
+		double deltaY = speedY == 0 ? 0 : r.getResistance() / r.getMass();
 		if (speedX != 0) {
 			double alpha = Math.atan(Math.abs(speedY / speedX));
-			deltaX = r.getResistance() * Math.cos(alpha) / r.mass();
-			deltaY = r.getResistance() * Math.sin(alpha) / r.mass();
+			deltaX = r.getResistance() * Math.cos(alpha) / r.getMass();
+			deltaY = r.getResistance() * Math.sin(alpha) / r.getMass();
 		}
 		if (speedX > 0) {
 			speedX = Math.max(0, speedX - deltaX);

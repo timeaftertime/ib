@@ -5,7 +5,9 @@ package cn.milai.ib.role.property;
  * @author milai
  * @date 2021.03.29
  */
-public interface Collider extends Property {
+public interface Collider extends RoleProperty {
+
+	String NAME = "collider";
 
 	/**
 	 * 与另一个 {@link Collider} 碰撞(开始接触)时调用

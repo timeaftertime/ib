@@ -26,8 +26,6 @@ public class ImageLoader {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ImageLoader.class);
 
-	private static final String DEFAULT_STATUS = "default";
-
 	/**
 	 * 已经加载的图片
 	 * fileName -> Image
@@ -39,16 +37,6 @@ public class ImageLoader {
 	}
 
 	/**
-	 * 加载指定游戏对象类型默认状态的图片
-	 * 每个 class 每个状态的图片只会加载一次
-	 * @param image
-	 * @return
-	 */
-	public static Image load(Class<?> clazz) {
-		return load(clazz, DEFAULT_STATUS);
-	}
-
-	/**
 	 * 获取指定游戏对象类型在指定状态的图片
 	 * 每个 class 每个状态的图片只会加载一次
 	 * @param clazz
@@ -56,9 +44,6 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(Class<?> clazz, String status) {
-		if (status == null) {
-			status = DEFAULT_STATUS;
-		}
 		String path = PathConf.imgFile(clazz, status);
 		File file = new File(path);
 		if (!file.exists()) {

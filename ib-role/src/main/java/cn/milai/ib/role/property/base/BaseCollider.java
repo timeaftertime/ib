@@ -1,6 +1,5 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
 
 /**
@@ -8,10 +7,6 @@ import cn.milai.ib.role.property.Collider;
  * @author milai
  * @date 2021.03.29
  */
-public class BaseCollider extends BaseProperty implements Collider {
-
-	public BaseCollider(Role role) {
-		super(role);
-	}
+public class BaseCollider extends BaseRoleProperty implements Collider {
 
 }

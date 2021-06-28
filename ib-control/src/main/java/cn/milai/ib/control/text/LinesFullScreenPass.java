@@ -5,34 +5,30 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import cn.milai.ib.config.ProtoConfiguarable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.PassCaculator;
-import cn.milai.ib.graphics.Texts;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.graphics.Texts;
+import cn.milai.ib.obj.BasePainter;
+import cn.milai.ib.obj.property.Painter;
 
 /**
  * 全屏显示多行文字渐入、渐出的组件
  * @author milai
  * @date 2020.02.21
  */
+@ProtoConfiguarable
 public class LinesFullScreenPass extends AbstractTextControl implements LifecycleListener {
 
 	private PassCaculator pass;
 	private BufferedImage img;
 	private List<String> lines;
 	private int lineInterval;
-
-	/**
-	 * 创建一个全屏、背景为黑色、文字行距为 lineInterval 、文字为 lines 、渐入渐出的组件
-	 * @param durationFrames
-	 * @param lines
-	 * @param lineInterval
-	 * @param c
-	 */
-	public LinesFullScreenPass(long durationFrames, List<String> lines, int lineInterval, LifecycleContainer c) {
-		this(durationFrames / 3, durationFrames / 3, durationFrames / 3, lines, lineInterval, c);
-	}
+	private long inFrame;
+	private long keepFrame;
+	private long outFrame;
 
 	/**
 	 * 创建一个全屏、背景为黑色、文字行距为 lineInterval 、文字为 lines 、渐入渐出的组件
@@ -41,18 +37,23 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	 * @param outFrame 渐出持续的帧数
 	 * @param lines
 	 * @param lineInterval
-	 * @param container
 	 */
-	public LinesFullScreenPass(long inFrame, long keepFrame, long outFrame, List<String> lines,
-		int lineInterval, LifecycleContainer container) {
-		super(0, 0, container);
-		pass = new PassCaculator(inFrame, keepFrame, outFrame, p -> {
-			container.removeLifecycleListener(this);
-			container.removeObject(this);
-		});
+	public LinesFullScreenPass(long inFrame, long keepFrame, long outFrame, List<String> lines, int lineInterval) {
+		this.inFrame = inFrame;
+		this.keepFrame = keepFrame;
+		this.outFrame = outFrame;
 		this.lines = lines;
 		this.lineInterval = lineInterval;
-		container.addLifecycleListener(this);
+	}
+
+	@Override
+	public void initObject() {
+		LifecycleContainer c = (LifecycleContainer) container();
+		pass = new PassCaculator(inFrame, keepFrame, outFrame, p -> {
+			c.removeLifecycleListener(this);
+			c.removeObject(this);
+		});
+		c.addLifecycleListener(this);
 	}
 
 	@Override
@@ -61,11 +62,16 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	}
 
 	@Override
-	public BufferedImage getNowImage() {
-		if (!pass.isKeep()) {
-			img = createImage();
-		}
-		return img;
+	protected Painter initPainter() {
+		return new BasePainter() {
+			@Override
+			public BufferedImage getNowImage() {
+				if (!pass.isKeep()) {
+					img = createImage();
+				}
+				return img;
+			}
+		};
 	}
 
 	private BufferedImage createImage() {
@@ -75,11 +81,11 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 			textLayer,
 			1.0f * pass.getTransparency() / PassCaculator.MAX_TRANSPARENCY
 		);
-		g.setFont(getTextFont());
-		g.setColor(getTextColor());
+		g.setFont(getTextProperty().getFont());
+		g.setColor(getTextProperty().getColor());
 		int lineHeight = Texts.getTextHeight(g);
 		int totalHeight = lines.size() * lineHeight;
-		int nowY = (getContainer().getH() / 2) - (totalHeight / 2);
+		int nowY = (container().getH() / 2) - (totalHeight / 2);
 		for (String line : lines) {
 			int lineWidth = Texts.getTextWidth(line, g);
 			g.drawString(line, (getIntW() / 2) - (lineWidth / 2), nowY);
@@ -90,9 +96,9 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	}
 
 	@Override
-	public int getIntW() { return getContainer().getW(); }
+	public double getW() { return container().getW(); }
 
 	@Override
-	public int getIntH() { return getContainer().getH(); }
+	public double getH() { return container().getH(); }
 
 }

@@ -64,7 +64,7 @@ public class Mover implements Comparable<Mover> {
 		if (lastSpeedX != speedX() || lastSpeedY != speedY()) {
 			recountFrom(fuelRatio);
 		}
-		Role r = m.getRole();
+		Role r = m.owner();
 		double deltaX;
 		double deltaY;
 		if (speedX() == 0 && speedY() == 0) {
@@ -129,7 +129,7 @@ public class Mover implements Comparable<Mover> {
 	@Override
 	public String toString() {
 		return String.format(
-			"Mover(%s) fuelRatio=%f, movedX=%f, movedY=%f", m.getRole().getClass().getName(), fuelRatio, movedX, movedY
+			"Mover(%s) fuelRatio=%f, movedX=%f, movedY=%f", m.owner().getClass().getName(), fuelRatio, movedX, movedY
 		);
 	}
 

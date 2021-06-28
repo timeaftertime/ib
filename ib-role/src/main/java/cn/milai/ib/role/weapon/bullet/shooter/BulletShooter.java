@@ -16,7 +16,7 @@ public interface BulletShooter extends Weapon {
 		Bullet[] bullets;
 		synchronized (this) {
 			if (canShoot()) {
-				container = getOwner().getContainer();
+				container = getOwner().container();
 				bullets = createBullets();
 				for (Bullet bullet : bullets) {
 					container.addObject(bullet);

@@ -14,16 +14,14 @@ public interface MovableHolder extends Role {
 	 * 获取持有的 {@link Movable}
 	 * @return
 	 */
-	default Movable movable() {
-		return getProperty(Movable.class);
-	}
+	default Movable getMovable() { return getProperty(Movable.class); }
 
 	/**
-	 * 设置 {@link Movable} 并返回之前的 {@link Movable}
-	 * @param movable
-	 * @return
+	 * 设置关联的 {@link Movable}
+	 * @param m
 	 */
-	default Movable setMovable(Movable movable) {
-		return putProperty(Movable.class, movable);
+	default void setMovable(Movable m) {
+		putProperty(Movable.class, m);
 	}
+
 }

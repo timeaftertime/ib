@@ -8,7 +8,7 @@ import cn.milai.ib.container.plugin.ContainerPlugin;
  * @date 2021.02.25
  */
 public interface MetricsPlugin extends MetrizablePlugin {
-
+	
 	/**
 	 * 记录指定 {@link MetrizablePlugin} 的 {@code k} 指标信息为 {@code v}。
 	 * @param plugin

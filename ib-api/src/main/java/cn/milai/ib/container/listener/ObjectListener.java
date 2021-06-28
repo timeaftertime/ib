@@ -2,9 +2,9 @@ package cn.milai.ib.container.listener;
 
 import java.util.List;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * {@link LifecycleContainer} 对象事件监听器

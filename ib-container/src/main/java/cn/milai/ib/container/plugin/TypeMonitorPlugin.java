@@ -2,8 +2,8 @@ package cn.milai.ib.container.plugin;
 
 import java.util.List;
 
-import cn.milai.ib.IBObject;
 import cn.milai.ib.container.listener.TypeMonitor;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 监听指定类型的 {@link ContainerPlugin}

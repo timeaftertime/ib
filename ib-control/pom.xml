@@ -18,6 +18,10 @@
 			<groupId>cn.milai.ib</groupId>
 			<artifactId>ib-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>cn.milai.ib</groupId>
+			<artifactId>ib-role</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

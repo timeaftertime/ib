@@ -2,7 +2,7 @@ package cn.milai.ib.container;
 
 import java.util.List;
 
-import cn.milai.ib.IBObject;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * 可关闭的 {@link Container}

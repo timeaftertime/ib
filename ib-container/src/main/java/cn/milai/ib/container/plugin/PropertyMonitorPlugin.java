@@ -3,7 +3,7 @@ package cn.milai.ib.container.plugin;
 import java.util.List;
 
 import cn.milai.ib.container.listener.PropertyMonitor;
-import cn.milai.ib.role.property.Property;
+import cn.milai.ib.obj.property.Property;
 
 /**
  * 监听容器类型的 {@link ContainerPlugin}

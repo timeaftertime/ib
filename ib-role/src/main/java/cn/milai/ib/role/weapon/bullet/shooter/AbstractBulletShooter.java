@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.common.base.Collects;
+import cn.milai.ib.IBCore;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 
 /**
- * BulletShooter 抽象实现
+ * {@link BulletShooter} 抽象实现
  * @author milai
  * @date 2020.04.01
  */
@@ -61,10 +62,10 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 
 	@Override
 	public boolean canShoot() {
-		if (lastShootFrame + getShootInterval() >= owner.getContainer().getFrame()) {
+		if (lastShootFrame + getShootInterval() >= owner.container().getFrame()) {
 			return false;
 		}
-		Collects.remainMet(bullets, bullet -> bullet.isAlive());
+		Collects.remainMet(bullets, bullet -> bullet.getHealth().isAlive());
 		if (bullets.size() >= getMaxBulletNum()) {
 			return false;
 		}
@@ -73,7 +74,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 
 	@Override
 	public final Bullet[] createBullets() {
-		lastShootFrame = owner.getContainer().getFrame();
+		lastShootFrame = owner.container().getFrame();
 		Bullet[] newBullets = createBullets0();
 		bullets.addAll(Arrays.asList(newBullets));
 		return newBullets;
@@ -108,5 +109,15 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	 * @return
 	 */
 	protected abstract Bullet[] createBullets0();
+
+	/**
+	 * 构造一个指定类型的 {@link Bullet}
+	 * @param <T>
+	 * @param clazz
+	 * @return
+	 */
+	protected <T extends Bullet> T newBullet(Class<T> clazz) {
+		return IBCore.getBean(clazz, owner);
+	}
 
 }

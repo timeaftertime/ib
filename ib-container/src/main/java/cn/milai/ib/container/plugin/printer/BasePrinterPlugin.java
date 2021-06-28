@@ -6,27 +6,29 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import cn.milai.ib.IBObject;
-import cn.milai.ib.container.plugin.BaseContainerPlugin;
+import cn.milai.ib.container.plugin.PropertyMonitorPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Rotatable;
+import cn.milai.ib.obj.property.Painter;
 
 /**
  * {@link PrinterPlugin} 默认实现
  * @author milai
  * @date 2021.05.08
  */
-public class BasePrinterPlugin extends BaseContainerPlugin implements PrinterPlugin {
+public class BasePrinterPlugin extends PropertyMonitorPlugin<Painter> implements PrinterPlugin {
 
 	private Image bgImage;
+
+	public BasePrinterPlugin() {
+		super(Painter.class);
+	}
 
 	@Override
 	public BufferedImage print() {
 		long start = System.currentTimeMillis();
-		
+
 		PluginableContainer container = getContainer();
 		int w = container.getW();
 		int h = container.getH();
@@ -38,17 +40,13 @@ public class BasePrinterPlugin extends BaseContainerPlugin implements PrinterPlu
 		if (bgImage != null) {
 			buffer.drawImage(bgImage.next(), 0, 0, w, h, null);
 		}
-		List<IBObject> objs = container.getAll(IBObject.class);
-		Collections.sort(objs, Comparator.comparingInt(IBObject::getZ));
-		for (IBObject o : objs) {
-			if ((o instanceof Role) && ((Role) o).hasProperty(Rotatable.class)) {
-				Rotatable.paintWith(buffer, (Role) o);
-			} else {
-				o.paintWith(buffer);
-			}
+		List<Painter> painters = getAll();
+		Collections.sort(painters, Comparator.comparingInt(p -> p.owner().getZ()));
+		for (Painter p : painters) {
+			p.paintWith(buffer);
 		}
 		buffer.dispose();
-		
+
 		metric(PRINT_DELAY, System.currentTimeMillis() - start);
 		return image;
 	}

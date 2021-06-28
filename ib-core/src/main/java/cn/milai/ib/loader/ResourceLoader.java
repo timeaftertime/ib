@@ -26,7 +26,7 @@ public class ResourceLoader {
 	 */
 	public Map<String, byte[]> load(String code, boolean cache) {
 		Map<String, byte[]> data = RESOURCES.computeIfAbsent(
-			code, c -> DirectoryLoader.load(PathConf.codePath(code))
+			code, c -> DirectoryLoader.load(PathConf.codeToPath(code))
 		);
 		if (!cache) {
 			RESOURCES.remove(code);

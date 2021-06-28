@@ -3,7 +3,7 @@ package cn.milai.ib.container;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cn.milai.ib.IBObject;
+import cn.milai.ib.obj.IBObject;
 
 /**
  * {@link CloseableContainer} 抽象实现

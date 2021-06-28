@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.annotation.Order;
 
-import cn.milai.ib.Controllable;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.TypeMonitorPlugin;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.obj.Controllable;
 
 /**
  * {@link ControlPlugin} 抽象实现

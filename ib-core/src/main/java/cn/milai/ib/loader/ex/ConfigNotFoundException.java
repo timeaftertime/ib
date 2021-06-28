@@ -14,8 +14,8 @@ public class ConfigNotFoundException extends IBIOException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ConfigNotFoundException(Class<?> clazz) {
-		super(String.format("配置文件不存在： character = %s", clazz.getName()));
+	public ConfigNotFoundException(String configCode) {
+		super(String.format("配置文件不存在： code = %s", configCode));
 	}
 
 }

@@ -1,5 +1,11 @@
 package cn.milai.ib.role.property.base;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import cn.milai.ib.graphics.Images;
+import cn.milai.ib.obj.BasePainter;
+import cn.milai.ib.obj.property.Painter;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Rotatable;
 
@@ -8,10 +14,22 @@ import cn.milai.ib.role.property.Rotatable;
  * @author milai
  * @date 2021.04.05
  */
-public class BaseRotatable extends BaseProperty implements Rotatable {
+public class BaseRotatable extends BaseRoleProperty implements Rotatable {
 
-	public BaseRotatable(Role role) {
-		super(role);
+	@Override
+	public void initRoleProperty() {
+		Role r = owner();
+		Painter painter = r.getProperty(Painter.class);
+		r.putProperty(Painter.class, new BasePainter() {
+			@Override
+			public void paintWith(Graphics g) {
+				Images.paint(
+					(Graphics2D) g, painter.getNowImage(),
+					r.getIntX(), r.getIntY(), r.getIntW(), r.getIntH(),
+					r.getDirection()
+				);
+			}
+		});
 	}
 
 }

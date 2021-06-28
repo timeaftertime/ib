@@ -127,4 +127,32 @@ public interface Bounds {
 		return x >= getX() && x <= getX() + getW() && y >= getY() && y <= getY() + getH();
 	}
 
+	/**
+	 * 设置 x, y 为指定值并返回原对象
+	 * @param <T>
+	 * @param t
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	static <T extends Bounds> T xy(T t, double x, double y) {
+		t.setX(x);
+		t.setY(y);
+		return t;
+	}
+
+	/**
+	 * 设置中间 x, y 为指定值并返回原对象
+	 * @param <T>
+	 * @param t
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	static <T extends Bounds> T centerXY(T t, double x, double y) {
+		t.setX(x - t.getW() / 2);
+		t.setY(y - t.getH() / 2);
+		return t;
+	}
+
 }

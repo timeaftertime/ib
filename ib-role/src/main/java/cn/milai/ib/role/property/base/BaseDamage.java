@@ -1,6 +1,5 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Damage;
 
 /**
@@ -8,16 +7,14 @@ import cn.milai.ib.role.property.Damage;
  * @author milai
  * @date 2021.03.31
  */
-public class BaseDamage extends BaseProperty implements Damage {
+public class BaseDamage extends BaseRoleProperty implements Damage {
 
-	private final int value;
-	
-	public BaseDamage(Role role, int value) {
-		super(role);
-		this.value = value;
-	}
+	private int value;
 
 	@Override
 	public int getValue() { return value; }
+
+	@Override
+	public void setValue(int value) { this.value = value; }
 
 }

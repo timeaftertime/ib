@@ -14,16 +14,14 @@ public interface ScoreHolder extends Role {
 	 * 获取持有的 {@link Score} 对象
 	 * @return
 	 */
-	default Score score() {
-		return getProperty(Score.class);
-	}
+	default Score getScore() { return getProperty(Score.class); }
 
 	/**
-	 * 设置 {@link Score} 并返回之前设置的 {@link Score}
-	 * @param score
-	 * @return
+	 * 设置关联 {@link Score}
+	 * @param s
 	 */
-	default Score setScore(Score score) {
-		return putProperty(Score.class, score);
+	default void setScore(Score s) {
+		putProperty(Score.class, s);
 	}
+
 }

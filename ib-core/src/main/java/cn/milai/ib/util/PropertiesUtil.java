@@ -25,6 +25,15 @@ public class PropertiesUtil {
 	public static Map<String, String> load(InputStream in) {
 		Properties prop = new Properties();
 		Uncheckeds.log(() -> prop.load(new InputStreamReader(in, StandardCharsets.UTF_8)));
+		return toMap(prop);
+	}
+
+	/**
+	 * 将 {@link Properties} 转换为 Map<String, String>
+	 * @param prop
+	 * @return
+	 */
+	public static Map<String, String> toMap(Properties prop) {
 		Map<String, String> map = new HashMap<>();
 		for (String key : prop.stringPropertyNames()) {
 			map.put(key, prop.getProperty(key));

@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.container.Container;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
 
@@ -22,8 +21,8 @@ public class BloodStrip extends LifeIndicator {
 	public static final Color BACK_COLOR = Color.WHITE;
 	public static final int STRIP_WIDTH = 3;
 
-	public BloodStrip(int x, int y, Container container, Role target) {
-		super(x, y, container, target);
+	public BloodStrip(Role target) {
+		super(target);
 	}
 
 	@Override
@@ -37,18 +36,21 @@ public class BloodStrip extends LifeIndicator {
 		g2d.setStroke(new BasicStroke(STRIP_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g2d.drawLine(portraitSize, bloodY, getIntW(), bloodY);
 		// 生命值
-		int nowLife = getTarget().getLife();
-		int initLife = getInitLife();
+		int nowLife = getTarget().getHealth().getHP();
+		int initLife = getTarget().getHealth().initHP();
 		if (nowLife > initLife / 4) {
 			g2d.setColor(INIT_COLOR);
 		} else {
 			g2d.setColor(DANGER_COLOR);
 		}
-		g2d.drawLine(portraitSize, bloodY,
+		g2d.drawLine(
+			portraitSize, bloodY,
 			Integer.min(
 				getIntW(),
-				portraitSize + (int) (1.0 * (getIntW() - portraitSize) * nowLife / initLife)),
-			bloodY);
+				portraitSize + (int) (1.0 * (getIntW() - portraitSize) * nowLife / initLife)
+			),
+			bloodY
+		);
 		// 角色图片
 		g2d.setClip(new Ellipse2D.Double(0, 0, portraitSize, portraitSize));
 		g2d.drawOval(0, 0, portraitSize, portraitSize);

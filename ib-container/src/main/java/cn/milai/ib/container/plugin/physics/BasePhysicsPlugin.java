@@ -13,7 +13,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
-import cn.milai.ib.container.listener.PropertyMonitor;
+import cn.milai.ib.container.listener.RolePropertyMonitor;
 import cn.milai.ib.container.plugin.ListenersPlugin;
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
@@ -31,15 +31,15 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	private static final int REGION_ROW = 2;
 	private static final int REGION_COL = 2;
 
-	private PropertyMonitor<Collider> colliders;
-	private PropertyMonitor<Movable> movables;
+	private RolePropertyMonitor<Collider> colliders;
+	private RolePropertyMonitor<Movable> movables;
 	private List<Region> regions;
 	private Map<RolePair, Boolean> collided;
 
 	@Override
 	protected void afterAddListeners() {
-		colliders = PropertyMonitor.monitor(getContainer(), Collider.class);
-		movables = PropertyMonitor.monitor(getContainer(), Movable.class);
+		colliders = RolePropertyMonitor.monitorRoles(getContainer(), Collider.class);
+		movables = RolePropertyMonitor.monitorRoles(getContainer(), Movable.class);
 		collided = new HashMap<>();
 	}
 
@@ -122,8 +122,8 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	 */
 	private boolean doMove(Mover now, double nextFuelRatio) {
 		Movable m = now.getMovable();
-		Role r = m.getRole();
-		if (!r.hasProperty(Collider.class)) {
+		Role r = m.owner();
+		if (r.hasProperty(Collider.class)) {
 			r.setX(r.getX() + m.getSpeedX());
 			r.setY(r.getY() + m.getSpeedY());
 			now.move();
@@ -151,10 +151,10 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 			if (r1 == r2) {
 				continue;
 			}
-			if (!r1.isAlive()) {
+			if (!r1.getHealth().isAlive()) {
 				return;
 			}
-			if (!r2.isAlive()) {
+			if (!r2.getHealth().isAlive()) {
 				continue;
 			}
 			checkCollisionBetween(r1, r2);

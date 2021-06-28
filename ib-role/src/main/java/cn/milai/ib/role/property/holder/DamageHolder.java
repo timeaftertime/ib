@@ -14,16 +14,14 @@ public interface DamageHolder extends Role {
 	 * 获取持有的 {@link Damage}
 	 * @return
 	 */
-	default Damage damage() {
-		return getProperty(Damage.class);
-	}
+	default Damage getDamage() { return getProperty(Damage.class); }
 
 	/**
-	 * 设定 {@link Damage}，返回之前设定的 {@link Damage}
-	 * @param damage
-	 * @return
+	 * 设置持有的 {@link Damage}
+	 * @param d
 	 */
-	default Damage setDamage(Damage damage) {
-		return putProperty(Damage.class, damage);
+	default void setDamage(Damage d) {
+		putProperty(Damage.class, d);
 	}
+
 }

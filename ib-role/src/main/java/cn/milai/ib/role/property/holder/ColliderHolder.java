@@ -14,16 +14,14 @@ public interface ColliderHolder extends Role {
 	 * 获取持有的 {@link Collider}
 	 * @return
 	 */
-	default Collider collider() {
-		return getProperty(Collider.class);
-	}
+	default Collider getCollider() { return getProperty(Collider.class); }
 
 	/**
-	 * 设置 {@link Collider}，返回之前设置的 {@link Collider}
-	 * @param collider
-	 * @return
+	 * 设置持有的 {@link Collider}
+	 * @param c
 	 */
-	default Collider setCollider(Collider collider) {
-		return putProperty(Collider.class, collider);
+	default void setCollider(Collider c) {
+		putProperty(Collider.class, c);
 	}
+
 }

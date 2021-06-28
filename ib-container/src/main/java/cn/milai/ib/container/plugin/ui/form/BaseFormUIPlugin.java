@@ -108,8 +108,8 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		setTitle(DEF_TITLE);
 		PluginableContainer container = getContainer();
 		titleButtons = new Button[] {
-			new MinimizeButton(0, 0, container, () -> form.setExtendedState(JFrame.ICONIFIED)),
-			new CloseButton(0, 0, container, container::close),
+			new MinimizeButton(() -> form.setExtendedState(JFrame.ICONIFIED)),
+			new CloseButton(container::close),
 		};
 		for (Button b : titleButtons) {
 			container.addObject(b);

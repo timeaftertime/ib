@@ -5,9 +5,9 @@ package cn.milai.ib.role.property;
  * @author milai
  * @date 2021.03.29
  */
-public interface Score extends Property {
+public interface Score extends RoleProperty {
 
-	String P_SCORE = "score";
+	String NAME = "score";
 
 	/**
 	 * 消灭本对象时获得的分数

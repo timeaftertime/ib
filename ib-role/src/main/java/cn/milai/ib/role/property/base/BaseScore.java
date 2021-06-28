@@ -1,6 +1,5 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Score;
 
 /**
@@ -8,14 +7,11 @@ import cn.milai.ib.role.property.Score;
  * @author milai
  * @date 2021.04.01
  */
-public class BaseScore extends BaseProperty implements Score {
+public class BaseScore extends BaseRoleProperty implements Score {
 
 	private int value;
 
-	public BaseScore(Role role, int value) {
-		super(role);
-		this.value = value;
-	}
+	public void setValue(int value) { this.value = value; }
 
 	@Override
 	public int getValue() { return value; }

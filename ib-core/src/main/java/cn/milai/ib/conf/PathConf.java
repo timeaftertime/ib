@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.milai.ib.IBCore;
-import cn.milai.ib.loader.ex.ConfigNotFoundException;
 import cn.milai.ib.loader.ex.ImageNotFoundException;
 
 /**
@@ -16,19 +15,17 @@ import cn.milai.ib.loader.ex.ImageNotFoundException;
  */
 public class PathConf {
 
-	private static final Logger log = LoggerFactory.getLogger(PathConf.class);
+	private PathConf() {}
+
+	private static final Logger LOG = LoggerFactory.getLogger(PathConf.class);
 
 	private static RepoConf repoConf = IBCore.getBean(RepoConf.class);
 
 	private static final String RES_PREFIX = "res/";
 
-	private static final String CONFIG_FILE = "config.properties";
-
 	private static final String IMG_SUFFIX = ".gif";
 
 	private static final String DRAMA_ZIP_RES = "dramaRes";
-
-	private PathConf() {}
 
 	/**
 	 * 获取 clazz 在 status 状态图片的本地绝对路径
@@ -40,15 +37,6 @@ public class PathConf {
 		return repoConf.getLocalResourcePath() + toResPath(clazz) + status + IMG_SUFFIX;
 	}
 
-	/**
-	 * 获取 clazz 配置文件的本地绝对路径
-	 * @param clazz
-	 * @return
-	 */
-	public static String configFile(Class<?> clazz) {
-		return repoConf.getLocalResourcePath() + toResPath(clazz) + CONFIG_FILE;
-	}
-
 	public static String dramaResZipPath() {
 		return repoConf.getLocalResourcePath() + DRAMA_ZIP_RES + "/";
 	}
@@ -58,7 +46,7 @@ public class PathConf {
 	 * @param code
 	 * @return
 	 */
-	public static String codePath(String code) {
+	public static String codeToPath(String code) {
 		return repoConf.getLocalResourcePath() + toResPath(code);
 	}
 
@@ -73,31 +61,10 @@ public class PathConf {
 		String path = "/" + toResPath(clazz) + status + IMG_SUFFIX;
 		InputStream in = clazz.getResourceAsStream(path);
 		if (in == null) {
-			log.error(
+			LOG.error(
 				String.format("获取图片输入流失败：class = %s, status = %s, file = classpath:%s", clazz.getName(), status, path)
 			);
 			throw new ImageNotFoundException(clazz, status);
-		}
-		return in;
-	}
-
-	/**
-	 * 获取 class path 下配置文件输入流
-	 * @param clazz
-	 * @return
-	 * @throws ConfigNotFoundException 若配置文件不存在
-	 */
-	public static InputStream configStream(Class<?> clazz) throws ConfigNotFoundException {
-		String path = "/" + toResPath(clazz) + CONFIG_FILE;
-		InputStream in = clazz.getResourceAsStream(path);
-		if (in == null) {
-			log.error(
-				String.format(
-					"获取配置文件输入流失败：class = %s, file = classpath:%s",
-					clazz.getName(), path
-				)
-			);
-			throw new ConfigNotFoundException(clazz);
 		}
 		return in;
 	}

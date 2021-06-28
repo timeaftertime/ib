@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cn.milai.ib.role.AbstractRole;
+import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Rotatable;
+import cn.milai.ib.role.property.base.BaseRotatable;
 import cn.milai.ib.role.property.holder.RotatableHolder;
 
 /**
@@ -17,27 +17,14 @@ import cn.milai.ib.role.property.holder.RotatableHolder;
  */
 public class BasePhysicsPluginTest {
 
-	private static class RotatableRoleStub extends AbstractRole implements RotatableHolder {
+	private static class RotatableRoleStub extends BaseRole implements RotatableHolder {
 
 		public RotatableRoleStub(int x, int y, double w, double h, double direction) {
-			super(0, 0, null);
 			resetBounds(x, y, w, h);
 			setDirection(direction);
-			setRotatable(new Rotatable() {
-				@Override
-				public Role getRole() { return RotatableRoleStub.this; }
-			});
+			setRotatable(new BaseRotatable());
 		}
 
-		@Override
-		public int intConf(String key) {
-			return 1;
-		}
-
-		@Override
-		public double doubleConf(String key) {
-			return 1;
-		}
 	}
 
 	private Role r1 = new RotatableRoleStub(0, 0, 10, 15, Math.atan(-3.0 / 11));

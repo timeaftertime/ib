@@ -7,7 +7,9 @@ import cn.milai.ib.role.explosion.Explosion;
  * @author milai
  * @date 2021.03.29
  */
-public interface Explosible extends Property {
+public interface Explosible extends RoleProperty {
+
+	String NAME = "explosible";
 
 	/**
 	 * 返回产生的爆炸

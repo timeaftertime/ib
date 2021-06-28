@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.container.Container;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
 
@@ -17,8 +16,8 @@ public class LifeCounter extends LifeIndicator {
 
 	public static Color LIFE_COLOR = Color.WHITE;
 
-	public LifeCounter(int x, int y, Container container, Role target) {
-		super(x, y, container, target);
+	public LifeCounter(Role target) {
+		super(target);
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public class LifeCounter extends LifeIndicator {
 		Graphics2D g2d = image.createGraphics();
 		g2d.setColor(LIFE_COLOR);
 		g2d.drawImage(getTargetImage(), 0, 0, getIntW() / 4, getIntH(), null);
-		g2d.drawString("" + getTarget().getLife(), getIntW() / 3, getIntH() / 2);
+		g2d.drawString("" + getTarget().getHealth().getHP(), getIntW() / 3, getIntH() / 2);
 		return image;
 	}
 

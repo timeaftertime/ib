@@ -3,13 +3,14 @@ package cn.milai.ib.role.helper;
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.property.holder.ColliderHolder;
+import cn.milai.ib.role.property.holder.MovableHolder;
 
 /**
  * 协助道具
  * @author milai
  * @date 2020.03.10
  */
-public interface Helper extends ColliderHolder {
+public interface Helper extends ColliderHolder, MovableHolder {
 
 	@Override
 	default int getCamp() { return Camp.HELPER; }

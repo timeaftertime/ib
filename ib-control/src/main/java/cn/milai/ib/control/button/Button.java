@@ -2,18 +2,17 @@ package cn.milai.ib.control.button;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cn.milai.ib.Controllable;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
-import cn.milai.ib.control.AbstractControl;
+import cn.milai.ib.control.BaseControl;
+import cn.milai.ib.obj.Controllable;
 
 /**
  * 按钮
  * @author milai
  * @date 2020.04.07
  */
-public abstract class Button extends AbstractControl implements Controllable {
+public abstract class Button extends BaseControl implements Controllable {
 
 	/**
 	 * 当前是否处于(鼠标)光标下
@@ -26,13 +25,9 @@ public abstract class Button extends AbstractControl implements Controllable {
 
 	/**
 	 * 创建一个按钮
-	 * @param x
-	 * @param y
-	 * @param container
 	 * @param afterPressed 按钮被点击时调用
 	 */
-	public Button(int x, int y, Container container, Runnable afterPressed) {
-		super(x, y, container);
+	public Button(Runnable afterPressed) {
 		this.afterPressed = afterPressed;
 	}
 

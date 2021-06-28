@@ -1,8 +1,7 @@
 package cn.milai.ib.role.weapon.bullet;
 
-import cn.milai.ib.Paintable;
+import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.Camp;
-import cn.milai.ib.role.MovableRole;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.Movable;
@@ -11,34 +10,30 @@ import cn.milai.ib.role.property.base.BaseDamage;
 import cn.milai.ib.role.property.base.BaseRotatable;
 
 /**
- * 子弹类游戏对象的抽象基类
+ * {@link Bullet} 抽象实现
  * @author milai
+ * @date 2021.06.25
  */
-public abstract class AbstractBullet extends MovableRole implements Bullet {
+public abstract class AbstractBullet extends BaseRole implements Bullet {
 
 	private Role owner;
 
-	protected AbstractBullet(double centerX, double centerY, Role owner) {
-		super(centerX, centerY, owner.getContainer());
+	protected AbstractBullet(Role owner) {
 		this.owner = owner;
-		setRotatable(new BaseRotatable(this));
-		Movable m = movable();
+		Movable m = getMovable();
 		setDirection(owner.getDirection());
 		m.setSpeedX(m.getRatedSpeedX() * Math.sin(owner.getDirection()));
 		m.setSpeedY(-m.getRatedSpeedY() * Math.cos(owner.getDirection()));
-	}
 
-	@Override
-	protected void initProperties() {
-		super.initProperties();
-		setDamage(new BaseDamage(this, intConf(P_POWER)));
-		setCollider(new BaseCollider(this) {
+		setDamage(new BaseDamage());
+		setRotatable(new BaseRotatable());
+		setCollider(new BaseCollider() {
 			@Override
 			public void onCollided(Collider crashed) {
 				if (!canCrashWith(crashed)) {
 					return;
 				}
-				crashed.getRole().loseLife(AbstractBullet.this, damage().getValue());
+				crashed.owner().getHealth().changeHP(AbstractBullet.this, -getDamage().getValue());
 			}
 		});
 	}
@@ -49,38 +44,16 @@ public abstract class AbstractBullet extends MovableRole implements Bullet {
 	 * @return
 	 */
 	protected boolean canCrashWith(Collider crashed) {
-		return !(crashed.getRole() instanceof Bullet);
-	}
-
-	@Override
-	protected void afterMove(Movable m) {
-		if (outOfContainer()) {
-			toDead();
-		}
+		return !(crashed.owner() instanceof Bullet);
 	}
 
 	@Override
 	public Role getOwner() { return owner; }
 
-	private boolean outOfContainer() {
-		if (this.getX() > getContainer().getW()) {
-			return true;
-		}
-		if (this.getY() > getContainer().getH()) {
-			return true;
-		}
-		if (this.getX() + getW() < 0) {
-			return true;
-		}
-		if (this.getY() + this.getH() < 0) {
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public int getCamp() { return owner.getCamp(); }
 
 	@Override
-	public int getZ() { return Paintable.DEFAULT_Z - 1; }
+	public int getZ() { return super.getZ() - 1; }
+
 }

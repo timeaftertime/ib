@@ -27,8 +27,7 @@ public class BaseAliveCheckPlugin extends TypeMonitorPlugin<Role> implements Ali
 			}
 			long start = System.currentTimeMillis();
 			for (Role role : getAll()) {
-				if (!role.isAlive()) {
-					role.onDead();
+				if (!role.getHealth().isAlive()) {
 					getContainer().removeObject(role);
 				}
 			}

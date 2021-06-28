@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.geometry.Rect;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.obj.property.Painter;
 import cn.milai.ib.role.Role;
 
 /**
@@ -13,7 +14,9 @@ import cn.milai.ib.role.Role;
  * @author milai
  * @date 2021.03.29
  */
-public interface Rotatable extends Property {
+public interface Rotatable extends RoleProperty {
+
+	String NAME = "rotatable";
 
 	/**
 	 * 指定 {@link Role} 是否制定点
@@ -48,11 +51,15 @@ public interface Rotatable extends Property {
 	 * @param r
 	 */
 	static void paintWith(Graphics g, Role r) {
-		if (!r.isAlive()) {
+		if (!r.getHealth().isAlive()) {
+			return;
+		}
+		Painter p = r.getProperty(Painter.class);
+		if (p == null) {
 			return;
 		}
 		Images.paint(
-			(Graphics2D) g, r.getNowImage(), r.getIntX(), r.getIntY(), r.getIntW(), r.getIntH(), r.getDirection()
+			(Graphics2D) g, p.getNowImage(), r.getIntX(), r.getIntY(), r.getIntW(), r.getIntH(), r.getDirection()
 		);
 	}
 }
