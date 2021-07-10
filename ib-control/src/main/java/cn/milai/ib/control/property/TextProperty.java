@@ -3,7 +3,7 @@ package cn.milai.ib.control.property;
 import java.awt.Color;
 import java.awt.Font;
 
-import cn.milai.ib.obj.property.Property;
+import cn.milai.ib.item.property.Property;
 
 /**
  * 文本 {@link Property}

@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Rotatable;
 
@@ -20,7 +20,7 @@ public class BaseRotatable extends BaseRoleProperty implements Rotatable {
 	public void initRoleProperty() {
 		Role r = owner();
 		Painter painter = r.getProperty(Painter.class);
-		r.putProperty(Painter.class, new BasePainter() {
+		BasePainter rotatedPainter = new BasePainter() {
 			@Override
 			public void paintWith(Graphics g) {
 				Images.paint(
@@ -29,7 +29,9 @@ public class BaseRotatable extends BaseRoleProperty implements Rotatable {
 					r.getDirection()
 				);
 			}
-		});
+		};
+		rotatedPainter.init(r);
+		r.putProperty(Painter.class, rotatedPainter);
 	}
 
 }

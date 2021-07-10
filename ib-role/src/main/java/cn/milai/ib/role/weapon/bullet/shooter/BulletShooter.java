@@ -1,5 +1,6 @@
 package cn.milai.ib.role.weapon.bullet.shooter;
 
+import cn.milai.ib.config.ItemConfigApplier;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.role.weapon.Weapon;
 import cn.milai.ib.role.weapon.bullet.Bullet;
@@ -8,7 +9,7 @@ import cn.milai.ib.role.weapon.bullet.Bullet;
  * 子弹发射器
  * @author milai
  */
-public interface BulletShooter extends Weapon {
+public interface BulletShooter extends Weapon, ItemConfigApplier {
 
 	@Override
 	default void attack() {

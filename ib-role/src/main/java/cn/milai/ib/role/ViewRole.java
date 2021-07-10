@@ -8,9 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.config.ConfigAware;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
-import cn.milai.ib.obj.property.holder.PainterHolder;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
+import cn.milai.ib.item.property.holder.PainterHolder;
+import cn.milai.ib.role.property.Health;
+import cn.milai.ib.role.property.base.BaseHealth;
 
 /**
  * 仅用于展示的 {@link Role}
@@ -38,7 +40,15 @@ public class ViewRole extends BaseRole implements ConfigAware, PainterHolder {
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public boolean isAlive() { return true; }
+		};
+	}
+
+	@Override
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public void paintWith(Graphics g) {
@@ -47,6 +57,11 @@ public class ViewRole extends BaseRole implements ConfigAware, PainterHolder {
 					return;
 				}
 				Images.paint((Graphics2D) g, getNowImage(), getIntX(), getIntY(), getIntW(), getIntH(), getDirection());
+			}
+
+			@Override
+			protected Class<?> imageClass() {
+				return configClass;
 			}
 
 			@Override

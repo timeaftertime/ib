@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 import cn.milai.ib.control.text.Selections;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.graphics.Texts;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * 选项按钮
@@ -20,7 +20,7 @@ public class SelectionButton extends Button {
 	private Selections selections;
 	private String text;
 	private BufferedImage img;
-	private Color bgColor;
+	private Color bgColor = Color.BLACK;
 	private int padding;
 	private int margin;
 
@@ -45,7 +45,7 @@ public class SelectionButton extends Button {
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() {

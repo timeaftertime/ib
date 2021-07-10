@@ -1,8 +1,8 @@
 package cn.milai.ib.role;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.property.holder.PainterHolder;
+import cn.milai.ib.item.Item;
+import cn.milai.ib.item.property.holder.PainterHolder;
 import cn.milai.ib.role.property.holder.HealthHolder;
 
 /**
@@ -10,7 +10,7 @@ import cn.milai.ib.role.property.holder.HealthHolder;
  * @author milai
  * @date 2020.02.20
  */
-public interface Role extends IBObject, HealthHolder, PainterHolder {
+public interface Role extends Item, HealthHolder, PainterHolder {
 
 	/**
 	 * 获取当前角色所属阵营

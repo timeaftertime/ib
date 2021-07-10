@@ -2,6 +2,7 @@ package cn.milai.ib.role.weapon.bullet;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.base.BaseMovable;
 
@@ -15,7 +16,8 @@ public class BulletMovable extends BaseMovable {
 	@Override
 	public void afterMove() {
 		if (outOfContainer()) {
-			owner().container().removeObject(owner());
+			Health h = owner().getHealth();
+			h.changeHP(null, -h.getHP());
 		}
 	}
 

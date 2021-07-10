@@ -1,6 +1,6 @@
 package cn.milai.ib.role.property.base;
 
-import cn.milai.ib.obj.property.BaseProperty;
+import cn.milai.ib.item.property.BaseProperty;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.RoleProperty;
 

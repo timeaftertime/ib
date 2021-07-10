@@ -20,11 +20,7 @@ public abstract class AbstractBullet extends BaseRole implements Bullet {
 
 	protected AbstractBullet(Role owner) {
 		this.owner = owner;
-		Movable m = getMovable();
-		setDirection(owner.getDirection());
-		m.setSpeedX(m.getRatedSpeedX() * Math.sin(owner.getDirection()));
-		m.setSpeedY(-m.getRatedSpeedY() * Math.cos(owner.getDirection()));
-
+		setMovable(new BulletMovable());
 		setDamage(new BaseDamage());
 		setRotatable(new BaseRotatable());
 		setCollider(new BaseCollider() {
@@ -36,6 +32,14 @@ public abstract class AbstractBullet extends BaseRole implements Bullet {
 				crashed.owner().getHealth().changeHP(AbstractBullet.this, -getDamage().getValue());
 			}
 		});
+	}
+
+	@Override
+	protected void initItem() {
+		Movable m = getMovable();
+		setDirection(owner.getDirection());
+		m.setSpeedX(m.getRatedSpeedX() * Math.sin(owner.getDirection()));
+		m.setSpeedY(-m.getRatedSpeedY() * Math.cos(owner.getDirection()));
 	}
 
 	/**

@@ -11,7 +11,7 @@ import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.listener.ObjectListener;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * 等待同步相关工具类
@@ -40,7 +40,7 @@ public class Waits {
 	 * @param obj
 	 * @param 检查中断的间隔帧数
 	 */
-	public static void waitRemove(IBObject obj, long checkFrame) {
+	public static void waitRemove(Item obj, long checkFrame) {
 		Counter counter = registerCounter(1);
 		withListener(obj.container(), new RemoveCounter(counter, obj), counter);
 	}
@@ -104,16 +104,16 @@ public class Waits {
 	}
 
 	private static class RemoveCounter extends ResetMonitor implements ObjectListener {
-		private IBObject target;
+		private Item target;
 
-		public RemoveCounter(Counter counter, IBObject target) {
+		public RemoveCounter(Counter counter, Item target) {
 			super(target.container(), counter);
 			this.target = target;
 		}
 
 		@Override
-		public void onObjectRemoved(Container container, List<IBObject> objs) {
-			for (IBObject obj : objs) {
+		public void onObjectRemoved(Container container, List<Item> objs) {
+			for (Item obj : objs) {
 				if (this.target == obj) {
 					getCounter().count();
 				}

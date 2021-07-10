@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * (鼠标)离开时会减少透明度的 {@link Button}
@@ -24,7 +24,7 @@ public class OpacityButton extends Button {
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() {

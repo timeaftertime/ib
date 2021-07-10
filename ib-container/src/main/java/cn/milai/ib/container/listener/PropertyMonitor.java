@@ -4,11 +4,11 @@ import java.util.List;
 
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBObject;
-import cn.milai.ib.obj.property.Property;
+import cn.milai.ib.item.Item;
+import cn.milai.ib.item.property.Property;
 
 /**
- * 监听有指定 {@link Property} 的 {@link IBObject} 的  {@link ContainerMonitor}
+ * 监听有指定 {@link Property} 的 {@link Item} 的  {@link ContainerMonitor}
  * @author milai
  * @date 2021.03.29
  */
@@ -37,6 +37,6 @@ public class PropertyMonitor<T extends Property> extends ContainerMonitor {
 	public List<T> getProps() { return Collects.mapList(getAll(), r -> r.getProperty(clazz)); };
 
 	@Override
-	public List<? extends IBObject> getAll() { return super.getAll(); }
+	public List<? extends Item> getAll() { return super.getAll(); }
 
 }

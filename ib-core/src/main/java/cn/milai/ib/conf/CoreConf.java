@@ -3,8 +3,6 @@ package cn.milai.ib.conf;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import cn.milai.ib.config.Configurable;
-
 /**
  * Infinity Battle 核心模块配置
  * @author milai
@@ -24,11 +22,6 @@ public class CoreConf {
 	 */
 	private int imageUpdateFrame = 3;
 
-	/**
-	 * 是否保存 {@link Configurable} 配置到文件
-	 */
-	private boolean saveConfigFile = false;
-
 	public double getSpeed() { return speed; }
 
 	public void setSpeed(double speed) { this.speed = speed; }
@@ -36,9 +29,5 @@ public class CoreConf {
 	public int getImageUpdateFrame() { return imageUpdateFrame; }
 
 	public void setImageUpdateFrame(int imageUpdateFrame) { this.imageUpdateFrame = imageUpdateFrame; }
-
-	public boolean isSaveConfigFile() { return saveConfigFile; }
-
-	public void setSaveConfigFile(boolean saveConfigFile) { this.saveConfigFile = saveConfigFile; }
 
 }

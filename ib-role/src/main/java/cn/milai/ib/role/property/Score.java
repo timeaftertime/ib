@@ -10,9 +10,15 @@ public interface Score extends RoleProperty {
 	String NAME = "score";
 
 	/**
-	 * 消灭本对象时获得的分数
+	 * 获取分数
 	 * @return
 	 */
 	int getValue();
+
+	/**
+	 * 设置分数
+	 * @param value
+	 */
+	void setValue(int value);
 
 }

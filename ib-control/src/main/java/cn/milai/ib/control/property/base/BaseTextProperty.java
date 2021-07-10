@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import cn.milai.ib.control.property.TextProperty;
-import cn.milai.ib.obj.property.BaseProperty;
+import cn.milai.ib.item.property.BaseProperty;
 
 /**
  * {@link TextProperty} 默认实现

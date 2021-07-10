@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
 import cn.milai.ib.control.BaseControl;
-import cn.milai.ib.obj.Controllable;
+import cn.milai.ib.item.Controllable;
 
 /**
  * 按钮

@@ -2,8 +2,8 @@ package cn.milai.ib.control;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.holder.PainterHolder;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.holder.PainterHolder;
 import cn.milai.ib.role.Role;
 
 /**
@@ -20,8 +20,6 @@ public abstract class LifeIndicator extends BaseControl implements PainterHolder
 
 	public LifeIndicator(Role target) {
 		this.target = target;
-		this.preLife = target.getHealth().initHP();
-		targetImage = target.getPainter().getNowImage();
 		setPainter(new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() {
@@ -32,6 +30,12 @@ public abstract class LifeIndicator extends BaseControl implements PainterHolder
 				return image;
 			}
 		});
+	}
+
+	@Override
+	protected void initItem() {
+		this.preLife = target.getHealth().initHP();
+		targetImage = target.getPainter().getNowImage();
 	}
 
 	/**

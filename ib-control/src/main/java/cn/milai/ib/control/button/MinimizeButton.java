@@ -15,4 +15,7 @@ public class MinimizeButton extends OpacityButton {
 		super(afterPressed);
 	}
 
+	@Override
+	public int getZ() { return Integer.MAX_VALUE; }
+
 }

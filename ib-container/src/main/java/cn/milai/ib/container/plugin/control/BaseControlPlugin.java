@@ -6,7 +6,7 @@ import java.util.List;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.obj.Controllable;
+import cn.milai.ib.item.Controllable;
 
 /**
  * {@link ControlPlugin} 默认实现

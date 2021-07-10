@@ -1,5 +1,7 @@
 package cn.milai.ib.geometry;
 
+import cn.milai.ib.config.Configurable;
+
 /**
  * {@link Bounds } 的默认实现
  * @author milai
@@ -52,6 +54,7 @@ public class BaseBounds implements Bounds {
 	@Override
 	public int getIntW() { return (int) Math.round(getW()); }
 
+	@Configurable
 	@Override
 	public void setW(double w) { this.w = w; }
 
@@ -61,6 +64,7 @@ public class BaseBounds implements Bounds {
 	@Override
 	public int getIntH() { return (int) Math.round(getH()); }
 
+	@Configurable
 	@Override
 	public void setH(double h) { this.h = h; }
 

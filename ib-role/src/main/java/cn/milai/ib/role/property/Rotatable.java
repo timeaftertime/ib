@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.geometry.Rect;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.Role;
 
 /**

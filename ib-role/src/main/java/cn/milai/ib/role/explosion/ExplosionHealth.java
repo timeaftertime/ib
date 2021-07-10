@@ -1,5 +1,6 @@
 package cn.milai.ib.role.explosion;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.base.BaseHealth;
 
@@ -16,6 +17,7 @@ public class ExplosionHealth extends BaseHealth {
 
 	public long getLastFrame() { return lastFrame; }
 
+	@Configurable
 	public void setLastFrame(long lastFrame) { this.lastFrame = lastFrame; }
 
 	@Override

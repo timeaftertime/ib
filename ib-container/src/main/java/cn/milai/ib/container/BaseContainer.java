@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ObjectListener;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * {@link Container} 默认实现
@@ -23,7 +23,7 @@ public class BaseContainer implements Container {
 	private int w;
 	private int h;
 
-	private Set<IBObject> objs = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private Set<Item> objs = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * 容器对象事件监听器列表
@@ -31,9 +31,9 @@ public class BaseContainer implements Container {
 	private List<ObjectListener> objectListeners = new CopyOnWriteArrayList<>();
 
 	@Override
-	public boolean addObject(IBObject obj) {
+	public boolean addObject(Item obj) {
+		obj.init(this);
 		if (objs.add(obj)) {
-			obj.init(this);
 			notifyObjectAdded(obj);
 			return true;
 		}
@@ -41,7 +41,7 @@ public class BaseContainer implements Container {
 	}
 
 	@Override
-	public boolean removeObject(IBObject obj) {
+	public boolean removeObject(Item obj) {
 		if (objs.remove(obj)) {
 			notifyObjectRemoved(obj);
 			return true;
@@ -51,12 +51,12 @@ public class BaseContainer implements Container {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IBObject> List<T> getAll(Class<T> type) {
-		if (type == IBObject.class) {
+	public <T extends Item> List<T> getAll(Class<T> type) {
+		if (type == Item.class) {
 			return (List<T>) new ArrayList<>(objs);
 		}
 		List<T> allOfType = new ArrayList<>();
-		for (IBObject o : objs) {
+		for (Item o : objs) {
 			if (type.isInstance(o))
 				allOfType.add((T) o);
 		}
@@ -80,21 +80,21 @@ public class BaseContainer implements Container {
 		objectListeners.remove(listener);
 	}
 
-	private void notifyObjectRemoved(IBObject obj) {
+	private void notifyObjectRemoved(Item obj) {
 		notifyObjectsRemoved(Collections.unmodifiableList(Arrays.asList(obj)));
 	}
 
 	private void notifyObjectCleared() {
-		notifyObjectsRemoved(Collections.unmodifiableList(getAll(IBObject.class)));
+		notifyObjectsRemoved(Collections.unmodifiableList(getAll(Item.class)));
 	}
 
-	private void notifyObjectsRemoved(List<IBObject> all) {
+	private void notifyObjectsRemoved(List<Item> all) {
 		for (ObjectListener listener : new ArrayList<>(objectListeners)) {
 			listener.onObjectRemoved(this, all);
 		}
 	}
 
-	private void notifyObjectAdded(IBObject obj) {
+	private void notifyObjectAdded(Item obj) {
 		for (ObjectListener listener : new ArrayList<>(objectListeners)) {
 			listener.onObjectAdded(this, obj);
 		}

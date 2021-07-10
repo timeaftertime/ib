@@ -2,8 +2,10 @@ package cn.milai.ib.loader;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +34,6 @@ public class ImageLoader {
 	 */
 	private static final Map<String, BufferedImage[]> IMAGES = new ConcurrentHashMap<>();
 
-	private static Image loadImageFile(File file) {
-		return buildImage(IMAGES.computeIfAbsent(file.toString(), f -> Images.loadImage(file)));
-	}
-
 	/**
 	 * 获取指定游戏对象类型在指定状态的图片
 	 * 每个 class 每个状态的图片只会加载一次
@@ -44,13 +42,17 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(Class<?> clazz, String status) {
+		return buildImage(loadCached(clazz.getName(), status, () -> getImageStream(clazz, status)));
+	}
+
+	private static InputStream getImageStream(Class<?> clazz, String status) {
 		String path = PathConf.imgFile(clazz, status);
 		File file = new File(path);
 		if (!file.exists()) {
 			LOG.info("图片文件 {} 不存在，尝试从 classpath 复制……", path);
 			Files.saveRethrow(path, InputStreams.toBytes(PathConf.imgStream(clazz, status)));
 		}
-		return loadImageFile(file);
+		return InputStreams.fromFile(file);
 	}
 
 	/**
@@ -60,7 +62,11 @@ public class ImageLoader {
 	 * @return
 	 */
 	public static Image load(String code, String resource) {
-		return buildImage(Images.loadImage(DramaResLoader.load(code, resource)));
+		return buildImage(loadCached(code, resource, () -> DramaResLoader.load(code, resource)));
+	}
+
+	private static BufferedImage[] loadCached(String code, String resource, Supplier<InputStream> in) {
+		return IMAGES.computeIfAbsent(code + "-" + resource, k -> Images.loadImage(in.get()));
 	}
 
 	private static Image buildImage(BufferedImage... images) {

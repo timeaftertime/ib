@@ -14,8 +14,7 @@ import cn.milai.ib.role.property.base.BaseCollider;
  */
 public abstract class AbstractHelper extends BaseRole implements Helper {
 
-	@Override
-	protected void initObject() {
+	public AbstractHelper() {
 		setMovable(new HelperMovable());
 		setCollider(new BaseCollider() {
 			@Override
@@ -28,13 +27,17 @@ public abstract class AbstractHelper extends BaseRole implements Helper {
 				makeFunction((PlayerRole) r);
 			}
 		});
+	}
+
+	@Override
+	protected void initItem() {
 		Movable m = getMovable();
 		m.setSpeedX(m.getRatedSpeedX());
 		m.setSpeedY(m.getRatedSpeedY());
 	}
 
 	@Override
-	protected Health initHealth() {
+	protected Health createHealth() {
 		return new HelperHealth();
 	}
 

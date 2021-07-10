@@ -3,7 +3,7 @@ package cn.milai.ib.container;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * {@link CloseableContainer} 抽象实现
@@ -26,19 +26,19 @@ public class BaseCloseableContainer extends BaseContainer implements CloseableCo
 	public boolean isClosed() { return closed.get(); }
 
 	@Override
-	public final <T extends IBObject> List<T> getAll(Class<T> type) throws ContainerClosedException {
+	public final <T extends Item> List<T> getAll(Class<T> type) throws ContainerClosedException {
 		checkClosed();
 		return super.getAll(type);
 	}
 
 	@Override
-	public final boolean addObject(IBObject obj) throws ContainerClosedException {
+	public final boolean addObject(Item obj) throws ContainerClosedException {
 		checkClosed();
 		return super.addObject(obj);
 	}
 
 	@Override
-	public final boolean removeObject(IBObject obj) throws ContainerClosedException {
+	public final boolean removeObject(Item obj) throws ContainerClosedException {
 		checkClosed();
 		return super.removeObject(obj);
 	}

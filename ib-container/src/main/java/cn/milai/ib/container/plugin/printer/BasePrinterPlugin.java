@@ -10,7 +10,7 @@ import cn.milai.ib.container.plugin.PropertyMonitorPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * {@link PrinterPlugin} 默认实现
@@ -30,8 +30,9 @@ public class BasePrinterPlugin extends PropertyMonitorPlugin<Painter> implements
 		long start = System.currentTimeMillis();
 
 		PluginableContainer container = getContainer();
-		int w = container.getW();
-		int h = container.getH();
+		// 尚未 start
+		int w = container == null ? 0 : container.getW();
+		int h = container == null ? 0 : container.getH();
 		if (w == 0 || h == 0) {
 			return Images.newImage(1, 1);
 		}

@@ -1,6 +1,6 @@
 package cn.milai.ib.role.property;
 
-import cn.milai.ib.obj.property.Property;
+import cn.milai.ib.item.property.Property;
 
 /**
  * 刚体，可受到物理作用的 {@link Property}

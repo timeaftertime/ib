@@ -1,5 +1,6 @@
 package cn.milai.ib.role.property.base;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Rigidbody;
 
 /**
@@ -20,6 +21,7 @@ public class BaseRigidbody extends BaseRoleProperty implements Rigidbody {
 	@Override
 	public double getMass() { return mass; }
 
+	@Configurable
 	@Override
 	public void setMass(double mass) {
 		if (mass <= 0) {
@@ -63,12 +65,18 @@ public class BaseRigidbody extends BaseRoleProperty implements Rigidbody {
 	@Override
 	public double getResistance() { return resistance; }
 
+	@Configurable
 	@Override
 	public void setResistance(double resistance) {
 		if (resistance < 0) {
 			throw new IllegalArgumentException("阻力必须大于等于 0");
 		}
 		this.resistance = resistance;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseRigidbody [mass=" + mass + ", resistance=" + resistance + "]";
 	}
 
 }

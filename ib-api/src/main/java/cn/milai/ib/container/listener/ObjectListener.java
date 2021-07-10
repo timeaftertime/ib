@@ -4,7 +4,7 @@ import java.util.List;
 
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * {@link LifecycleContainer} 对象事件监听器
@@ -18,13 +18,13 @@ public interface ObjectListener extends ContainerListener {
 	 * @param container
 	 * @param obj
 	 */
-	default void onObjectAdded(Container container, IBObject obj) {}
+	default void onObjectAdded(Container container, Item obj) {}
 
 	/**
 	 * 游戏对象被移除后被调用
 	 * @param container
 	 * @param objs 被移除的对象
 	 */
-	default void onObjectRemoved(Container container, List<IBObject> objs) {}
+	default void onObjectRemoved(Container container, List<Item> objs) {}
 
 }

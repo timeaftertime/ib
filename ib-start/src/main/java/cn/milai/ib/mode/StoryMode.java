@@ -13,9 +13,9 @@ import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.text.LinesFullScreenPass;
-import cn.milai.ib.drama.Drama;
-import cn.milai.ib.drama.DramaResolver;
 import cn.milai.ib.loader.DramaResLoader;
+import cn.milai.ib.mode.drama.Drama;
+import cn.milai.ib.mode.drama.DramaResolver;
 
 /**
  * 剧情模式

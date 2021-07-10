@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.common.base.Collects;
-import cn.milai.ib.IBCore;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 
@@ -109,15 +108,5 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 	 * @return
 	 */
 	protected abstract Bullet[] createBullets0();
-
-	/**
-	 * 构造一个指定类型的 {@link Bullet}
-	 * @param <T>
-	 * @param clazz
-	 * @return
-	 */
-	protected <T extends Bullet> T newBullet(Class<T> clazz) {
-		return IBCore.getBean(clazz, owner);
-	}
 
 }

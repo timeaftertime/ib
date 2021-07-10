@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -108,21 +107,21 @@ public class Images {
 
 	/**
 	 * 创建一张大小与指定文字相适应的图片
-	 * @param lines 需要显示的文字行列表
 	 * @param font 需要显示成的字体
 	 * @param fgColor 文字颜色
 	 * @param bgColor 背景颜色
 	 * @param padding 文字与边框的距离
 	 * @param lineInterval 每行文字的间隔
+	 * @param lines 需要显示的文字行列表
 	 * @return
 	 */
-	public static BufferedImage newTextImage(List<String> lines, Font font, Color fgColor, Color bgColor, int padding,
-		int lineInterval) {
+	public static BufferedImage newTextImage(Font font, Color fgColor, Color bgColor, int padding,
+		int lineInterval, String... lines) {
 		Graphics tmp = newImage(1, 1).createGraphics();
 		tmp.setFont(font);
 		tmp.setColor(fgColor);
 		int lineHeight = Texts.getTextHeight(tmp);
-		int totalHeight = lines.size() * lineHeight + 2 * padding + (lines.size() - 1) * lineInterval;
+		int totalHeight = lines.length * lineHeight + 2 * padding + (lines.length - 1) * lineInterval;
 		int maxWidth = 0;
 		for (String line : lines) {
 			maxWidth = Integer.max(maxWidth, Texts.getTextWidth(line, tmp));
@@ -204,9 +203,9 @@ public class Images {
 	}
 
 	/**
-	 * 修改 ARGB 图片透明度，并返回修改后的·原图片
+	 * 修改 ARGB 图片透明度，并返回修改后的原图片
 	 * @param img 需要修改透明度的图片
-	 * @param transparency 需要为的透明度(0完全透明~255不透明)
+	 * @param transparency 需要的透明度(0完全透明~255不透明)
 	 * @return
 	 */
 	public static BufferedImage transparent(BufferedImage img, int transparency) {

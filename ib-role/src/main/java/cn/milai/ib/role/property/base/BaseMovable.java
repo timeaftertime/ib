@@ -1,5 +1,6 @@
 package cn.milai.ib.role.property.base;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
 
@@ -18,12 +19,14 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 	@Override
 	public double getRatedSpeedX() { return ratedSpeedX; }
 
+	@Configurable
 	@Override
 	public void setRatedSpeedX(double ratedSpeedX) { this.ratedSpeedX = ratedSpeedX; }
 
 	@Override
 	public double getRatedSpeedY() { return ratedSpeedY; }
 
+	@Configurable
 	@Override
 	public void setRatedSpeedY(double ratedSpeedY) { this.ratedSpeedY = ratedSpeedY; }
 
@@ -107,5 +110,11 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 	 * 完成移动速度计算后调用
 	 */
 	protected void afterRefreshSpeeds() {}
+
+	@Override
+	public String toString() {
+		return "BaseMovable [ratedSpeedX=" + ratedSpeedX + ", ratedSpeedY=" + ratedSpeedY + ", speedX=" + speedX
+			+ ", speedY=" + speedY + "]";
+	}
 
 }

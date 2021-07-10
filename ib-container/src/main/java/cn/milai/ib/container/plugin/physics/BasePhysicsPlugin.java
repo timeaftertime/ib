@@ -19,6 +19,7 @@ import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.Rigidbody;
 import cn.milai.ib.role.property.Rotatable;
 
 /**
@@ -123,7 +124,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	private boolean doMove(Mover now, double nextFuelRatio) {
 		Movable m = now.getMovable();
 		Role r = m.owner();
-		if (r.hasProperty(Collider.class)) {
+		if (r.hasProperty(Rigidbody.class)) {
 			r.setX(r.getX() + m.getSpeedX());
 			r.setY(r.getY() + m.getSpeedY());
 			now.move();
@@ -167,7 +168,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 		boolean nowCollided = isCollided(r1, r2);
 		RolePair key = new RolePair(r1, r2);
 		if (nowCollided) {
-			if (!collided.get(key)) {
+			if (!collided.getOrDefault(key, false)) {
 				c1.onCollided(c2);
 				c2.onCollided(c1);
 			} else {

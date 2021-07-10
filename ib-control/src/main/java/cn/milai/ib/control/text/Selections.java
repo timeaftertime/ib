@@ -6,31 +6,37 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.milai.ib.config.ProtoConfiguarable;
 import cn.milai.ib.control.button.SelectionButton;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.graphics.Texts;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * 提供多个选项的组件
  * @author milai
  * @date 2020.04.07
  */
-@ProtoConfiguarable
 public class Selections extends AbstractTextControl {
+
+	private static final int INTERVAL_H = 10;
 
 	private int value;
 	private List<SelectionButton> buttons = new ArrayList<>();
 	private BufferedImage questionImg;
 	private Color bgColor = Color.BLACK;
 	private String question;
+	private String[] selections;
 	private int selectionTextPadding = 4;
 	private int selectionTextMargin = 7;
 
 	public Selections(String question, String... selections) {
 		this.question = question;
+		this.selections = selections;
+	}
+
+	@Override
+	protected void initItem() {
 		refreshQuestionImage();
 		for (int i = 0; i < selections.length; i++) {
 			addSelection(selections[i], i);
@@ -42,7 +48,8 @@ public class Selections extends AbstractTextControl {
 		button.setH(Texts.getTextHeight(getTextProperty().getFont()) + 2 * getSelectionTextPadding());
 		button.setW(getW());
 		button.setX(getX());
-		button.setY(getY() + getH() + buttons.size() * 2);
+		double topY = getY() + getH() + INTERVAL_H;
+		button.setY(topY + (INTERVAL_H + button.getH()) * value);
 		buttons.add(button);
 		container().addObject(button);
 	}
@@ -73,7 +80,7 @@ public class Selections extends AbstractTextControl {
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() { return questionImg; }

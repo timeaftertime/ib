@@ -2,7 +2,7 @@ package cn.milai.ib.container;
 
 import java.util.List;
 
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * 可关闭的 {@link Container}
@@ -30,7 +30,7 @@ public interface CloseableContainer extends Container {
 	 * @throws ContainerClosedException 若容器已被关闭
 	 */
 	@Override
-	boolean addObject(IBObject obj) throws ContainerClosedException;
+	boolean addObject(Item obj) throws ContainerClosedException;
 
 	/**
 	 * 从容器中国移除游戏对象
@@ -39,14 +39,14 @@ public interface CloseableContainer extends Container {
 	 * @throws ContainerClosedException 若容器已被关闭
 	 */
 	@Override
-	boolean removeObject(IBObject obj) throws ContainerClosedException;
+	boolean removeObject(Item obj) throws ContainerClosedException;
 
 	/**
 	 * 获取容器中指定类型和其子类的所有实例
 	 * @throws ContainerClosedException 若容器已被关闭
 	 */
 	@Override
-	<C extends IBObject> List<C> getAll(Class<C> type) throws ContainerClosedException;
+	<C extends Item> List<C> getAll(Class<C> type) throws ContainerClosedException;
 
 	/**
 	 * 清空容器中所有对象。若容器已经关闭，将抛出 ContainerClosedException

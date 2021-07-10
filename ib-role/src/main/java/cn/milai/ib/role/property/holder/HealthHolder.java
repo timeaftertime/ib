@@ -1,6 +1,6 @@
 package cn.milai.ib.role.property.holder;
 
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 import cn.milai.ib.role.property.Health;
 
 /**
@@ -8,7 +8,7 @@ import cn.milai.ib.role.property.Health;
  * @author milai
  * @date 2021.06.25
  */
-public interface HealthHolder extends IBObject {
+public interface HealthHolder extends Item {
 
 	/**
 	 * 获取 {@link Health}

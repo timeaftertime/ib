@@ -7,7 +7,7 @@ import cn.milai.ib.container.Container;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.pluginable.PluginListener;
 import cn.milai.ib.container.pluginable.PluginableContainer;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 import cn.milai.ib.role.Role;
 
 /**
@@ -52,17 +52,17 @@ public class ContainerListeners {
 	}
 
 	/**
-	 * 获取一个监听指定 {@link IBObject} 移除的 {@link ObjectListener}。
-	 * 指定 {@link IBObject} 被移除时将用其调用 {@link ObjectCallback#callback(Container, IBObject)}
+	 * 获取一个监听指定 {@link Item} 移除的 {@link ObjectListener}。
+	 * 指定 {@link Item} 被移除时将用其调用 {@link ObjectCallback#callback(Container, Item)}
 	 * @param callback
 	 * @param removed
 	 * @return
 	 */
-	public static ObjectListener removedListener(ObjectCallback<IBObject> callback, IBObject... removed) {
+	public static ObjectListener removedListener(ObjectCallback<Item> callback, Item... removed) {
 		return new ObjectListener() {
 			@Override
-			public void onObjectRemoved(Container container, List<IBObject> objs) {
-				for (IBObject o : removed) {
+			public void onObjectRemoved(Container container, List<Item> objs) {
+				for (Item o : removed) {
 					if (objs.contains(o)) {
 						callback.callback(container, o);
 					}
@@ -73,21 +73,21 @@ public class ContainerListeners {
 
 	/**
 	 * 获取一个通过指定回调方法实现的 {@link ObjectListener}
-	 * @param onAdded {@link ObjectListener#onObjectAdded(Container, IBObject)} 的实现
+	 * @param onAdded {@link ObjectListener#onObjectAdded(Container, Item)} 的实现
 	 * @param onRemoved {@link ObjectListener#onObjectRemoved(Container, List)} 的实现
 	 * @return
 	 */
-	public static ObjectListener objectListener(ObjectCallback<IBObject> onAdded, ObjectsCallback<IBObject> onRemoved) {
+	public static ObjectListener objectListener(ObjectCallback<Item> onAdded, ObjectsCallback<Item> onRemoved) {
 		return new ObjectListener() {
 			@Override
-			public void onObjectAdded(Container container, IBObject obj) {
+			public void onObjectAdded(Container container, Item obj) {
 				if (onAdded != null) {
 					onAdded.callback(container, obj);
 				}
 			}
 
 			@Override
-			public void onObjectRemoved(Container container, List<IBObject> objs) {
+			public void onObjectRemoved(Container container, List<Item> objs) {
 				if (onRemoved != null) {
 					onRemoved.callback(container, objs);
 				}
@@ -119,11 +119,11 @@ public class ContainerListeners {
 		};
 	}
 
-	public static interface ObjectCallback<T extends IBObject> {
+	public static interface ObjectCallback<T extends Item> {
 		void callback(Container container, T obj);
 	}
 
-	public static interface ObjectsCallback<T extends IBObject> {
+	public static interface ObjectsCallback<T extends Item> {
 		void callback(Container container, List<T> obj);
 	}
 

@@ -7,17 +7,17 @@ package cn.milai.ib.geometry;
  */
 public class Point {
 
-	private long x;
-	private long y;
+	private double x;
+	private double y;
 
-	public Point(long x, long y) {
+	public Point(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public long getX() { return x; }
+	public double getX() { return x; }
 
-	public long getY() { return y; }
+	public double getY() { return y; }
 
 	/**
 	 * 获取当前点绕点 p 旋转指定弧度后的点
@@ -39,11 +39,28 @@ public class Point {
 	public Point rotate(double x, double y, double radian) {
 		double x2 = x + (this.x - x) * Math.cos(radian) + (this.y - y) * -Math.sin(radian);
 		double y2 = y + (this.y - y) * Math.cos(radian) + (x - this.x) * -Math.sin(radian);
-		return new Point(Math.round(x2), Math.round(y2));
+		return new Point(x2, y2);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj.getClass() != Point.class) {
+			return false;
+		}
+		Point p = (Point) obj;
+		return p.x == x && p.y == y;
+	}
+
+	@Override
+	public int hashCode() {
+		return (x + " " + y).hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return String.format("(%d, %d)", x, y);
+		return String.format("(%f, %f)", x, y);
 	}
 }

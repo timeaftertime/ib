@@ -1,9 +1,9 @@
 package cn.milai.ib.mode.drama;
 
+import cn.milai.ib.config.ItemConfigApplier;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.drama.Drama;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.DramaStringLoader;
 import cn.milai.ib.loader.ImageLoader;
@@ -13,7 +13,7 @@ import cn.milai.ib.loader.ImageLoader;
  * @author milai
  * @date 2020.03.06
  */
-public abstract class AbstractDrama implements Drama {
+public abstract class AbstractDrama implements Drama, ItemConfigApplier {
 
 	@Override
 	public Image image(String resource) {

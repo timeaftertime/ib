@@ -6,8 +6,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.common.ex.unchecked.Uncheckeds;
-import cn.milai.ib.drama.Drama;
-import cn.milai.ib.drama.DramaResolver;
 
 /**
  * 使用全类名反射获取剧本的剧本解析器

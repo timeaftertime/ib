@@ -12,8 +12,8 @@ public class ReinitializeException extends IBException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ReinitializeException() {
-		super("重复初始化");
+	public ReinitializeException(Object o) {
+		super("重复初始化:" + o.getClass().getName());
 	}
 
 }

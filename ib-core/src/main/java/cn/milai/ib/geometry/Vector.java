@@ -6,8 +6,8 @@ package cn.milai.ib.geometry;
  * @date 2020.03.11
  */
 public class Vector {
-	private long x;
-	private long y;
+	private double x;
+	private double y;
 
 	/**
 	 * 创建从 p1 指向 p2 的向量
@@ -24,7 +24,7 @@ public class Vector {
 	 * @param v
 	 * @return
 	 */
-	public long product(Vector v) {
+	public double product(Vector v) {
 		return x * v.y - y * v.x;
 	}
 }

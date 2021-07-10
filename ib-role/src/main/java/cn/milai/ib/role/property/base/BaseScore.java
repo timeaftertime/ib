@@ -1,5 +1,6 @@
 package cn.milai.ib.role.property.base;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Score;
 
 /**
@@ -11,6 +12,8 @@ public class BaseScore extends BaseRoleProperty implements Score {
 
 	private int value;
 
+	@Configurable
+	@Override
 	public void setValue(int value) { this.value = value; }
 
 	@Override

@@ -11,7 +11,7 @@ import cn.milai.ib.role.property.Health;
 public abstract class AbstractExplosion extends BaseRole implements Explosion {
 
 	@Override
-	protected Health initHealth() {
+	protected Health createHealth() {
 		return new ExplosionHealth();
 	}
 

@@ -5,21 +5,19 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import cn.milai.ib.config.ProtoConfiguarable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.PassCaculator;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.graphics.Texts;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * 全屏显示多行文字渐入、渐出的组件
  * @author milai
  * @date 2020.02.21
  */
-@ProtoConfiguarable
 public class LinesFullScreenPass extends AbstractTextControl implements LifecycleListener {
 
 	private PassCaculator pass;
@@ -47,7 +45,7 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	}
 
 	@Override
-	public void initObject() {
+	public void initItem() {
 		LifecycleContainer c = (LifecycleContainer) container();
 		pass = new PassCaculator(inFrame, keepFrame, outFrame, p -> {
 			c.removeLifecycleListener(this);
@@ -62,7 +60,7 @@ public class LinesFullScreenPass extends AbstractTextControl implements Lifecycl
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() {

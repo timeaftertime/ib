@@ -1,5 +1,6 @@
 package cn.milai.ib.role.property.base;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Health;
 
@@ -10,9 +11,9 @@ import cn.milai.ib.role.property.Health;
  */
 public class BaseHealth extends BaseRoleProperty implements Health {
 
-	private int life;
+	private int hp;
 
-	private int initLife;
+	private int initHP;
 
 	private Role lastAttacker;
 
@@ -21,46 +22,52 @@ public class BaseHealth extends BaseRoleProperty implements Health {
 		if (owner() == null) {
 			throw new IllegalStateException("尚未设置 initLife");
 		}
-		return initLife;
+		return initHP;
 	}
 
 	@Override
 	protected void initRoleProperty() {
-		initLife = life;
+		initHP = hp;
 	}
 
 	@Override
-	public int getHP() { return life; }
+	public int getHP() { return hp; }
 
+	@Configurable
 	@Override
-	public void setHP(int life) {
+	public void setHP(int hp) {
 		if (owner() != null) {
 			throw new IllegalStateException("只能在初始化前调用");
 		}
-		this.life = life;
+		this.hp = hp;
 	}
 
 	@Override
-	public boolean isAlive() { return life > 0; }
+	public boolean isAlive() { return hp > 0; }
 
 	@Override
-	public synchronized void changeHP(Role from, int life) {
-		if (this.life > 0 && life < 0) {
+	public synchronized void changeHP(Role from, int hp) {
+		if (this.hp > 0 && hp < 0) {
 			lastAttacker = from;
 		}
-		long pre = this.life;
-		if (pre + life > Integer.MAX_VALUE) {
-			this.life = Integer.MAX_VALUE;
-		} else if (pre + life < 0) {
-			this.life = 0;
+		long pre = this.hp;
+		if (pre + hp > Integer.MAX_VALUE) {
+			this.hp = Integer.MAX_VALUE;
+		} else if (pre + hp < 0) {
+			this.hp = 0;
 		} else {
-			this.life = (int) (pre + life);
+			this.hp = (int) (pre + hp);
 		}
 	}
 
 	@Override
 	public Role lastAttacker() {
 		return lastAttacker;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseHealth [" + hp + "]";
 	}
 
 }

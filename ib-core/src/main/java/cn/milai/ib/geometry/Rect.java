@@ -1,5 +1,7 @@
 package cn.milai.ib.geometry;
 
+import java.util.Arrays;
+
 /**
  * 可旋转的矩形
  * @author milai
@@ -12,7 +14,7 @@ public class Rect {
 	private Point[] points;
 
 	/**
-	 * 使用指定的点构造一个矩形
+	 * 使用指定的点构造一个矩形，从左上角开始逆时针顺序
 	 * @param points
 	 * @throws IllegalArgumentException points 的长度不等于 4
 	 */
@@ -36,17 +38,17 @@ public class Rect {
 
 	/**
 	 * 判断当前矩形是否与指定矩形有交点
-	 * @param q
+	 * @param rect
 	 * @return
 	 */
-	public boolean intersects(Rect q) {
+	public boolean intersects(Rect rect) {
 		// 若包含四个顶点中任意一个，则一定有交点
 		for (Point p : points) {
-			if (q.containsPoint(p.getX(), p.getY())) {
+			if (rect.containsPoint(p.getX(), p.getY())) {
 				return true;
 			}
 		}
-		for (Point p : q.points) {
+		for (Point p : rect.points) {
 			if (containsPoint(p.getX(), p.getY())) {
 				return true;
 			}
@@ -56,8 +58,8 @@ public class Rect {
 			Point a = points[i % SIZE];
 			Point b = points[(i + 1) % SIZE];
 			for (int j = 0; j < SIZE; j++) {
-				Point c = q.points[j % SIZE];
-				Point d = q.points[(j + 1) % SIZE];
+				Point c = rect.points[j % SIZE];
+				Point d = rect.points[(j + 1) % SIZE];
 				Vector dc = new Vector(d, c);
 				Vector db = new Vector(d, b);
 				Vector da = new Vector(d, a);
@@ -78,7 +80,7 @@ public class Rect {
 	 * @param y
 	 * @return
 	 */
-	public boolean containsPoint(long x, long y) {
+	public boolean containsPoint(double x, double y) {
 		Point p = new Point(x, y);
 		Vector ap = new Vector(points[0], p);
 		Vector ab = new Vector(points[0], points[1]);
@@ -88,4 +90,10 @@ public class Rect {
 		Vector ad = new Vector(points[0], points[3]);
 		return ad.product(ap) * cb.product(cp) >= 0 && ap.product(ab) * cp.product(cd) >= 0;
 	}
+
+	/**
+	 * 获取 {@link Rect} 的四个顶点
+	 * @return
+	 */
+	public Point[] getPoints() { return Arrays.copyOf(points, points.length); }
 }

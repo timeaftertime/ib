@@ -1,21 +1,21 @@
 package cn.milai.ib.control;
 
-import cn.milai.ib.obj.BaseObject;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BaseItem;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * {@link Control} 的抽象基类
  * @author milai
  * @date 2020.02.20
  */
-public class BaseControl extends BaseObject implements Control {
+public class BaseControl extends BaseItem implements Control {
 
 	public BaseControl() {
-		setPainter(initPainter());
+		setPainter(createPainter());
 	}
 
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter();
 	}
 

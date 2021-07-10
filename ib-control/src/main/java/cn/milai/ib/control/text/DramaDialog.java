@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.core.annotation.Order;
 
-import cn.milai.ib.config.ProtoConfiguarable;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
@@ -16,16 +15,15 @@ import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.WaitNextPageTip;
 import cn.milai.ib.graphics.Images;
 import cn.milai.ib.graphics.Texts;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.Controllable;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.Controllable;
+import cn.milai.ib.item.property.Painter;
 
 /**
  * 显示剧情文字的对话框
  * @author milai
  */
 @Order(-100)
-@ProtoConfiguarable
 public class DramaDialog extends AbstractTextControl implements Controllable {
 
 	private static final String SAMPLE_STR = "字";
@@ -35,7 +33,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	public static final String PARAM_SPEAKER_NAME = "speakerName";
 
 	private BufferedImage baseImage;
-	private static WaitNextPageTip waitNextPage = new WaitNextPageTip();
+	private static WaitNextPageTip waitNextPage;
 
 	private int horMargin = 17;
 	private int verMargin = 7;
@@ -60,8 +58,6 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 			this.speakerImg = image.first();
 		}
 		this.speakerName = (String) params.get(PARAM_SPEAKER_NAME);
-		pageDown();
-		((LifecycleContainer) container()).setPined(true);
 	}
 
 	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
@@ -70,6 +66,16 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 		m.put(PARAM_SPEAKER_IMG, speakerImg);
 		m.put(PARAM_SPEAKER_NAME, speakerName == null ? "" : speakerName);
 		return m;
+	}
+
+	@Override
+	protected void initItem() {
+		waitNextPage = new WaitNextPageTip();
+		waitNextPage.setW(getW() / 18);
+		waitNextPage.setH(getH() / 10);
+		waitNextPage.init(container());
+		pageDown();
+		((LifecycleContainer) container()).setPined(true);
 	}
 
 	/**
@@ -158,7 +164,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	}
 
 	@Override
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter() {
 			@Override
 			public BufferedImage getNowImage() {

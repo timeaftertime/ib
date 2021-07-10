@@ -1,9 +1,9 @@
 package cn.milai.ib.role;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.obj.BaseObject;
-import cn.milai.ib.obj.BasePainter;
-import cn.milai.ib.obj.property.Painter;
+import cn.milai.ib.item.BaseItem;
+import cn.milai.ib.item.BasePainter;
+import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.base.BaseHealth;
 
@@ -11,20 +11,20 @@ import cn.milai.ib.role.property.base.BaseHealth;
  * {@link Role} 默认实现
  * @author milai
  */
-public class BaseRole extends BaseObject implements Role {
+public class BaseRole extends BaseItem implements Role {
 
 	private double direction;
 
 	public BaseRole() {
-		setPainter(initPainter());
-		setHealth(initHealth());
+		setPainter(createPainter());
+		setHealth(createHealth());
 	}
 
-	protected Painter initPainter() {
+	protected Painter createPainter() {
 		return new BasePainter();
 	}
 
-	protected Health initHealth() {
+	protected Health createHealth() {
 		return new BaseHealth();
 	}
 

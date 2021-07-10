@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 import cn.milai.common.base.Collects;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.obj.IBObject;
+import cn.milai.ib.item.Item;
 
 /**
  * {@link Container} 对象监听器
@@ -18,7 +18,7 @@ import cn.milai.ib.obj.IBObject;
  */
 public class ContainerMonitor {
 
-	private Set<IBObject> monitored = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private Set<Item> monitored = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	private Container container;
 	private ObjectListener listener;
 
@@ -27,7 +27,7 @@ public class ContainerMonitor {
 	 * @param container
 	 * @param filter
 	 */
-	public ContainerMonitor(Container container, Predicate<IBObject> filter) {
+	public ContainerMonitor(Container container, Predicate<Item> filter) {
 		this.container = container;
 		listener = ContainerListeners.objectListener((c, o) -> {
 			if (filter.test(o)) {
@@ -35,14 +35,14 @@ public class ContainerMonitor {
 			}
 		}, (c, os) -> monitored.removeAll(os));
 		container.addObjectListener(listener);
-		monitored.addAll(Collects.filterList(container.getAll(IBObject.class), o -> filter.test(o)));
+		monitored.addAll(Collects.filterList(container.getAll(Item.class), o -> filter.test(o)));
 	}
 
 	/**
-	 * 获取当前监听到的所有 {@link IBObject}
+	 * 获取当前监听到的所有 {@link Item}
 	 * @return
 	 */
-	protected List<? extends IBObject> getAll() { return new ArrayList<>(monitored); }
+	protected List<? extends Item> getAll() { return new ArrayList<>(monitored); }
 
 	/**
 	 * 停止监听
