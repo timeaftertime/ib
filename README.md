@@ -1,4 +1,4 @@
-# 敌星弹雨 Infinity Battle
+# Infinity Battle
 ![Java Version](https://img.shields.io/badge/java-8-green)
 ![Spring Boot Version](https://img.shields.io/badge/spring%20boot-2.4.3-green)
 ## 简介
@@ -9,8 +9,8 @@
 * **ib-api**  核心接口
 * **ib-core**  核心实现
 * **ib-container**	  容器实现
-* **ib-character**  游戏角色实现
-* **ib-component**  游戏组件实现
+* **ib-role**  游戏角色实现
+* **ib-control**  游戏组件实现
 * **ib-start**  游戏入口
 
 

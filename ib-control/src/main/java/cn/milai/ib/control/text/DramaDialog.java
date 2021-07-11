@@ -3,8 +3,6 @@ package cn.milai.ib.control.text;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.core.annotation.Order;
 
@@ -46,26 +44,15 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	private int speakerWidth = 70;
 	private int speakerHeight = 70;
 
-	public DramaDialog(int x, int y, Image speaker, String text) {
-		this(asParams(text, speaker, null));
-	}
-
-	public DramaDialog(Map<String, Object> params) {
-		this.text = (String) params.get(PARAM_TEXT);
-		readIndex = 0;
-		Image image = (Image) params.get(PARAM_SPEAKER_IMG);
-		if (image != null) {
-			this.speakerImg = image.first();
+	public DramaDialog(Image speaker, String speakerName, String text) {
+		this.text = text;
+		if (speaker != null) {
+			this.speakerImg = speaker.first();
 		}
-		this.speakerName = (String) params.get(PARAM_SPEAKER_NAME);
-	}
-
-	public static Map<String, Object> asParams(String text, Image speakerImg, String speakerName) {
-		Map<String, Object> m = new HashMap<>();
-		m.put(PARAM_TEXT, text == null ? "" : text);
-		m.put(PARAM_SPEAKER_IMG, speakerImg);
-		m.put(PARAM_SPEAKER_NAME, speakerName == null ? "" : speakerName);
-		return m;
+		this.speakerName = speakerName;
+		readIndex = 0;
+		setW(525);
+		setH(280);
 	}
 
 	@Override
