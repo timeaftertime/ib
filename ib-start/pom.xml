@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cn.milai.ib</groupId>
 		<artifactId>ib-parent</artifactId>
-		<version>1.0.5</version>
+		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>ib-start</artifactId>
 	<description>引擎启动模块</description>
