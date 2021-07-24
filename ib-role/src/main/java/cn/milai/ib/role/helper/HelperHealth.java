@@ -13,6 +13,10 @@ public class HelperHealth extends BaseHealth {
 
 	@Override
 	public synchronized void changeHP(Role character, int life) {
-		return;
+		if (character != owner()) {
+			return;
+		}
+		super.changeHP(null, life);
 	}
+
 }

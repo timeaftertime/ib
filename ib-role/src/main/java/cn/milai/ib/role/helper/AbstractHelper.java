@@ -23,8 +23,9 @@ public abstract class AbstractHelper extends BaseRole implements Helper {
 				if (!(r instanceof PlayerRole)) {
 					return;
 				}
-				container().removeObject(AbstractHelper.this);
+				getHealth().changeHP(AbstractHelper.this, -getHealth().getHP());
 				makeFunction((PlayerRole) r);
+				System.out.println();
 			}
 		});
 	}

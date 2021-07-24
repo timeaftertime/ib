@@ -9,13 +9,15 @@ public interface Player {
 
 	/**
 	 * 设置向上移动的状态
+	 * @return 向上状态是否变化
 	 */
-	void setUp();
+	boolean setUp();
 
 	/**
 	 * 清除向上移动的状态
+	 * @return 向下状态是否变化
 	 */
-	void clearUp();
+	boolean clearUp();
 
 	/**
 	 * 是否设置向上状态
@@ -25,13 +27,15 @@ public interface Player {
 
 	/**
 	 * 设置向下移动的状态
+	 * @return 向下状态是否变化
 	 */
-	void setDown();
+	boolean setDown();
 
 	/**
 	 * 清除向下移动的状态
+	 * @return 向下状态是否变化
 	 */
-	void clearDown();
+	boolean clearDown();
 
 	/**
 	 * 是否设置向下状态
@@ -41,13 +45,15 @@ public interface Player {
 
 	/**
 	 * 设置向左移动的状态
+	 * @return 向左状态是否变化
 	 */
-	void setLeft();
+	boolean setLeft();
 
 	/**
 	 * 清除向左移动的状态
+	 * @return 向左状态是否变化
 	 */
-	void clearLeft();
+	boolean clearLeft();
 
 	/**
 	 * 是否设置向左状态
@@ -57,13 +63,15 @@ public interface Player {
 
 	/**
 	 * 设置向右移动的状态
+	 * @return 向右状态是否变化
 	 */
-	void setRight();
+	boolean setRight();
 
 	/**
 	 * 清除向右移动的状态
+	 * @return 向右状态是否变化
 	 */
-	void clearRight();
+	boolean clearRight();
 
 	/**
 	 * 是否设置向右状态
@@ -73,13 +81,15 @@ public interface Player {
 
 	/**
 	 * 设置 A 命令的状态
+	 * @return A 命令状态是否变化
 	 */
-	void setA();
+	boolean setA();
 
 	/**
 	 * 清除 A 命令的状态
+	 * @return A 命令状态是否变化
 	 */
-	void clearA();
+	boolean clearA();
 
 	/**
 	 * 是否设置 A 状态
