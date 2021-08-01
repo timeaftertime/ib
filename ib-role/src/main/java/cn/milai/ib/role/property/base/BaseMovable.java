@@ -3,6 +3,7 @@ package cn.milai.ib.role.property.base;
 import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.property.holder.AwareMovableHolder;
 
 /**
  * {@link Movable} 默认实现
@@ -15,6 +16,16 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 	private double ratedSpeedY;
 	private double speedX;
 	private double speedY;
+
+	@Override
+	public AwareMovableHolder owner() { return (AwareMovableHolder) super.owner(); }
+
+	@Override
+	protected void initRoleProperty() {
+		if (!(super.owner() instanceof AwareMovableHolder)) {
+			throw new IllegalArgumentException("持有者必须为 " + AwareMovableHolder.class);
+		}
+	}
 
 	@Override
 	public double getRatedSpeedX() { return ratedSpeedX; }
@@ -43,9 +54,7 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 	public void setSpeedY(double speedY) { this.speedY = speedY; }
 
 	@Override
-	public final void beforeMove() {
-		refreshSpeeds();
-	}
+	public final void beforeMove() { refreshSpeeds(); }
 
 	private void refreshSpeeds() {
 		beforeRefreshSpeeds();
@@ -53,7 +62,28 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 		afterRefreshSpeeds();
 	}
 
+	@Override
+	public void onMove() { applyForce(); }
+
+	@Override
+	public void afterMove() { owner().afterMove(this); }
+
+	/**
+	 * 开始计算移动速度前调用
+	 */
+	protected void beforeRefreshSpeeds() { owner().beforeRefreshSpeeds(this); }
+
+	/**
+	 * 完成移动速度计算后调用
+	 */
+	protected void afterRefreshSpeeds() { owner().afterRefreshSpeeds(this); }
+
 	private void doRefreshSpeeds() {
+		applyForce();
+		applyResistance();
+	}
+
+	private void applyForce() {
 		Rigidbody r = owner().getProperty(Rigidbody.class);
 		if (r == null) {
 			return;
@@ -75,7 +105,13 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 		speedY += r.extraACCY();
 		r.addExtraForceX(-r.getExtraForceX());
 		r.addExtraForceY(-r.getExtraForceY());
-		//  阻力加速度
+	}
+
+	private void applyResistance() {
+		Rigidbody r = owner().getProperty(Rigidbody.class);
+		if (r == null) {
+			return;
+		}
 		double deltaX = 0;
 		double deltaY = speedY == 0 ? 0 : r.getResistance() / r.getMass();
 		if (speedX != 0) {
@@ -93,28 +129,11 @@ public class BaseMovable extends BaseRoleProperty implements Movable {
 		} else if (speedY < 0) {
 			speedY = Math.min(0, speedY + deltaY);
 		}
-
 	}
-
-	@Override
-	public void onMove() {
-		doRefreshSpeeds();
-	}
-
-	/**
-	 * 开始计算移动速度前调用
-	 */
-	protected void beforeRefreshSpeeds() {}
-
-	/**
-	 * 完成移动速度计算后调用
-	 */
-	protected void afterRefreshSpeeds() {}
 
 	@Override
 	public String toString() {
-		return "BaseMovable [ratedSpeedX=" + ratedSpeedX + ", ratedSpeedY=" + ratedSpeedY + ", speedX=" + speedX
-			+ ", speedY=" + speedY + "]";
+		return "BaseMovable [rsx=" + ratedSpeedX + ", rsy=" + ratedSpeedY + ", sx=" + speedX + ", sy=" + speedY + "]";
 	}
 
 }

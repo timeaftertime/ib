@@ -54,7 +54,7 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	public void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException {
 		checkClosed();
 		if (plugin.isRunning()) {
-			if (plugin.getContainer() != this) {
+			if (plugin.container() != this) {
 				throw new IllegalStateException("不能移除不属于当前容器的插件");
 			}
 			plugin.stop();

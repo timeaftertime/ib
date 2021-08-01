@@ -28,7 +28,7 @@ public class BaseAliveCheckPlugin extends TypeMonitorPlugin<Role> implements Ali
 			long start = System.currentTimeMillis();
 			for (Role role : getAll()) {
 				if (!role.getHealth().isAlive()) {
-					getContainer().removeObject(role);
+					container().removeObject(role);
 				}
 			}
 			metric(KEY_DELAY, System.currentTimeMillis() - start);

@@ -19,7 +19,6 @@ import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.Rigidbody;
 import cn.milai.ib.role.property.Rotatable;
 
 /**
@@ -39,8 +38,8 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 
 	@Override
 	protected void afterAddListeners() {
-		colliders = RolePropertyMonitor.monitorRoles(getContainer(), Collider.class);
-		movables = RolePropertyMonitor.monitorRoles(getContainer(), Movable.class);
+		colliders = RolePropertyMonitor.monitorRoles(container(), Collider.class);
+		movables = RolePropertyMonitor.monitorRoles(container(), Movable.class);
 		collided = new HashMap<>();
 	}
 
@@ -80,8 +79,8 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 
 	private List<Region> initRegions() {
 		regions = new ArrayList<>();
-		double regionW = 1.0 * getContainer().getW() / REGION_ROW;
-		double regionH = 1.0 * getContainer().getH() / REGION_COL;
+		double regionW = 1.0 * container().getW() / REGION_ROW;
+		double regionH = 1.0 * container().getH() / REGION_COL;
 		for (int i = 0; i < REGION_ROW; i++) {
 			for (int j = 0; j < REGION_COL; j++) {
 				regions.add(new Region(i * regionW, j * regionH, regionW, regionH));
@@ -94,13 +93,15 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	}
 
 	private void initCollided() {
+		Map<RolePair, Boolean> pre = collided;
 		collided = new HashMap<>();
 		for (Role r1 : colliders.getAll()) {
 			for (Role r2 : colliders.getAll()) {
 				if (r1 == r2) {
 					continue;
 				}
-				collided.put(new RolePair(r1, r2), isCollided(r1, r2));
+				RolePair key = new RolePair(r1, r2);
+				collided.put(key, pre.getOrDefault(key, false));
 			}
 		}
 	}
@@ -123,19 +124,10 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	 */
 	private boolean doMove(Mover now, double nextFuelRatio) {
 		Movable m = now.getMovable();
-		Role r = m.owner();
-		if (r.hasProperty(Rigidbody.class)) {
-			r.setX(r.getX() + m.getSpeedX());
-			r.setY(r.getY() + m.getSpeedY());
-			now.move();
-			m.onMove();
-			checkCollision(r);
-			return true;
-		}
 		while (now.getFuelRatio() >= nextFuelRatio && now.getFuelRatio() != 0) {
 			now.move();
 			m.onMove();
-			checkCollision(r);
+			checkCollision(m.owner());
 		}
 		return now.getFuelRatio() == 0;
 	}
@@ -175,7 +167,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 				c1.onTouching(c2);
 				c2.onTouching(c1);
 			}
-		} else {
+		} else if (collided.getOrDefault(key, false)) {
 			c1.onLeave(c2);
 			c2.onLeave(c1);
 		}

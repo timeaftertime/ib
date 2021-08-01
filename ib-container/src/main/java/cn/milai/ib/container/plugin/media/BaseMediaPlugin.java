@@ -26,7 +26,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 
 	@Override
 	public final void playAudio(Audio audio) throws ContainerClosedException {
-		getContainer().checkClosed();
+		container().checkClosed();
 		if (audio == null) {
 			return;
 		}
@@ -35,14 +35,14 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 
 	@Override
 	public final void stopAudio(String code) throws ContainerClosedException {
-		getContainer().checkClosed();
+		container().checkClosed();
 		audios.remove(code);
 	}
 
 	public void run(int startEpoch) {
 		List<String> fetched = new ArrayList<>();
 		ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		while (startEpoch == getContainer().getEpoch() && isRunning()) {
+		while (startEpoch == container().getEpoch() && isRunning()) {
 			for (String code : new HashSet<>(audios.keySet())) {
 				Audio audio = audios.get(code);
 				if (audio == null) {
@@ -60,7 +60,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 					});
 				}
 			}
-			PluginableContainer container = getContainer();
+			PluginableContainer container = container();
 			if (container == null) {
 				break;
 			}
@@ -71,7 +71,7 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 
 	@Override
 	protected void onStart() {
-		new Thread(() -> run(getContainer().getEpoch()), THREAD_NAME).start();
+		new Thread(() -> run(container().getEpoch()), THREAD_NAME).start();
 	}
 
 	@Override

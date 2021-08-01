@@ -20,8 +20,6 @@ public interface MovableHolder extends Role {
 	 * 设置关联的 {@link Movable}
 	 * @param m
 	 */
-	default void setMovable(Movable m) {
-		putProperty(Movable.class, m);
-	}
+	default void setMovable(Movable m) { putProperty(Movable.class, m); }
 
 }

@@ -25,7 +25,7 @@ public class BaseExplosiblePlugin extends ListenersPlugin implements ExplosibleP
 					continue;
 				}
 				for (Explosion explosion : role.getProperty(Explosible.class).createExplosions()) {
-					getContainer().addObject(explosion);
+					container().addObject(explosion);
 				}
 			}
 		}));

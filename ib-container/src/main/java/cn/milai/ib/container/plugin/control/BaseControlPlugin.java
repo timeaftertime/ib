@@ -45,7 +45,7 @@ public class BaseControlPlugin extends AbstractControlPlugin implements ControlP
 
 	@Override
 	public void addCmd(Cmd cmd) {
-		if (getContainer().isPaused()) {
+		if (container().isPaused()) {
 			if (cmd.getType() == Cmd.PAUSE) {
 				cmdQueue.clear();
 				cmdQueue.add(cmd);

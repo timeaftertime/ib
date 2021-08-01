@@ -31,7 +31,7 @@ public interface MetrizablePlugin extends ContainerPlugin {
 	 * @param v
 	 */
 	default void metric(String k, Object v) {
-		getContainer().fire(MetricsPlugin.class, p -> p.metric(this, k, v));
+		container().fire(MetricsPlugin.class, p -> p.metric(this, k, v));
 	}
 
 }

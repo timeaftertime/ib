@@ -49,13 +49,13 @@ public interface UIPlugin extends MetrizablePlugin {
 	 * 获取当前容器实际宽度
 	 * @return
 	 */
-	default int getW() { return getContainer().getW(); }
+	default int getW() { return container().getW(); }
 
 	/**
 	 * 获取当前容器实际高度
 	 * @return
 	 */
-	default int getH() { return getContainer().getH(); }
+	default int getH() { return container().getH(); }
 
 	/**
 	 * 获取当前容器的显示宽度
@@ -81,7 +81,7 @@ public interface UIPlugin extends MetrizablePlugin {
 	 * @param height
 	 */
 	default void resizeUI(int width, int height) {
-		getContainer().newSize(width, height);
+		container().newSize(width, height);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public interface UIPlugin extends MetrizablePlugin {
 	 * @param height
 	 */
 	default void resizeWithUI(int width, int height) {
-		getContainer().newSize(width, height);
+		container().newSize(width, height);
 		resizeUI(width, height);
 	}
 

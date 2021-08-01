@@ -62,5 +62,5 @@ public class MouseEventDispatcher extends MouseAdapter implements CmdDispatcher 
 	}
 
 	@Override
-	public PluginableContainer getTargetContainer() { return ui.getContainer(); }
+	public PluginableContainer getTargetContainer() { return ui.container(); }
 }

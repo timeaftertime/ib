@@ -13,7 +13,7 @@ public interface ContainerPlugin {
 	 * 获取插件最后作用于的容器
 	 * @return
 	 */
-	PluginableContainer getContainer();
+	PluginableContainer container();
 
 	/**
 	 * 重置插件

@@ -20,7 +20,7 @@ public class ListenersPlugin extends BaseContainerPlugin {
 	protected final void onStart() {
 		listeners = newListeners();
 		for (ContainerListener listener : listeners) {
-			ContainerListeners.add(getContainer(), listener);
+			ContainerListeners.add(container(), listener);
 		}
 		afterAddListeners();
 	}
@@ -33,7 +33,7 @@ public class ListenersPlugin extends BaseContainerPlugin {
 	@Override
 	protected final void onStop() {
 		for (ContainerListener listener : listeners) {
-			ContainerListeners.remove(getContainer(), listener);
+			ContainerListeners.remove(container(), listener);
 		}
 		afterRemoveListeners();
 	}

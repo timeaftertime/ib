@@ -41,8 +41,8 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	@Override
 	protected final void onStart() {
 		setCamera(new BaseCamera());
-		lastFrame = getContainer().getFrame() - 1;
-		getContainer().addLifecycleListener(containerListener = ContainerListeners.refreshListener(c -> refreshUI()));
+		lastFrame = container().getFrame() - 1;
+		container().addLifecycleListener(containerListener = ContainerListeners.refreshListener(c -> refreshUI()));
 		startUIPlugin();
 	}
 
@@ -53,7 +53,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 
 	@Override
 	protected final void onStop() {
-		getContainer().removeLifecycleListener(containerListener);
+		container().removeLifecycleListener(containerListener);
 		stopUIPlugin();
 	}
 
@@ -80,7 +80,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 		}
 		synchronized (this) {
 			if (shouldRefresh()) {
-				PluginableContainer container = getContainer();
+				PluginableContainer container = container();
 				lastFrame = container.getFrame();
 				PrinterPlugin printer = container.getPlugin(PrinterPlugin.class);
 				if (printer == null) {
@@ -99,7 +99,7 @@ public abstract class AbstractUIPlugin extends BaseContainerPlugin implements UI
 	protected abstract void refreshUIPlugin();
 
 	private boolean shouldRefresh() {
-		return lastFrame < getContainer().getFrame();
+		return lastFrame < container().getFrame();
 	}
 
 }

@@ -106,7 +106,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 
 	private void initTitle() {
 		setTitle(DEF_TITLE);
-		PluginableContainer container = getContainer();
+		PluginableContainer container = container();
 		titleButtons = new Button[] {
 			new MinimizeButton(() -> form.setExtendedState(JFrame.ICONIFIED)),
 			new CloseButton(container::close),
@@ -125,7 +125,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 
 	@Override
 	public void refreshUIPlugin() {
-		if (getContainer().isClosed() || !isRunning()) {
+		if (container().isClosed() || !isRunning()) {
 			return;
 		}
 		form.repaint();
@@ -142,7 +142,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		form = new UndecoratedForm() {
 			@Override
 			public final void paint(Graphics g) {
-				PluginableContainer c = getContainer();
+				PluginableContainer c = container();
 				double w = TITLE_W * c.getW() / getUIW();
 				double h = TITLE_H * c.getH() / getUIH();
 				double lastX = c.getW() - 1 - w * titleButtons.length;
@@ -192,7 +192,7 @@ public class BaseFormUIPlugin extends AbstractUIPlugin implements FormUIPlugin {
 		form.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				getContainer().close();
+				container().close();
 			}
 		});
 		setKeyDispatcher(keyEventDispatcher);

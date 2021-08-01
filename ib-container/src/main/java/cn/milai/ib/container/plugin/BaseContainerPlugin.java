@@ -14,7 +14,7 @@ public class BaseContainerPlugin implements ContainerPlugin {
 	private PluginableContainer container;
 	private AtomicBoolean started = new AtomicBoolean();
 
-	public final PluginableContainer getContainer() { return container; }
+	public final PluginableContainer container() { return container; }
 
 	@Override
 	public final boolean start(PluginableContainer container) {
@@ -60,7 +60,7 @@ public class BaseContainerPlugin implements ContainerPlugin {
 	 * 重置插件时调用
 	 */
 	protected void doReset() {
-		PluginableContainer c = getContainer();
+		PluginableContainer c = container();
 		if (stop()) {
 			start(c);
 		}

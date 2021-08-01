@@ -29,7 +29,7 @@ public class BasePrinterPlugin extends PropertyMonitorPlugin<Painter> implements
 	public BufferedImage print() {
 		long start = System.currentTimeMillis();
 
-		PluginableContainer container = getContainer();
+		PluginableContainer container = container();
 		// 尚未 start
 		int w = container == null ? 0 : container.getW();
 		int h = container == null ? 0 : container.getH();

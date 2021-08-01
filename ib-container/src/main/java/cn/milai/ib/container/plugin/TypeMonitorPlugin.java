@@ -21,7 +21,7 @@ public class TypeMonitorPlugin<T extends Item> extends ListenersPlugin {
 
 	@Override
 	protected void afterAddListeners() {
-		monitor = TypeMonitor.monitor(getContainer(), clazz);
+		monitor = TypeMonitor.monitor(container(), clazz);
 	}
 
 	protected List<T> getAll() { return monitor.getAll(); }

@@ -1,7 +1,9 @@
 package cn.milai.ib.container.plugin.physics;
 
 import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.Rigidbody;
 
 /**
  * {@link Movable} 的搬运者
@@ -54,23 +56,37 @@ public class Mover implements Comparable<Mover> {
 
 	public Mover(Movable m) {
 		this.m = m;
-		recountFrom(1);
+		resetFuelRatio(1);
 	}
 
 	/**
-	 * 移动一段最小距离
+	 * 移动一次
 	 */
 	public void move() {
-		if (lastSpeedX != speedX() || lastSpeedY != speedY()) {
-			recountFrom(fuelRatio);
-		}
-		Role r = m.owner();
-		double deltaX;
-		double deltaY;
 		if (speedX() == 0 && speedY() == 0) {
 			fuelRatio = 0;
 			return;
 		}
+		Role r = m.owner();
+		if (r.hasProperty(Rigidbody.class) && r.hasProperty(Collider.class)) {
+			minMove();
+			return;
+		}
+		r.setX(r.getX() + m.getSpeedX());
+		r.setY(r.getY() + m.getSpeedY());
+		fuelRatio = 0;
+	}
+
+	/**
+	 * 移动一个最小距离
+	 */
+	private void minMove() {
+		if (lastSpeedX != speedX() || lastSpeedY != speedY()) {
+			resetFuelRatio(fuelRatio);
+		}
+		Role r = m.owner();
+		double deltaX;
+		double deltaY;
 		if (Math.abs(speedX()) > Math.abs(speedY())) {
 			deltaX = Math.min(shouldMoveX - movedX, STEP);
 			double newMovedX = movedX + deltaX;
@@ -88,16 +104,12 @@ public class Mover implements Comparable<Mover> {
 		movedY += deltaY;
 	}
 
-	private double speedX() {
-		return m.getSpeedX();
-	}
+	private double speedX() { return m.getSpeedX(); }
 
-	private double speedY() {
-		return m.getSpeedY();
-	}
+	private double speedY() { return m.getSpeedY(); }
 
-	private void recountFrom(double newFuelRatio) {
-		fuelRatio = newFuelRatio;
+	private void resetFuelRatio(double ratio) {
+		fuelRatio = ratio;
 		lastSpeedX = speedX();
 		lastSpeedY = speedY();
 		movedX = 0;

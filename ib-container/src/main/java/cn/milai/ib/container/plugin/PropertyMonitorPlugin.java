@@ -25,7 +25,7 @@ public class PropertyMonitorPlugin<T extends Property> extends ListenersPlugin {
 
 	@Override
 	protected final void afterAddListeners() {
-		monitor = PropertyMonitor.monitor(getContainer(), clazz);
+		monitor = PropertyMonitor.monitor(container(), clazz);
 	}
 
 	/**
