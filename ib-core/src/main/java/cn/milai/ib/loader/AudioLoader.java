@@ -1,5 +1,8 @@
 package cn.milai.ib.loader;
 
+import java.io.InputStream;
+import java.util.List;
+
 import cn.milai.ib.IBCore;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.AudioCreator;
@@ -11,7 +14,8 @@ import cn.milai.ib.container.plugin.media.AudioCreator;
  */
 public class AudioLoader {
 
-	private AudioLoader() {}
+	private AudioLoader() {
+	}
 
 	/**
 	 * 加载指定剧本的指定 code 的音频
@@ -24,5 +28,32 @@ public class AudioLoader {
 		return getAudioCreator().newAudio(audioCode, DramaResLoader.load(dramaCode, resource));
 	}
 
-	private static AudioCreator getAudioCreator() { return IBCore.getBean(AudioCreator.class); }
+	private static AudioCreator getAudioCreator() {
+		List<AudioCreator> creators = IBCore.getBeans(AudioCreator.class);
+		if (creators.isEmpty()) {
+			return new AudioCreator() {
+				@Override
+				public Audio newAudio(String code, InputStream in) {
+					return new Audio() {
+						@Override
+						public boolean play() {
+							throw new UnsupportedOperationException();
+						}
+
+						@Override
+						public boolean isComplete() {
+							throw new UnsupportedOperationException();
+						}
+
+						@Override
+						public String getCode() {
+							throw new UnsupportedOperationException();
+						}
+					};
+				}
+			};
+		}
+		return creators.get(0);
+	}
+
 }

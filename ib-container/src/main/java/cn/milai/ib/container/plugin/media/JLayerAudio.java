@@ -6,17 +6,17 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 /**
- * 音频默认实现
+ * 基于 JLayer 的 {@link Audio} 实现
  * 2020.01.25
  * @author milai
  */
-public class BaseAudio implements Audio {
+public class JLayerAudio implements Audio {
 
 	private final String code;
 	private static final int FRAME_PER_PLAY = 8;
 	private Player player;
 
-	public BaseAudio(String code, InputStream in) throws JavaLayerException {
+	public JLayerAudio(String code, InputStream in) throws JavaLayerException {
 		this.code = code;
 		player = createPlayer(in);
 	}

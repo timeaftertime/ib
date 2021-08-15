@@ -26,7 +26,12 @@ public interface UIContainer extends PluginableContainer {
 	 * @param height
 	 */
 	default void resizeWithUI(int width, int height) {
-		fire(UIPlugin.class, ui -> ui.resizeWithUI(width, height));
+		UIPlugin ui = getPlugin(UIPlugin.class);
+		if (ui == null) {
+			newSize(width, height);
+			return;
+		}
+		ui.resizeWithUI(width, height);
 	}
 
 	/**

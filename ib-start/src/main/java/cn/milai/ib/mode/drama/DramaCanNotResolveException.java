@@ -1,4 +1,4 @@
-package cn.milai.ib.mode;
+package cn.milai.ib.mode.drama;
 
 import cn.milai.ib.ex.IBException;
 

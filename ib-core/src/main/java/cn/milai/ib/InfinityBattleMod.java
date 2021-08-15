@@ -9,8 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Infinity Battle 的模块
- * 当前类中定义的、使用该注解的类所在包及其子包的 Spring 组件将被扫描
+ * Infinity Battle 的模块。
+ * 标注该注解的类在 {@link InfinityBattleApplication} 类所在目录下时，
+ * 类中定义的 bean、类所在包及其子包的 Spring 组件将被扫描。
  * @author milai
  * @date 2021.01.17
  */

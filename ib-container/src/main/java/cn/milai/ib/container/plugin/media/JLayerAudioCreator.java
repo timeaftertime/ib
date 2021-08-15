@@ -5,16 +5,16 @@ import java.io.InputStream;
 import javazoom.jl.decoder.JavaLayerException;
 
 /**
- * AudioCreator 默认实现
+ * 基于 Jlayer 的 {@link AudioCreator} 实现
  * 2020.01.25
  * @author milai
  */
-public class BaseAudioCreator implements AudioCreator {
+public class JLayerAudioCreator implements AudioCreator {
 
 	@Override
 	public Audio newAudio(String code, InputStream in) {
 		try {
-			return new BaseAudio(code, in);
+			return new JLayerAudio(code, in);
 		} catch (JavaLayerException e) {
 			e.printStackTrace();
 			return null;

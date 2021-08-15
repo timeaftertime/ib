@@ -102,11 +102,12 @@ public class ContainerListeners {
 					onAdded.callback(c, (Role) o);
 				}
 			},
-			onRemoved == null ? null : (c, os) -> {
-				onRemoved.callback(
-					c, os.stream().filter(o -> (o instanceof Role)).map(o -> (Role) o).collect(Collectors.toList())
-				);
-			}
+			onRemoved == null ? null
+				: (c, os) -> {
+					onRemoved.callback(
+						c, os.stream().filter(o -> (o instanceof Role)).map(o -> (Role) o).collect(Collectors.toList())
+					);
+				}
 		);
 	}
 

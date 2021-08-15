@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
@@ -24,7 +25,8 @@ import cn.milai.ib.graphics.Images;
  */
 public class ImageLoader {
 
-	private ImageLoader() {}
+	private ImageLoader() {
+	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(ImageLoader.class);
 
@@ -70,7 +72,12 @@ public class ImageLoader {
 	}
 
 	private static Image buildImage(BufferedImage... images) {
-		return IBCore.getBean(Image.class, (Object) images);
+		try {
+			return IBCore.getBean(Image.class, (Object) images);
+		} catch (NoSuchBeanDefinitionException e) {
+			LOG.debug("没有 {} 的实现类", Image.class.getName());
+			return null;
+		}
 	}
 
 }

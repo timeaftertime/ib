@@ -15,6 +15,7 @@ import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.text.LinesFullScreenPass;
 import cn.milai.ib.loader.DramaResLoader;
 import cn.milai.ib.mode.drama.Drama;
+import cn.milai.ib.mode.drama.DramaCanNotResolveException;
 import cn.milai.ib.mode.drama.DramaResolver;
 
 /**
@@ -44,7 +45,9 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	private List<DramaResolver> dramaResolvers;
 
 	@Override
-	public String name() { return "剧情模式"; }
+	public String name() {
+		return "剧情模式";
+	}
 
 	@Override
 	public void init() {

@@ -2,7 +2,6 @@ package cn.milai.ib.container;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +11,6 @@ import cn.milai.ib.container.conf.MetricsPluginConf;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 import cn.milai.ib.container.plugin.control.BaseControlPlugin;
 import cn.milai.ib.container.plugin.control.ControlPlugin;
-import cn.milai.ib.container.plugin.media.BaseMediaPlugin;
-import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.metrics.BaseMetricsPlugin;
 import cn.milai.ib.container.plugin.metrics.MetricsPlugin;
 import cn.milai.ib.container.plugin.physics.BasePhysicsPlugin;
@@ -24,11 +21,6 @@ import cn.milai.ib.container.plugin.role.AliveCheckPlugin;
 import cn.milai.ib.container.plugin.role.BaseAliveCheckPlugin;
 import cn.milai.ib.container.plugin.role.BaseExplosiblePlugin;
 import cn.milai.ib.container.plugin.role.ExplosiblePlugin;
-import cn.milai.ib.container.plugin.ui.UIPlugin;
-import cn.milai.ib.container.plugin.ui.form.BaseFormUIPlugin;
-import cn.milai.ib.container.plugin.ui.form.FormUIPlugin;
-import cn.milai.ib.container.plugin.ui.form.KeyMapping;
-import cn.milai.ib.container.plugin.ui.form.MouseMapping;
 
 /**
  * {@link ContainerPlugin} 默认配置
@@ -69,29 +61,9 @@ public class ContainerAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(MediaPlugin.class)
-	public MediaPlugin baseMediaPlugin() {
-		return new BaseMediaPlugin();
-	}
-
-	@Bean
 	@ConditionalOnMissingBean(PrinterPlugin.class)
 	public PrinterPlugin basePrinterPlugin() {
 		return new BasePrinterPlugin();
-	}
-
-	@Bean
-	@ConditionalOnMissingBean(UIPlugin.class)
-	@Autowired(required = false)
-	public FormUIPlugin baseUIPlugin(KeyMapping keyMapping, MouseMapping mouseMapping) {
-		BaseFormUIPlugin formUIPlugin = new BaseFormUIPlugin();
-		if (keyMapping != null) {
-			formUIPlugin.setKeyMapping(keyMapping);
-		}
-		if (mouseMapping != null) {
-			formUIPlugin.setMouseMapping(mouseMapping);
-		}
-		return formUIPlugin;
 	}
 
 	@Bean
