@@ -2,7 +2,7 @@ package cn.milai.ib.container.listener;
 
 import java.util.List;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Mapping;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.item.Item;
 import cn.milai.ib.item.property.Property;
@@ -34,7 +34,7 @@ public class PropertyMonitor<T extends Property> extends ContainerMonitor {
 	 * 获取监听到的所有属性
 	 * @return
 	 */
-	public List<T> getProps() { return Collects.mapList(getAll(), r -> r.getProperty(clazz)); };
+	public List<T> getProps() { return Mapping.list(getAll(), r -> r.getProperty(clazz)); };
 
 	@Override
 	public List<? extends Item> getAll() { return super.getAll(); }

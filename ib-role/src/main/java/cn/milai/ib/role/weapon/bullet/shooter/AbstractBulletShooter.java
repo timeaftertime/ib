@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 
@@ -64,7 +64,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 		if (lastShootFrame + getShootInterval() >= owner.container().getFrame()) {
 			return false;
 		}
-		Collects.remainMet(bullets, bullet -> bullet.getHealth().isAlive());
+		Filter.remain(bullets, bullet -> bullet.getHealth().isAlive());
 		if (bullets.size() >= getMaxBulletNum()) {
 			return false;
 		}

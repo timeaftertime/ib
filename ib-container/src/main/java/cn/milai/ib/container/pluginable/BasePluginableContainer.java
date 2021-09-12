@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
 import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.BaseLifecycleContainer;
@@ -101,7 +101,7 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ContainerPlugin> List<T> getPlugins(Class<T> pluginClass) {
-		return (List<T>) Collects.filterList(new ArrayList<>(plugins), p -> pluginClass.isInstance(p));
+		return (List<T>) Filter.list(new ArrayList<>(plugins), p -> pluginClass.isInstance(p));
 	}
 
 }

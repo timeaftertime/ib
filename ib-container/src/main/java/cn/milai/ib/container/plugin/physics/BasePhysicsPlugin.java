@@ -10,7 +10,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
+import cn.milai.beginning.collection.Mapping;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.RolePropertyMonitor;
@@ -59,7 +60,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 		initRegions();
 		initCollided();
 		Queue<Mover> movers = new PriorityBlockingQueue<Mover>(
-			Collects.mapList(movables.getProps(), Mover::new)
+			Mapping.list(movables.getProps(), Mover::new)
 		);
 		Set<Mover> started = new HashSet<>();
 		while (!movers.isEmpty()) {
@@ -140,7 +141,7 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 
 	private void checkCollision(Role r1) {
 		refreshRegionOf(r1);
-		for (Role r2 : Collects.unfilterList(sameRegion(r1), r -> Camp.sameCamp(r1.getCamp(), r.getCamp()))) {
+		for (Role r2 : Filter.nlist(sameRegion(r1), r -> Camp.sameCamp(r1.getCamp(), r.getCamp()))) {
 			if (r1 == r2) {
 				continue;
 			}

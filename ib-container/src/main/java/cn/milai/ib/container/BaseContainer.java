@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.item.Item;
@@ -67,7 +67,7 @@ public class BaseContainer implements Container {
 	public void reset() {
 		notifyObjectCleared();
 		objs.clear();
-		objectListeners = Collects.unfilterList(objectListeners, ContainerListener::inEpoch);
+		objectListeners = Filter.nlist(objectListeners, ContainerListener::inEpoch);
 	}
 
 	@Override

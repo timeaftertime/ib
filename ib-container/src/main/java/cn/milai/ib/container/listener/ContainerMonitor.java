@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.item.Item;
 
@@ -35,7 +35,7 @@ public class ContainerMonitor {
 			}
 		}, (c, os) -> monitored.removeAll(os));
 		container.addObjectListener(listener);
-		monitored.addAll(Collects.filterList(container.getAll(Item.class), o -> filter.test(o)));
+		monitored.addAll(Filter.list(container.getAll(Item.class), o -> filter.test(o)));
 	}
 
 	/**

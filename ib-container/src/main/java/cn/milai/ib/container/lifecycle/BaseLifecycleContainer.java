@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cn.milai.common.base.Collects;
+import cn.milai.beginning.collection.Filter;
 import cn.milai.ib.container.BaseCloseableContainer;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.listener.ContainerListener;
@@ -50,7 +50,7 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 		super.reset();
 		epoch++;
 		notifyEpochChanged();
-		lifecycleListeners = Collects.removeMet(lifecycleListeners, ContainerListener::inEpoch);
+		lifecycleListeners = Filter.remove(lifecycleListeners, ContainerListener::inEpoch);
 		pined = false;
 		// 确保重置后处于非暂停状态
 		refresher.cancelPause();
