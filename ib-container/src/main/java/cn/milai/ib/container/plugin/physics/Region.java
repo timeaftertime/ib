@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import cn.milai.ib.geometry.BaseBounds;
 import cn.milai.ib.geometry.Rect;
@@ -28,7 +29,7 @@ public class Region {
 	 * @param h
 	 */
 	public Region(double x, double y, double w, double h) {
-		rect = new Rect(new BaseBounds(x, y, w, h).toPoints());
+		rect = new Rect(new BaseBounds(x, y, w, h));
 	}
 
 	/**
@@ -66,6 +67,11 @@ public class Region {
 	 */
 	public boolean has(Role role) {
 		return roles.contains(role);
+	}
+	
+	@Override
+	public String toString() {
+		return rect + "=>" + String.join(",", roles.stream().map(r -> r.getClass().getSimpleName()).collect(Collectors.toList()));
 	}
 
 }

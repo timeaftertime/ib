@@ -20,6 +20,7 @@ import javax.imageio.ImageReader;
 import cn.milai.common.ex.unchecked.RethrownException;
 import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.common.io.InputStreams;
+import cn.milai.ib.geometry.Opacity;
 
 /**
  * 图片工具类
@@ -28,7 +29,8 @@ import cn.milai.common.io.InputStreams;
  */
 public class Images {
 
-	private Images() {}
+	private Images() {
+	}
 
 	/**
 	 * 加载 url 指定的图片
@@ -144,12 +146,16 @@ public class Images {
 	/**
 	 * 创建一个 img 上的指定透明度的画板
 	 * @param img
-	 * @param transaparency
+	 * @param opacity 取值范围是 [0.0, 1.0]，1.0 表示完全不透明
+	 * @see Opacity
 	 * @return
 	 */
-	public static Graphics createGraphics(BufferedImage img, double transaparency) {
+	public static Graphics createGraphics(BufferedImage img, double opacity) {
+		if (!Opacity.isValid(opacity)) {
+			throw new IllegalArgumentException(String.format("opacity 必须在 %f 到 %f 之间", Opacity.D_MIN, Opacity.D_MAX));
+		}
 		Graphics2D g2d = img.createGraphics();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) transaparency));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
 		return g2d;
 	}
 
@@ -205,10 +211,14 @@ public class Images {
 	/**
 	 * 修改 ARGB 图片透明度，并返回修改后的原图片
 	 * @param img 需要修改透明度的图片
-	 * @param transparency 需要的透明度(0完全透明~255不透明)
+	 * @param opacity 不透明度
+	 * @see Opacity
 	 * @return
 	 */
-	public static BufferedImage transparent(BufferedImage img, int transparency) {
+	public static BufferedImage transparent(BufferedImage img, int opacity) {
+		if (!Opacity.isValid(opacity)) {
+			throw new IllegalArgumentException(String.format("opacity 必须在 %d 到 %d 之间", Opacity.MIN, Opacity.MAX));
+		}
 		for (int i = 0; i < img.getWidth(); i++) {
 			for (int j = 0; j < img.getHeight(); j++) {
 				// 0x00FFFFFF == AARRGGBB
@@ -216,7 +226,7 @@ public class Images {
 				if ((argb & 0xFF000000) == 0) {
 					continue;
 				}
-				img.setRGB(i, j, (argb & 0x00FFFFFF) | transparency << 24);
+				img.setRGB(i, j, (argb & 0x00FFFFFF) | opacity << 24);
 			}
 		}
 		return img;

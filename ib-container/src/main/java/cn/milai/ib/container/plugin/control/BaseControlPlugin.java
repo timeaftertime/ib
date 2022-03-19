@@ -1,11 +1,10 @@
 package cn.milai.ib.container.plugin.control;
 
-import java.util.Arrays;
 import java.util.List;
 
-import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.ContainerListeners;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.item.Controllable;
 
 /**
@@ -13,7 +12,7 @@ import cn.milai.ib.item.Controllable;
  * @author milai
  * @date 2020.12.12
  */
-public class BaseControlPlugin extends AbstractControlPlugin implements ControlPlugin {
+public class BaseControlPlugin extends AbstractControlPlugin {
 
 	/**
 	 * 默认每帧最多执行多少条指令
@@ -32,15 +31,13 @@ public class BaseControlPlugin extends AbstractControlPlugin implements ControlP
 	public void setPerFrameCmd(int num) { this.perFrameCmd = num; }
 
 	@Override
-	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(ContainerListeners.refreshListener(c -> {
-			long start = System.currentTimeMillis();
-			List<Controllable> controllables = sortedControllables();
-			for (int i = 0; i < perFrameCmd; i++) {
-				cmdQueue.runNext(controllables);
-			}
-			metric(KEY_DELAY, System.currentTimeMillis() - start);
-		}));
+	public void onRefresh(LifecycleContainer container) {
+		long start = System.currentTimeMillis();
+		List<Controllable> controllables = sortedControllables((PluginableContainer) container);
+		for (int i = 0; i < perFrameCmd; i++) {
+			cmdQueue.runNext(controllables);
+		}
+		metric(KEY_DELAY, System.currentTimeMillis() - start);
 	}
 
 	@Override
@@ -49,7 +46,7 @@ public class BaseControlPlugin extends AbstractControlPlugin implements ControlP
 			if (cmd.getType() == Cmd.PAUSE) {
 				cmdQueue.clear();
 				cmdQueue.add(cmd);
-				cmdQueue.runNext(sortedControllables());
+				cmdQueue.runNext(sortedControllables(container()));
 			}
 			return;
 		}

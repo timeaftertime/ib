@@ -1,5 +1,9 @@
 package cn.milai.ib.container.plugin;
 
+import java.util.Collection;
+
+import cn.milai.ib.container.listener.ItemListener;
+import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 
 /**
@@ -7,35 +11,37 @@ import cn.milai.ib.container.pluginable.PluginableContainer;
  * @author milai
  * @date 2021.02.08
  */
-public interface ContainerPlugin {
+public interface ContainerPlugin extends LifecycleListener, ItemListener {
 
 	/**
-	 * 获取插件最后作用于的容器
+	 * 初始化当前 {@link ContainerPlugin}。多次调用将忽略
+	 */
+	void init();
+
+	/**
+	 * 关联到指定 {@link PluginableContainer}。
+	 * @param c
+	 * @param 是否关联成功
+	 * @throws PluginDestroyedExpcetion 若插件已经销毁
+	 */
+	boolean plug(PluginableContainer c) throws PluginDestroyedExpcetion;
+
+	/**
+	 * 取消与指定 {@link PluginableContainer} 的关联。
+	 * @param 是否取消关联成功
+	 * @throws PluginDestroyedExpcetion 若插件已经销毁
+	 */
+	boolean unplug(PluginableContainer c) throws PluginDestroyedExpcetion;
+
+	/**
+	 * 获取当前已经关联的所有 {@link PluginableContainer}
 	 * @return
 	 */
-	PluginableContainer container();
+	Collection<PluginableContainer> containers();
 
 	/**
-	 * 重置插件
+	 * 取消与所有 {@link PluginableContainer} 的关联并销毁当前 {@link ContainerPlugin}。重复调用将忽略
 	 */
-	default void reset() {}
-
-	/**
-	 * 开始关联到指定 {@link PluginableContainer} 工作
-	 * @return 是否真正进行了 start 动作
-	 */
-	boolean start(PluginableContainer container);
-
-	/**
-	 * 停止插件工作
-	 * @return 是否真正进行 stop 操作
-	 */
-	boolean stop();
-
-	/**
-	 * 插件是否正在工作
-	 * @return
-	 */
-	boolean isRunning();
+	void destroy();
 
 }

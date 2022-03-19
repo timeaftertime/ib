@@ -1,8 +1,10 @@
 package cn.milai.ib.container.plugin;
 
+import java.util.Collections;
 import java.util.List;
 
 import cn.milai.ib.container.listener.PropertyMonitor;
+import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.item.property.Property;
 
 /**
@@ -10,10 +12,9 @@ import cn.milai.ib.item.property.Property;
  * @author milai
  * @date 2021.02.11
  */
-public class PropertyMonitorPlugin<T extends Property> extends ListenersPlugin {
+public class PropertyMonitorPlugin<T extends Property> extends MonitorListenerPlugin<PropertyMonitor<T>> {
 
 	private Class<T> clazz;
-	private PropertyMonitor<T> monitor;
 
 	/**
 	 * 构造针对指定类型的 {@link PropertyMonitorPlugin}
@@ -24,13 +25,13 @@ public class PropertyMonitorPlugin<T extends Property> extends ListenersPlugin {
 	}
 
 	@Override
-	protected final void afterAddListeners() {
-		monitor = PropertyMonitor.monitor(container(), clazz);
+	protected PropertyMonitor<T> newMonitor(PluginableContainer container) {
+		return PropertyMonitor.monitor(container, clazz);
 	}
 
 	/**
 	 * 获取监听到的所有 {@link Property} 列表
 	 * @return
 	 */
-	protected List<T> getAll() { return monitor.getProps(); }
+	protected List<T> getAll() { return getMonitor() == null ? Collections.emptyList() : getMonitor().getProps(); }
 }

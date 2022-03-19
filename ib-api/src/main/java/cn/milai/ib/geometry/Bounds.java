@@ -17,7 +17,7 @@ public interface Bounds {
 	 * 获取 X 坐标四舍五入后的 int 值
 	 * @return
 	 */
-	int getIntX();
+	default int getIntX() { return (int) Math.round(getX()); }
 
 	/**
 	 * 设置 X 坐标
@@ -35,7 +35,7 @@ public interface Bounds {
 	 * 获取 Y 坐标四舍五入后的 int 值
 	 * @return
 	 */
-	int getIntY();
+	default int getIntY() { return (int) Math.round(getY()); }
 
 	/**
 	 * 设置 Y 坐标
@@ -53,7 +53,7 @@ public interface Bounds {
 	 * 获取宽度四舍五入后的 int 值
 	 * @return
 	 */
-	int getIntW();
+	default int getIntW() { return (int) Math.round(getW()); }
 
 	/**
 	 * 设置宽度
@@ -71,7 +71,7 @@ public interface Bounds {
 	 * 获取高度四舍五入后的 int 值
 	 * @return
 	 */
-	int getIntH();
+	default int getIntH() { return (int) Math.round(getH()); }
 
 	/**
 	 * 设置高度
@@ -94,6 +94,16 @@ public interface Bounds {
 	}
 
 	/**
+	 * 重新设置大小
+	 * @param w
+	 * @param h
+	 */
+	default void resize(double w, double h) {
+		setW(w);
+		setH(h);
+	}
+
+	/**
 	 * 中心 X 坐标
 	 * @return
 	 */
@@ -109,13 +119,7 @@ public interface Bounds {
 	 * 获取四个边界点，顺序为左上、左下、右下、右上点的坐标
 	 * @return
 	 */
-	default Point[] toPoints() {
-		long x = (long) getX();
-		long y = (long) getY();
-		long w = (long) getW();
-		long h = (long) getH();
-		return new Point[] { new Point(x, y), new Point(x, y + h), new Point(x + w, y + h), new Point(x + w, y), };
-	}
+	Position[] positions();
 
 	/**
 	 * 当前 {@link Bounds} 是否包含指定点
@@ -123,7 +127,7 @@ public interface Bounds {
 	 * @param y
 	 * @return
 	 */
-	default boolean containsPoint(double x, double y) {
+	default boolean contains(double x, double y) {
 		return x >= getX() && x <= getX() + getW() && y >= getY() && y <= getY() + getH();
 	}
 

@@ -4,7 +4,7 @@ import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 
 /**
  * 有生命周期（可启动、暂停、关闭等操作）的容器
@@ -80,7 +80,7 @@ public interface LifecycleContainer extends CloseableContainer {
 	 * 移除所有游戏对象、所有 {@link LifecycleListener#acrossEpoch()} 为 false 的监听器。
 	 * 帧数不会清零。
 	 * {@link LifecycleListener#onEpochChanged(Container)} 将在容器中对象被清空后、监听器被移除前调用，
-	 * {@link ObjectListener#onObjectRemoved(java.util.List)} 将在游戏对象被清空、监听器被移除前调用。
+	 * {@link ItemListener#onObjectRemoved(java.util.List)} 将在游戏对象被清空、监听器被移除前调用。
 	 * @throws ContainerClosedException
 	 */
 	void reset() throws ContainerClosedException;

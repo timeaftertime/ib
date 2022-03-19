@@ -23,8 +23,8 @@ public class ContainerListeners {
 	 * @param listener
 	 */
 	public static void add(Container container, ContainerListener listener) {
-		if (listener instanceof ObjectListener) {
-			container.addObjectListener((ObjectListener) listener);
+		if (listener instanceof ItemListener) {
+			container.addItemListener((ItemListener) listener);
 		}
 		if ((container instanceof LifecycleContainer) && (listener instanceof LifecycleListener)) {
 			((LifecycleContainer) container).addLifecycleListener((LifecycleListener) listener);
@@ -40,8 +40,8 @@ public class ContainerListeners {
 	 * @param listener
 	 */
 	public static void remove(Container container, ContainerListener listener) {
-		if (listener instanceof ObjectListener) {
-			container.removeObjectListener((ObjectListener) listener);
+		if (listener instanceof ItemListener) {
+			container.removeItemListener((ItemListener) listener);
 		}
 		if ((container instanceof LifecycleContainer) && (listener instanceof LifecycleListener)) {
 			((LifecycleContainer) container).removeLifecycleListener((LifecycleListener) listener);
@@ -52,16 +52,16 @@ public class ContainerListeners {
 	}
 
 	/**
-	 * 获取一个监听指定 {@link Item} 移除的 {@link ObjectListener}。
+	 * 获取一个监听指定 {@link Item} 移除的 {@link ItemListener}。
 	 * 指定 {@link Item} 被移除时将用其调用 {@link ObjectCallback#callback(Container, Item)}
 	 * @param callback
 	 * @param removed
 	 * @return
 	 */
-	public static ObjectListener removedListener(ObjectCallback<Item> callback, Item... removed) {
-		return new ObjectListener() {
+	public static ItemListener removedListener(ObjectCallback<Item> callback, Item... removed) {
+		return new ItemListener() {
 			@Override
-			public void onObjectRemoved(Container container, List<Item> objs) {
+			public void onRemoved(Container container, List<Item> objs) {
 				for (Item o : removed) {
 					if (objs.contains(o)) {
 						callback.callback(container, o);
@@ -72,22 +72,22 @@ public class ContainerListeners {
 	}
 
 	/**
-	 * 获取一个通过指定回调方法实现的 {@link ObjectListener}
-	 * @param onAdded {@link ObjectListener#onObjectAdded(Container, Item)} 的实现
-	 * @param onRemoved {@link ObjectListener#onObjectRemoved(Container, List)} 的实现
+	 * 获取一个通过指定回调方法实现的 {@link ItemListener}
+	 * @param onAdded {@link ItemListener#onAdded(Container, Item)} 的实现
+	 * @param onRemoved {@link ItemListener#onRemoved(Container, List)} 的实现
 	 * @return
 	 */
-	public static ObjectListener objectListener(ObjectCallback<Item> onAdded, ObjectsCallback<Item> onRemoved) {
-		return new ObjectListener() {
+	public static ItemListener objectListener(ObjectCallback<Item> onAdded, ObjectsCallback<Item> onRemoved) {
+		return new ItemListener() {
 			@Override
-			public void onObjectAdded(Container container, Item obj) {
+			public void onAdded(Container container, Item obj) {
 				if (onAdded != null) {
 					onAdded.callback(container, obj);
 				}
 			}
 
 			@Override
-			public void onObjectRemoved(Container container, List<Item> objs) {
+			public void onRemoved(Container container, List<Item> objs) {
 				if (onRemoved != null) {
 					onRemoved.callback(container, objs);
 				}
@@ -95,7 +95,7 @@ public class ContainerListeners {
 		};
 	}
 
-	public static ObjectListener roleListener(ObjectCallback<Role> onAdded, ObjectsCallback<Role> onRemoved) {
+	public static ItemListener roleListener(ObjectCallback<Role> onAdded, ObjectsCallback<Role> onRemoved) {
 		return objectListener(
 			onAdded == null ? null : (c, o) -> {
 				if (o instanceof Role) {
@@ -130,6 +130,24 @@ public class ContainerListeners {
 
 	public static interface ContainerCallback {
 		void callback(LifecycleContainer container);
+	}
+
+	public static LifecycleListener startListener(ContainerCallback afterStarted) {
+		return new LifecycleListener() {
+			@Override
+			public void onStart(LifecycleContainer container) {
+				afterStarted.callback(container);
+			}
+		};
+	}
+
+	public static LifecycleListener closeListener(ContainerCallback afterClosed) {
+		return new LifecycleListener() {
+			@Override
+			public void onClosed(LifecycleContainer container) {
+				afterClosed.callback(container);
+			}
+		};
 	}
 
 }

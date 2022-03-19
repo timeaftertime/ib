@@ -7,24 +7,21 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.PassCaculator;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.item.BasePainter;
-import cn.milai.ib.item.property.Painter;
 
 /**
- * 显示多行文字、背景透明的窗口组件
+ * 显示多行文字的 {@link Label}
  * @author milai
  * @date 2020.04.05
  */
-public class TextLines extends AbstractTextControl implements LifecycleListener {
-
-	private static final int PADDING = 5;
+public class TextLines extends Label implements LifecycleListener {
 
 	private PassCaculator pass;
-	private BufferedImage img;
+
 	private long inFrame;
 	private long keepFrame;
 	private long outFrame;
-	private Color bgColor = Color.BLACK;
+
+	private final Color DEFAULT_BG_COLOR = Color.BLACK;
 
 	/**
 	 * 创建一个多行文本
@@ -37,11 +34,9 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 		this.inFrame = inFrame;
 		this.keepFrame = keepFrame;
 		this.outFrame = outFrame;
-		img = Images.newTextImage(
-			getTextProperty().getFont(), getTextProperty().getColor(), bgColor, PADDING, 0, lines
-		);
-		setW(img.getWidth());
-		setH(img.getHeight());
+		setBgColor(DEFAULT_BG_COLOR);
+		setWrap(true);
+		setText(String.join(Label.WRAP, lines));
 	}
 
 	@Override
@@ -60,16 +55,11 @@ public class TextLines extends AbstractTextControl implements LifecycleListener 
 	}
 
 	@Override
-	protected Painter createPainter() {
-		return new BasePainter() {
-			@Override
-			public BufferedImage getNowImage() {
-				BufferedImage i = Images.copy(img);
-				if (!pass.isKeep()) {
-					Images.transparent(i, pass.getTransparency());
-				}
-				return i;
-			}
-		};
+	protected BufferedImage getLabelImg(BufferedImage img) {
+		if (pass.isKeep()) {
+			return img;
+		}
+		return Images.transparent(Images.copy(img), pass.getTransparency());
 	}
+
 }

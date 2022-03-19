@@ -17,20 +17,20 @@ import cn.milai.ib.container.plugin.ContainerPlugin;
 public interface PluginableContainer extends LifecycleContainer {
 
 	/**
-	 * 向容器中添加指定插件
+	 * 添加指定 {@link ContainerPlugin}
 	 * @param plugin
-	 * @throws IllegalStateException 若插件正在运行
+	 * @return 是否关联成功
 	 * @throws ContainerClosedException
 	 */
-	void addPlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException;
+	boolean addPlugin(ContainerPlugin plugin) throws ContainerClosedException, IllegalStateException;
 
 	/**
-	 * 从当前容器中移除指定插件，若插件正在运行，将先停止该插件
+	 * 移除指定 {@link ContainerPlugin}
 	 * @param plugin
-	 * @throws IllegalStateException 若插件正在运行且不属于当前容器
+	 * @return 是否移除成功
 	 * @throws ContainerClosedException
 	 */
-	void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException;
+	boolean removePlugin(ContainerPlugin plugin) throws ContainerClosedException, IllegalStateException;
 
 	/**
 	 * 添加一个插件事件监听器
@@ -58,10 +58,7 @@ public interface PluginableContainer extends LifecycleContainer {
 	 * @param pluginClass
 	 * @return
 	 */
-	default <T extends ContainerPlugin> T getPlugin(Class<T> pluginClass) {
-		List<T> ps = getPlugins(pluginClass);
-		return ps.isEmpty() ? null : ps.get(0);
-	}
+	<T extends ContainerPlugin> T getPlugin(Class<T> pluginClass);
 
 	/**
 	 * 使用 {@link #getPlugin(Class)} 获取的指定类型 {@link ContainerPlugin} 调用指定 {@link Consumer}
@@ -98,17 +95,6 @@ public interface PluginableContainer extends LifecycleContainer {
 			return def;
 		}
 		return c.apply(plugin);
-	}
-
-	/**
-	 * 以当前容器为目标启动持有的所有插件
-	 * @throws ContainerClosedException
-	 */
-	default void startAllPlugins() throws ContainerClosedException {
-		checkClosed();
-		for (ContainerPlugin plugin : getPlugins(ContainerPlugin.class)) {
-			plugin.start(this);
-		}
 	}
 
 }

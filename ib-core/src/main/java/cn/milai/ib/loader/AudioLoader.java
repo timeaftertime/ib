@@ -3,7 +3,7 @@ package cn.milai.ib.loader;
 import java.io.InputStream;
 import java.util.List;
 
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.AudioCreator;
 
@@ -29,7 +29,7 @@ public class AudioLoader {
 	}
 
 	private static AudioCreator getAudioCreator() {
-		List<AudioCreator> creators = IBCore.getBeans(AudioCreator.class);
+		List<AudioCreator> creators = IBBeans.getBeans(AudioCreator.class);
 		if (creators.isEmpty()) {
 			return new AudioCreator() {
 				@Override

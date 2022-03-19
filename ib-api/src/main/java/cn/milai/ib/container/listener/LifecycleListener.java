@@ -9,21 +9,31 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
 public interface LifecycleListener extends ContainerListener {
 
 	/**
+	 * 启动时调用。调用当前方法时若 {@link LifecycleContainer} 已经启动，将立刻调用
+	 * @param container
+	 */
+	default void onStart(LifecycleContainer container) {
+	}
+
+	/**
 	 * 在容器纪元改变时调用
 	 * @param container
 	 */
-	default void onEpochChanged(LifecycleContainer container) {}
+	default void onEpochChanged(LifecycleContainer container) {
+	}
 
 	/**
 	 * 容器完成一次刷新时调用
 	 * @param container
 	 */
-	default void onRefresh(LifecycleContainer container) {}
+	default void onRefresh(LifecycleContainer container) {
+	}
 
 	/**
 	 * 容器被关闭时调用
 	 * @param container
 	 */
-	default void onClosed(LifecycleContainer container) {}
+	default void onClosed(LifecycleContainer container) {
+	}
 
 }

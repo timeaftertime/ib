@@ -1,6 +1,6 @@
 package cn.milai.ib.role;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.item.BaseItem;
 import cn.milai.ib.item.BasePainter;
 import cn.milai.ib.item.property.Painter;
@@ -47,8 +47,8 @@ public class BaseRole extends BaseItem implements Role {
 	}
 
 	@Override
-	public LifecycleContainer container() {
-		return (LifecycleContainer) super.container();
+	public Stage container() {
+		return (Stage) super.container();
 	}
 
 }

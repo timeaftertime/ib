@@ -1,6 +1,6 @@
 package cn.milai.ib.role.weapon.bullet;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
@@ -23,7 +23,7 @@ public class BulletMovable extends BaseMovable {
 
 	private boolean outOfContainer() {
 		Role r = owner();
-		LifecycleContainer c = r.container();
+		Stage c = r.container();
 		if (r.getX() > c.getW()) {
 			return true;
 		}

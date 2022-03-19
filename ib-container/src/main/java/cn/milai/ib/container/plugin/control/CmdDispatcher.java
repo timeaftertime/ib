@@ -18,23 +18,22 @@ public interface CmdDispatcher {
 	Logger LOG = LoggerFactory.getLogger(CmdDispatcher.class);
 
 	/**
-	 * 分发指定指令到 
-	 * @param cmd
+	 * 分发指定指令到指定 {@link PluginableContainer}
+	 * @param container 目标容器，若为 null，将不分发
+	 * @param cmd 目标指令，若为 null，将不分发
 	 */
-	default void dispatch(Cmd cmd) {
+	default void dispatch(PluginableContainer container, Cmd cmd) {
+		if (container == null) {
+			return;
+		}
 		if (cmd == null) {
 			return;
 		}
 		try {
-			getTargetContainer().fire(ControlPlugin.class, c -> c.addCmd(cmd));
+			container.fire(ControlPlugin.class, c -> c.addCmd(cmd));
 		} catch (ContainerClosedException e) {
 			LOG.info("容器已关闭: {}", ExceptionUtils.getStackTrace(e));
 		}
 	}
 
-	/**
-	 * 获取分发目标容器
-	 * @return
-	 */
-	PluginableContainer getTargetContainer();
 }

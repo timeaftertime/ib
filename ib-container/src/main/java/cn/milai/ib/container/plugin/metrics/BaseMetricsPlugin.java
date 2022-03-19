@@ -1,7 +1,6 @@
 package cn.milai.ib.container.plugin.metrics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,10 +12,9 @@ import cn.milai.common.base.Strings;
 import cn.milai.common.thread.counter.Counter;
 import cn.milai.common.thread.counter.DownCounter;
 import cn.milai.ib.container.conf.MetricsPluginConf;
-import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ContainerPlugin;
-import cn.milai.ib.container.plugin.ListenersPlugin;
+import cn.milai.ib.container.plugin.BaseListenersPlugin;
 import cn.milai.ib.container.pluginable.PluginListener;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 
@@ -25,7 +23,7 @@ import cn.milai.ib.container.pluginable.PluginableContainer;
  * @author milai
  * @date 2021.02.25
  */
-public class BaseMetricsPlugin extends ListenersPlugin implements MetricsPlugin {
+public class BaseMetricsPlugin extends BaseListenersPlugin implements MetricsPlugin {
 
 	private static final String HEADER = "=============>";
 
@@ -77,26 +75,24 @@ public class BaseMetricsPlugin extends ListenersPlugin implements MetricsPlugin 
 	}
 
 	@Override
-	public List<ContainerListener> newListeners() {
-		return Arrays.asList(
-			ContainerListeners.refreshListener(c -> {
-				long start = System.currentTimeMillis();
-				counter.count();
-				if (counter.isMet()) {
-					counter.reset();
-					logMetrics();
-					metric(KEY_DELAY, System.currentTimeMillis() - start);
-				}
-			}),
-			new PluginListener() {
-				@Override
-				public void onPluginRemoved(PluginableContainer container, ContainerPlugin plugin) {
-					if (plugin instanceof MetrizablePlugin) {
-						unregister((MetrizablePlugin) plugin);
-					}
+	protected void beforeAddListeners(PluginableContainer container) {
+		addListener(ContainerListeners.refreshListener(c -> {
+			long start = System.currentTimeMillis();
+			counter.count();
+			if (counter.isMet()) {
+				counter.reset();
+				logMetrics();
+				metric(KEY_DELAY, System.currentTimeMillis() - start);
+			}
+		}));
+		addListener(new PluginListener() {
+			@Override
+			public void onPluginRemoved(PluginableContainer container, ContainerPlugin plugin) {
+				if (plugin instanceof MetrizablePlugin) {
+					unregister((MetrizablePlugin) plugin);
 				}
 			}
-		);
+		});
 	}
 
 	private List<MetrizablePlugin> getPluginsByCategory(String category) {

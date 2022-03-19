@@ -5,7 +5,7 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
 import cn.milai.ib.loader.ex.ImageNotFoundException;
 
 /**
@@ -19,7 +19,7 @@ public class PathConf {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PathConf.class);
 
-	private static RepoConf repoConf = IBCore.getBean(RepoConf.class);
+	private static RepoConf repoConf = IBBeans.getBean(RepoConf.class);
 
 	private static final String RES_PREFIX = "res/";
 

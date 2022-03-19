@@ -5,19 +5,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.ex.ReinitializeException;
 import cn.milai.ib.geometry.BaseBounds;
+import cn.milai.ib.geometry.Bounds;
+import cn.milai.ib.geometry.slot.BoundsSlot;
 import cn.milai.ib.item.property.Property;
 
 /**
  * {@link Item} 默认实现
  * @author milai
  */
-public class BaseItem extends BaseBounds implements Item {
+public class BaseItem implements Item, BoundsSlot {
 
 	private static final String PROPERTY_NAME_FIELD = "NAME";
 
+	private Bounds Bounds = new BaseBounds();
 	private Container container;
 	private String status = Item.STATUS_DEFAULT;
 	private AtomicBoolean initialized = new AtomicBoolean();
@@ -71,7 +75,8 @@ public class BaseItem extends BaseBounds implements Item {
 	 */
 	protected boolean isInitialized() { return initialized.get(); }
 
-	protected void initItem() {}
+	protected void initItem() {
+	}
 
 	@Override
 	public <T extends Property> void putProperty(Class<T> clazz, Property p) {
@@ -103,6 +108,26 @@ public class BaseItem extends BaseBounds implements Item {
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public int getZ() { return Layers.DEFAULT.getZ(); }
+
+	@Override
+	public Bounds bounds() {
+		return Bounds;
+	}
+
+	@Override
+	@Configurable
+	public void setW(double w) {
+		BoundsSlot.super.setW(w);
+	}
+
+	@Override
+	@Configurable
+	public void setH(double h) {
+		BoundsSlot.super.setH(h);
 	}
 
 }

@@ -10,8 +10,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.beginning.collection.Filter;
 import cn.milai.ib.container.listener.ContainerListener;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 import cn.milai.ib.item.Item;
+import cn.milai.ib.item.property.Property;
 
 /**
  * {@link Container} 默认实现
@@ -20,21 +21,18 @@ import cn.milai.ib.item.Item;
  */
 public class BaseContainer implements Container {
 
-	private int w;
-	private int h;
-
-	private Set<Item> objs = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private Set<Item> items = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * 容器对象事件监听器列表
 	 */
-	private List<ObjectListener> objectListeners = new CopyOnWriteArrayList<>();
+	private List<ItemListener> itemListeners = new CopyOnWriteArrayList<>();
 
 	@Override
 	public boolean addObject(Item obj) {
 		obj.init(this);
-		if (objs.add(obj)) {
-			notifyObjectAdded(obj);
+		if (items.add(obj)) {
+			notifyItemAdded(obj);
 			return true;
 		}
 		return false;
@@ -42,8 +40,8 @@ public class BaseContainer implements Container {
 
 	@Override
 	public boolean removeObject(Item obj) {
-		if (objs.remove(obj)) {
-			notifyObjectRemoved(obj);
+		if (items.remove(obj)) {
+			notifyItemRemoved(obj);
 			return true;
 		}
 		return false;
@@ -53,10 +51,10 @@ public class BaseContainer implements Container {
 	@Override
 	public <T extends Item> List<T> getAll(Class<T> type) {
 		if (type == Item.class) {
-			return (List<T>) new ArrayList<>(objs);
+			return (List<T>) new ArrayList<>(items);
 		}
 		List<T> allOfType = new ArrayList<>();
-		for (Item o : objs) {
+		for (Item o : items) {
 			if (type.isInstance(o))
 				allOfType.add((T) o);
 		}
@@ -64,52 +62,52 @@ public class BaseContainer implements Container {
 	}
 
 	@Override
+	public <T extends Property> List<T> getProps(Class<T> type) {
+		List<T> allOfType = new ArrayList<>();
+		for (Item i : items) {
+			T p = i.getProperty(type);
+			if (p != null) {
+				allOfType.add(p);
+			}
+		}
+		return allOfType;
+	}
+
+	@Override
 	public void reset() {
-		notifyObjectCleared();
-		objs.clear();
-		objectListeners = Filter.nlist(objectListeners, ContainerListener::inEpoch);
+		notifyItemCleared();
+		items.clear();
+		itemListeners = Filter.nlist(itemListeners, ContainerListener::inEpoch);
 	}
 
 	@Override
-	public void addObjectListener(ObjectListener listener) {
-		objectListeners.add(listener);
+	public void addItemListener(ItemListener listener) {
+		itemListeners.add(listener);
 	}
 
 	@Override
-	public void removeObjectListener(ObjectListener listener) {
-		objectListeners.remove(listener);
+	public void removeItemListener(ItemListener listener) {
+		itemListeners.remove(listener);
 	}
 
-	private void notifyObjectRemoved(Item obj) {
-		notifyObjectsRemoved(Collections.unmodifiableList(Arrays.asList(obj)));
+	private void notifyItemRemoved(Item obj) {
+		notifyItemsRemoved(Collections.unmodifiableList(Arrays.asList(obj)));
 	}
 
-	private void notifyObjectCleared() {
-		notifyObjectsRemoved(Collections.unmodifiableList(getAll(Item.class)));
+	private void notifyItemCleared() {
+		notifyItemsRemoved(Collections.unmodifiableList(getAll(Item.class)));
 	}
 
-	private void notifyObjectsRemoved(List<Item> all) {
-		for (ObjectListener listener : new ArrayList<>(objectListeners)) {
-			listener.onObjectRemoved(this, all);
+	private void notifyItemsRemoved(List<Item> all) {
+		for (ItemListener listener : new ArrayList<>(itemListeners)) {
+			listener.onRemoved(this, all);
 		}
 	}
 
-	private void notifyObjectAdded(Item obj) {
-		for (ObjectListener listener : new ArrayList<>(objectListeners)) {
-			listener.onObjectAdded(this, obj);
+	private void notifyItemAdded(Item obj) {
+		for (ItemListener listener : new ArrayList<>(itemListeners)) {
+			listener.onAdded(this, obj);
 		}
-	}
-
-	@Override
-	public int getW() { return w; }
-
-	@Override
-	public int getH() { return h; }
-
-	@Override
-	public void newSize(int w, int h) {
-		this.w = w;
-		this.h = h;
 	}
 
 }

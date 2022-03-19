@@ -95,8 +95,8 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 	 */
 	private Graphics initNewGraphics(BufferedImage image) {
 		Graphics g = image.getGraphics();
-		g.setFont(getTextProperty().getFont());
-		g.setColor(getTextProperty().getColor());
+		g.setFont(getFont());
+		g.setColor(getColor());
 		return g;
 	}
 
@@ -189,7 +189,7 @@ public class DramaDialog extends AbstractTextControl implements Controllable {
 			return false;
 		}
 		PointCmd c = (PointCmd) cmd;
-		return containsPoint(c.getX(), c.getY());
+		return contains(c.getX(), c.getY());
 	}
 
 }

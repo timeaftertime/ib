@@ -1,6 +1,6 @@
 package cn.milai.ib.mode.drama;
 
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.Image;
 
@@ -29,7 +29,7 @@ public interface Drama {
 	 * 返回时若保留线程中断状态，将退出当前线程
 	 * @param container
 	 */
-	void run(DramaContainer container);
+	void run(Stage container);
 
 	/**
 	 * 读取当前剧本的指定资源并转换为图片

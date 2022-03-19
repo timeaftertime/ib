@@ -19,7 +19,7 @@ public interface Rotatable extends RoleProperty {
 	String NAME = "rotatable";
 
 	/**
-	 * 指定 {@link Role} 是否制定点
+	 * 指定 {@link Role} 是否指定点
 	 * @param role
 	 * @param x
 	 * @param y
@@ -35,10 +35,11 @@ public interface Rotatable extends RoleProperty {
 	 * @return
 	 */
 	static Rect getBoundRect(Role role) {
+		Rect rect = new Rect(role);
 		if (!role.hasProperty(Rotatable.class)) {
-			return new Rect(role);
+			return rect;
 		}
-		Point[] points = role.toPoints();
+		Point[] points = rect.getPoints();
 		for (int i = 0; i < points.length; i++) {
 			points[i] = points[i].rotate(role.centerX(), role.centerY(), role.getDirection());
 		}

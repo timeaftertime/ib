@@ -62,6 +62,9 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 		if (!started.compareAndSet(false, true)) {
 			return;
 		}
+		for (LifecycleListener listener : lifecycleListeners) {
+			listener.onStart(this);
+		}
 		refresher.start();
 	}
 
@@ -96,6 +99,9 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 		if (isClosed()) {
 			listener.onClosed(this);
 			return;
+		}
+		if (isRunning()) {
+			listener.onStart(this);
 		}
 		this.lifecycleListeners.add(listener);
 	}

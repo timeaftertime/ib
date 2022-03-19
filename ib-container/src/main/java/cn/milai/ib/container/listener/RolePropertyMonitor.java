@@ -17,6 +17,13 @@ public class RolePropertyMonitor<T extends RoleProperty> extends PropertyMonitor
 		super(container, clazz);
 	}
 
+	/**
+	 * 创建一个监听有指定 {@link RoleProperty} clazz 的所有 {@link Role} 的 {@link RolePropertyMonitor}
+	 * @param <T>
+	 * @param container
+	 * @param clazz
+	 * @return
+	 */
 	public static <T extends RoleProperty> RolePropertyMonitor<T> monitorRoles(Container container, Class<T> clazz) {
 		return new RolePropertyMonitor<>(container, clazz);
 	}

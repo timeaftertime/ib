@@ -1,6 +1,6 @@
 package cn.milai.ib.conf;
 
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
 
 /**
  * Infinity Battle 全局配置
@@ -11,7 +11,7 @@ public class IBConf {
 
 	private IBConf() {}
 
-	private static CoreConf conf = IBCore.getBean(CoreConf.class);
+	private static CoreConf conf = IBBeans.getBean(CoreConf.class);
 
 	/**
 	 * 按照 {@link CoreConf#getSpeed()} 设置的比例缩放指定时间

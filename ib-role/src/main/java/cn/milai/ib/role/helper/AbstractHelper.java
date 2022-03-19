@@ -14,8 +14,8 @@ import cn.milai.ib.role.property.base.BaseCollider;
  */
 public abstract class AbstractHelper extends BaseRole implements Helper {
 
-	public AbstractHelper() {
-		setMovable(new HelperMovable());
+	public AbstractHelper(double maxY) {
+		setMovable(new HelperMovable(maxY));
 		setCollider(new BaseCollider() {
 			@Override
 			public void onCollided(Collider crashed) {

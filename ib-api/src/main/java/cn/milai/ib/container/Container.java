@@ -2,8 +2,9 @@ package cn.milai.ib.container;
 
 import java.util.List;
 
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 import cn.milai.ib.item.Item;
+import cn.milai.ib.item.property.Property;
 
 /**
  * 游戏对象的容器
@@ -33,38 +34,27 @@ public interface Container {
 	<T extends Item> List<T> getAll(Class<T> type);
 
 	/**
+	 * 获取容器中所有 {@link Item} 的指定类型的属性
+	 * @param <T>
+	 * @param type
+	 * @return
+	 */
+	<T extends Property> List<T> getProps(Class<T> type);
+
+	/**
 	 * 清空容器中所有对象
 	 */
 	void reset();
 
 	/**
-	 * 获取容器实际宽度
-	 * @return
-	 */
-	int getW();
-
-	/**
-	 * 获取容器实际长度
-	 * @return
-	 */
-	int getH();
-
-	/**
-	 * 重新设置容器的宽度和高度
-	 * @param width
-	 * @param height
-	 */
-	void newSize(int width, int height);
-
-	/**
 	 * 添加一个容器对象监听器
 	 * @param listener
 	 */
-	void addObjectListener(ObjectListener listener);
+	void addItemListener(ItemListener listener);
 
 	/**
 	 * 移除一个容器对象监听器
 	 * @param listener
 	 */
-	void removeObjectListener(ObjectListener listener);
+	void removeItemListener(ItemListener listener);
 }

@@ -3,7 +3,7 @@ package cn.milai.ib.conf;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
 
 /**
  * 中央仓库配置
@@ -22,7 +22,7 @@ public class RepoConf {
 	/**
 	 * 获取资源文件后保存到的本地目录
 	 */
-	private String localResourcePath = IBCore.class.getResource("/").getPath();
+	private String localResourcePath = IBBeans.class.getResource("/").getPath();
 
 	public String getRemoteUrl() { return remoteUrl; }
 

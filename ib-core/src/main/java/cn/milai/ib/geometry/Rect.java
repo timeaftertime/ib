@@ -26,14 +26,20 @@ public class Rect {
 	}
 
 	/**
-	 * 使用指定 {@code x}, {@codey} 坐标及宽带 {@code w}、高度 {@code h} 构造一个不旋转的矩形
-	 * @param x
-	 * @param y
-	 * @param w
-	 * @param h
+	 * 以指定 {@link Bounds} 创建 {@link Rect}
+	 * @param bounds
 	 */
 	public Rect(Bounds bounds) {
-		this(bounds.toPoints());
+		this(toPoints(bounds));
+	}
+
+	private static Point[] toPoints(Bounds bounds) {
+		Point[] points = new Point[SIZE];
+		Position[] ps = bounds.positions();
+		for (int i = 0; i < SIZE; i++) {
+			points[i] = new Point(ps[i].getX(), ps[i].getY());
+		}
+		return points;
 	}
 
 	/**
@@ -96,4 +102,9 @@ public class Rect {
 	 * @return
 	 */
 	public Point[] getPoints() { return Arrays.copyOf(points, points.length); }
+
+	@Override
+	public String toString() {
+		return "Rect" + Arrays.toString(points);
+	}
 }

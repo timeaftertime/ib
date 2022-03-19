@@ -11,10 +11,16 @@ import cn.milai.ib.role.property.base.BaseMovable;
  */
 public class HelperMovable extends BaseMovable {
 
+	private double maxY;
+
+	public HelperMovable(double maxY) {
+		this.maxY = maxY;
+	}
+
 	@Override
 	public void afterMove() {
 		Role r = owner();
-		if (r.getIntY() > r.container().getH()) {
+		if (r.getY() > maxY) {
 			r.container().removeObject(r);
 		}
 	}

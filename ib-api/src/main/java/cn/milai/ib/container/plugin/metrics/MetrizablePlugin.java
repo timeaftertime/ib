@@ -24,14 +24,14 @@ public interface MetrizablePlugin extends ContainerPlugin {
 	 * @return
 	 */
 	default String getCategory() { return CATEGORY_DEF; }
-	
+
 	/**
 	 * 汇报当前 {@link MetrizablePlugin} 的 {@code k} 指标为 {@code v}
 	 * @param k
 	 * @param v
 	 */
 	default void metric(String k, Object v) {
-		container().fire(MetricsPlugin.class, p -> p.metric(this, k, v));
+		containers().forEach(c -> c.fire(MetricsPlugin.class, p -> p.metric(this, k, v)));
 	}
 
 }

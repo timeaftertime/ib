@@ -20,7 +20,7 @@ public class ContainerMonitor {
 
 	private Set<Item> monitored = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	private Container container;
-	private ObjectListener listener;
+	private ItemListener listener;
 
 	/**
 	 * 创建一个监听指定中期中所有满足指定 {@link Predicate} 的对象的 {@link ContainerMonitor} 并开始监听
@@ -34,7 +34,7 @@ public class ContainerMonitor {
 				monitored.add(o);
 			}
 		}, (c, os) -> monitored.removeAll(os));
-		container.addObjectListener(listener);
+		container.addItemListener(listener);
 		monitored.addAll(Filter.list(container.getAll(Item.class), o -> filter.test(o)));
 	}
 
@@ -48,7 +48,7 @@ public class ContainerMonitor {
 	 * 停止监听
 	 */
 	public void stop() {
-		container.removeObjectListener(listener);
+		container.removeItemListener(listener);
 	}
 
 }

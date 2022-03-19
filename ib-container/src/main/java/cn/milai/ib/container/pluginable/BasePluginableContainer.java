@@ -8,11 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.milai.beginning.collection.Filter;
-import cn.milai.common.ex.unchecked.Uncheckeds;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.lifecycle.BaseLifecycleContainer;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 
 /**
@@ -26,51 +24,50 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 	private List<PluginListener> listeners = new CopyOnWriteArrayList<>();
 
 	public BasePluginableContainer() {
-		addLifecycleListener(new LifecycleListener() {
-			@Override
-			public void onClosed(LifecycleContainer container) {
-				Uncheckeds.log(BasePluginableContainer.this::stopAllPlugins);
-			}
-
-			@Override
-			public void onEpochChanged(LifecycleContainer container) {
-				resetAllPlugins();
-			}
-		});
+		addLifecycleListener(ContainerListeners.closeListener(c -> plugins.forEach(this::doRemovePlugin)));
 	}
 
 	@Override
-	public void addPlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException {
+	public final boolean addPlugin(ContainerPlugin plugin) throws ContainerClosedException {
 		checkClosed();
-		if (plugin.isRunning()) {
-			throw new IllegalStateException("不能添加运行中的插件");
+		return doAddPlugin(plugin);
+	}
+
+	private boolean doAddPlugin(ContainerPlugin plugin) {
+		if (!plugin.plug(this)) {
+			return false;
 		}
-		if (plugins.add(plugin)) {
-			notifyPluginAdded(plugin);
-		}
+		plugins.add(plugin);
+		addLifecycleListener(plugin);
+		addItemListener(plugin);
+		notifyPluginAdded(plugin);
+		return true;
 	}
 
 	@Override
-	public void removePlugin(ContainerPlugin plugin) throws IllegalStateException, ContainerClosedException {
+	public final boolean removePlugin(ContainerPlugin plugin) throws ContainerClosedException {
 		checkClosed();
-		if (plugin.isRunning()) {
-			if (plugin.container() != this) {
-				throw new IllegalStateException("不能移除不属于当前容器的插件");
-			}
-			plugin.stop();
+		return doRemovePlugin(plugin);
+	}
+
+	private boolean doRemovePlugin(ContainerPlugin plugin) {
+		if (!plugin.unplug(this)) {
+			return false;
 		}
-		if (plugins.remove(plugin)) {
-			notifyPluginRemoved(plugin);
-		}
+		plugins.remove(plugin);
+		removeLifecycleListener(plugin);
+		removeItemListener(plugin);
+		notifyPluginRemoved(plugin);
+		return true;
 	}
 
 	@Override
-	public void addPluginListener(PluginListener listener) {
+	public final void addPluginListener(PluginListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removePluginListener(PluginListener listener) {
+	public final void removePluginListener(PluginListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -86,22 +83,21 @@ public class BasePluginableContainer extends BaseLifecycleContainer implements P
 		}
 	}
 
-	private void stopAllPlugins() {
-		for (ContainerPlugin plugin : plugins) {
-			plugin.stop();
-		}
-	}
-
-	private void resetAllPlugins() {
-		for (ContainerPlugin plugin : plugins) {
-			plugin.reset();
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ContainerPlugin> List<T> getPlugins(Class<T> pluginClass) {
 		return (List<T>) Filter.list(new ArrayList<>(plugins), p -> pluginClass.isInstance(p));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends ContainerPlugin> T getPlugin(Class<T> pluginClass) {
+		for (ContainerPlugin plugin : plugins) {
+			if (pluginClass.isInstance(plugin)) {
+				return (T) plugin;
+			}
+		}
+		return null;
 	}
 
 }

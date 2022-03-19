@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
 import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.control.text.LinesFullScreenPass;
+import cn.milai.ib.control.stage.Curtain;
 import cn.milai.ib.loader.DramaResLoader;
 import cn.milai.ib.mode.drama.Drama;
 import cn.milai.ib.mode.drama.DramaCanNotResolveException;
@@ -40,7 +40,7 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 	private static final int DRAMA_NAME_FRAMES = 20;
 	private static final String STORY_THREAD = "Story#";
 
-	private DramaContainer container;
+	private Stage stage;
 	private String[] dramaCodes;
 	private List<DramaResolver> dramaResolvers;
 
@@ -51,34 +51,34 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	@Override
 	public void init() {
-		dramaCodes = IBCore.getBean(StoryConf.class).getStages();
-		dramaResolvers = IBCore.getOrderedBeans(DramaResolver.class);
-		container = IBCore.getBean(DramaContainer.class);
+		dramaCodes = IBBeans.getBean(StoryConf.class).getStages();
+		dramaResolvers = IBBeans.getOrderedBeans(DramaResolver.class);
+		stage = IBBeans.getBean(Stage.class);
 	}
 
 	@Override
 	public void run() {
 		try {
-			container.start();
-			container.resizeWithUI(WIDTH, HEIGHT);
+			stage.start();
+			stage.resize(WIDTH, HEIGHT);
 			for (int i = 0; i < dramaCodes.length; i++) {
-				container.reset();
-				LinesFullScreenPass loading = newFullScreenInfo(Arrays.asList("NOW LOADING……"));
-				container.addObject(loading);
+				stage.reset();
+				Curtain loading = newFullScreenInfo(Arrays.asList("NOW LOADING……"));
+				stage.addObject(loading);
 				Drama drama = resolveDrama(dramaCodes[i]);
 				setName(STORY_THREAD + dramaCodes[i]);
-				container.removeObject(loading);
-				LinesFullScreenPass stageInfo = newFullScreenInfo(
+				stage.removeObject(loading);
+				Curtain stageInfo = newFullScreenInfo(
 					Arrays.asList("第 " + (i + 1) + " 关", drama.getName())
 				);
-				container.addObject(stageInfo);
+				stage.addObject(stageInfo);
 				DramaResLoader.load(dramaCodes[i]);
 				Waits.waitRemove(stageInfo, 5);
-				drama.run(container);
+				drama.run(stage);
 			}
-			container.reset();
-			container.addObject(
-				new LinesFullScreenPass(
+			stage.reset();
+			stage.addObject(
+				new Curtain(
 					DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7
 				)
 			);
@@ -88,8 +88,8 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 		}
 	}
 
-	private LinesFullScreenPass newFullScreenInfo(List<String> lines) {
-		return new LinesFullScreenPass(DRAMA_NAME_FRAMES, DRAMA_NAME_FRAMES, DRAMA_NAME_FRAMES, lines, 7);
+	private Curtain newFullScreenInfo(List<String> lines) {
+		return new Curtain(DRAMA_NAME_FRAMES, DRAMA_NAME_FRAMES, DRAMA_NAME_FRAMES, lines, 7);
 	}
 
 	private Drama resolveDrama(String dramaCode) {

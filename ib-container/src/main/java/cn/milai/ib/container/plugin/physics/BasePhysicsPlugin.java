@@ -1,7 +1,6 @@
 package cn.milai.ib.container.plugin.physics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +11,13 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import cn.milai.beginning.collection.Filter;
 import cn.milai.beginning.collection.Mapping;
-import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.RolePropertyMonitor;
-import cn.milai.ib.container.plugin.ListenersPlugin;
+import cn.milai.ib.container.plugin.BaseListenersPlugin;
+import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.geometry.BaseBounds;
+import cn.milai.ib.geometry.Bounds;
+import cn.milai.ib.geometry.Point;
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
@@ -27,7 +29,7 @@ import cn.milai.ib.role.property.Rotatable;
  * @author milai
  * @date 2021.04.07
  */
-public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin {
+public class BasePhysicsPlugin extends BaseListenersPlugin implements PhysicsPlugin {
 
 	private static final int REGION_ROW = 2;
 	private static final int REGION_COL = 2;
@@ -38,15 +40,8 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 	private Map<RolePair, Boolean> collided;
 
 	@Override
-	protected void afterAddListeners() {
-		colliders = RolePropertyMonitor.monitorRoles(container(), Collider.class);
-		movables = RolePropertyMonitor.monitorRoles(container(), Movable.class);
-		collided = new HashMap<>();
-	}
-
-	@Override
-	protected List<ContainerListener> newListeners() {
-		return Arrays.asList(ContainerListeners.refreshListener(c -> {
+	protected void beforeAddListeners(PluginableContainer container) {
+		addListener(ContainerListeners.refreshListener(c -> {
 			if (c.isPaused() || c.isPined()) {
 				return;
 			}
@@ -54,6 +49,13 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 			run();
 			metric(KEY_DELAY, System.currentTimeMillis() - start);
 		}));
+	}
+
+	@Override
+	protected void afterAddListeners(PluginableContainer container) {
+		colliders = RolePropertyMonitor.monitorRoles(container, Collider.class);
+		movables = RolePropertyMonitor.monitorRoles(container, Movable.class);
+		collided = new HashMap<>();
 	}
 
 	public void run() {
@@ -80,17 +82,45 @@ public class BasePhysicsPlugin extends ListenersPlugin implements PhysicsPlugin 
 
 	private List<Region> initRegions() {
 		regions = new ArrayList<>();
-		double regionW = 1.0 * container().getW() / REGION_ROW;
-		double regionH = 1.0 * container().getH() / REGION_COL;
+		Bounds bounds = buildNowBounds(colliders.getAll());
+		double regionW = bounds.getW() / REGION_ROW;
+		double regionH = bounds.getH() / REGION_COL;
 		for (int i = 0; i < REGION_ROW; i++) {
 			for (int j = 0; j < REGION_COL; j++) {
-				regions.add(new Region(i * regionW, j * regionH, regionW, regionH));
+				regions.add(new Region(bounds.getX() + i * regionW, bounds.getY() + j * regionH, regionW, regionH));
 			}
 		}
 		for (Role r : colliders.getAll()) {
 			refreshRegionOf(r);
 		}
 		return regions;
+	}
+
+	private Bounds buildNowBounds(List<Role> roles) {
+		if (roles.isEmpty()) {
+			return new BaseBounds();
+		}
+		double minX = Double.MAX_VALUE;
+		double minY = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
+		double maxY = Double.MIN_VALUE;
+		for (Role r : roles) {
+			for (Point p : Rotatable.getBoundRect(r).getPoints()) {
+				if (p.getX() < minX) {
+					minX = p.getX();
+				}
+				if (p.getY() < minY) {
+					minY = p.getY();
+				}
+				if (p.getX() > maxX) {
+					maxX = p.getX();
+				}
+				if (p.getY() > maxY) {
+					maxY = p.getY();
+				}
+			}
+		}
+		return new BaseBounds(minX, minY, maxX - minX, maxY - minY);
 	}
 
 	private void initCollided() {

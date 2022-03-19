@@ -1,6 +1,6 @@
 package cn.milai.ib.role;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.item.Item;
 import cn.milai.ib.item.property.holder.PainterHolder;
 import cn.milai.ib.role.property.holder.HealthHolder;
@@ -34,6 +34,6 @@ public interface Role extends Item, HealthHolder, PainterHolder {
 	void setDirection(double radian);
 
 	@Override
-	LifecycleContainer container();
+	Stage container();
 
 }

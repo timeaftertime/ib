@@ -10,7 +10,7 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.ContainerListener;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 import cn.milai.ib.item.Item;
 
 /**
@@ -103,7 +103,7 @@ public class Waits {
 
 	}
 
-	private static class RemoveCounter extends ResetMonitor implements ObjectListener {
+	private static class RemoveCounter extends ResetMonitor implements ItemListener {
 		private Item target;
 
 		public RemoveCounter(Counter counter, Item target) {
@@ -112,7 +112,7 @@ public class Waits {
 		}
 
 		@Override
-		public void onObjectRemoved(Container container, List<Item> objs) {
+		public void onRemoved(Container container, List<Item> objs) {
 			for (Item obj : objs) {
 				if (this.target == obj) {
 					getCounter().count();

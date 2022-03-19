@@ -1,16 +1,18 @@
 package cn.milai.ib.container.plugin.media;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cn.milai.common.thread.Condition;
+import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.plugin.BaseContainerPlugin;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.BaseExclusiveContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 
 /**
@@ -18,15 +20,17 @@ import cn.milai.ib.container.pluginable.PluginableContainer;
  * @author milai
  * @date 2021.02.09
  */
-public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin {
+public class BaseMediaPlugin extends BaseExclusiveContainerPlugin implements MediaPlugin {
 
-	private static final String THREAD_NAME = "IBAudioPlay";
+	private static final String THREAD_NAME = "BaseMediaPlugin#MainLoop";
+
 	private static final int THREAD_POOL_SIZE = 2;
+
+	private Condition waitPlug;
 	private Map<String, Audio> audios = new ConcurrentHashMap<>();
 
 	@Override
-	public final void playAudio(Audio audio) throws ContainerClosedException {
-		container().checkClosed();
+	public final void playAudio(Audio audio) {
 		if (audio == null) {
 			return;
 		}
@@ -34,16 +38,20 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 	}
 
 	@Override
-	public final void stopAudio(String code) throws ContainerClosedException {
-		container().checkClosed();
+	public final void stopAudio(String code) {
 		audios.remove(code);
 	}
 
-	public void run(int startEpoch) {
-		List<String> fetched = new ArrayList<>();
+	public void run() {
+		Set<String> fetched = new HashSet<>();
 		ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		while (startEpoch == container().getEpoch() && isRunning()) {
-			for (String code : new HashSet<>(audios.keySet())) {
+		while (!isDestroyed()) {
+			PluginableContainer container = container();
+			if (container == null) {
+				waitPlug.await();
+				continue;
+			}
+			for (String code : audios.keySet()) {
 				Audio audio = audios.get(code);
 				if (audio == null) {
 					continue;
@@ -60,22 +68,37 @@ public class BaseMediaPlugin extends BaseContainerPlugin implements MediaPlugin 
 					});
 				}
 			}
-			PluginableContainer container = container();
-			if (container == null) {
-				break;
-			}
 			Waits.wait(container, 1L);
 		}
 		pool.shutdown();
 	}
 
 	@Override
-	protected void onStart() {
-		new Thread(() -> run(container().getEpoch()), THREAD_NAME).start();
+	public void onStart(LifecycleContainer container) {
+		waitPlug = new BlockDownCounter(1);
+		new Thread(this::run, THREAD_NAME).start();
 	}
 
 	@Override
-	protected void onStop() {
+	public void onEpochChanged(LifecycleContainer container) {
+		clearAudio();
+	}
+
+	@Override
+	protected void onPlug(PluginableContainer c) {
+		if (waitPlug != null) {
+			waitPlug.toMet();
+		}
+	}
+
+	@Override
+	protected void onUnplug(PluginableContainer c) {
+		clearAudio();
+		waitPlug = new BlockDownCounter(1);
+	}
+
+	@Override
+	public void clearAudio() throws ContainerClosedException {
 		audios.clear();
 	}
 

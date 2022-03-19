@@ -1,7 +1,7 @@
 package cn.milai.ib.mode.drama;
 
 import cn.milai.ib.config.ItemConfigApplier;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.loader.AudioLoader;
@@ -31,19 +31,15 @@ public abstract class AbstractDrama implements Drama, ItemConfigApplier {
 	}
 
 	@Override
-	public final void run(DramaContainer container) {
-		container.newSize(initW(), initH());
-		container.newUISize(initW(), initH());
+	public final void run(Stage container) {
 		doRun(container);
-		container.restoreSize();
-		container.restoreUISize();
 	}
 
 	/**
 	 * 设置好容器宽度和高度（实际的和显示的）后执行，执行完后将还原之前的宽度和高度
 	 * @param container
 	 */
-	protected abstract void doRun(DramaContainer container);
+	protected abstract void doRun(Stage container);
 
 	/**
 	 * 获取剧本执行时容器的初始宽度
