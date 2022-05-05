@@ -64,16 +64,6 @@ public class BaseBounds implements Bounds {
 	}
 
 	@Override
-	public double centerX() {
-		return getX() + getW() / 2;
-	}
-
-	@Override
-	public double centerY() {
-		return getY() + getH() / 2;
-	}
-
-	@Override
 	public Position[] positions() {
 		double x = getX();
 		double y = getY();

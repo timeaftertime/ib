@@ -1,5 +1,6 @@
 package cn.milai.ib.control;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import cn.milai.ib.item.property.Painter;
 public class OpacityControl extends BaseControl {
 
 	private int opacity;
+	private Color overBackColor;
 
 	private Map<BufferedImage, BufferedImage> transparents = new HashMap<>();
 
@@ -39,6 +41,18 @@ public class OpacityControl extends BaseControl {
 	 */
 	public void setOpacity(int opacity) { this.opacity = opacity; }
 
+	/**
+	 * 设置 over 时背景颜色
+	 * @param overBackColor
+	 */
+	public void setOverBackColor(Color overBackColor) { this.overBackColor = overBackColor; }
+
+	/**
+	 * 获取 over 时背景颜色
+	 * @return
+	 */
+	public Color getOverBackColor() { return overBackColor; }
+
 	@Override
 	protected Painter createPainter() {
 		return new BasePainter() {
@@ -46,7 +60,12 @@ public class OpacityControl extends BaseControl {
 			public BufferedImage getNowImage() {
 				BufferedImage img = super.getNowImage();
 				if (isOvered()) {
-					return img;
+					if (overBackColor == null) {
+						return img;
+					}
+					BufferedImage newImage = Images.newImage(overBackColor, img.getWidth(), img.getHeight());
+					newImage.getGraphics().drawImage(img, 0, 0, null);
+					return newImage;
 				}
 				return transparents.computeIfAbsent(img, i -> Images.transparent(Images.copy(img), opacity));
 			}

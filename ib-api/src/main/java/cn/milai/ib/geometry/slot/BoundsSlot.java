@@ -36,9 +36,6 @@ public interface BoundsSlot extends Bounds {
 	default double getX() { return bounds().getX(); }
 
 	@Override
-	default int getIntX() { return bounds().getIntX(); }
-
-	@Override
 	default void setX(double x) {
 		bounds().setX(x);
 	}
@@ -47,21 +44,8 @@ public interface BoundsSlot extends Bounds {
 	default double getY() { return bounds().getY(); }
 
 	@Override
-	default int getIntY() { return bounds().getIntY(); }
-
-	@Override
 	default void setY(double y) {
 		bounds().setY(y);
-	}
-
-	@Override
-	default double centerX() {
-		return bounds().centerX();
-	}
-
-	@Override
-	default double centerY() {
-		return bounds().centerY();
 	}
 
 	@Override

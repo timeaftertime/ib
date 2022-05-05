@@ -11,25 +11,30 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import cn.milai.beginning.collection.Filter;
 import cn.milai.beginning.collection.Mapping;
-import cn.milai.ib.container.listener.ContainerListeners;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.RolePropertyMonitor;
-import cn.milai.ib.container.plugin.BaseListenersPlugin;
+import cn.milai.ib.container.plugin.BaseExclusiveContainerPlugin;
 import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.geometry.BaseBounds;
 import cn.milai.ib.geometry.Bounds;
 import cn.milai.ib.geometry.Point;
+import cn.milai.ib.global.IBMetrics;
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rotatable;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * {@link PhysicsPlugin} 默认实现
  * @author milai
  * @date 2021.04.07
  */
-public class BasePhysicsPlugin extends BaseListenersPlugin implements PhysicsPlugin {
+public class BasePhysicsPlugin extends BaseExclusiveContainerPlugin implements PhysicsPlugin {
+
+	private static final Timer REFRESH_DELAY = Timer.builder("containerplugin.physics.delay")
+		.register(IBMetrics.registry());
 
 	private static final int REGION_ROW = 2;
 	private static final int REGION_COL = 2;
@@ -40,21 +45,17 @@ public class BasePhysicsPlugin extends BaseListenersPlugin implements PhysicsPlu
 	private Map<RolePair, Boolean> collided;
 
 	@Override
-	protected void beforeAddListeners(PluginableContainer container) {
-		addListener(ContainerListeners.refreshListener(c -> {
-			if (c.isPaused() || c.isPined()) {
-				return;
-			}
-			long start = System.currentTimeMillis();
-			run();
-			metric(KEY_DELAY, System.currentTimeMillis() - start);
-		}));
+	public void onRefresh(LifecycleContainer container) {
+		if (container.isPaused() || container.isPined()) {
+			return;
+		}
+		REFRESH_DELAY.record(this::run);
 	}
 
 	@Override
-	protected void afterAddListeners(PluginableContainer container) {
-		colliders = RolePropertyMonitor.monitorRoles(container, Collider.class);
-		movables = RolePropertyMonitor.monitorRoles(container, Movable.class);
+	protected void onPlug(PluginableContainer c) {
+		colliders = RolePropertyMonitor.monitorRoles(c, Collider.class);
+		movables = RolePropertyMonitor.monitorRoles(c, Movable.class);
 		collided = new HashMap<>();
 	}
 

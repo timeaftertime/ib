@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import cn.milai.beginning.collection.Filter;
+import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.BaseCloseableContainer;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.listener.ContainerListener;
@@ -23,9 +24,24 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	private int epoch = 0;
 
 	/**
+	 * 帧数，即容器启动到现在刷新的次数
+	 */
+	private volatile long frame = 0;
+
+	/**
 	 * 容器是否已经启动
 	 */
 	private AtomicBoolean started = new AtomicBoolean();
+
+	/**
+	 * 是否正在运行
+	 */
+	private boolean running = false;
+
+	/**
+	 * 是否被暂停
+	 */
+	private boolean paused = false;
 
 	/**
 	 * 游戏对象是否被固定住
@@ -33,14 +49,21 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	private volatile boolean pined = false;
 
 	/**
+	 * 上次开始刷新的毫秒数
+	 */
+	private long lastStartMillisec;
+
+	/**
 	 * 容器生命周期事件监听器列表
 	 */
 	private List<LifecycleListener> lifecycleListeners = new CopyOnWriteArrayList<>();
 
-	private LifecycleThread refresher = new LifecycleThread(this);
+	private EventLoop eventLoop;
+
+	private Unsafe unsafe = new BaseUnsafe();
 
 	@Override
-	public long getFrame() { return refresher.getFrame(); }
+	public long getFrame() { return frame; }
 
 	@Override
 	public int getEpoch() { return epoch; }
@@ -52,25 +75,35 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 		notifyEpochChanged();
 		lifecycleListeners = Filter.remove(lifecycleListeners, ContainerListener::inEpoch);
 		pined = false;
-		// 确保重置后处于非暂停状态
-		refresher.cancelPause();
+		paused = false;
 	}
 
 	@Override
 	public final void start() throws ContainerClosedException {
-		checkClosed();
 		if (!started.compareAndSet(false, true)) {
 			return;
 		}
 		for (LifecycleListener listener : lifecycleListeners) {
 			listener.onStart(this);
 		}
-		refresher.start();
+		running = true;
+	}
+
+	@Override
+	public void refresh() {
+		if (!isRunning()) {
+			return;
+		}
+		lastStartMillisec = System.currentTimeMillis();
+		frame++;
+		notifyAfterRefresh();
 	}
 
 	@Override
 	public final boolean close() {
 		if (super.close()) {
+			running = false;
+			eventLoop().unregister(this);
 			for (LifecycleListener listener : lifecycleListeners) {
 				listener.onClosed(this);
 			}
@@ -81,18 +114,18 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 
 	@Override
 	public final void switchPause() {
-		checkClosed();
-		refresher.switchPause();
+		if (paused) {
+			paused = false;
+		} else {
+			paused = true;
+		}
 	}
 
 	@Override
-	public final void setPined(boolean pined) throws ContainerClosedException {
-		checkClosed();
-		this.pined = pined;
-	}
+	public final void setPined(boolean pined) throws ContainerClosedException { this.pined = pined; }
 
 	@Override
-	public boolean isPaused() { return refresher.isPaused(); }
+	public boolean isPaused() { return paused; }
 
 	@Override
 	public void addLifecycleListener(LifecycleListener listener) {
@@ -127,16 +160,39 @@ public class BaseLifecycleContainer extends BaseCloseableContainer implements Li
 	}
 
 	@Override
+	public Unsafe unsafe() {
+		return unsafe;
+	}
+
+	@Override
 	public boolean isPined() { return pined; }
 
 	@Override
-	public boolean isRunning() { return started.get() && !isClosed(); }
+	public boolean isRunning() { return running; }
 
-	/**
-	 * 进行实际的刷新动作
-	 */
-	protected void doRefresh() {
-		notifyAfterRefresh();
+	@Override
+	public EventLoop eventLoop() {
+		return eventLoop;
 	}
 
+	@Override
+	public long nextRefreshTime() {
+		return lastStartMillisec + IBConf.refreshMillisec();
+	}
+
+	private class BaseUnsafe implements Unsafe {
+		@Override
+		public void register(EventLoop eventLoop) {
+			if (BaseLifecycleContainer.this.eventLoop != null) {
+				throw new IllegalStateException("已绑定 EventLoop: " + eventLoop);
+			}
+			start();
+			BaseLifecycleContainer.this.eventLoop = eventLoop;
+		}
+
+		@Override
+		public void unregister() {
+			BaseLifecycleContainer.this.eventLoop = null;
+		}
+	}
 }

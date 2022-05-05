@@ -3,19 +3,15 @@ package cn.milai.ib.container;
 import java.util.List;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import cn.milai.ib.container.conf.MetricsPluginConf;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 import cn.milai.ib.container.plugin.control.BaseControlPlugin;
 import cn.milai.ib.container.plugin.control.ControlPlugin;
-import cn.milai.ib.container.plugin.metrics.BaseMetricsPlugin;
-import cn.milai.ib.container.plugin.metrics.MetricsPlugin;
 import cn.milai.ib.container.plugin.physics.BasePhysicsPlugin;
 import cn.milai.ib.container.plugin.physics.PhysicsPlugin;
 import cn.milai.ib.container.plugin.role.AliveCheckPlugin;
@@ -69,14 +65,6 @@ public class ContainerAutoConfiguration {
 	@ConditionalOnMissingBean(ExplosiblePlugin.class)
 	public ExplosiblePlugin baseExplosiblePlugin() {
 		return new BaseExplosiblePlugin();
-	}
-
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	@ConditionalOnBean(MetricsPluginConf.class)
-	@ConditionalOnMissingBean(MetricsPlugin.class)
-	public MetricsPlugin baseMetricsPlugin(MetricsPluginConf conf) {
-		return new BaseMetricsPlugin(conf);
 	}
 
 }

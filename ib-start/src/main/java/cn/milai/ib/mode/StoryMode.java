@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 import cn.milai.ib.IBBeans;
-import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
+import cn.milai.ib.container.lifecycle.ContainerEventLoopGroup;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.control.stage.Curtain;
 import cn.milai.ib.loader.DramaResLoader;
@@ -58,6 +58,8 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	@Override
 	public void run() {
+		ContainerEventLoopGroup eventLoopGroup = new ContainerEventLoopGroup(1);
+		eventLoopGroup.next().register(stage).awaitUninterruptibly();
 		try {
 			stage.start();
 			stage.resize(WIDTH, HEIGHT);
@@ -82,9 +84,9 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 					DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7
 				)
 			);
-		} catch (ContainerClosedException e) {
+		} catch (Exception e) {
 			// 容器关闭，结束游戏
-			return;
+			eventLoopGroup.shutdownGracefully();
 		}
 	}
 

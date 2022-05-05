@@ -17,7 +17,9 @@ public interface Position {
 	 * 设置 X 坐标
 	 * @param x
 	 */
-	void setX(double x);
+	default void setX(double x) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * 获取 Y 坐标
@@ -29,5 +31,7 @@ public interface Position {
 	 * 设置 Y 坐标
 	 * @param y
 	 */
-	void setY(double y);
+	default void setY(double y) {
+		throw new UnsupportedOperationException();
+	}
 }

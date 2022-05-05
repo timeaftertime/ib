@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.ContainerPlugin;
 import cn.milai.ib.container.plugin.ExclusiveContainerPlugin;
-import cn.milai.ib.container.plugin.metrics.MetrizablePlugin;
 import cn.milai.ib.geometry.slot.BoundsSlot;
 
 /**
@@ -13,15 +12,7 @@ import cn.milai.ib.geometry.slot.BoundsSlot;
  * @author milai
  * @date 2021.02.09
  */
-public interface UIPlugin extends BoundsSlot, MetrizablePlugin, ExclusiveContainerPlugin {
-
-	/**
-	 *  刷新 UI 延迟 key
-	 */
-	String REFRESH_UI = "refresh-ui";
-
-	@Override
-	default String getCategory() { return "ui"; }
+public interface UIPlugin extends BoundsSlot, ExclusiveContainerPlugin {
 
 	/**
 	 * 获取指定 UI X 的实际 X

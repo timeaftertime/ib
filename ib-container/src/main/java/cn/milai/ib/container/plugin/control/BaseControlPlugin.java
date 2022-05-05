@@ -5,7 +5,9 @@ import java.util.List;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.pluginable.PluginableContainer;
+import cn.milai.ib.global.IBMetrics;
 import cn.milai.ib.item.Controllable;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * {@link ControlPlugin} 默认实现
@@ -13,6 +15,9 @@ import cn.milai.ib.item.Controllable;
  * @date 2020.12.12
  */
 public class BaseControlPlugin extends AbstractControlPlugin {
+
+	private static final Timer REFRESH_DELAY = Timer.builder("containerplugin.control.delay")
+		.register(IBMetrics.registry());
 
 	/**
 	 * 默认每帧最多执行多少条指令
@@ -32,12 +37,12 @@ public class BaseControlPlugin extends AbstractControlPlugin {
 
 	@Override
 	public void onRefresh(LifecycleContainer container) {
-		long start = System.currentTimeMillis();
-		List<Controllable> controllables = sortedControllables((PluginableContainer) container);
-		for (int i = 0; i < perFrameCmd; i++) {
-			cmdQueue.runNext(controllables);
-		}
-		metric(KEY_DELAY, System.currentTimeMillis() - start);
+		REFRESH_DELAY.record(() -> {
+			List<Controllable> controllables = sortedControllables((PluginableContainer) container);
+			for (int i = 0; i < perFrameCmd; i++) {
+				cmdQueue.runNext(controllables);
+			}
+		});
 	}
 
 	@Override

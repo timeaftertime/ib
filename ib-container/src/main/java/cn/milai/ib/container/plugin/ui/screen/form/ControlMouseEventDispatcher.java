@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.pluginable.PluginableContainer;
 import cn.milai.ib.control.Control;
 
 /**
@@ -12,22 +11,29 @@ import cn.milai.ib.control.Control;
  * @author milai
  * @date 2022.03.17
  */
-public class ControlMouseEventDispatcher extends MouseEventDispatcher {
+public class ControlMouseEventDispatcher extends MouseDispatcher {
 
+	private MouseMapping mouseMapping;
 	private Control[] controls;
 
-	public ControlMouseEventDispatcher(Control[] controls, FormScreen formScreen) {
-		super(formScreen);
+	public ControlMouseEventDispatcher(Control[] controls) {
 		this.controls = controls;
+		mouseMapping = new MouseLocationMapping();
 	}
 
 	@Override
-	public void dispatch(PluginableContainer container, Cmd cmd) {
+	protected MouseMapping mouseMapping() {
+		return mouseMapping;
+	}
+
+	@Override
+	public boolean dispatch(Cmd cmd) {
 		for (Control c : controls) {
 			if (!c.exec(cmd)) {
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
 }

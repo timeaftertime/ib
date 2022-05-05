@@ -25,7 +25,6 @@ public abstract class AbstractHelper extends BaseRole implements Helper {
 				}
 				getHealth().changeHP(AbstractHelper.this, -getHealth().getHP());
 				makeFunction((PlayerRole) r);
-				System.out.println();
 			}
 		});
 	}

@@ -17,7 +17,9 @@ public interface Size {
 	 * 设置宽度
 	 * @param w
 	 */
-	void setW(double w);
+	default void setW(double w) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * 获取高度
@@ -29,6 +31,8 @@ public interface Size {
 	 * 设置高度
 	 * @param h
 	 */
-	void setH(double h);
+	default void setH(double h) {
+		throw new UnsupportedOperationException();
+	}
 
 }

@@ -235,4 +235,30 @@ public abstract class UndecoratedForm extends JFrame {
 		setBounds(x, y, w, h);
 	}
 
+	@Override
+	public void setSize(int width, int height) {
+		rebounds(getX(), getY(), width, height);
+	}
+
+	@Override
+	public void setLocation(int x, int y) {
+		rebounds(x, y, getWidth(), getHeight());
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		rebounds(x, y, width, height);
+	}
+
+	/**
+	 * 直接设置范围
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
+	protected void simpleRebounds(int x, int y, int width, int height) {
+		super.setBounds(x, y, width, height);
+	}
+
 }

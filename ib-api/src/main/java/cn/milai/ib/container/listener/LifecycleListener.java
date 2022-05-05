@@ -3,7 +3,8 @@ package cn.milai.ib.container.listener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
- * {@link LifecycleContainer} 生命周期事件监听器
+ * {@link LifecycleContainer} 生命周期事件监听器。
+ * 所有方法调用为同步操作，不应该做耗时操作
  * @author milai
  */
 public interface LifecycleListener extends ContainerListener {

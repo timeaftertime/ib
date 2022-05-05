@@ -2,9 +2,8 @@ package cn.milai.ib.container.lifecycle;
 
 import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.listener.ItemListener;
+import cn.milai.ib.container.listener.LifecycleListener;
 
 /**
  * 有生命周期（可启动、暂停、关闭等操作）的容器
@@ -15,15 +14,18 @@ public interface LifecycleContainer extends CloseableContainer {
 
 	/**
 	 * 启动容器。多次调用该方法将被忽略
-	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	void start() throws ContainerClosedException;
+	void start();
+
+	/**
+	 * 刷新容器
+	 */
+	void refresh();
 
 	/**
 	 * 暂停或继续容器
-	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	void switchPause() throws ContainerClosedException;
+	void switchPause();
 
 	/**
 	 * 容器是否出于暂停状态
@@ -35,9 +37,8 @@ public interface LifecycleContainer extends CloseableContainer {
 	 * 设置是否固定游戏角色，即是否暂停游戏角色的移动、碰撞检测、存活检测
 	 * 重绘和帧数增加不受影响
 	 * @param pined
-	 * @throws ContainerClosedException 若容器已被关闭
 	 */
-	void setPined(boolean pined) throws ContainerClosedException;
+	void setPined(boolean pined);
 
 	/**
 	 * 返回容器中游戏角色是否被固定
@@ -81,8 +82,50 @@ public interface LifecycleContainer extends CloseableContainer {
 	 * 帧数不会清零。
 	 * {@link LifecycleListener#onEpochChanged(Container)} 将在容器中对象被清空后、监听器被移除前调用，
 	 * {@link ItemListener#onObjectRemoved(java.util.List)} 将在游戏对象被清空、监听器被移除前调用。
-	 * @throws ContainerClosedException
 	 */
-	void reset() throws ContainerClosedException;
+	void reset();
 
+	/**
+	 * 获取关联的 {@link EventLoop}
+	 * @return
+	 */
+	EventLoop eventLoop();
+
+	/**
+	 * 下一次需要刷新的 {@link System#nanoTime()} 时间
+	 * @return
+	 */
+	long nextRefreshTime();
+
+	/**
+	 * 获取 {@link Unsafe} 对象
+	 * @return
+	 */
+	Unsafe unsafe();
+
+	/**
+	 * 取消当前容器的注册并关闭当前容器
+	 */
+	@Override
+	boolean close();
+
+	/**
+	 * 仅供内部使用的操作集合
+	 * @author milai
+	 * @date 2022.04.16
+	 */
+	interface Unsafe {
+
+		/**
+		 * 注册到指定 {@link EventLoop}
+		 * @param eventLoop
+		 */
+		void register(EventLoop eventLoop);
+
+		/**
+		 * 注销注册
+		 */
+		void unregister();
+
+	}
 }
