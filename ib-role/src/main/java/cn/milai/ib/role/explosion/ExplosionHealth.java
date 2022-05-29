@@ -1,8 +1,9 @@
 package cn.milai.ib.role.explosion;
 
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.base.BaseHealth;
+import cn.milai.ib.stage.Stage;
 
 /**
  * {@link Explosion} 的 {@link Health} 实现
@@ -11,21 +12,20 @@ import cn.milai.ib.role.property.base.BaseHealth;
  */
 public class ExplosionHealth extends BaseHealth {
 
-	private long endFrame = -1;
+	private long endFrame = Long.MAX_VALUE;
 
-	private long lastFrame;
-
-	public long getLastFrame() { return lastFrame; }
-
-	@Configurable
-	public void setLastFrame(long lastFrame) { this.lastFrame = lastFrame; }
-
-	@Override
-	protected void initRoleProperty() {
-		endFrame = owner().container().getFrame() + lastFrame;
+	public ExplosionHealth(Role owner) {
+		super(owner);
 	}
 
+	public long getEndFrame() { return endFrame; }
+
+	public void setEndFrame(long endFrame) { this.endFrame = endFrame; }
+
 	@Override
-	public boolean isAlive() { return owner().container().getFrame() <= endFrame; }
+	public boolean isAlive() {
+		Stage stage = owner().stage();
+		return stage == null ? false : stage.lifecycle().getFrame() <= endFrame;
+	}
 
 }

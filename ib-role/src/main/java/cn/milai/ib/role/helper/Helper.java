@@ -2,8 +2,8 @@ package cn.milai.ib.role.helper;
 
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ib.role.property.holder.AwareMovableHolder;
-import cn.milai.ib.role.property.holder.ColliderHolder;
+import cn.milai.ib.role.nature.holder.AwareMovableHolder;
+import cn.milai.ib.role.nature.holder.ColliderHolder;
 
 /**
  * 协助道具

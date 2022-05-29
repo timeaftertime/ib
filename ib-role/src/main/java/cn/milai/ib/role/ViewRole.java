@@ -6,13 +6,13 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.milai.ib.config.ConfigAware;
+import cn.milai.ib.actor.config.ConfigAware;
+import cn.milai.ib.actor.nature.BasePainter;
+import cn.milai.ib.actor.nature.Painter;
+import cn.milai.ib.actor.nature.holder.PainterHolder;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.item.BasePainter;
-import cn.milai.ib.item.property.Painter;
-import cn.milai.ib.item.property.holder.PainterHolder;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.nature.AlwaysAliveHealth;
+import cn.milai.ib.role.nature.Health;
 
 /**
  * 仅用于展示的 {@link Role}
@@ -41,15 +41,12 @@ public class ViewRole extends BaseRole implements ConfigAware, PainterHolder {
 
 	@Override
 	protected Health createHealth() {
-		return new BaseHealth() {
-			@Override
-			public boolean isAlive() { return true; }
-		};
+		return new AlwaysAliveHealth(this);
 	}
 
 	@Override
 	protected Painter createPainter() {
-		return new BasePainter() {
+		return new BasePainter(this) {
 			@Override
 			public void paintWith(Graphics g) {
 				if (Math.abs(getDirection()) < MIN_RADIAN) {

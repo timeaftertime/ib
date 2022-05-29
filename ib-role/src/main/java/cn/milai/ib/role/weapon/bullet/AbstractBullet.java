@@ -3,11 +3,11 @@ package cn.milai.ib.role.weapon.bullet;
 import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.Camp;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Collider;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseCollider;
-import cn.milai.ib.role.property.base.BaseDamage;
-import cn.milai.ib.role.property.base.BaseRotatable;
+import cn.milai.ib.role.nature.Collider;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseCollider;
+import cn.milai.ib.role.nature.base.BaseDamage;
+import cn.milai.ib.stage.Stage;
 
 /**
  * {@link Bullet} 抽象实现
@@ -20,10 +20,10 @@ public abstract class AbstractBullet extends BaseRole implements Bullet {
 
 	protected AbstractBullet(Role owner) {
 		this.owner = owner;
-		setMovable(new BulletMovable());
-		setDamage(new BaseDamage());
-		setRotatable(new BaseRotatable());
-		setCollider(new BaseCollider() {
+		setMovable(new BulletMovable(this));
+		setDamage(new BaseDamage(this));
+		setFixedBox(false);
+		setCollider(new BaseCollider(this) {
 			@Override
 			public void onCollided(Collider crashed) {
 				if (!canCrashWith(crashed)) {
@@ -35,7 +35,7 @@ public abstract class AbstractBullet extends BaseRole implements Bullet {
 	}
 
 	@Override
-	protected void initItem() {
+	protected void onEnterStage(Stage stage) {
 		Movable m = getMovable();
 		setDirection(owner.getDirection());
 		m.setSpeedX(m.getRatedSpeedX() * Math.sin(owner.getDirection()));

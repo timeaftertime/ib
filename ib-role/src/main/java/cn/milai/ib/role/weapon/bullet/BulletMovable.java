@@ -1,10 +1,10 @@
 package cn.milai.ib.role.weapon.bullet;
 
-import cn.milai.ib.container.Stage;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseMovable;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseMovable;
+import cn.milai.ib.stage.Stage;
 
 /**
  * {@link Bullet} 的 {@link Movable}
@@ -12,6 +12,10 @@ import cn.milai.ib.role.property.base.BaseMovable;
  * @date 2021.06.25
  */
 public class BulletMovable extends BaseMovable {
+
+	public BulletMovable(Role owner) {
+		super(owner);
+	}
 
 	@Override
 	public void afterMove() {
@@ -23,7 +27,7 @@ public class BulletMovable extends BaseMovable {
 
 	private boolean outOfContainer() {
 		Role r = owner();
-		Stage c = r.container();
+		Stage c = r.stage();
 		if (r.getX() > c.getW()) {
 			return true;
 		}

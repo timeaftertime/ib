@@ -1,6 +1,6 @@
 package cn.milai.ib.geometry;
 
-import cn.milai.ib.config.Configurable;
+import cn.milai.ib.actor.config.Configurable;
 
 /**
  * {@link Bounds } 的默认实现

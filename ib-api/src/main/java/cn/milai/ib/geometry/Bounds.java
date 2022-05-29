@@ -38,11 +38,13 @@ public interface Bounds extends Position, Size {
 	 * @param w
 	 * @param h
 	 */
-	default void resetBounds(double x, double y, double w, double h) {
+	@SuppressWarnings("unchecked")
+	default <T extends Bounds> T resetBounds(double x, double y, double w, double h) {
 		setX(x);
 		setY(y);
 		setW(w);
 		setH(h);
+		return (T) this;
 	}
 
 	/**
@@ -50,9 +52,11 @@ public interface Bounds extends Position, Size {
 	 * @param w
 	 * @param h
 	 */
-	default void resize(double w, double h) {
+	@SuppressWarnings("unchecked")
+	default <T extends Bounds> T resize(double w, double h) {
 		setW(w);
 		setH(h);
+		return (T) this;
 	}
 
 	/**
@@ -90,29 +94,29 @@ public interface Bounds extends Position, Size {
 	/**
 	 * 设置 x, y 为指定值并返回原对象
 	 * @param <T>
-	 * @param t
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	static <T extends Bounds> T xy(T t, double x, double y) {
-		t.setX(x);
-		t.setY(y);
-		return t;
+	@SuppressWarnings("unchecked")
+	default <T extends Bounds> T xy(double x, double y) {
+		setX(x);
+		setY(y);
+		return (T) this;
 	}
 
 	/**
 	 * 设置中间 x, y 为指定值并返回原对象
 	 * @param <T>
-	 * @param t
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	static <T extends Bounds> T centerXY(T t, double x, double y) {
-		t.setX(x - t.getW() / 2);
-		t.setY(y - t.getH() / 2);
-		return t;
+	@SuppressWarnings("unchecked")
+	default <T extends Bounds> T centerXY(double x, double y) {
+		setX(x - getW() / 2);
+		setY(y - getH() / 2);
+		return (T) this;
 	}
 
 }

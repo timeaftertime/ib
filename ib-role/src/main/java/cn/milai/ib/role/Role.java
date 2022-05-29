@@ -1,16 +1,17 @@
 package cn.milai.ib.role;
 
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.item.Item;
-import cn.milai.ib.item.property.holder.PainterHolder;
-import cn.milai.ib.role.property.holder.HealthHolder;
+import cn.milai.ib.actor.Actor;
+import cn.milai.ib.actor.nature.holder.PainterHolder;
+import cn.milai.ib.geometry.Point;
+import cn.milai.ib.geometry.Rect;
+import cn.milai.ib.role.nature.holder.HealthHolder;
 
 /**
  * 参与到游戏中的游戏角色
  * @author milai
  * @date 2020.02.20
  */
-public interface Role extends Item, HealthHolder, PainterHolder {
+public interface Role extends Actor, HealthHolder, PainterHolder {
 
 	/**
 	 * 获取当前角色所属阵营
@@ -33,7 +34,43 @@ public interface Role extends Item, HealthHolder, PainterHolder {
 	 */
 	void setDirection(double radian);
 
-	@Override
-	Stage container();
+	/**
+	 * 获取图像和判断框是否会随着 {@link #getDirection()} 变化而绕中心旋转
+	 * @return
+	 */
+	boolean isFixedBox();
+
+	/**
+	 * 设置图像和判断框是否会随着 {@link #getDirection()} 变化而绕中心旋转
+	 * @param fixedBox
+	 */
+	void setFixedBox(boolean fixedBox);
+
+	/**
+	 * 获取当前 {@link Role} 的边框
+	 * @param role
+	 * @return
+	 */
+	default Rect getBoundRect() {
+		Rect rect = new Rect(this);
+		if (isFixedBox()) {
+			return rect;
+		}
+		Point[] points = rect.getPoints();
+		for (int i = 0; i < points.length; i++) {
+			points[i] = points[i].rotate(centerX(), centerY(), getDirection());
+		}
+		return new Rect(points);
+	}
+
+	/**
+	 * 判断当前 {@link Role} 是否包含指定点
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	default boolean containsPoint(double x, double y) {
+		return getBoundRect().containsPoint(Math.round(x), Math.round(y));
+	}
 
 }

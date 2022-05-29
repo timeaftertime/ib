@@ -15,8 +15,8 @@ import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.IBBeans;
 import cn.milai.ib.conf.PathConf;
-import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.plugin.ui.Image;
 
 /**
  * 图片加载器，同一 URL 的图片只会被加载一次

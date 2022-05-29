@@ -1,31 +1,31 @@
 package cn.milai.ib.role;
 
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.item.BaseItem;
-import cn.milai.ib.item.BasePainter;
-import cn.milai.ib.item.property.Painter;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.actor.BaseActor;
+import cn.milai.ib.actor.nature.Painter;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.base.BaseHealth;
+import cn.milai.ib.role.nature.base.BaseRolePainter;
 
 /**
  * {@link Role} 默认实现
  * @author milai
  */
-public class BaseRole extends BaseItem implements Role {
+public class BaseRole extends BaseActor implements Role {
 
 	private double direction;
+	private boolean fixedBox = true;
 
 	public BaseRole() {
-		setPainter(createPainter());
+		putNature(createPainter());
 		setHealth(createHealth());
 	}
 
 	protected Painter createPainter() {
-		return new BasePainter();
+		return new BaseRolePainter(this);
 	}
 
 	protected Health createHealth() {
-		return new BaseHealth();
+		return new BaseHealth(this);
 	}
 
 	@Override
@@ -47,8 +47,9 @@ public class BaseRole extends BaseItem implements Role {
 	}
 
 	@Override
-	public Stage container() {
-		return (Stage) super.container();
-	}
+	public boolean isFixedBox() { return fixedBox; }
+
+	@Override
+	public void setFixedBox(boolean fixedBox) { this.fixedBox = fixedBox; }
 
 }

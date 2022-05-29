@@ -1,6 +1,6 @@
 package cn.milai.ib.role;
 
-import cn.milai.ib.item.Controllable;
+import cn.milai.ib.actor.Controllable;
 
 /**
  * 玩家角色

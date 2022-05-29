@@ -9,33 +9,25 @@ import org.junit.Test;
 import cn.milai.ib.geometry.Point;
 import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.base.BaseRotatable;
-import cn.milai.ib.role.property.holder.RotatableHolder;
 
 public class RotatableTest {
 
 	private static final double DELTA = 0.5;
 
-	private static class RotatableStub extends BaseRole implements RotatableHolder {
+	private static class RotatableStub extends BaseRole {
 
 		public RotatableStub(int x, int y, double w, double h, double direction) {
-			setRotatable(new BaseRotatable());
+			setFixedBox(false);
 			resetBounds(x, y, w, h);
 			setDirection(direction);
 		}
 	}
 
 	// 绕中心旋转 -15.26 度
-	private RotatableHolder role = new RotatableStub(0, 0, 10, 15, Math.atan(-3.0 / 11));
-	private Rotatable rotatable = role.getRotatable();
-
-	{
-		role.init(null);
-	}
+	private Role role = new RotatableStub(0, 0, 10, 15, Math.atan(-3.0 / 11));
 
 	@Test
 	public void testRotate() {
-		Role role = rotatable.owner();
 		Point p1 = new Point(0, 0).rotate(role.centerX(), role.centerY(), role.getDirection());
 		assertEquals(-2, p1.getX(), DELTA);
 		assertEquals(2, p1.getY(), DELTA);
@@ -52,26 +44,26 @@ public class RotatableTest {
 
 	@Test
 	public void testContainsPoint() {
-		assertTrue(Rotatable.containsPoint(role, 5, 7));
-		assertTrue(Rotatable.containsPoint(role, 5, 15));
-		assertTrue(Rotatable.containsPoint(role, 9, 4));
-		assertTrue(Rotatable.containsPoint(role, -1, 2));
-		assertFalse(Rotatable.containsPoint(role, 0, 0));
-		assertFalse(Rotatable.containsPoint(role, 0, 15));
-		assertFalse(Rotatable.containsPoint(role, 10, 0));
-		assertFalse(Rotatable.containsPoint(role, 10, 15));
-		assertFalse(Rotatable.containsPoint(role, 3, 0));
-		assertFalse(Rotatable.containsPoint(role, 0, 10));
-		assertFalse(Rotatable.containsPoint(role, 1, 13));
-		assertFalse(Rotatable.containsPoint(role, 4, 16));
-		assertFalse(Rotatable.containsPoint(role, -10, -16));
-		assertFalse(Rotatable.containsPoint(role, 100, -16));
+		assertTrue(role.containsPoint(5, 7));
+		assertTrue(role.containsPoint(5, 15));
+		assertTrue(role.containsPoint(9, 4));
+		assertTrue(role.containsPoint(-1, 2));
+		assertFalse(role.containsPoint(0, 0));
+		assertFalse(role.containsPoint(0, 15));
+		assertFalse(role.containsPoint(10, 0));
+		assertFalse(role.containsPoint(10, 15));
+		assertFalse(role.containsPoint(3, 0));
+		assertFalse(role.containsPoint(0, 10));
+		assertFalse(role.containsPoint(1, 13));
+		assertFalse(role.containsPoint(4, 16));
+		assertFalse(role.containsPoint(-10, -16));
+		assertFalse(role.containsPoint(100, -16));
 	}
 
 	@Test
 	public void testRealBounds() {
 		Role r = new RotatableStub(8, 0, 2, 20, Math.PI / 4);
-		Point[] points = Rotatable.getBoundRect(r).getPoints();
+		Point[] points = r.getBoundRect().getPoints();
 		assertEquals(15.2, points[0].getX(), DELTA);
 		assertEquals(2.2, points[0].getY(), DELTA);
 		assertEquals(1.2, points[1].getX(), DELTA);

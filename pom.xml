@@ -15,10 +15,10 @@
 	<modules>
 		<module>ib-api</module>
 		<module>ib-role</module>
-		<module>ib-control</module>
+		<module>ib-prop</module>
 		<module>ib-start</module>
 		<module>ib-core</module>
-		<module>ib-container</module>
+		<module>ib-stage</module>
 	</modules>
 
 	<properties>
@@ -94,12 +94,12 @@
 			</dependency>
 			<dependency>
 				<groupId>cn.milai.ib</groupId>
-				<artifactId>ib-control</artifactId>
+				<artifactId>ib-prop</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>cn.milai.ib</groupId>
-				<artifactId>ib-container</artifactId>
+				<artifactId>ib-stage</artifactId>
 				<version>${ib.version}</version>
 			</dependency>
 			<dependency>

@@ -61,7 +61,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 
 	@Override
 	public boolean canShoot() {
-		if (lastShootFrame + getShootInterval() >= owner.container().getFrame()) {
+		if (lastShootFrame + getShootInterval() >= owner.stage().lifecycle().getFrame()) {
 			return false;
 		}
 		Filter.remain(bullets, bullet -> bullet.getHealth().isAlive());
@@ -73,7 +73,7 @@ public abstract class AbstractBulletShooter implements BulletShooter {
 
 	@Override
 	public final Bullet[] createBullets() {
-		lastShootFrame = owner.container().getFrame();
+		lastShootFrame = owner.stage().lifecycle().getFrame();
 		Bullet[] newBullets = createBullets0();
 		bullets.addAll(Arrays.asList(newBullets));
 		return newBullets;

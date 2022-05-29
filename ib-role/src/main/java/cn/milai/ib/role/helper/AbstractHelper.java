@@ -3,10 +3,10 @@ package cn.milai.ib.role.helper;
 import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Collider;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseCollider;
+import cn.milai.ib.role.nature.Collider;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseCollider;
 
 /**
  * {@link Helper} 抽象实现
@@ -15,8 +15,8 @@ import cn.milai.ib.role.property.base.BaseCollider;
 public abstract class AbstractHelper extends BaseRole implements Helper {
 
 	public AbstractHelper(double maxY) {
-		setMovable(new HelperMovable(maxY));
-		setCollider(new BaseCollider() {
+		setMovable(new HelperMovable(this, maxY));
+		setCollider(new BaseCollider(this) {
 			@Override
 			public void onCollided(Collider crashed) {
 				Role r = crashed.owner();
@@ -27,18 +27,16 @@ public abstract class AbstractHelper extends BaseRole implements Helper {
 				makeFunction((PlayerRole) r);
 			}
 		});
-	}
-
-	@Override
-	protected void initItem() {
-		Movable m = getMovable();
-		m.setSpeedX(m.getRatedSpeedX());
-		m.setSpeedY(m.getRatedSpeedY());
+		onMakeUp(e -> {
+			Movable m = getMovable();
+			m.setSpeedX(m.getRatedSpeedX());
+			m.setSpeedY(m.getRatedSpeedY());
+		});
 	}
 
 	@Override
 	protected Health createHealth() {
-		return new HelperHealth();
+		return new HelperHealth(this);
 	}
 
 }

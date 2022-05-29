@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import cn.milai.ib.IBBeans;
-import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.container.plugin.media.AudioCreator;
+import cn.milai.ib.plugin.audio.Audio;
+import cn.milai.ib.plugin.audio.AudioCreator;
 
 /**
  * 音频加载器

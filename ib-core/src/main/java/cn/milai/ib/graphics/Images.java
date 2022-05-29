@@ -29,6 +29,8 @@ import cn.milai.ib.geometry.Opacity;
  */
 public class Images {
 
+	public static final BufferedImage EMPTY = newImage(1, 1);
+
 	private Images() {
 	}
 

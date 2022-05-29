@@ -1,8 +1,8 @@
 package cn.milai.ib.mode.drama;
 
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.container.plugin.ui.Image;
+import cn.milai.ib.plugin.audio.Audio;
+import cn.milai.ib.plugin.ui.Image;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 剧本

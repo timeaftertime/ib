@@ -1,9 +1,9 @@
 package cn.milai.ib.role.weapon.bullet.shooter;
 
-import cn.milai.ib.config.ItemConfigApplier;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.actor.config.ItemConfigApplier;
 import cn.milai.ib.role.weapon.Weapon;
 import cn.milai.ib.role.weapon.bullet.Bullet;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 子弹发射器
@@ -13,14 +13,14 @@ public interface BulletShooter extends Weapon, ItemConfigApplier {
 
 	@Override
 	default void attack() {
-		Container container;
+		Stage stage;
 		Bullet[] bullets;
 		synchronized (this) {
 			if (canShoot()) {
-				container = getOwner().container();
+				stage = getOwner().stage();
 				bullets = createBullets();
 				for (Bullet bullet : bullets) {
-					container.addObject(bullet);
+					stage.addActor(bullet);
 				}
 			}
 		}

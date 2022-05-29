@@ -8,15 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 import cn.milai.ib.IBBeans;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.lifecycle.ContainerEventLoopGroup;
-import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.control.stage.Curtain;
+import cn.milai.ib.actor.prop.Curtain;
+import cn.milai.ib.lifecycle.LifecycleLoopGroup;
 import cn.milai.ib.loader.DramaResLoader;
 import cn.milai.ib.mode.drama.Drama;
 import cn.milai.ib.mode.drama.DramaCanNotResolveException;
 import cn.milai.ib.mode.drama.DramaResolver;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ib.stage.Waits;
 
 /**
  * 剧情模式
@@ -25,7 +24,7 @@ import cn.milai.ib.mode.drama.DramaResolver;
 @Configuration
 @Order(0)
 @ConditionalOnBean(StoryConf.class)
-public class StoryMode extends AbstractGameMode implements LifecycleListener {
+public class StoryMode extends AbstractGameMode {
 
 	/**
 	 * 默认宽度
@@ -58,34 +57,30 @@ public class StoryMode extends AbstractGameMode implements LifecycleListener {
 
 	@Override
 	public void run() {
-		ContainerEventLoopGroup eventLoopGroup = new ContainerEventLoopGroup(1);
-		eventLoopGroup.next().register(stage).awaitUninterruptibly();
+		LifecycleLoopGroup eventLoopGroup = new LifecycleLoopGroup(1);
+		eventLoopGroup.next().register(stage.lifecycle()).awaitUninterruptibly();
 		try {
-			stage.start();
 			stage.resize(WIDTH, HEIGHT);
 			for (int i = 0; i < dramaCodes.length; i++) {
-				stage.reset();
+				stage.clearActor();
+				stage.lifecycle().reset();
 				Curtain loading = newFullScreenInfo(Arrays.asList("NOW LOADING……"));
-				stage.addObject(loading);
+				stage.addActor(loading);
 				Drama drama = resolveDrama(dramaCodes[i]);
 				setName(STORY_THREAD + dramaCodes[i]);
-				stage.removeObject(loading);
-				Curtain stageInfo = newFullScreenInfo(
-					Arrays.asList("第 " + (i + 1) + " 关", drama.getName())
-				);
-				stage.addObject(stageInfo);
+				stage.removeActorSync(loading);
+				Curtain stageInfo = newFullScreenInfo(Arrays.asList("第 " + (i + 1) + " 关", drama.getName()));
+				stage.addActorSync(stageInfo);
 				DramaResLoader.load(dramaCodes[i]);
-				Waits.waitRemove(stageInfo, 5);
+				Waits.waitRemove(stageInfo);
 				drama.run(stage);
 			}
-			stage.reset();
-			stage.addObject(
-				new Curtain(
-					DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7
-				)
+			stage.clearActor();
+			stage.lifecycle().reset();
+			stage.addActor(
+				new Curtain(DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7)
 			);
-		} catch (Exception e) {
-			// 容器关闭，结束游戏
+		} finally {
 			eventLoopGroup.shutdownGracefully();
 		}
 	}
