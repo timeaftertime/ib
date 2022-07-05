@@ -12,6 +12,7 @@ import cn.milai.ib.actor.nature.Nature;
 import cn.milai.ib.geometry.BaseBounds;
 import cn.milai.ib.geometry.Bounds;
 import cn.milai.ib.geometry.slot.BoundsSlot;
+import cn.milai.ib.lifecycle.Lifecycle;
 import cn.milai.ib.publisher.OncePublisher;
 import cn.milai.ib.publisher.Publisher;
 import cn.milai.ib.stage.Stage;
@@ -77,6 +78,12 @@ public class BaseActor implements Actor, BoundsSlot {
 		if (stage == this.stage) {
 			return;
 		}
+		Lifecycle lifecycle = stage.lifecycle();
+		if (!lifecycle.inMainLoop()) {
+			lifecycle.submit(() -> enter(stage));
+			return;
+		}
+		// 先设置 stage，避免 addActor 导致 enter 重复执行
 		this.stage = stage;
 		stage.addActor(this);
 		onEnterStage(stage);
@@ -95,6 +102,12 @@ public class BaseActor implements Actor, BoundsSlot {
 		if (stage == null) {
 			return;
 		}
+		Lifecycle lifecycle = stage.lifecycle();
+		if (!lifecycle.inMainLoop()) {
+			lifecycle.submit(this::exit);
+			return;
+		}
+		// 先设置 stage 为 null，避免 removeActor 导致 exit 重复执行
 		this.stage = null;
 		stage.removeActor(this);
 		onExitStage(stage);
@@ -128,5 +141,5 @@ public class BaseActor implements Actor, BoundsSlot {
 	public void setH(double h) {
 		BoundsSlot.super.setH(h);
 	}
-	
+
 }

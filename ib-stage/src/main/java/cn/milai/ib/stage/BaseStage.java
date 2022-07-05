@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
-import cn.milai.beginning.collection.Creator;
+import cn.milai.common.collection.Creator;
 import cn.milai.ib.BaseRoster;
 import cn.milai.ib.Roster;
 import cn.milai.ib.actor.Actor;
@@ -19,7 +19,6 @@ import cn.milai.ib.geometry.BaseBounds;
 import cn.milai.ib.geometry.Bounds;
 import cn.milai.ib.lifecycle.Lifecycle;
 import cn.milai.ib.lifecycle.LifecycleListener;
-import cn.milai.ib.lifecycle.LifecycleLoop;
 import cn.milai.ib.plugin.Crew;
 import cn.milai.ib.publisher.BasePublisher;
 import cn.milai.ib.publisher.OncePublisher;
@@ -58,12 +57,8 @@ public class BaseStage implements Stage {
 	private Publisher<ResizedEvent> onResized = new RecordPublisher<>();
 
 	private java.util.concurrent.Future<?> addActorAsync(Actor actor) {
-		LifecycleLoop loop = lifecycle.loop();
-		if (loop == null) {
-			return CompletableFuture.completedFuture(null);
-		}
-		if (!loop.inMainLoop()) {
-			return loop.submit(() -> addActor(actor));
+		if (!lifecycle().inMainLoop()) {
+			return lifecycle().submit(() -> addActor(actor));
 		}
 		if (!actors.addLock(actor) || containsActor(actor)) {
 			actors.addUnlock(actor);
@@ -92,12 +87,8 @@ public class BaseStage implements Stage {
 	}
 
 	private java.util.concurrent.Future<?> removeActorAsync(Actor actor) {
-		LifecycleLoop loop = lifecycle.loop();
-		if (loop == null) {
-			return CompletableFuture.completedFuture(null);
-		}
-		if (!loop.inMainLoop()) {
-			return loop.submit(() -> removeActor(actor));
+		if (!lifecycle().inMainLoop()) {
+			return lifecycle().submit(() -> removeActor(actor));
 		}
 		if (!actors.removeLock(actor) || !containsActor(actor)) {
 			actors.removeUnlock(actor);
@@ -126,12 +117,8 @@ public class BaseStage implements Stage {
 	}
 
 	private Future<?> clearActorAsync() {
-		LifecycleLoop loop = lifecycle.loop();
-		if (loop == null) {
-			return CompletableFuture.completedFuture(null);
-		}
-		if (!loop.inMainLoop()) {
-			return loop.submit(this::clearActor);
+		if (!lifecycle().inMainLoop()) {
+			return lifecycle().submit(this::clearActor);
 		}
 		Set<Actor> removed = actors.clear();
 		if (!removed.isEmpty()) {

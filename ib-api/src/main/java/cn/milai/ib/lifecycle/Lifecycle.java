@@ -5,7 +5,7 @@ package cn.milai.ib.lifecycle;
  * @author milai
  * @date 2022.05.14
  */
-public interface Lifecycle {
+public interface Lifecycle extends LifecycleExecutor {
 
 	/**
 	 * 启动。多次调用将被忽略
@@ -39,12 +39,6 @@ public interface Lifecycle {
 	 * 重置
 	 */
 	void reset();
-
-	/**
-	 * 获取关联的 {@link LifecycleLoop}
-	 * @return
-	 */
-	LifecycleLoop loop();
 
 	/**
 	 * 下一次需要刷新的 {@link System#nanoTime()} 时间

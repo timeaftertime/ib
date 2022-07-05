@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.milai.common.ex.unchecked.Uncheckeds;
-import cn.milai.common.http.Https;
 import cn.milai.common.io.Files;
 import cn.milai.common.io.InputStreams;
 import cn.milai.ib.conf.PathConf;
 import cn.milai.ib.ex.IBIOException;
+import cn.milai.ib.util.Https;
 
 /**
  * 剧本相关资源加载器

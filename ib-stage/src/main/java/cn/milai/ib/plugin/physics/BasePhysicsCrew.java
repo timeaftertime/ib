@@ -10,8 +10,8 @@ import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
-import cn.milai.beginning.collection.Filter;
-import cn.milai.beginning.collection.Mapping;
+import cn.milai.common.collection.Filter;
+import cn.milai.common.collection.Mapping;
 import cn.milai.ib.geometry.BaseBounds;
 import cn.milai.ib.geometry.Bounds;
 import cn.milai.ib.geometry.Point;
@@ -34,6 +34,7 @@ import io.micrometer.core.instrument.Timer;
 public class BasePhysicsCrew extends BaseExclusiveCrew implements PhysicsCrew {
 
 	private static final Timer REFRESH_DELAY = Timer.builder("containerplugin.physics.delay")
+		.publishPercentiles(0.5, 0.90, 0.95, 0.99)
 		.register(IBMetrics.registry());
 
 	private static final int REGION_ROW = 2;

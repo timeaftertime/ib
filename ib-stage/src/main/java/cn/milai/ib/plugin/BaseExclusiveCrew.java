@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cn.milai.beginning.collection.Creator;
+import cn.milai.common.collection.Creator;
 import cn.milai.ib.stage.Stage;
 
 /**

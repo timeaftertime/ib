@@ -32,7 +32,9 @@ public class BaseUICrew extends BaseExclusiveCrew implements UICrew {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BaseUICrew.class);
 
-	private static final Timer REFRESH_DELAY = Timer.builder("crew.ui.delay").register(IBMetrics.registry());
+	private static final Timer REFRESH_DELAY = Timer.builder("crew.ui.delay")
+		.publishPercentiles(0.5, 0.90, 0.95, 0.99)
+		.register(IBMetrics.registry());
 
 	private String title = "";
 	private Bounds bounds = new BaseBounds();
@@ -56,7 +58,6 @@ public class BaseUICrew extends BaseExclusiveCrew implements UICrew {
 			Stage stage = e.stage();
 			List<Painter> painters = stage.getNatures(Painter.NAME);
 			stage.lifecycle()
-				.loop()
 				.submitDeputy(
 					() -> {
 						refreshUI((painters));
@@ -84,6 +85,9 @@ public class BaseUICrew extends BaseExclusiveCrew implements UICrew {
 
 	private void refreshUI(List<Painter> painters) {
 		try {
+			if (!refreshing.compareAndSet(false, true)) {
+				return;
+			}
 			REFRESH_DELAY.record(() -> {
 				int w = bounds.getIntW();
 				int h = bounds.getIntH();

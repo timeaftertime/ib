@@ -2,7 +2,7 @@ package cn.milai.ib.stage.monitor;
 
 import java.util.List;
 
-import cn.milai.beginning.collection.Mapping;
+import cn.milai.common.collection.Mapping;
 import cn.milai.ib.actor.Actor;
 import cn.milai.ib.actor.nature.Nature;
 import cn.milai.ib.stage.Stage;

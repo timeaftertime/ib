@@ -3,6 +3,8 @@ package cn.milai.ib.mode;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,6 +27,8 @@ import cn.milai.ib.stage.Waits;
 @Order(0)
 @ConditionalOnBean(StoryConf.class)
 public class StoryMode extends AbstractGameMode {
+
+	private Logger LOG = LoggerFactory.getLogger(StoryMode.class);
 
 	/**
 	 * 默认宽度
@@ -80,6 +84,8 @@ public class StoryMode extends AbstractGameMode {
 			stage.addActor(
 				new Curtain(DRAMA_NAME_FRAMES, Integer.MAX_VALUE, 1, Arrays.asList("GAME OVER"), 7)
 			);
+		} catch (IllegalStateException e) {
+			LOG.info("剧本执行中断", e);
 		} finally {
 			eventLoopGroup.shutdownGracefully();
 		}

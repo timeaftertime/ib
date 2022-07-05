@@ -49,7 +49,7 @@ public class BaseAudioCrew extends BaseExclusiveCrew implements AudioCrew {
 				// 判断 contains 和 add 操作都在 Audio 主线程，不需要同步
 				if (!fetched.contains(audio.getCode())) {
 					fetched.add(audio.getCode());
-					stage.lifecycle().loop().submitDeputy(() -> {
+					stage.lifecycle().submitDeputy(() -> {
 						audio.play();
 						if (audio.isComplete()) {
 							audios.remove(code, audio);

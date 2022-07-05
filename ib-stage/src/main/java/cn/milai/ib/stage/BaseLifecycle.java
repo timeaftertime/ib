@@ -1,5 +1,6 @@
 package cn.milai.ib.stage;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -92,7 +93,7 @@ public class BaseLifecycle implements Lifecycle {
 	public final boolean close() {
 		running = false;
 		if (closed.compareAndSet(false, true)) {
-			loop().unregister(this);
+			lifecycleLoop().unregister(this);
 			target.onClosed(this);
 			return true;
 		}
@@ -107,9 +108,26 @@ public class BaseLifecycle implements Lifecycle {
 	@Override
 	public boolean isRunning() { return running; }
 
-	@Override
-	public LifecycleLoop loop() {
+	private LifecycleLoop lifecycleLoop() {
+		if (loop == null) {
+			throw new IllegalStateException("未关联到 LifecycleLoop");
+		}
 		return loop;
+	}
+
+	@Override
+	public Future<?> submit(Runnable r) {
+		return lifecycleLoop().submit(r);
+	}
+
+	@Override
+	public Future<?> submitDeputy(Runnable r) {
+		return lifecycleLoop().submitDeputy(r);
+	}
+
+	@Override
+	public boolean inMainLoop() {
+		return lifecycleLoop().inMainLoop();
 	}
 
 	@Override

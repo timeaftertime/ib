@@ -16,7 +16,9 @@ import io.micrometer.core.instrument.Timer;
  */
 public class BaseAliveCheckCrew extends SharableCrew implements AliveCheckCrew {
 
-	private static final Timer REFRESH_DELAY = Timer.builder("crew.alivecheck.delay").register(IBMetrics.registry());
+	private static final Timer REFRESH_DELAY = Timer.builder("crew.alivecheck.delay")
+		.publishPercentiles(0.5, 0.90, 0.95, 0.99)
+		.register(IBMetrics.registry());
 
 	@Override
 	public Consumer<StageRefreshedEvent> createOnRefreshed() {

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.milai.beginning.collection.Filter;
+import cn.milai.common.collection.Filter;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 

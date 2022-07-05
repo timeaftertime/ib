@@ -16,7 +16,9 @@ import io.micrometer.core.instrument.Timer;
  */
 public class BaseDresserCrew extends SharableCrew implements DresserCrew {
 
-	private static final Timer REFRESH_DELAY = Timer.builder("crew.dresser.delay").register(IBMetrics.registry());
+	private static final Timer REFRESH_DELAY = Timer.builder("crew.dresser.delay")
+		.publishPercentiles(0.5, 0.90, 0.95, 0.99)
+		.register(IBMetrics.registry());
 
 	@Override
 	public Consumer<AddActorEvent> createOnAddActor() {
