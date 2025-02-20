@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai.ib</groupId>
@@ -54,7 +55,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 批量更新子模块版本号：mvn -N versions:update-child-modules   -->
+			<!-- 批量更新子模块版本号：mvn -N versions:update-child-modules -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
@@ -69,12 +70,22 @@
 		<dependencies>
 			<dependency>
 				<groupId>cn.milai.beginning</groupId>
-				<artifactId>beginning-http</artifactId>
+				<artifactId>beginning-util</artifactId>
 				<version>${beginning.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>cn.milai.beginning</groupId>
 				<artifactId>beginning-thread</artifactId>
+				<version>${beginning.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai.beginning</groupId>
+				<artifactId>beginning-ex</artifactId>
+				<version>${beginning.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai.beginning</groupId>
+				<artifactId>beginning-io</artifactId>
 				<version>${beginning.version}</version>
 			</dependency>
 			<dependency>
@@ -137,6 +148,11 @@
 				<groupId>io.micrometer</groupId>
 				<artifactId>micrometer-core</artifactId>
 				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.client5</groupId>
+				<artifactId>httpclient5</artifactId>
+				<version>5.4.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
